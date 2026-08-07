@@ -5,7 +5,7 @@ plugins {
 android {
 	namespace = "com.unnebulous.consultapronta"
 	compileSdk {
-		version = release(36) {
+		version = release(37) {
 			minorApiLevel = 1
 		}
 	}
@@ -29,9 +29,14 @@ android {
 			)
 		}
 	}
+
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
+	}
+
+	viewBinding {
+		enable = true
 	}
 }
 
