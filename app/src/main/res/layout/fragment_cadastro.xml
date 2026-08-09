@@ -72,6 +72,21 @@
 			<!-- TODO: Slider -->
 			<!-- TODO: Foto de perfil -->
 
+			<Button
+				android:id="@+id/login_govbr_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Entrar com"
+				android:layout_gravity="center_horizontal"
+				android:textColor="@color/govbr_blue"
+				android:layout_marginBottom="12dp"
+
+				app:icon="@drawable/ic_govbr_negativo"
+				app:iconTint="@color/govbr_blue"
+				app:iconGravity="textEnd"
+				app:iconSize="0dp"
+				app:backgroundTint="@color/white" />
+
 			<!-- Custom view para os inputs? -->
 			<EditText
 				android:id="@+id/name_input"
