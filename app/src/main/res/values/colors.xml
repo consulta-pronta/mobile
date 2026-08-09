@@ -14,4 +14,6 @@
 	<color name="accent">#E5D5B8</color>
 	<color name="textLight">@color/white</color>
 	<color name="textDark">@color/primaryDark</color>
+
+	<color name="textLight60">#99FFFFFF</color>
 </resources>

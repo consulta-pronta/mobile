@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- contains default sizes -->
+	<dimen name="default_padding_top">60dp</dimen>
+	<dimen name="default_padding_start_and_end">25dp</dimen>
+</resources>
