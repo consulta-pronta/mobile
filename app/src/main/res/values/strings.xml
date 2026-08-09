@@ -1,3 +1,16 @@
 <resources>
-	<string name="app_name">ConsultaPronta</string>
+    <string name="app_name">ConsultaPronta</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="return_text">Voltar</string>
+    <string name="welcome">Bem-Vindo</string>
+    <string name="info_text">Faça o login para acessar seus dados.</string>
+    <string name="sou_paciente">Sou Paciente</string>
+    <string name="sou_profissional">Sou Profissional</string>
+    <string name="govlogin">Entrar com Gov.br</string>
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Senha</string>
+    <string name="forgot_pass">Esqueceu a senha?</string>
+    <string name="enter">Entrar</string>
+    <string name="createacc">Não possui conta? Criar Conta</string>
 </resources>
