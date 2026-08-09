@@ -1,15 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
+
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:paddingTop="@dimen/default_padding_top"
 	tools:context=".Cadastro">
 
-	<!-- TODO: Update blank fragment layout -->
-	<TextView
+	<LinearLayout
+		android:id="@+id/header"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:text="@string/hello_blank_fragment" />
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="center_vertical"
 
-</FrameLayout>
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent">
+
+		<Button
+			style="?attr/materialIconButtonStyle"
+
+			android:id="@+id/go_back"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="16dp"
+			android:padding="10dp"
+
+			app:icon="@drawable/ic_arrow_back"
+			app:iconSize="34dp"
+			app:iconTint="@color/textLight" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/go_back"
+			android:textSize="26sp"
+			android:textStyle="bold" />
+
+	</LinearLayout>
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:paddingStart="@dimen/default_padding_start_and_end"
+		android:paddingEnd="@dimen/default_padding_start_and_end"
+
+		app:layout_constraintTop_toBottomOf="@id/header"
+		app:layout_constraintStart_toStartOf="parent">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/create_account"
+				android:textStyle="bold"
+				android:textSize="28sp"
+				android:layout_marginBottom="10dp" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/input_your_data"
+				android:layout_marginBottom="30dp" />
+
+			<!-- TODO: Slider -->
+			<!-- TODO: Foto de perfil -->
+
+			<!-- Custom view para os inputs? -->
+			<EditText
+				android:id="@+id/name_input"
+
+				android:background="@drawable/input_shape"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableStart="@drawable/ic_person"
+				android:drawablePadding="10dp"
+				android:textColor="@color/textLight"
+				android:inputType="text"
+				android:autofillHints="name"
+				android:layout_marginBottom="12dp"
+
+				android:hint="@string/input_name"
+				android:textColorHint="@color/textLight60"/>
+
+			<!-- Verificar autofillhint de CPF -->
+			<EditText
+				android:id="@+id/cpf_input"
+
+				android:background="@drawable/input_shape"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableStart="@drawable/ic_document"
+				android:drawablePadding="10dp"
+				android:textColor="@color/textLight"
+				android:inputType="text"
+				android:autofillHints=""
+				android:layout_marginBottom="12dp"
+
+				android:hint="@string/input_cpf"
+				android:textColorHint="@color/textLight60"/>
+
+			<EditText
+				android:id="@+id/email_input"
+
+				android:background="@drawable/input_shape"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableStart="@drawable/ic_email"
+				android:drawablePadding="10dp"
+				android:textColor="@color/textLight"
+				android:inputType="textEmailAddress"
+				android:autofillHints="emailAddress"
+				android:layout_marginBottom="12dp"
+
+				android:hint="@string/input_email"
+				android:textColorHint="@color/textLight60"/>
+
+			<EditText
+				android:id="@+id/phone_number_input"
+
+				android:background="@drawable/input_shape"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableStart="@drawable/ic_telephone"
+				android:drawablePadding="10dp"
+				android:textColor="@color/textLight"
+				android:inputType="phone"
+				android:autofillHints="phone"
+				android:layout_marginBottom="12dp"
+
+				android:hint="@string/input_phone_number"
+				android:textColorHint="@color/textLight60"/>
+
+			<EditText
+				android:id="@+id/passoword_input"
+
+				android:background="@drawable/input_shape"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableStart="@drawable/ic_password"
+				android:drawablePadding="10dp"
+				android:textColor="@color/textLight"
+				android:inputType="textPassword"
+				android:autofillHints="password"
+				android:layout_marginBottom="12dp"
+
+				android:hint="@string/input_password"
+				android:textColorHint="@color/textLight60"/>
+
+			<EditText
+				android:id="@+id/confirm_password_input"
+
+				android:background="@drawable/input_shape"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableStart="@drawable/ic_password"
+				android:drawablePadding="10dp"
+				android:textColor="@color/textLight"
+				android:inputType="textPassword"
+				android:autofillHints="password"
+				android:layout_marginBottom="12dp"
+
+				android:hint="@string/input_password_confirm"
+				android:textColorHint="@color/textLight60"/>
+
+			<Button
+				android:id="@+id/create_account_button"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="@color/primaryDark"
+				android:text="@string/create_account"
+				android:layout_marginBottom="10dp"
+
+				app:backgroundTint="@color/accent" />
+
+			<!-- linha do checkbox -->
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:gravity="center_horizontal">
+
+				<CheckBox
+					android:id="@+id/terms_checkbox"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+
+					app:buttonTint="@color/white" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/read_and_accept"
+					android:textSize="12sp" />
+
+				<Button
+					style="@style/Widget.Material3.Button.TextButton"
+
+					android:id="@+id/use_terms_button"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/terms_of_use"
+					android:textColor="@color/accent"
+					android:textSize="12sp"
+					android:background="null"
+					android:paddingLeft="5dp"
+					android:paddingTop="0dp"
+					android:paddingRight="5dp"
+					android:paddingBottom="0dp"/>
+
+				 <!-- TODO: um bom nome pra essa string -->
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/i_dont_know"
+					android:textSize="12sp"/>
+
+				<Button
+					android:id="@+id/privacy_policy_button"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="null"
+					android:paddingLeft="5dp"
+					android:paddingTop="0dp"
+					android:paddingRight="5dp"
+					android:paddingBottom="0dp"
+					android:text="@string/privacy_policy"
+					android:textColor="@color/accent"
+					android:textSize="12sp" />
+
+			</LinearLayout>
+
+			<!-- linha do já possui conta -->
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:gravity="center_horizontal">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/has_account"
+					android:textSize="12sp" />
+
+				<Button
+					android:id="@+id/sign_in_button"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="null"
+					android:paddingLeft="5dp"
+					android:paddingTop="0dp"
+					android:paddingRight="5dp"
+					android:paddingBottom="0dp"
+					android:text="@string/sign_in"
+					android:textColor="@color/accent"
+					android:textSize="12sp" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
