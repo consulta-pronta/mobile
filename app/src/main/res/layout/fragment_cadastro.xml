@@ -212,7 +212,6 @@
 					android:text="@string/terms_of_use"
 					android:textColor="@color/accent"
 					android:textSize="12sp"
-					android:background="@null"
 					android:paddingLeft="5dp"
 					android:paddingTop="0dp"
 					android:paddingRight="5dp"
@@ -226,11 +225,12 @@
 					android:textSize="12sp"/>
 
 				<Button
+					style="@style/Widget.Material3.Button.TextButton"
+
 					android:id="@+id/privacy_policy_button"
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:background="@null"
 					android:paddingLeft="5dp"
 					android:paddingTop="0dp"
 					android:paddingRight="5dp"
@@ -255,11 +255,12 @@
 					android:textSize="12sp" />
 
 				<Button
+					style="@style/Widget.Material3.Button.TextButton"
+
 					android:id="@+id/sign_in_button"
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:background="@null"
 					android:paddingLeft="5dp"
 					android:paddingTop="0dp"
 					android:paddingRight="5dp"
