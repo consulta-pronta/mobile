@@ -1,0 +1,5 @@
+<resources>
+	<declare-styleable name="ProfilePictureView">
+		<attr name="profileImageSrc" format="reference" />
+	</declare-styleable>
+</resources>
