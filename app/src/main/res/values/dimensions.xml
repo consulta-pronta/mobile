@@ -2,5 +2,5 @@
 <resources>
 	<!-- contains default sizes -->
 	<dimen name="default_padding_top">60dp</dimen>
-	<dimen name="default_padding_start_and_end">25dp</dimen>
+	<dimen name="default_screen_padding">25dp</dimen>
 </resources>

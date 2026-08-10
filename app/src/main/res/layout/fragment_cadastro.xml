@@ -44,10 +44,12 @@
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
-		android:paddingStart="@dimen/default_padding_start_and_end"
-		android:paddingEnd="@dimen/default_padding_start_and_end"
+		android:paddingBottom="@dimen/default_screen_padding"
+		android:paddingStart="@dimen/default_screen_padding"
+		android:paddingEnd="@dimen/default_screen_padding"
 
 		app:layout_constraintTop_toBottomOf="@id/header"
+		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent">
 
 		<LinearLayout
@@ -235,13 +237,13 @@
 				android:orientation="horizontal"
 				android:gravity="center_horizontal">
 
+				<!-- pesquisar como alterar a cor do tick do checkbox -->
 				<CheckBox
 					android:id="@+id/terms_checkbox"
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-
-					app:buttonTint="@color/white" />
+					android:drawableTint="@color/accent" />
 
 				<TextView
 					android:layout_width="wrap_content"
