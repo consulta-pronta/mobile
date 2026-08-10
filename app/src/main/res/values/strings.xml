@@ -18,4 +18,8 @@
 	<string name="privacy_policy">Política de Privacidade</string>
 	<string name="has_account">Já possui conta?</string>
 	<string name="sign_in">Fazer login</string>
+	<string name="patient_select_option">Sou Paciente</string>
+	<string name="professional_select_option">Sou Profissional</string>
+	<string name="send_crm">Enviar CRM ou E-CRM</string>
+	<string name="enter_with_govbr">Entrar com</string>
 </resources>

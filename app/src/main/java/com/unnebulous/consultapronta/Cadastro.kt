@@ -19,6 +19,16 @@ class Cadastro : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		binding.userTypeSwitch.setOnClickListener {
+			/*
+			* Retorna 0 se usuário for Paciente
+			* Retorna 1 se usuário for Profissional
+			* */
+			val userType = binding.userTypeSwitch.changeUser()
+
+			binding.sendCrmButton.visibility = if (userType == 0) View.GONE else View.VISIBLE
+		}
 	}
 
 	override fun onDestroyView() {
