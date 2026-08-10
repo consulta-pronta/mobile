@@ -1,16 +1,25 @@
 <resources>
-    <string name="app_name">ConsultaPronta</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="return_text">Voltar</string>
-    <string name="welcome">Bem-Vindo</string>
-    <string name="info_text">Faça o login para acessar seus dados.</string>
-    <string name="sou_paciente">Sou Paciente</string>
-    <string name="sou_profissional">Sou Profissional</string>
-    <string name="govlogin">Entrar com Gov.br</string>
-    <string name="email_hint">E-mail</string>
-    <string name="password_hint">Senha</string>
-    <string name="forgot_pass">Esqueceu a senha?</string>
-    <string name="enter">Entrar</string>
-    <string name="createacc">Não possui conta? Criar Conta</string>
+	<string name="app_name">ConsultaPronta</string>
+	<!-- Não removi porque toda vez que adicionar uma fragment é adicionado essa bomba -->
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="go_back">Voltar</string>
+	<string name="create_account">Criar Conta</string>
+	<string name="input_your_data">Preencha seus dados para começar</string>
+	<string name="input_name">Nome</string>
+	<string name="input_cpf">CPF</string>
+	<string name="input_email">Email</string>
+	<string name="input_phone_number">Número de telefone</string>
+	<string name="input_password">Senha</string>
+	<string name="input_password_confirm">Confirmar senha</string>
+	<string name="read_and_accept">Li e aceito</string>
+	<string name="terms_of_use">Termos de Uso</string>
+	<string name="i_dont_know">e a</string>
+	<string name="privacy_policy">Política de Privacidade</string>
+	<string name="has_account">Já possui conta?</string>
+	<string name="sign_in">Fazer login</string>
+	<string name="patient_select_option">Sou Paciente</string>
+	<string name="professional_select_option">Sou Profissional</string>
+	<string name="send_crm">Enviar CRM ou E-CRM</string>
+	<string name="enter_with_govbr">Entrar com</string>
 </resources>

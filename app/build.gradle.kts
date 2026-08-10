@@ -5,7 +5,7 @@ plugins {
 android {
 	namespace = "com.unnebulous.consultapronta"
 	compileSdk {
-		version = release(36) {
+		version = release(37) {
 			minorApiLevel = 1
 		}
 	}
@@ -29,9 +29,14 @@ android {
 			)
 		}
 	}
+
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
+	}
+
+	viewBinding {
+		enable = true
 	}
 }
 
@@ -41,6 +46,8 @@ dependencies {
 	implementation(libs.material)
 	implementation(libs.androidx.activity)
 	implementation(libs.androidx.constraintlayout)
+	implementation(libs.bumptech.glide)
+
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
