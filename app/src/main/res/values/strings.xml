@@ -22,4 +22,11 @@
 	<string name="professional_select_option">Sou Profissional</string>
 	<string name="send_crm">Enviar CRM ou E-CRM</string>
 	<string name="enter_with_govbr">Entrar com</string>
+	<string name="welcome">Bem-vindo(a)</string>
+	<string name="login_your_account">Faça login para acessar seus dados</string>
+	<string name="forgot_password">Esqueceu a senha?</string>
+	<string name="enter">Entrar</string>
+	<string name="do_not_have_account">Não possui conta?</string>
+	<string name="sign_up">Criar conta</string>
+
 </resources>
