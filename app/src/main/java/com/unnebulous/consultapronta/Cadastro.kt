@@ -29,6 +29,17 @@ class Cadastro : Fragment() {
 
 			binding.sendCrmButton.visibility = if (userType == 0) View.GONE else View.VISIBLE
 		}
+
+		binding.signInButton.setOnClickListener {
+			parentFragmentManager.beginTransaction()
+				.setReorderingAllowed(true)
+				.replace(
+					R.id.fragment_container,
+					Cadastro()
+				)
+				.addToBackStack(null)
+				.commit()
+		}
 	}
 
 	override fun onDestroyView() {
