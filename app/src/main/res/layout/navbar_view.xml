@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@color/primary">
+
+    <LinearLayout
+        android:id="@+id/first_element"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_horizontal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_home"
+
+            app:tint="@color/textLight" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/second_element"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_horizontal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/first_element" >
+
+        <ImageView
+            android:id="@+id/second_element_icon"
+
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+
+            app:tint="@color/textLight"
+
+            tools:src="@drawable/ic_person"/>
+
+        <TextView
+            android:id="@+id/second_element_text"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder" />
+
+    </LinearLayout>
+
+    <!-- TODO: criar o botão principal -->
+    <LinearLayout
+        android:id="@+id/third_element"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_horizontal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/second_element" >
+
+        <ImageView
+            android:id="@+id/third_element_icon"
+
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+
+            app:tint="@color/textLight"
+
+            tools:src="@drawable/ic_person"/>
+
+        <TextView
+            android:id="@+id/third_element_text"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fourth_element"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_horizontal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/third_element" >
+
+        <ImageView
+            android:id="@+id/fourth_element_icon"
+
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+
+            app:tint="@color/textLight"
+
+            tools:src="@drawable/ic_person"/>
+
+        <TextView
+            android:id="@+id/fourth_element_text"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fifth_element"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_horizontal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/fourth_element" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_more_three_dots"
+
+            app:tint="@color/textLight" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/more" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
