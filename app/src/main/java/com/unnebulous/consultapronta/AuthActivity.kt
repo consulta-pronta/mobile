@@ -15,7 +15,7 @@ class AuthActivity : AppCompatActivity() {
 		binding = ActivityAuthBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		// se a ActivityAuth está rodando pela primeira vez
+		// se a AuthActivity está rodando pela primeira vez
 		// (isso não mostra que o usuário está usando o aplicativo pela primeira vez!)
 		if (savedInstanceState == null) {
 			// variável separada para permitir a troca de qual o fragmento será iniciado
