@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.databinding.NavbarViewBinding
 
@@ -16,6 +18,9 @@ class NavbarView @JvmOverloads constructor(
     private val binding: NavbarViewBinding
 
     init {
+        clipChildren = false
+        clipToPadding = false
+
         binding = NavbarViewBinding.inflate(
             LayoutInflater.from(context),
             this,
@@ -32,15 +37,22 @@ class NavbarView @JvmOverloads constructor(
 
         val isProfessional = typedArray.getBoolean(R.styleable.NavbarView_professional, false)
 
-        // TODO: definir texto dos elementos
         if (isProfessional) {
             binding.secondElementIcon.setImageResource(R.drawable.ic_group)
-            binding.thirdElementIcon.setImageResource(R.drawable.ic_graphic)
+            binding.secondElementText.text = context.getString(R.string.navbar_second_element_professional_text)
+
+            binding.mainButtonIcon.setImageResource(R.drawable.ic_graphic)
+
             binding.fourthElementIcon.setImageResource(R.drawable.ic_pill)
+            binding.fourthElementText.text = context.getString(R.string.navbar_fourth_element_professional_text)
         } else {
             binding.secondElementIcon.setImageResource(R.drawable.ic_history)
-            binding.thirdElementIcon.setImageResource(R.drawable.ic_add_circle)
+            binding.secondElementText.text = context.getString(R.string.navbar_second_element_patient_text)
+
+            binding.mainButtonIcon.setImageResource(R.drawable.ic_add_circle)
+
             binding.fourthElementIcon.setImageResource(R.drawable.ic_hospital)
+            binding.fourthElementText.text = context.getString(R.string.navbar_fourth_element_patient_text)
         }
 
         typedArray.recycle()

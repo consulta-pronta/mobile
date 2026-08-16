@@ -37,7 +37,7 @@
 			android:layout_gravity="center"
 			android:padding="4dp"
 			android:src="@drawable/ic_camera"
-			android:tint="@color/primaryDark"/>
+			android:tint="@color/primaryDark" />
 
 	</FrameLayout>
 
