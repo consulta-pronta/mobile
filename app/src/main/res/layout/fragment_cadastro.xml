@@ -6,23 +6,23 @@
 
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingTop="@dimen/default_padding_top"
-	tools:context=".Cadastro">
+	android:paddingTop="@dimen/default_padding_top" >
 
 	<LinearLayout
 		android:id="@+id/header"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal"
 		android:gravity="center_vertical"
+		android:orientation="horizontal"
 
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintStart_toStartOf="parent">
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
 
 		<Button
 			style="?attr/materialIconButtonStyle"
 
 			android:id="@+id/go_back"
+
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="16dp"
@@ -44,32 +44,32 @@
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
-		android:paddingBottom="@dimen/default_screen_padding"
 		android:paddingStart="@dimen/default_screen_padding"
 		android:paddingEnd="@dimen/default_screen_padding"
+		android:paddingBottom="@dimen/default_screen_padding"
 
-		app:layout_constraintTop_toBottomOf="@id/header"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintStart_toStartOf="parent">
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/header">
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical" >
+			android:orientation="vertical">
 
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="10dp"
 				android:text="@string/create_account"
-				android:textStyle="bold"
 				android:textSize="28sp"
-				android:layout_marginBottom="10dp" />
+				android:textStyle="bold" />
 
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/input_your_data"
-				android:layout_marginBottom="30dp" />
+				android:layout_marginBottom="30dp"
+				android:text="@string/input_your_data" />
 
 
 			<com.unnebulous.consultapronta.views.UserTypeSelectorView
@@ -77,8 +77,8 @@
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="12dp"
-				android:layout_gravity="center_horizontal" />
+				android:layout_gravity="center_horizontal"
+				android:layout_marginBottom="12dp" />
 
 			<com.unnebulous.consultapronta.views.ProfilePictureView
 				android:id="@+id/profile_picture_input"
@@ -91,107 +91,107 @@
 			<EditText
 				android:id="@+id/name_input"
 
-				android:background="@drawable/input_shape"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:autofillHints="name"
+				android:background="@drawable/input_shape"
 				android:drawableStart="@drawable/ic_person"
 				android:drawablePadding="10dp"
-				android:textColor="@color/textLight"
-				android:inputType="text"
-				android:autofillHints="name"
-				android:layout_marginBottom="12dp"
-
 				android:hint="@string/input_name"
-				android:textColorHint="@color/textLight60"/>
+				android:inputType="text"
+
+				android:textColor="@color/textLight"
+				android:textColorHint="@color/textLight60" />
 
 			<!-- Verificar autofillhint de CPF -->
 			<EditText
 				android:id="@+id/cpf_input"
 
-				android:background="@drawable/input_shape"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:autofillHints=""
+				android:background="@drawable/input_shape"
 				android:drawableStart="@drawable/ic_document"
 				android:drawablePadding="10dp"
-				android:textColor="@color/textLight"
-				android:inputType="text"
-				android:autofillHints=""
-				android:layout_marginBottom="12dp"
-
 				android:hint="@string/input_cpf"
-				android:textColorHint="@color/textLight60"/>
+				android:inputType="text"
+
+				android:textColor="@color/textLight"
+				android:textColorHint="@color/textLight60" />
 
 			<EditText
 				android:id="@+id/email_input"
 
-				android:background="@drawable/input_shape"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:autofillHints="emailAddress"
+				android:background="@drawable/input_shape"
 				android:drawableStart="@drawable/ic_email"
 				android:drawablePadding="10dp"
-				android:textColor="@color/textLight"
-				android:inputType="textEmailAddress"
-				android:autofillHints="emailAddress"
-				android:layout_marginBottom="12dp"
-
 				android:hint="@string/input_email"
-				android:textColorHint="@color/textLight60"/>
+				android:inputType="textEmailAddress"
+
+				android:textColor="@color/textLight"
+				android:textColorHint="@color/textLight60" />
 
 			<EditText
 				android:id="@+id/phone_number_input"
 
-				android:background="@drawable/input_shape"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:autofillHints="phone"
+				android:background="@drawable/input_shape"
 				android:drawableStart="@drawable/ic_telephone"
 				android:drawablePadding="10dp"
-				android:textColor="@color/textLight"
-				android:inputType="phone"
-				android:autofillHints="phone"
-				android:layout_marginBottom="12dp"
-
 				android:hint="@string/input_phone_number"
-				android:textColorHint="@color/textLight60"/>
+				android:inputType="phone"
+
+				android:textColor="@color/textLight"
+				android:textColorHint="@color/textLight60" />
 
 			<EditText
 				android:id="@+id/password_input"
 
-				android:background="@drawable/input_shape"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:autofillHints="password"
+				android:background="@drawable/input_shape"
 				android:drawableStart="@drawable/ic_password"
 				android:drawablePadding="10dp"
-				android:textColor="@color/textLight"
-				android:inputType="textPassword"
-				android:autofillHints="password"
-				android:layout_marginBottom="12dp"
-
 				android:hint="@string/input_password"
+				android:inputType="textPassword"
+
+				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />
 
 			<EditText
 				android:id="@+id/confirm_password_input"
 
-				android:background="@drawable/input_shape"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:autofillHints="password"
+				android:background="@drawable/input_shape"
 				android:drawableStart="@drawable/ic_password"
 				android:drawablePadding="10dp"
-				android:textColor="@color/textLight"
-				android:inputType="textPassword"
-				android:autofillHints="password"
-				android:layout_marginBottom="12dp"
-
 				android:hint="@string/input_password_confirm"
+				android:inputType="textPassword"
+
+				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />
 
 			<Button
 				android:id="@+id/send_crm_button"
 
-				android:background="@color/transparent"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="10dp"
+				android:background="@color/transparent"
 				android:text="@string/send_crm"
 				android:textColor="@color/accent"
 				android:visibility="gone"
@@ -208,10 +208,10 @@
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textColor="@color/primaryDark"
-				android:text="@string/create_account"
 				android:layout_marginBottom="10dp"
 				android:background="@drawable/big_button_shape"
+				android:text="@string/create_account"
+				android:textColor="@color/primaryDark"
 
 				app:backgroundTint="@color/accent" />
 
@@ -219,23 +219,23 @@
 				android:id="@+id/login_govbr_button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/enter_with_govbr"
 				android:layout_gravity="center_horizontal"
-				android:textColor="@color/govbr_blue"
 				android:layout_marginBottom="12dp"
+				android:text="@string/enter_with_govbr"
+				android:textColor="@color/govbr_blue"
 
+				app:backgroundTint="@color/white"
 				app:icon="@drawable/ic_govbr_negativo"
-				app:iconTint="@color/govbr_blue"
 				app:iconGravity="textEnd"
 				app:iconSize="0dp"
-				app:backgroundTint="@color/white" />
+				app:iconTint="@color/govbr_blue" />
 
 			<!-- linha do checkbox -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:gravity="center_horizontal">
+				android:gravity="center_horizontal"
+				android:orientation="horizontal">
 
 				<!-- pesquisar como alterar a cor do tick do checkbox -->
 				<CheckBox
@@ -258,20 +258,20 @@
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/terms_of_use"
-					android:textColor="@color/accent"
-					android:textSize="12sp"
 					android:paddingLeft="5dp"
 					android:paddingTop="0dp"
 					android:paddingRight="5dp"
-					android:paddingBottom="0dp"/>
+					android:paddingBottom="0dp"
+					android:text="@string/terms_of_use"
+					android:textColor="@color/accent"
+					android:textSize="12sp" />
 
-				 <!-- TODO: um bom nome pra essa string -->
+				<!-- TODO: um bom nome pra essa string -->
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/i_dont_know"
-					android:textSize="12sp"/>
+					android:textSize="12sp" />
 
 				<Button
 					style="@style/Widget.Material3.Button.TextButton"
@@ -294,8 +294,8 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:gravity="center_horizontal">
+				android:gravity="center_horizontal"
+				android:orientation="horizontal">
 
 				<TextView
 					android:layout_width="wrap_content"

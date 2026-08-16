@@ -2,4 +2,8 @@
 	<declare-styleable name="ProfilePictureView">
 		<attr name="profileImageSrc" format="reference" />
 	</declare-styleable>
+
+	<declare-styleable name="NavbarView">
+		<attr name="professional" format="boolean" />
+	</declare-styleable>
 </resources>

@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.databinding.ProfilePictureViewBinding
+import androidx.core.content.withStyledAttributes
 
 class ProfilePictureView @JvmOverloads constructor(
 	context: Context,
@@ -30,15 +31,14 @@ class ProfilePictureView @JvmOverloads constructor(
 	}
 
 	private fun applyAttributes(attrs: AttributeSet) {
-		val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ProfilePictureView)
+		context.withStyledAttributes(attrs, R.styleable.ProfilePictureView) {
 
-		val profileImageRes = typedArray.getResourceId(R.styleable.ProfilePictureView_profileImageSrc, 0)
+			val profileImageRes = getResourceId(R.styleable.ProfilePictureView_profileImageSrc, 0)
 
-		if (profileImageRes != 0) {
-			binding.profileImageView.setImageResource(profileImageRes)
+			if (profileImageRes != 0) {
+				binding.profileImageView.setImageResource(profileImageRes)
+			}
 		}
-
-		typedArray.recycle()
 	}
 
 	fun setProfileImage(uri: Uri) {

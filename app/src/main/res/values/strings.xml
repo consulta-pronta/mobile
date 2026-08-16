@@ -2,7 +2,6 @@
 	<string name="app_name">ConsultaPronta</string>
 	<!-- Não removi porque toda vez que adicionar uma fragment é adicionado essa bomba -->
 	<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello blank fragment</string>
 	<string name="go_back">Voltar</string>
 	<string name="create_account">Criar Conta</string>
 	<string name="input_your_data">Preencha seus dados para começar</string>
@@ -22,11 +21,15 @@
 	<string name="professional_select_option">Sou Profissional</string>
 	<string name="send_crm">Enviar CRM ou E-CRM</string>
 	<string name="enter_with_govbr">Entrar com</string>
-	<string name="welcome">Bem-vindo(a)</string>
-	<string name="login_your_account">Faça login para acessar seus dados</string>
 	<string name="forgot_password">Esqueceu a senha?</string>
 	<string name="enter">Entrar</string>
 	<string name="do_not_have_account">Não possui conta?</string>
 	<string name="sign_up">Criar conta</string>
-
+	<string name="placeholder">Lorem Ipsum</string>
+	<string name="home">Home</string>
+	<string name="more">Mais</string>
+	<string name="navbar_second_element_patient_text">Histórico</string>
+	<string name="navbar_fourth_element_patient_text">Hospitais</string>
+	<string name="navbar_second_element_professional_text">Pacientes</string>
+	<string name="navbar_fourth_element_professional_text">Farmácia</string>
 </resources>

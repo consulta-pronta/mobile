@@ -3,4 +3,8 @@
 	<!-- contains default sizes -->
 	<dimen name="default_padding_top">60dp</dimen>
 	<dimen name="default_screen_padding">25dp</dimen>
+	<dimen name="default_navbar_icons_size">20dp</dimen>
+	<dimen name="default_navbar_text_size">14sp</dimen>
+	<dimen name="default_navbar_big_button_size">60dp</dimen>
+	<dimen name="default_navbar_big_button_image_size">50dp</dimen>
 </resources>
