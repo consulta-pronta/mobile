@@ -1,38 +1,35 @@
 <resources>
-    <string name="app_name">ConsultaPronta</string>
-    <!-- Não removi porque toda vez que adicionar uma fragment é adicionado essa bomba -->
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="go_back">Voltar</string>
-    <string name="create_account">Criar Conta</string>
-    <string name="input_your_data">Preencha seus dados para começar</string>
-    <string name="input_name">Nome</string>
-    <string name="input_cpf">CPF</string>
-    <string name="input_email">Email</string>
-    <string name="input_phone_number">Número de telefone</string>
-    <string name="input_password">Senha</string>
-    <string name="input_password_confirm">Confirmar senha</string>
-    <string name="read_and_accept">Li e aceito</string>
-    <string name="terms_of_use">Termos de Uso</string>
-    <string name="i_dont_know">e a</string>
-    <string name="privacy_policy">Política de Privacidade</string>
-    <string name="has_account">Já possui conta?</string>
-    <string name="sign_in">Fazer login</string>
-    <string name="patient_select_option">Sou Paciente</string>
-    <string name="professional_select_option">Sou Profissional</string>
-    <string name="send_crm">Enviar CRM ou E-CRM</string>
-    <string name="enter_with_govbr">Entrar com</string>
-    <string name="welcome">Bem-vindo(a)</string>
-    <string name="login_your_account">Faça login para acessar seus dados</string>
-    <string name="forgot_password">Esqueceu a senha?</string>
-    <string name="enter">Entrar</string>
-    <string name="do_not_have_account">Não possui conta?</string>
-    <string name="sign_up">Criar conta</string>
-    <string name="placeholder">Lorem Ipsum</string>
-    <string name="home">Home</string>
-    <string name="more">Mais</string>
-    <string name="navbar_second_element_patient_text">Histórico</string>
-    <string name="navbar_fourth_element_patient_text">Hospitais</string>
-    <string name="navbar_second_element_professional_text">Pacientes</string>
-    <string name="navbar_fourth_element_professional_text">Farmácia</string>
+	<string name="app_name">ConsultaPronta</string>
+	<!-- Não removi porque toda vez que adicionar uma fragment é adicionado essa bomba -->
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="go_back">Voltar</string>
+	<string name="create_account">Criar Conta</string>
+	<string name="input_your_data">Preencha seus dados para começar</string>
+	<string name="input_name">Nome</string>
+	<string name="input_cpf">CPF</string>
+	<string name="input_email">Email</string>
+	<string name="input_phone_number">Número de telefone</string>
+	<string name="input_password">Senha</string>
+	<string name="input_password_confirm">Confirmar senha</string>
+	<string name="read_and_accept">Li e aceito</string>
+	<string name="terms_of_use">Termos de Uso</string>
+	<string name="i_dont_know">e a</string>
+	<string name="privacy_policy">Política de Privacidade</string>
+	<string name="has_account">Já possui conta?</string>
+	<string name="sign_in">Fazer login</string>
+	<string name="patient_select_option">Sou Paciente</string>
+	<string name="professional_select_option">Sou Profissional</string>
+	<string name="send_crm">Enviar CRM ou E-CRM</string>
+	<string name="enter_with_govbr">Entrar com</string>
+	<string name="forgot_password">Esqueceu a senha?</string>
+	<string name="enter">Entrar</string>
+	<string name="do_not_have_account">Não possui conta?</string>
+	<string name="sign_up">Criar conta</string>
+	<string name="placeholder">Lorem Ipsum</string>
+	<string name="home">Home</string>
+	<string name="more">Mais</string>
+	<string name="navbar_second_element_patient_text">Histórico</string>
+	<string name="navbar_fourth_element_patient_text">Hospitais</string>
+	<string name="navbar_second_element_professional_text">Pacientes</string>
+	<string name="navbar_fourth_element_professional_text">Farmácia</string>
 </resources>
