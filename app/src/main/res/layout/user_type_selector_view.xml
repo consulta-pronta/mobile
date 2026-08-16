@@ -5,11 +5,11 @@
 
 	android:layout_width="350dp"
 	android:layout_height="wrap_content"
-	android:padding="6dp"
 	android:background="@drawable/rounded_background"
 	android:backgroundTint="@color/primaryDark"
 	android:clickable="true"
-	android:focusable="true" >
+	android:focusable="true"
+	android:padding="6dp">
 
 	<View
 		android:id="@+id/selector_toggle"
@@ -19,20 +19,20 @@
 		android:background="@drawable/rounded_background"
 		android:backgroundTint="@color/accent"
 
-		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintHorizontal_bias="0" />
+		app:layout_constraintHorizontal_bias="0"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
 	<TextView
 		android:id="@+id/patient_text"
 
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:padding="10dp"
 		android:text="@string/patient_select_option"
 		android:textColor="@color/primaryDark"
-		android:padding="10dp"
 
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
@@ -43,14 +43,14 @@
 
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="@string/professional_select_option"
-		android:textColor="@color/accent"
-		android:padding="10dp"
 		android:clickable="true"
 		android:focusable="true"
+		android:padding="10dp"
+		android:text="@string/professional_select_option"
+		android:textColor="@color/accent"
 
-		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent" />
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,12 +29,14 @@ class UserTypeSelectorView @JvmOverloads constructor(
 		)
 
 		post {
-			var spacing = (binding.selectorToggle.width / 2) - ((binding.patientText.width + binding.patientText.paddingStart) / 2)
+			var spacing =
+				(binding.selectorToggle.width / 2) - ((binding.patientText.width + binding.patientText.paddingStart) / 2)
 			var params = binding.patientText.layoutParams as MarginLayoutParams
 			params.marginStart = spacing
 			binding.patientText.layoutParams = params
 
-			spacing = (binding.selectorToggle.width / 2) - ((binding.professionalText.width + binding.professionalText.paddingStart) / 2)
+			spacing =
+				(binding.selectorToggle.width / 2) - ((binding.professionalText.width + binding.professionalText.paddingStart) / 2)
 			params = binding.professionalText.layoutParams as MarginLayoutParams
 			params.marginEnd = spacing
 			binding.professionalText.layoutParams = params
@@ -47,40 +49,48 @@ class UserTypeSelectorView @JvmOverloads constructor(
 		val animationDuration = 300L
 
 		if (userType == 0) {
-			ObjectAnimator.ofObject(binding.patientText,
+			ObjectAnimator.ofObject(
+				binding.patientText,
 				"textColor",
 				ArgbEvaluator(),
 				accentColor,
-				primaryDarkColor).apply {
+				primaryDarkColor
+			).apply {
 				setDuration(animationDuration)
 				start()
 			}
 
-			ObjectAnimator.ofObject(binding.professionalText,
+			ObjectAnimator.ofObject(
+				binding.professionalText,
 				"textColor",
 				ArgbEvaluator(),
 				primaryDarkColor,
-				accentColor).apply {
+				accentColor
+			).apply {
 				setDuration(animationDuration)
 				start()
 			}
 
 
 		} else {
-			ObjectAnimator.ofObject(binding.patientText,
+			ObjectAnimator.ofObject(
+				binding.patientText,
 				"textColor",
 				ArgbEvaluator(),
 				primaryDarkColor,
-				accentColor).apply {
+				accentColor
+			).apply {
 				setDuration(animationDuration)
 				start()
 			}
 
-			ObjectAnimator.ofObject(binding.professionalText,
+			ObjectAnimator.ofObject(
+				binding.professionalText,
 				"textColor",
 				ArgbEvaluator(),
 				accentColor,
-				primaryDarkColor).apply {
+				primaryDarkColor
+			).apply {
 				setDuration(animationDuration)
 				start()
 			}

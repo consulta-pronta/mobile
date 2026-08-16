@@ -31,15 +31,14 @@ class ProfilePictureView @JvmOverloads constructor(
 	}
 
 	private fun applyAttributes(attrs: AttributeSet) {
-        context.withStyledAttributes(attrs, R.styleable.ProfilePictureView) {
+		context.withStyledAttributes(attrs, R.styleable.ProfilePictureView) {
 
-            val profileImageRes = getResourceId(R.styleable.ProfilePictureView_profileImageSrc, 0)
+			val profileImageRes = getResourceId(R.styleable.ProfilePictureView_profileImageSrc, 0)
 
-            if (profileImageRes != 0) {
-                binding.profileImageView.setImageResource(profileImageRes)
-            }
-
-        }
+			if (profileImageRes != 0) {
+				binding.profileImageView.setImageResource(profileImageRes)
+			}
+		}
 	}
 
 	fun setProfileImage(uri: Uri) {
