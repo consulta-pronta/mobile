@@ -32,6 +32,7 @@
 	<string name="navbar_fourth_element_patient_text">Hospitais</string>
 	<string name="navbar_second_element_professional_text">Pacientes</string>
 	<string name="navbar_fourth_element_professional_text">Farmácia</string>
+	<string name="screentitle_symptom_history">Histórico do Sintoma</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
