@@ -9,4 +9,5 @@
 	<dimen name="default_navbar_big_button_image_size">50dp</dimen>
 	<dimen name="default_header_text_size">28sp</dimen>
 	<dimen name="default_header_side_padding">16dp</dimen>
+	<dimen name="default_header_text_bottom_padding">15dp</dimen>
 </resources>
