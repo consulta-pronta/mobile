@@ -214,7 +214,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/read_and_accept"
+					android:text="@string/terms_part1"
 					android:textSize="12sp" />
 
 				<Button
@@ -232,11 +232,10 @@
 					android:textColor="@color/accent"
 					android:textSize="12sp" />
 
-				<!-- TODO: um bom nome pra essa string -->
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/i_dont_know"
+					android:text="@string/terms_part2"
 					android:textSize="12sp" />
 
 				<Button

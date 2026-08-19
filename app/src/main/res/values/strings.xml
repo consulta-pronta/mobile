@@ -11,9 +11,9 @@
 	<string name="input_phone_number">Número de telefone</string>
 	<string name="input_password">Senha</string>
 	<string name="input_password_confirm">Confirmar senha</string>
-	<string name="read_and_accept">Li e aceito</string>
+	<string name="terms_part1">Li e aceito</string>
 	<string name="terms_of_use">Termos de Uso</string>
-	<string name="i_dont_know">e a</string>
+	<string name="terms_part2">e a</string>
 	<string name="privacy_policy">Política de Privacidade</string>
 	<string name="has_account">Já possui conta?</string>
 	<string name="sign_in">Fazer login</string>
