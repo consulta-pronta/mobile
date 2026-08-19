@@ -124,20 +124,44 @@
 				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />
 
-			<EditText
-				android:id="@+id/password_input"
 
+
+			<LinearLayout
+				android:id="@+id/password_input_layout"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:autofillHints="password"
-				android:background="@drawable/input_shape"
-				android:drawableStart="@drawable/ic_password"
-				android:drawablePadding="10dp"
-				android:hint="@string/input_password"
-				android:inputType="textPassword"
+				android:orientation="horizontal">
 
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60" />
+				<EditText
+					android:id="@+id/password_input"
+
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:autofillHints="password"
+					android:background="@drawable/input_shape"
+					android:drawableStart="@drawable/ic_password"
+					android:drawablePadding="10dp"
+					android:hint="@string/input_password"
+					android:inputType="textPassword"
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60"
+					android:layout_weight="1" />
+
+				<Button
+					style="?attr/materialIconButtonStyle"
+
+					android:id="@+id/about_password"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:padding="10dp"
+
+					app:icon="@drawable/ic_info"
+					app:iconSize="34dp"
+					app:iconTint="@color/textLight"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"/>
+			</LinearLayout>
 
 			<EditText
 				android:id="@+id/confirm_password_input"
@@ -153,6 +177,7 @@
 
 				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />
+
 
 			<Button
 				android:id="@+id/send_crm_button"
