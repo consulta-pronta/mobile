@@ -11,4 +11,5 @@
 	<dimen name="default_header_side_padding">16dp</dimen>
 	<dimen name="default_header_text_bottom_padding">15dp</dimen>
 	<dimen name="default_inner_elements_spacing">15dp</dimen>
+	<dimen name="default_drawable_icon_padding">12dp</dimen>
 </resources>

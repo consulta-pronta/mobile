@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
 
 class Cadastro : Fragment() {
@@ -49,6 +50,18 @@ class Cadastro : Fragment() {
 		binding.createAccountButton.setOnClickListener {
 			startActivity(Intent(requireActivity(), MainActivity::class.java))
 			requireActivity().finish()
+		}
+
+		binding.passwordInput.setOnFocusChangeListener { _, hasFocus ->
+			if (hasFocus) {
+				binding.passwordErrorsLayout.visibility = View.VISIBLE
+			} else {
+				binding.passwordErrorsLayout.visibility = View.GONE
+			}
+		}
+		
+		binding.passwordInput.doOnTextChanged { text, start, before, count ->
+
 		}
 	}
 

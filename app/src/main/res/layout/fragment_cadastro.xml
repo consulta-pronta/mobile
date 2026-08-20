@@ -124,43 +124,65 @@
 				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />
 
+			<EditText
+				android:id="@+id/password_input"
 
-
-			<LinearLayout
-				android:id="@+id/password_input_layout"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal">
+				android:autofillHints="password"
+				android:background="@drawable/input_shape"
+				android:drawableStart="@drawable/ic_password"
+				android:maxLength="4096"
+				android:drawablePadding="10dp"
+				android:hint="@string/input_password"
+				android:inputType="textPassword"
+				android:textColor="@color/textLight"
+				android:textColorHint="@color/textLight60" />
 
-				<EditText
-					android:id="@+id/password_input"
+			<LinearLayout
+				android:id="@+id/password_errors_layout"
 
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:autofillHints="password"
-					android:background="@drawable/input_shape"
-					android:drawableStart="@drawable/ic_password"
-					android:drawablePadding="10dp"
-					android:hint="@string/input_password"
-					android:inputType="textPassword"
-					android:textColor="@color/textLight"
-					android:textColorHint="@color/textLight60"
-					android:layout_weight="1" />
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:visibility="gone"
 
-				<Button
-					style="?attr/materialIconButtonStyle"
-
-					android:id="@+id/about_password"
+				tools:visibility="visible" >
+				<TextView
+					android:id="@+id/password_error_length"
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:padding="10dp"
+					android:textColor="@color/error"
+					android:text="@string/password_length_error"
+					android:drawablePadding="@dimen/default_drawable_icon_padding"
 
-					app:icon="@drawable/ic_info"
-					app:iconSize="34dp"
-					app:iconTint="@color/textLight"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent"/>
+					app:drawableStartCompat="@drawable/ic_error_circle"
+					app:drawableTint="@color/error" />
+
+				<TextView
+					android:id="@+id/password_error_caps"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/error"
+					android:text="@string/password_caps_error"
+					android:drawablePadding="@dimen/default_drawable_icon_padding"
+
+					app:drawableStartCompat="@drawable/ic_error_circle"
+					app:drawableTint="@color/error" />
+
+				<TextView
+					android:id="@+id/password_error_numbers"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/error"
+					android:text="@string/password_numbers_error"
+					android:drawablePadding="@dimen/default_drawable_icon_padding"
+
+					app:drawableStartCompat="@drawable/ic_error_circle"
+					app:drawableTint="@color/error" />
 			</LinearLayout>
 
 			<EditText
@@ -228,7 +250,6 @@
 				android:gravity="center_horizontal"
 				android:orientation="horizontal">
 
-				<!-- pesquisar como alterar a cor do tick do checkbox -->
 				<CheckBox
 					android:id="@+id/terms_checkbox"
 
