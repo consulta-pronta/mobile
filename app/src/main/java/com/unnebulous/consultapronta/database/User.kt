@@ -1,4 +1,4 @@
-package com.unnebulous.consultapronta.data
+package com.unnebulous.consultapronta.database
 
 import com.google.firebase.Timestamp
 

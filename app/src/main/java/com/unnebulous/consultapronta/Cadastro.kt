@@ -1,6 +1,5 @@
 package com.unnebulous.consultapronta
 
-import android.app.ActivityManager
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.TextViewCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
@@ -22,7 +20,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
-import com.unnebulous.consultapronta.data.User
+import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
 import java.util.Date
 
