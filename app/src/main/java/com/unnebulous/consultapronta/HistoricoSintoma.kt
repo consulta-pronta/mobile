@@ -22,6 +22,8 @@ class HistoricoSintoma : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		binding.header.setScreenTitle(getString(R.string.screentitle_symptom_history))
 	}
 
 	override fun onDestroyView() {

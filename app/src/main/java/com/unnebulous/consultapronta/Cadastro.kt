@@ -1,12 +1,19 @@
 package com.unnebulous.consultapronta
 
+import android.app.ActivityManager
 import android.content.Intent
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
+import androidx.core.widget.doOnTextChanged
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthResult
@@ -72,6 +79,72 @@ class Cadastro : Fragment() {
 
 			auth.createUserWithEmailAndPassword(email, password)
 				.addOnCompleteListener { task -> handlePostSignUp(task) }
+		}
+
+		binding.passwordInput.setOnFocusChangeListener { _, hasFocus ->
+			if (hasFocus) {
+				binding.passwordErrorsLayout.visibility = View.VISIBLE
+			} else {
+				binding.passwordErrorsLayout.visibility = View.GONE
+			}
+		}
+		
+		binding.passwordInput.doOnTextChanged { text, _, _, _ ->
+			text?.let {
+				val drawables = Array(3) {0}
+				val colors = Array(3) {0}
+
+				val successColor = ContextCompat.getColor(requireContext(), R.color.success)
+				val errorColor = ContextCompat.getColor(requireContext(), R.color.error)
+
+				// para os leigos, isso é uma função lambda
+				val changeTextViewDrawableColors: (TextView, Int) -> Unit = { view, color ->
+					// loop for para acessar todos os drawables (top, bottom, start, end)
+					for (drawable in view.compoundDrawables) {
+						drawable?.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+						/*
+						* Isso aplica um filtro de cor do tipo "PorterDuff"
+						* (Segundo pesquisas, PorterDuff se refere a dois bros da informática: Thomas Porter e Tom Duff, criadores dessa
+						* técnica de composição de imagens)
+						* O modo SRC_IN dita que só será aplicado o filtro aonde tem pixel. Se for transparente, não será aplicado
+						* */
+					}
+				}
+
+				var haveLowercase = false
+				var haveUppercase = false
+				var haveNumber = false
+
+				it.forEach { char ->
+					haveLowercase = (char.isLowerCase() || haveLowercase)
+					haveUppercase = (char.isUpperCase() || haveUppercase)
+					haveNumber = (char.isDigit() || haveNumber)
+				}
+
+				val isGreaterOrEqualThan8 = it.length > 8
+				val haveLowerAndUppercase = haveLowercase && haveUppercase
+
+				colors[0] = if (isGreaterOrEqualThan8) successColor else errorColor
+				drawables[0] = if (isGreaterOrEqualThan8) R.drawable.ic_check_circle else R.drawable.ic_error_circle
+
+				colors[1] = if (haveLowerAndUppercase) successColor else errorColor
+				drawables[1] = if (haveLowerAndUppercase) R.drawable.ic_check_circle else R.drawable.ic_error_circle
+
+				colors[2] = if (haveNumber) successColor else errorColor
+				drawables[2] = if (haveNumber) R.drawable.ic_check_circle else R.drawable.ic_error_circle
+
+				binding.passwordErrorLength.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorLength, colors[0])
+				binding.passwordErrorLength.setTextColor(colors[0])
+
+				binding.passwordErrorCaps.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[1], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorCaps, colors[1])
+				binding.passwordErrorCaps.setTextColor(colors[1])
+
+				binding.passwordErrorNumbers.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[2], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorNumbers, colors[2])
+				binding.passwordErrorNumbers.setTextColor(colors[2])
+			}
 		}
 	}
 
