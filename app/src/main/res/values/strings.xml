@@ -40,6 +40,9 @@
 	<string name="intensity">Intensidade:\ </string>
 	<string name="edited">EDITADO</string>
 	<string name="edit">Editar</string>
+	<string name="error_blank_input">Um ou mais campos estão vazios</string>
+	<string name="error_password_not_the_same">As senhas não se coincidem</string>
+	<string name="error_password_not_valid">A senha não é válida</string>
 	<!-- Não removi porque toda vez que adicionar uma fragment é adicionado essa bomba -->
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
