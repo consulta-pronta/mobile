@@ -34,6 +34,7 @@
 	<string name="password_length_error">A senha deve ter 8 ou mais caracteres</string>
 	<string name="password_caps_error">A senha deve conter letras maiúsculas e minúsculas</string>
 	<string name="password_numbers_error">A senha deve conter um número</string>
+	<string name="intensity">Intensidade:\ </string>
 	<!-- Não removi porque toda vez que adicionar uma fragment é adicionado essa bomba -->
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
