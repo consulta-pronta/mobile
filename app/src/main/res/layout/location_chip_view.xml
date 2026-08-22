@@ -8,7 +8,7 @@
 	android:orientation="horizontal"
 	android:background="@drawable/rounded_background"
 	android:backgroundTint="@color/accent"
-	android:padding="4dp"
+	android:padding="8dp"
 	android:gravity="center_vertical">
 
 	<androidx.appcompat.widget.AppCompatImageView
@@ -24,6 +24,7 @@
 		android:layout_height="wrap_content"
 		android:textColor="@color/primaryDark"
 		android:textSize="12sp"
+		android:textStyle="bold"
 		android:layout_marginStart="2dp"
 
 		tools:text="@string/placeholder" />

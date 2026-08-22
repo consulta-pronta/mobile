@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.unnebulous.consultapronta.databinding.FragmentHistoricoSintomaBinding
+import com.unnebulous.consultapronta.recyclerview.adapter.SymptomAdapter
 
 class HistoricoSintoma : Fragment() {
 	private var _binding: FragmentHistoricoSintomaBinding? = null
@@ -24,6 +25,14 @@ class HistoricoSintoma : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		binding.header.setScreenTitle(getString(R.string.screentitle_symptom_history))
+
+		val adapter = SymptomAdapter().apply {
+			onClick = { symptom ->
+				// TODO
+			}
+		}
+
+		binding.historicoSintomaRecyclerview.adapter = adapter
 	}
 
 	override fun onDestroyView() {
