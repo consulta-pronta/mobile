@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "67071114072",
+    "firebase_url": "https://consultapronta-dev-default-rtdb.firebaseio.com",
+    "project_id": "consultapronta-dev",
+    "storage_bucket": "consultapronta-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67071114072:android:f2e4003d16a40f76f9432d",
+        "android_client_info": {
+          "package_name": "com.unnebulous.consultapronta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV96nA1U_zOKW8OVSW98E60D41bYM9iFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
