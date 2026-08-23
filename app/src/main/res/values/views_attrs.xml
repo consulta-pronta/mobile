@@ -1,6 +1,6 @@
 <resources>
 	<declare-styleable name="ProfilePictureView">
-		<attr name="profileImageSrc" format="reference" />
+		<attr name="isInput" format="boolean" />
 	</declare-styleable>
 
 	<declare-styleable name="NavbarView">
