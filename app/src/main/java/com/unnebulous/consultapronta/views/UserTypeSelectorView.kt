@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.transition.TransitionManager
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.UserTypeSelectorViewBinding
 
 class UserTypeSelectorView @JvmOverloads constructor(
@@ -19,7 +20,7 @@ class UserTypeSelectorView @JvmOverloads constructor(
 
 	private val binding: UserTypeSelectorViewBinding
 
-	private var userType = 0
+	private var userType = Utils.UserType.PATIENT
 
 	init {
 		binding = UserTypeSelectorViewBinding.inflate(
@@ -48,7 +49,7 @@ class UserTypeSelectorView @JvmOverloads constructor(
 		val primaryDarkColor = ContextCompat.getColor(context, R.color.primaryDark)
 		val animationDuration = 300L
 
-		if (userType == 0) {
+		if (userType == Utils.UserType.PATIENT) {
 			ObjectAnimator.ofObject(
 				binding.patientText,
 				"textColor",
@@ -98,18 +99,18 @@ class UserTypeSelectorView @JvmOverloads constructor(
 
 	}
 
-	fun changeUser(): Int {
-		userType = if (userType == 1) 0 else 1
+	fun changeUser(): Utils.UserType {
+		userType = if (userType == Utils.UserType.PROFESSIONAL) Utils.UserType.PATIENT else Utils.UserType.PROFESSIONAL
 
 		val params = binding.selectorToggle.layoutParams as LayoutParams
 
-		params.horizontalBias = 1f * userType
+		params.horizontalBias = 1f * userType.ordinal
 
 		TransitionManager.beginDelayedTransition(this)
 		updateTextColors()
 		binding.selectorToggle.layoutParams = params
 
-		val isPatientSelected = userType == 0
+		val isPatientSelected = userType == Utils.UserType.PATIENT
 
 		binding.patientText.isClickable = !isPatientSelected
 		binding.patientText.isFocusable = !isPatientSelected

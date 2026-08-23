@@ -33,10 +33,10 @@ class ProfilePictureView @JvmOverloads constructor(
 	private fun applyAttributes(attrs: AttributeSet) {
 		context.withStyledAttributes(attrs, R.styleable.ProfilePictureView) {
 
-			val profileImageRes = getResourceId(R.styleable.ProfilePictureView_profileImageSrc, 0)
+			val isInput = getBoolean(R.styleable.ProfilePictureView_isInput, false)
 
-			if (profileImageRes != 0) {
-				binding.profileImageView.setImageResource(profileImageRes)
+			if (isInput) {
+				binding.cameraIconFrame.visibility = VISIBLE
 			}
 		}
 	}

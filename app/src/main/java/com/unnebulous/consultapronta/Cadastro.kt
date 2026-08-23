@@ -1,6 +1,5 @@
 package com.unnebulous.consultapronta
 
-import android.app.ActivityManager
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -11,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.widget.TextViewCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
@@ -22,7 +21,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
-import com.unnebulous.consultapronta.data.User
+import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
 import java.util.Date
 
@@ -52,14 +51,13 @@ class Cadastro : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		binding.userTypeSwitch.setOnClickListener {
-			/*
-			* Retorna 0 se usuário for Paciente
-			* Retorna 1 se usuário for Profissional
-			* */
-			val userType = binding.userTypeSwitch.changeUser()
+		var validPassword = false
+		var userType: Utils.UserType
 
-			binding.sendCrmButton.visibility = if (userType == 0) View.GONE else View.VISIBLE
+		binding.userTypeSwitch.setOnClickListener {
+			userType = binding.userTypeSwitch.changeUser()
+
+			binding.sendCrmButton.visibility = if (userType == Utils.UserType.PATIENT) View.GONE else View.VISIBLE
 		}
 
 		binding.signInButton.setOnClickListener {
@@ -74,11 +72,38 @@ class Cadastro : Fragment() {
 		}
 
 		binding.createAccountButton.setOnClickListener {
+			val name = binding.nameInput.text.toString()
+			val cpf = binding.nameInput.text.toString()
 			val email = binding.emailInput.text.toString()
+			val phoneNumber = binding.phoneNumberInput.text.toString()
 			val password = binding.passwordInput.text.toString()
+			// TODO: pegar número de CRM/E-CRM
+			// var crm = ""
 
-			auth.createUserWithEmailAndPassword(email, password)
-				.addOnCompleteListener { task -> handlePostSignUp(task) }
+			val passwordIsTheSame = password == binding.confirmPasswordInput.text.toString()
+
+			var oneOrMoreInputBlank = false
+			for (item in listOf(name, cpf, email, phoneNumber, password)) {
+				if (item.trim().isBlank()) {
+					oneOrMoreInputBlank = true
+					break
+				}
+			}
+
+			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank) {
+				auth.createUserWithEmailAndPassword(email, password)
+					.addOnCompleteListener { task -> handlePostSignUp(task) }
+			} else {
+				val error = if (oneOrMoreInputBlank) {
+					getString(R.string.error_blank_input)
+				} else if (!validPassword) {
+					getString(R.string.error_password_not_valid)
+				} else {
+					getString(R.string.error_password_not_the_same)
+				}
+
+				Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+			}
 		}
 
 		binding.passwordInput.setOnFocusChangeListener { _, hasFocus ->
@@ -144,6 +169,8 @@ class Cadastro : Fragment() {
 				binding.passwordErrorNumbers.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[2], 0, 0, 0)
 				changeTextViewDrawableColors(binding.passwordErrorNumbers, colors[2])
 				binding.passwordErrorNumbers.setTextColor(colors[2])
+
+				validPassword = isGreaterOrEqualThan8 && haveLowerAndUppercase && haveNumber
 			}
 		}
 	}

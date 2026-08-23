@@ -24,6 +24,9 @@
 	<string name="do_not_have_account">Não possui conta?</string>
 	<string name="sign_up">Criar conta</string>
 	<string name="placeholder">Lorem Ipsum</string>
+	<string name="very_long_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
+	<string name="placeholder_date">1 de jan. de 1970</string>
+	<string name="placeholder_number">10</string>
 	<string name="home">Home</string>
 	<string name="more">Mais</string>
 	<string name="navbar_second_element_patient_text">Histórico</string>
@@ -34,6 +37,12 @@
 	<string name="password_length_error">A senha deve ter 8 ou mais caracteres</string>
 	<string name="password_caps_error">A senha deve conter letras maiúsculas e minúsculas</string>
 	<string name="password_numbers_error">A senha deve conter um número</string>
+	<string name="intensity">Intensidade:\ </string>
+	<string name="edited">EDITADO</string>
+	<string name="edit">Editar</string>
+	<string name="error_blank_input">Um ou mais campos estão vazios</string>
+	<string name="error_password_not_the_same">As senhas não se coincidem</string>
+	<string name="error_password_not_valid">A senha não é válida</string>
 	<!-- Não removi porque toda vez que adicionar uma fragment é adicionado essa bomba -->
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
