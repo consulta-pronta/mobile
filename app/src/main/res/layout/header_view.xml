@@ -5,7 +5,6 @@
 
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingTop="@dimen/default_padding_top"
 	android:paddingStart="@dimen/default_header_side_padding"
 	android:paddingEnd="@dimen/default_header_side_padding"
 	android:background="@color/primary"
