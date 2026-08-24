@@ -180,7 +180,6 @@ class Cadastro : Fragment() {
 		_binding = null
 	}
 
-
 	private fun handlePostSignUp(task: Task<AuthResult>) {
 		if (!task.isSuccessful) {
 			Log.w("auth", "signUpWithEmail:failure", task.exception)
