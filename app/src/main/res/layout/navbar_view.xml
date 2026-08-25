@@ -28,6 +28,7 @@
 		app:layout_constraintTop_toTopOf="parent">
 
 		<ImageView
+			android:id="@+id/first_element_icon"
 			android:layout_width="@dimen/default_navbar_icons_size"
 			android:layout_height="@dimen/default_navbar_icons_size"
 			android:src="@drawable/ic_home"
@@ -35,6 +36,7 @@
 			app:tint="@color/textLight" />
 
 		<TextView
+			android:id="@+id/first_element_text"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/home"
@@ -162,6 +164,7 @@
 		app:layout_constraintTop_toTopOf="parent">
 
 		<ImageView
+			android:id="@+id/fifth_element_icon"
 			android:layout_width="@dimen/default_navbar_icons_size"
 			android:layout_height="@dimen/default_navbar_icons_size"
 			android:src="@drawable/ic_more_three_dots"
@@ -169,6 +172,7 @@
 			app:tint="@color/textLight" />
 
 		<TextView
+			android:id="@+id/fifth_element_text"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:text="@string/more"

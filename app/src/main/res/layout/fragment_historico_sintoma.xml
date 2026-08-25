@@ -9,28 +9,16 @@
 
 	tools:context=".HistoricoSintoma">
 
-	<com.unnebulous.consultapronta.views.HeaderView
-		android:id="@+id/header"
-
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-
-		app:headerType="titled"
-		app:isScreenTitled="true"
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintStart_toStartOf="parent" />
-	
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/historico_sintoma_recyclerview"
 
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:orientation="vertical"
-		android:paddingStart="@dimen/default_screen_padding"
-		android:paddingEnd="@dimen/default_screen_padding"
+		android:paddingTop="@dimen/default_screen_padding"
 
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-		app:layout_constraintTop_toBottomOf="@id/header"
+		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
 

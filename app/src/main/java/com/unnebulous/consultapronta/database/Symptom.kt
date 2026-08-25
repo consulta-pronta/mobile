@@ -1,6 +1,13 @@
 package com.unnebulous.consultapronta.database
 
-// TODO: placeholder para não deixar o tipo vazio nos componentes
+import com.google.firebase.Timestamp
+
 data class Symptom(
-	val pass: Int = 0,
+	val id: String = "",
+	val title: String = "",
+	val description: String = "",
+	val dateTime: Timestamp? = null,
+	val place: String = "",
+	val intensity: Int = 0,
+	val createdAt: Timestamp? = null
 )
