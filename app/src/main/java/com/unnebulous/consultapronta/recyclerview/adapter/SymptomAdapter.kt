@@ -1,12 +1,15 @@
 package com.unnebulous.consultapronta.recyclerview.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.SymptomCardBinding
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SintomaViewHolder>(SintomaComparator()) {
 	enum class SymptomViewType { COMPACT, DETAILED }
@@ -32,18 +35,31 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SintomaViewHolder>(Sin
 	}
 
 	class SintomaComparator : DiffUtil.ItemCallback<Symptom>() {
-		override fun areItemsTheSame(old: Symptom, new: Symptom) =
-			false
-			// exemplo: old.uid == new.uid
+		override fun areItemsTheSame(old: Symptom, new: Symptom) = old.id == new.id
 
-		override fun areContentsTheSame(old: Symptom, new: Symptom) =
-			false
-			// exemplo: old == new
+		override fun areContentsTheSame(old: Symptom, new: Symptom) = old == new
 	}
 
 	class SintomaViewHolder(private val binding: SymptomCardBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(symptom: Symptom, onCLick: (Symptom) -> Unit) {
-			// TODO: bind SymptomCard view
+			binding.apply {
+				titleText.text = symptom.title
+				descriptionText.text = symptom.description
+				symptomDateText.text = symptom.dateTime.let { timestamp ->
+					val date = timestamp!!.toDate()
+					val locale = Locale.forLanguageTag("pt-BR")
+
+					SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
+				}
+				intensityView.setIntensity(symptom.intensity)
+				placeView.setLocation(symptom.place)
+
+				// Não existem ainda
+				symptomAnnexesQuantityText.visibility = View.GONE
+				editButton.visibility = View.GONE
+
+				root.setOnClickListener { onCLick(symptom) }
+			}
 		}
 	}
 }
