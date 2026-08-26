@@ -1,0 +1,17 @@
+<resources>
+	<declare-styleable name="ProfilePictureView">
+		<attr name="isInput" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="NavbarView">
+		<attr name="professional" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="HeaderView">
+		<attr name="headerType" format="enum">
+			<enum name="compact" value="0" />
+			<enum name="titled" value="1" />
+		</attr>
+		<attr name="isScreenTitled" format="boolean" />
+	</declare-styleable>
+</resources>

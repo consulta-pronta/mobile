@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:background="@drawable/rounded_background"
+	android:backgroundTint="@color/accent"
+	android:padding="8dp"
+	android:gravity="center_vertical">
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:layout_width="18dp"
+		android:layout_height="18dp"
+		android:src="@drawable/ic_location"
+		android:tint="@color/primaryDark" />
+
+	<androidx.appcompat.widget.AppCompatTextView
+		android:id="@+id/location_text"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/primaryDark"
+		android:textSize="12sp"
+		android:textStyle="bold"
+		android:layout_marginStart="2dp"
+
+		tools:text="@string/placeholder" />
+
+</LinearLayout>

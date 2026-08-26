@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/primary"
+	android:clipChildren="false"
+	android:clipToPadding="false">
+
+	<LinearLayout
+		android:id="@+id/first_element"
+
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:clickable="true"
+		android:focusable="true"
+		android:gravity="center_horizontal"
+		android:orientation="vertical"
+		android:padding="10dp"
+
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/second_element"
+		app:layout_constraintHorizontal_weight="1"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<ImageView
+			android:id="@+id/first_element_icon"
+			android:layout_width="@dimen/default_navbar_icons_size"
+			android:layout_height="@dimen/default_navbar_icons_size"
+			android:src="@drawable/ic_home"
+
+			app:tint="@color/textLight" />
+
+		<TextView
+			android:id="@+id/first_element_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/home"
+			android:textSize="@dimen/default_navbar_text_size" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/second_element"
+
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:clickable="true"
+		android:focusable="true"
+		android:gravity="center_horizontal"
+		android:orientation="vertical"
+		android:padding="10dp"
+
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/main_button"
+		app:layout_constraintHorizontal_weight="1"
+		app:layout_constraintStart_toEndOf="@id/first_element"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<ImageView
+			android:id="@+id/second_element_icon"
+
+			android:layout_width="@dimen/default_navbar_icons_size"
+			android:layout_height="@dimen/default_navbar_icons_size"
+
+			app:tint="@color/textLight"
+
+			tools:src="@drawable/ic_person" />
+
+		<TextView
+			android:id="@+id/second_element_text"
+
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="@string/placeholder"
+			android:textSize="@dimen/default_navbar_text_size" />
+
+	</LinearLayout>
+
+	<FrameLayout
+		android:id="@+id/main_button"
+
+		android:layout_width="@dimen/default_navbar_big_button_size"
+		android:layout_height="@dimen/default_navbar_big_button_size"
+		android:background="@drawable/circle_accent"
+		android:clickable="true"
+		android:elevation="10dp"
+		android:focusable="true"
+
+		app:layout_constraintBottom_toTopOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/fourth_element"
+		app:layout_constraintStart_toEndOf="@id/second_element"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<androidx.appcompat.widget.AppCompatImageView
+			android:id="@+id/main_button_icon"
+
+			android:layout_width="@dimen/default_navbar_big_button_image_size"
+			android:layout_height="@dimen/default_navbar_big_button_image_size"
+			android:layout_gravity="center"
+			android:padding="8dp"
+			android:src="@drawable/ic_graphic"
+
+			app:tint="@color/background" />
+
+	</FrameLayout>
+
+	<LinearLayout
+		android:id="@+id/fourth_element"
+
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:clickable="true"
+		android:focusable="true"
+		android:gravity="center_horizontal"
+		android:orientation="vertical"
+		android:padding="10dp"
+
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/fifth_element"
+		app:layout_constraintHorizontal_weight="1"
+		app:layout_constraintStart_toEndOf="@id/main_button"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<ImageView
+			android:id="@+id/fourth_element_icon"
+
+			android:layout_width="@dimen/default_navbar_icons_size"
+			android:layout_height="@dimen/default_navbar_icons_size"
+
+			app:tint="@color/textLight"
+
+			tools:src="@drawable/ic_person" />
+
+		<TextView
+			android:id="@+id/fourth_element_text"
+
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="@string/placeholder"
+			android:textSize="@dimen/default_navbar_text_size" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/fifth_element"
+
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:clickable="true"
+		android:focusable="true"
+		android:gravity="center_horizontal"
+		android:orientation="vertical"
+		android:padding="10dp"
+
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_weight="1"
+		app:layout_constraintStart_toEndOf="@id/fourth_element"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<ImageView
+			android:id="@+id/fifth_element_icon"
+			android:layout_width="@dimen/default_navbar_icons_size"
+			android:layout_height="@dimen/default_navbar_icons_size"
+			android:src="@drawable/ic_more_three_dots"
+
+			app:tint="@color/textLight" />
+
+		<TextView
+			android:id="@+id/fifth_element_text"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="@string/more"
+			android:textSize="@dimen/default_navbar_text_size" />
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

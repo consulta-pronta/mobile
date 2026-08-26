@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<com.unnebulous.consultapronta.views.HeaderView
+		android:id="@+id/header"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		app:headerType="titled"
+		app:isScreenTitled="false"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<LinearLayout
+		android:id="@+id/content_body"
+
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:orientation="vertical"
+		android:paddingStart="@dimen/default_screen_padding"
+		android:paddingEnd="@dimen/default_screen_padding"
+		android:paddingBottom="@dimen/default_screen_padding"
+		android:showDividers="middle"
+		android:divider="@drawable/divider_default"
+
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/header">
+
+		<com.unnebulous.consultapronta.views.UserTypeSelectorView
+			android:id="@+id/user_type_switch"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal" />
+
+		<EditText
+			android:id="@+id/email_input"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:autofillHints="emailAddress"
+			android:background="@drawable/input_shape"
+			android:drawableStart="@drawable/ic_email"
+			android:drawablePadding="10dp"
+			android:hint="@string/input_email"
+			android:inputType="textEmailAddress"
+
+			android:textColor="@color/textLight"
+			android:textColorHint="@color/textLight60" />
+
+		<EditText
+			android:id="@+id/password_input"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:autofillHints="password"
+			android:background="@drawable/input_shape"
+			android:drawableStart="@drawable/ic_password_lock"
+			android:drawablePadding="10dp"
+			android:hint="@string/input_password"
+			android:inputType="textPassword"
+
+			android:textColor="@color/textLight"
+			android:textColorHint="@color/textLight60" />
+
+		<Button
+			style="@style/Widget.Material3.Button.TextButton"
+
+			android:id="@+id/forgot_password_button"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end"
+			android:paddingLeft="5dp"
+			android:paddingTop="0dp"
+			android:paddingRight="5dp"
+			android:paddingBottom="0dp"
+			android:text="@string/forgot_password"
+			android:textColor="@color/textLight" />
+
+		<Space
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1" />
+
+		<Button
+			android:id="@+id/enter_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/big_button_shape"
+			android:text="@string/enter"
+			android:textColor="@color/primaryDark"
+
+			app:backgroundTint="@color/accent" />
+
+		<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:text="@string/enter_with_govbr"
+			android:textColor="@color/govbr_blue"
+
+			app:backgroundTint="@color/white"
+			app:icon="@drawable/ic_govbr_negativo"
+			app:iconGravity="textEnd"
+			app:iconSize="0dp"
+			app:iconTint="@color/govbr_blue" />
+
+		<LinearLayout
+			android:id="@+id/do_not_have_account_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/do_not_have_account" />
+
+			<Button
+				style="@style/Widget.Material3.Button.TextButton"
+
+				android:id="@+id/sign_up_button"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingLeft="5dp"
+				android:paddingTop="0dp"
+				android:paddingRight="5dp"
+				android:paddingBottom="0dp"
+				android:text="@string/sign_up"
+				android:textColor="@color/accent" />
+
+		</LinearLayout>
+
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

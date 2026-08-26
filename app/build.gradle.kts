@@ -1,11 +1,12 @@
 plugins {
 	alias(libs.plugins.android.application)
+	id("com.google.gms.google-services")
 }
 
 android {
 	namespace = "com.unnebulous.consultapronta"
 	compileSdk {
-		version = release(36) {
+		version = release(37) {
 			minorApiLevel = 1
 		}
 	}
@@ -29,18 +30,29 @@ android {
 			)
 		}
 	}
+
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
 	}
+
+	viewBinding {
+		enable = true
+	}
 }
 
 dependencies {
+	implementation(libs.androidx.activity.ktx)
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.appcompat)
 	implementation(libs.material)
 	implementation(libs.androidx.activity)
 	implementation(libs.androidx.constraintlayout)
+	implementation(libs.bumptech.glide)
+	implementation(platform(libs.firebase.bom))
+	implementation(libs.firebase.auth)
+	implementation(libs.firebase.firestore)
+
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)

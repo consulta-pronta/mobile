@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- contains default sizes -->
+	<dimen name="default_padding_top">60dp</dimen>
+	<dimen name="default_screen_padding">25dp</dimen>
+	<dimen name="default_navbar_icons_size">20dp</dimen>
+	<dimen name="default_navbar_text_size">14sp</dimen>
+	<dimen name="default_navbar_big_button_size">60dp</dimen>
+	<dimen name="default_navbar_big_button_image_size">50dp</dimen>
+	<dimen name="default_header_text_size">28sp</dimen>
+	<dimen name="default_header_side_padding">16dp</dimen>
+	<dimen name="default_header_text_bottom_padding">15dp</dimen>
+	<dimen name="default_inner_elements_spacing">15dp</dimen>
+	<dimen name="default_drawable_icon_padding">12dp</dimen>
+	<dimen name="default_card_padding">14dp</dimen>
+</resources>
