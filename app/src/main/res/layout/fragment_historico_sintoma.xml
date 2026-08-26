@@ -9,6 +9,26 @@
 
 	tools:context=".HistoricoSintoma">
 
+	<EditText
+		android:id="@+id/search"
+
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:hint="@string/search_hint"
+		android:textColorHint="@color/primary"
+		android:background="@drawable/search_background"
+		android:drawableStart="@drawable/ic_search"
+		android:drawableTint="@color/textDark"
+		android:drawablePadding="10dp"
+		android:padding="15dp"
+
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		/>
+
+
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/historico_sintoma_recyclerview"
 
@@ -18,7 +38,7 @@
 		android:paddingTop="@dimen/default_screen_padding"
 
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/search"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
 
