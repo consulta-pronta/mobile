@@ -34,7 +34,7 @@
 		app:layout_constraintEnd_toEndOf="parent">
 
 		<LinearLayout
-			android:id="@+id/reports_button"
+			android:id="@+id/first_button"
 
 			android:layout_width="0dp"
 			android:layout_height="150dp"
@@ -63,7 +63,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:id="@+id/exams_button"
+			android:id="@+id/second_button"
 
 			android:layout_width="0dp"
 			android:layout_height="150dp"
@@ -92,7 +92,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:id="@+id/medicines_button"
+			android:id="@+id/third_button"
 
 			android:layout_width="0dp"
 			android:layout_height="150dp"
@@ -121,7 +121,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:id="@+id/consultations_button"
+			android:id="@+id/fourth_button"
 
 			android:layout_width="0dp"
 			android:layout_height="150dp"
@@ -160,6 +160,7 @@
 		android:textSize="20sp"
 
 		app:layout_constraintTop_toBottomOf="@+id/quick_grid"
+		app:layout_constraintBottom_toBottomOf="@+id/see_all_button"
 		app:layout_constraintStart_toStartOf="parent" />
 
 	<Button
