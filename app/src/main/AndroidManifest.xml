@@ -24,10 +24,4 @@
 			android:name=".MainActivity"
 			android:exported="false"
 			android:windowSoftInputMode="adjustResize" />
-		<activity
-			android:name=".historic"
-			android:exported="false"
-			android:windowSoftInputMode="adjustResize" />
-	</application>
-
 </manifest>
