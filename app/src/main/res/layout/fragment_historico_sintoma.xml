@@ -9,16 +9,56 @@
 
 	tools:context=".HistoricoSintoma">
 
+	<EditText
+		android:id="@+id/search"
+
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:hint="@string/search_hint"
+		android:textColorHint="@color/textDark60"
+		android:background="@drawable/search_background"
+		android:drawableStart="@drawable/ic_search"
+		android:drawableTint="@color/textDark"
+		android:drawablePadding="10dp"
+		android:padding="15dp"
+		android:autofillHints="name"
+		android:textColor="@color/textDark"
+
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		/>
+
+	<com.unnebulous.consultapronta.views.FilterView
+		android:id="@+id/filter"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+		app:layout_constraintTop_toBottomOf="@+id/search"
+		app:layout_constraintStart_toStartOf="parent" />
+
+	<com.unnebulous.consultapronta.views.FilterView
+		android:id="@+id/order"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+		app:layout_constraintTop_toBottomOf="@+id/filter"
+		app:layout_constraintStart_toStartOf="parent" />
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/historico_sintoma_recyclerview"
 
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:orientation="vertical"
-		android:paddingTop="@dimen/default_screen_padding"
+		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/order"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
 
