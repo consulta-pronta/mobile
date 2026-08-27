@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:background="@drawable/rounded_background"
+	android:backgroundTint="@color/surface"
+	android:padding="@dimen/default_card_padding"
+	android:showDividers="middle"
+	android:divider="@drawable/divider_default"
+	android:layout_marginBottom="16dp">
+
+	<ImageView
+		android:layout_width="match_parent"
+		android:layout_height="150dp"
+		android:src="@drawable/bellover"
+		/>
+
+
+	<TextView
+		android:id="@+id/hopital_name"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/textDark"
+		android:textStyle="bold"
+		android:textSize="20sp"
+
+		tools:text="@string/placeholder"/>
+
+	<TextView
+		android:id="@+id/hospital_location"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/textDark"
+		android:textSize="16sp"
+		android:maxLines="2"
+		android:ellipsize="end"
+
+		tools:text="@string/very_long_placeholder"/>
+
+	<TextView
+		android:id="@+id/open"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/success"
+		android:text="@string/hospital_open"
+
+		/>
+
+
+
+
+</LinearLayout>

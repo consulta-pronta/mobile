@@ -57,4 +57,7 @@
 	<string name="my_medicines_text">Meus Medicamentos</string>
 	<string name="appointments_text">Consultas</string>
 	<string name="search_hint">Pesquisar sintoma</string>
+	<string name="hospital_search_hint">Buscar hospitais</string>
+	<string name="map_view">Visualizar mapa</string>
+	<string name="hospital_open">Aberto 24h</string>
 </resources>
