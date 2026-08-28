@@ -10,4 +10,6 @@ object Utils {
 		FOURTH("fourth_element"),
 		FIFTH("fifth_element"),
 	}
+
+	enum class HeaderType { COMPACT, TITLED }
 }

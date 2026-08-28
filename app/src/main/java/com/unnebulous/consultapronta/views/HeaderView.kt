@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.withStyledAttributes
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.HeaderAltViewBinding
 import com.unnebulous.consultapronta.databinding.HeaderViewBinding
 
@@ -15,64 +16,59 @@ class HeaderView @JvmOverloads constructor(
 	defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-	private lateinit var binding: HeaderViewBinding
-	private lateinit var binding_alt: HeaderAltViewBinding
+	private var _binding: HeaderViewBinding? = null
+	private var _bindingAlt: HeaderAltViewBinding? = null
 
-	var headerType = 0
+	private val binding get() = _binding!!
+	private val bindingAlt get() = _bindingAlt!!
+
+	var headerType = Utils.HeaderType.COMPACT
 	var isScreenTitled = false
 
 	init {
 		attrs?.let {
 			context.withStyledAttributes(attrs, R.styleable.HeaderView) {
-				headerType = getColor(R.styleable.HeaderView_headerType, 0)
+
+				headerType = if (getColor(R.styleable.HeaderView_headerType, 0) == 0) {
+					Utils.HeaderType.COMPACT
+				} else {
+					Utils.HeaderType.TITLED
+				}
+
 				isScreenTitled = getBoolean(R.styleable.HeaderView_isScreenTitled, false)
 			}
 		}
 
-		when (headerType) {
-			// compact header
-			0 -> {
-				binding = HeaderViewBinding.inflate(
-					LayoutInflater.from(context),
-					this,
-					true
-				)
-			}
+		setupLayout()
+	}
 
-			// titled header
-			1 -> {
-				binding_alt = HeaderAltViewBinding.inflate(
-					LayoutInflater.from(context),
-					this,
-					true
-				)
-
-				if (isScreenTitled) {
-					binding_alt.headerTitle.visibility = GONE
-					binding_alt.headerMainTitle.visibility = VISIBLE
-				}
-			}
+	fun changeHeaderType(newType: Utils.HeaderType) {
+		if (this.headerType == newType) {
+			return
 		}
+
+		this.headerType = newType
+		setupLayout()
 	}
 
 	fun setScreenTitle(title: String) {
-		if (headerType == 0 && !isScreenTitled) {
+		if (headerType == Utils.HeaderType.COMPACT && !isScreenTitled) {
 			return
 		}
 
-		binding_alt.headerMainTitle.text = title
+		bindingAlt.headerMainTitle.text = title
 	}
 
 	fun setGoBackButtonOnClickListener(l: OnClickListener?) {
-		if (headerType == 0) {
+		if (headerType == Utils.HeaderType.COMPACT) {
 			return
 		}
 
-		binding_alt.goBack.setOnClickListener(l)
+		bindingAlt.goBack.setOnClickListener(l)
 	}
 
 	fun setProfileViewOnClickListener(l: OnClickListener?) {
-		if (headerType == 1) {
+		if (headerType == Utils.HeaderType.TITLED) {
 			return
 		}
 
@@ -80,10 +76,38 @@ class HeaderView @JvmOverloads constructor(
 	}
 
 	fun setNotificationButtonOnClickListener(l: OnClickListener?) {
-		if (headerType == 1) {
+		if (headerType == Utils.HeaderType.TITLED) {
 			return
 		}
 
 		binding.notificationButton.setOnClickListener(l)
+	}
+	private fun setupLayout() {
+		removeAllViews()
+
+		when (headerType) {
+			Utils.HeaderType.COMPACT -> {
+				_binding = HeaderViewBinding.inflate(
+					LayoutInflater.from(context),
+					this,
+					true
+				)
+				_bindingAlt = null
+			}
+
+			Utils.HeaderType.TITLED -> {
+				_bindingAlt = HeaderAltViewBinding.inflate(
+					LayoutInflater.from(context),
+					this,
+					true
+				)
+				_binding = null
+
+				if (isScreenTitled) {
+					bindingAlt.headerTitle.visibility = GONE
+					bindingAlt.headerMainTitle.visibility = VISIBLE
+				}
+			}
+		}
 	}
 }
