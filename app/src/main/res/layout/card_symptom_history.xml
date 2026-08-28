@@ -37,6 +37,8 @@
 		app:layout_constraintStart_toStartOf="parent" >
 
 		<com.unnebulous.consultapronta.views.IntensityView
+			android:id="@+id/intensity"
+
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
 
@@ -76,10 +78,17 @@
 			android:alpha="0.7" />
 
 		<HorizontalScrollView
-			android:id="@+id/annexes_list"
-
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content" />
+			android:layout_height="wrap_content">
+			<LinearLayout
+				android:id="@+id/annexes_list"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_list" />
+		</HorizontalScrollView>
 
 	</LinearLayout>
 

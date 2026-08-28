@@ -44,6 +44,12 @@ class HistoricoSintoma : Fragment() {
 		val adapter = SymptomAdapter().apply {
 			onClick = { symptom ->
 				// TODO: abrir página de histórico do sintoma
+				parentFragmentManager
+					.beginTransaction()
+					.setReorderingAllowed(true)
+					.replace(R.id.main_fragment_container, HistoricoDoSintoma())
+					.addToBackStack(null)
+					.commit()
 			}
 		}
 
