@@ -42,7 +42,7 @@ class HospitalAdapter : ListAdapter<Hospital, HospitalAdapter.HospitalViewHolder
 			// TODO: bind HospitalCard view
 
 		}
-		private fun setOccupancyColor(occupancy: Int, context: Context){
+		private fun setOccupancyColor(occupancy: Int){
 			val color = if (occupancy <= 40) {
 				ContextCompat.getColor(context, R.color.success)
 			} else if (occupancy <= 75) {
