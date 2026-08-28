@@ -5,8 +5,11 @@ import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
+import androidx.transition.TransitionManager
 import com.google.android.material.button.MaterialButton
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.databinding.FilterViewBinding
@@ -20,6 +23,7 @@ class FilterView @JvmOverloads constructor(
 	lateinit var onFilterSelected: (text: String) -> Unit
 
 	private val binding: FilterViewBinding
+	private var isMinimized = false
 
 	init {
 		binding = FilterViewBinding.inflate(
@@ -28,10 +32,22 @@ class FilterView @JvmOverloads constructor(
 			true
 		)
 
+		attrs?.let {
+			context.withStyledAttributes(attrs, R.styleable.FilterView) {
+				val isOrderBy = getBoolean(R.styleable.FilterView_isOrderByFilter, false)
+
+				setCanOrderBy(isOrderBy)
+			}
+		}
+
 		binding.filterList.addOnButtonCheckedListener { group, checkedId, isChecked ->
 			if (isChecked) {
 				onFilterSelected(group.findViewById<MaterialButton>(checkedId).text.toString())
 			}
+		}
+
+		binding.filterHeading.setOnClickListener {
+			toggleMinimize()
 		}
 	}
 
@@ -61,10 +77,19 @@ class FilterView @JvmOverloads constructor(
 		}
 	}
 
-	fun minimize() {
-		// TODO: animação
-		binding.arrowMaximized.rotation = -binding.arrowMaximized.rotation
-		// como que minimiza? boa pergunta
+	private fun toggleMinimize() {
+		isMinimized = !isMinimized
+
+		(parent as? ViewGroup)?.let {
+			TransitionManager.beginDelayedTransition(it)
+		} ?: TransitionManager.beginDelayedTransition(this)
+
+		binding.filterScrollContainer.visibility = if (isMinimized) GONE else VISIBLE
+
+		binding.arrowMaximized.animate()
+			.rotation(if (isMinimized) 90f else 270f)
+            .setDuration(250)
+			.start()
 	}
 
 	fun getSelectedFilterText(): String? {

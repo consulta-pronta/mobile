@@ -48,7 +48,8 @@
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
 		app:layout_constraintTop_toBottomOf="@+id/filter"
-		app:layout_constraintStart_toStartOf="parent" />
+		app:layout_constraintStart_toStartOf="parent"
+		app:isOrderByFilter="true" />
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/historico_sintoma_recyclerview"
