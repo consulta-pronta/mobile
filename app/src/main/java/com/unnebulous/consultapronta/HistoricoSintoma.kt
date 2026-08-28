@@ -67,7 +67,7 @@ class HistoricoSintoma : Fragment() {
 							description = data["description"] as String,
 							dateTime = data["date_time"] as Timestamp,
 							place = data["place"] as String,
-							intensity = (data["intensity"] as Long).toInt(),
+							intensity = data["intensity"].toString().toInt(),
 							createdAt = data["created_at"] as Timestamp,
 						)
 					}
