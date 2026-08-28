@@ -53,7 +53,10 @@
 			android:layout_height="wrap_content"
 			android:textColor="@color/textDark"
 			android:gravity="end"
+
 			android:numStars="5"
+			android:max="5"
+			android:stepSize="0.5"
 			style="?android:attr/ratingBarStyleSmall"
 
 			android:layout_row="0"
@@ -113,6 +116,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="end"
 			android:textColor="@color/textDark"
+			android:background="@drawable/distance_box_background"
 
 			android:layout_row="2"
 			android:layout_column="1"
