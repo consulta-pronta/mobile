@@ -16,7 +16,7 @@
 		android:layout_height="wrap_content"
 		android:hint="@string/hospital_search_hint"
 		android:textColorHint="@color/textDark60"
-		android:background="@drawable/search_background"
+		android:background="@drawable/shape_search_background"
 		android:drawableStart="@drawable/ic_search"
 		android:drawableTint="@color/textDark"
 		android:drawablePadding="10dp"
@@ -35,7 +35,7 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
-		android:background="@drawable/big_button_shape"
+		android:background="@drawable/shape_big_button"
 		android:text="@string/map_view"
 
 		app:icon="@drawable/ic_map"
@@ -56,7 +56,8 @@
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
 		app:layout_constraintTop_toBottomOf="@+id/button_map_view"
-		app:layout_constraintStart_toStartOf="parent" />
+		app:layout_constraintStart_toStartOf="parent"
+		app:isOrderByFilter="true" />
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/hospital_card_list"

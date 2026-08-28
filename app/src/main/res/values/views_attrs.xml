@@ -14,4 +14,8 @@
 		</attr>
 		<attr name="isScreenTitled" format="boolean" />
 	</declare-styleable>
+
+	<declare-styleable name="FilterView">
+		<attr name="isOrderByFilter" format="boolean" />
+	</declare-styleable>
 </resources>
