@@ -58,4 +58,10 @@
 	<string name="appointments_text">Consultas</string>
 	<string name="search_hint">Pesquisar sintoma</string>
 	<string name="symptom_history_title">Histórico do sintoma</string>
+	<string name="hospital_search_hint">Buscar hospitais</string>
+	<string name="map_view">Visualizar mapa</string>
+	<string name="hospital_open">Aberto 24h</string>
+	<string name="hospital_img_placeholder">Hospital_img_placeholder</string>
+	<string name="distance_placeholder">Distance</string>
+	<string name="occupancy_placeholder">30% lotado</string>
 </resources>

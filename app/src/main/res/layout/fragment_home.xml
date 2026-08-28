@@ -17,8 +17,8 @@
 		android:text="@string/quick_text"
 		android:textSize="20sp"
 
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintStart_toStartOf="parent" />
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"/>
 
 	<GridLayout
 		android:id="@+id/quick_grid"

@@ -7,38 +7,46 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 
-	tools:context=".HistoricoSintoma">
+	tools:context=".Hospital">
 
 	<EditText
 		android:id="@+id/search"
 
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:hint="@string/search_hint"
+		android:hint="@string/hospital_search_hint"
 		android:textColorHint="@color/textDark60"
-		android:background="@drawable/shape_search_background"
+		android:background="@drawable/search_background"
 		android:drawableStart="@drawable/ic_search"
 		android:drawableTint="@color/textDark"
 		android:drawablePadding="10dp"
 		android:padding="15dp"
 		android:autofillHints="name"
 		android:textColor="@color/textDark"
-		android:inputType="text"
 
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
 		/>
 
-	<com.unnebulous.consultapronta.views.FilterView
-		android:id="@+id/filter"
+	<Button
+		android:id="@+id/button_map_view"
 
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+		android:background="@drawable/big_button_shape"
+		android:text="@string/map_view"
 
+		app:icon="@drawable/ic_map"
+		app:iconGravity="textStart"
+		app:iconSize="30dp"
+		app:iconTint="@color/surface"
+
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/search"
-		app:layout_constraintStart_toStartOf="parent" />
+		/>
 
 	<com.unnebulous.consultapronta.views.FilterView
 		android:id="@+id/order"
@@ -47,22 +55,20 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
-		app:layout_constraintTop_toBottomOf="@+id/filter"
+		app:layout_constraintTop_toBottomOf="@+id/button_map_view"
 		app:layout_constraintStart_toStartOf="parent" />
 
 	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/historico_sintoma_recyclerview"
+		android:id="@+id/hospital_card_list"
 
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
 		android:layout_height="0dp"
-		android:orientation="vertical"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
-		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 		app:layout_constraintTop_toBottomOf="@+id/order"
-		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
