@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.database.Symptom
-import com.unnebulous.consultapronta.databinding.SymptomCardBinding
+import com.unnebulous.consultapronta.databinding.CardSymptomBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -21,7 +21,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomViewHolder {
-		val binding = SymptomCardBinding.inflate(
+		val binding = CardSymptomBinding.inflate(
 			LayoutInflater.from(parent.context),
 			parent,
 			false
@@ -40,7 +40,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 		override fun areContentsTheSame(old: Symptom, new: Symptom) = old == new
 	}
 
-	class SymptomViewHolder(private val binding: SymptomCardBinding): RecyclerView.ViewHolder(binding.root) {
+	class SymptomViewHolder(private val binding: CardSymptomBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(symptom: Symptom, onCLick: (Symptom) -> Unit) {
 			binding.apply {
 				titleText.text = symptom.title

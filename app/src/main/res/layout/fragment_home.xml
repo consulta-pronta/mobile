@@ -17,8 +17,8 @@
 		android:text="@string/quick_text"
 		android:textSize="20sp"
 
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/header" />
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent" />
 
 	<GridLayout
 		android:id="@+id/quick_grid"
@@ -42,7 +42,7 @@
 			android:layout_margin="8dp"
 			android:orientation="vertical"
 			android:gravity="center"
-			android:background="@drawable/grid_background"
+			android:background="@drawable/shape_grid_cell"
 			android:clickable="true"
 			android:focusable="true" >
 
@@ -71,7 +71,7 @@
 			android:layout_margin="8dp"
 			android:orientation="vertical"
 			android:gravity="center"
-			android:background="@drawable/grid_background"
+			android:background="@drawable/shape_grid_cell"
 			android:clickable="true"
 			android:focusable="true" >
 
@@ -100,7 +100,7 @@
 			android:layout_margin="8dp"
 			android:orientation="vertical"
 			android:gravity="center"
-			android:background="@drawable/grid_background"
+			android:background="@drawable/shape_grid_cell"
 			android:clickable="true"
 			android:focusable="true" >
 
@@ -129,7 +129,7 @@
 			android:layout_margin="8dp"
 			android:orientation="vertical"
 			android:gravity="center"
-			android:background="@drawable/grid_background"
+			android:background="@drawable/shape_grid_cell"
 			android:clickable="true"
 			android:focusable="true" >
 

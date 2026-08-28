@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.database.SymptomHistory
 import com.unnebulous.consultapronta.databinding.CardSymptomHistoryBinding
-import com.unnebulous.consultapronta.databinding.SymptomCardBinding
 
 class SymptomHistoryAdapter: ListAdapter<SymptomHistory, SymptomHistoryAdapter.SymptomHistoryViewHolder>(SymptomHistoryComparator()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomHistoryViewHolder {
