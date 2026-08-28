@@ -63,4 +63,14 @@
 	<string name="hospital_img_placeholder">Hospital_img_placeholder</string>
 	<string name="distance_placeholder">Distance</string>
 	<string name="occupancy_placeholder">30% lotado</string>
+	<string name="title_register_page">Registrar Sintoma</string>
+	<string name="question_symptom">O que você está sentindo?</string>
+	<string name="question_symptom_area">Resuma seus sintomas</string>
+	<string name="detail_symptom_area">Descreva seus sintomas com detalhes</string>
+	<string name="symptom_event">Quando começou?</string>
+	<string name="which_body_part">Em qual parte do corpo?</string>
+	<string name="hour_hint">--:--</string>
+	<string name="hour_title">Hora</string>
+	<string name="date_hint">dd/mm/yyyy</string>
+	<string name="date_title">Data</string>
 </resources>
