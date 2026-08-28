@@ -16,21 +16,15 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		if (savedInstanceState == null) {
-			replaceFragment(Home())
+			changeFragment(Home(), R.id.main_fragment_container)
 		}
 
 		binding.navbar.setOnClickListener(Utils.NavbarButton.FIRST) { view ->
 			//if (binding.mainFragmentContainer.getFragment<>())
-			replaceFragment(Home())
+			changeFragment(Home(), R.id.main_fragment_container)
 		}
 		binding.navbar.setOnClickListener(Utils.NavbarButton.SECOND) { view ->
-			replaceFragment(HistoricoSintoma())
+			changeFragment(HistoricoSintoma(), R.id.main_fragment_container)
 		}
-	}
-
-	private fun replaceFragment(fragment: Fragment) {
-		supportFragmentManager.beginTransaction()
-			.replace(R.id.main_fragment_container, fragment)
-			.commit()
 	}
 }

@@ -61,14 +61,7 @@ class Cadastro : Fragment() {
 		}
 
 		binding.signInButton.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setReorderingAllowed(true)
-				.replace(
-					R.id.fragment_container,
-					Login()
-				)
-				.addToBackStack(null)
-				.commit()
+			changeFragmentWithBackStack(Login())
 		}
 
 		binding.createAccountButton.setOnClickListener {

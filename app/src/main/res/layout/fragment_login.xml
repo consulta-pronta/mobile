@@ -46,7 +46,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:autofillHints="emailAddress"
-			android:background="@drawable/input_shape"
+			android:background="@drawable/shape_input"
 			android:drawableStart="@drawable/ic_email"
 			android:drawablePadding="10dp"
 			android:hint="@string/input_email"
@@ -61,7 +61,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:autofillHints="password"
-			android:background="@drawable/input_shape"
+			android:background="@drawable/shape_input"
 			android:drawableStart="@drawable/ic_password_lock"
 			android:drawablePadding="10dp"
 			android:hint="@string/input_password"
@@ -95,7 +95,7 @@
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/big_button_shape"
+			android:background="@drawable/shape_big_button"
 			android:text="@string/enter"
 			android:textColor="@color/primaryDark"
 

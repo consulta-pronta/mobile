@@ -23,10 +23,7 @@ class AuthActivity : AppCompatActivity() {
 
 			fragment = Cadastro()
 
-			supportFragmentManager
-				.beginTransaction()
-				.replace(R.id.fragment_container, fragment)
-				.commit()
+			changeFragment(fragment, R.id.fragment_container)
 		}
 	}
 }
