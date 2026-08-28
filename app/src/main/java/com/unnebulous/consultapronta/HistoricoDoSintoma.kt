@@ -36,6 +36,14 @@ class HistoricoDoSintoma : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		updateHeader {
+			changeHeaderType(Utils.HeaderType.TITLED, true)
+			setScreenTitle(getString(R.string.symptom_history_title))
+			setGoBackButtonOnClickListener {
+				popBackStack()
+			}
+		}
+
 		val adapter = SymptomHistoryAdapter()
 
 		binding.recyclerview.adapter = adapter

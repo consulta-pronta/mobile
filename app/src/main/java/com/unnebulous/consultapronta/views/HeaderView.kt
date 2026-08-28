@@ -42,12 +42,13 @@ class HeaderView @JvmOverloads constructor(
 		setupLayout()
 	}
 
-	fun changeHeaderType(newType: Utils.HeaderType) {
-		if (this.headerType == newType) {
+	fun changeHeaderType(newType: Utils.HeaderType, screenTitled: Boolean = false) {
+		if (headerType == newType && isScreenTitled == screenTitled) {
 			return
 		}
 
-		this.headerType = newType
+		headerType = newType
+		isScreenTitled = screenTitled
 		setupLayout()
 	}
 

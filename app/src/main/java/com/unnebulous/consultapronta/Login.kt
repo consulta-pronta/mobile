@@ -19,6 +19,7 @@ class Login : Fragment() {
 	private var _binding: FragmentLoginBinding? = null
 	private val binding get() = _binding!!
 	private lateinit var auth: FirebaseAuth
+	private var userType = Utils.UserType.PATIENT
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -39,22 +40,11 @@ class Login : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		binding.userTypeSwitch.setOnClickListener {
-			/*
-			* Retorna 0 se usuário for Paciente
-			* Retorna 1 se usuário for Profissional
-			* */
-			binding.userTypeSwitch.changeUser()
+			userType = binding.userTypeSwitch.changeUser()
 		}
 
 		binding.signUpButton.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setReorderingAllowed(true)
-				.replace(
-					R.id.fragment_container,
-					Cadastro()
-				)
-				.addToBackStack(null)
-				.commit()
+			changeFragmentWithBackStack(Cadastro())
 		}
 
 		binding.enterButton.setOnClickListener {

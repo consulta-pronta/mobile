@@ -57,4 +57,5 @@
 	<string name="my_medicines_text">Meus Medicamentos</string>
 	<string name="appointments_text">Consultas</string>
 	<string name="search_hint">Pesquisar sintoma</string>
+	<string name="symptom_history_title">Histórico do sintoma</string>
 </resources>

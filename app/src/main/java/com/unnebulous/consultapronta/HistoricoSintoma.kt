@@ -41,15 +41,16 @@ class HistoricoSintoma : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		updateHeader {
+			changeHeaderType(Utils.HeaderType.COMPACT)
+		}
+
 		val adapter = SymptomAdapter().apply {
 			onClick = { symptom ->
-				// TODO: abrir página de histórico do sintoma
-				parentFragmentManager
-					.beginTransaction()
-					.setReorderingAllowed(true)
-					.replace(R.id.main_fragment_container, HistoricoDoSintoma())
-					.addToBackStack(null)
-					.commit()
+				changeFragmentWithBackStack(
+					HistoricoDoSintoma.newInstance(
+						symptom.id
+					))
 			}
 		}
 
