@@ -26,5 +26,8 @@ class MainActivity : AppCompatActivity() {
 		binding.navbar.setOnClickListener(Utils.NavbarButton.SECOND) { view ->
 			changeFragment(HistoricoSintoma(), R.id.main_fragment_container)
 		}
+		binding.navbar.setOnClickListener(Utils.NavbarButton.FIFTH) { view ->
+			changeFragment(Mais(), R.id.main_fragment_container)
+		}
 	}
 }

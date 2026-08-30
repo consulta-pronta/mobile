@@ -33,7 +33,6 @@ class OptionItemView @JvmOverloads constructor(
 		binding.apply {
 			icon.setColorFilter(color)
 			nameText.setTextColor(color)
-			arrow.setColorFilter(color)
 		}
 	}
 

@@ -64,4 +64,13 @@
 	<string name="hospital_img_placeholder">Hospital_img_placeholder</string>
 	<string name="distance_placeholder">Distance</string>
 	<string name="occupancy_placeholder">30% lotado</string>
+	<string name="view_profile">Visualizar Perfil</string>
+	<string name="edit_profile">Editar Perfil</string>
+	<string name="settings">Configurações</string>
+	<string name="help_and_support">Ajuda &amp; Suporte</string>
+	<string name="about_us">Sobre nós</string>
+	<string name="clean_cache">Limpar cache</string>
+	<string name="delete_account">Excluir dados e deletar conta</string>
+	<string name="exit_account">Sair da conta</string>
+	<string name="succesfully_cache_deleted">Cache apagado com sucesso!</string>
 </resources>
