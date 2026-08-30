@@ -12,7 +12,7 @@
 	<EditText
 		android:id="@+id/search"
 
-		android:layout_width="0dp"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/hospital_search_hint"
 		android:textColorHint="@color/textDark60"
@@ -23,11 +23,11 @@
 		android:padding="15dp"
 		android:autofillHints="name"
 		android:textColor="@color/textDark"
+		android:inputType="text"
 
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		/>
+		app:layout_constraintTop_toTopOf="parent" />
 
 	<Button
 		android:id="@+id/button_map_view"
@@ -35,18 +35,18 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
-		android:background="@drawable/shape_big_button"
 		android:text="@string/map_view"
+		android:insetBottom="0dp"
+		android:insetTop="0dp"
 
 		app:icon="@drawable/ic_map"
 		app:iconGravity="textStart"
 		app:iconSize="30dp"
 		app:iconTint="@color/surface"
-
+		app:cornerRadius="@dimen/big_button_corner_radius"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/search"
-		/>
+		app:layout_constraintTop_toBottomOf="@+id/search" />
 
 	<com.unnebulous.consultapronta.views.FilterView
 		android:id="@+id/order"
@@ -68,8 +68,7 @@
 
 		app:layout_constraintTop_toBottomOf="@+id/order"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		/>
+		app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

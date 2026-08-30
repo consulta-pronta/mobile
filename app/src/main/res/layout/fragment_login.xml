@@ -95,11 +95,12 @@
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/shape_big_button"
 			android:text="@string/enter"
 			android:textColor="@color/primaryDark"
+			android:insetBottom="0dp"
 
-			app:backgroundTint="@color/accent" />
+			app:backgroundTint="@color/accent"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
 
 		<Button
 			android:layout_width="wrap_content"

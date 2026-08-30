@@ -18,4 +18,11 @@
 	<declare-styleable name="FilterView">
 		<attr name="isOrderByFilter" format="boolean" />
 	</declare-styleable>
+
+	<declare-styleable name="OptionItemView">
+		<attr name="iconSrc" format="reference" />
+		<attr name="text" format="string" />
+		<attr name="hasArrow" format="boolean" />
+		<attr name="color" format="color" />
+	</declare-styleable>
 </resources>
