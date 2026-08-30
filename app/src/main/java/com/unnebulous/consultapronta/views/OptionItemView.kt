@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
-import androidx.core.graphics.toColor
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.databinding.OptionItemViewBinding
 

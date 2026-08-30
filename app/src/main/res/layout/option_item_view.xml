@@ -6,14 +6,11 @@
 	android:orientation="horizontal"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:clickable="true"
-	android:focusable="true"
 	android:paddingTop="8dp"
 	android:paddingBottom="8dp"
 	android:paddingEnd="6dp"
 	android:paddingStart="6dp"
-
-	tools:background="@color/surface">
+	android:background="?attr/selectableItemBackground">
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:id="@+id/icon"
