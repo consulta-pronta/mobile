@@ -204,11 +204,12 @@
 
 
 			<Button
+				style="@style/Widget.Material3.Button.TextButton"
+
 				android:id="@+id/send_crm_button"
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@color/transparent"
 				android:text="@string/send_crm"
 				android:textColor="@color/accent"
 				android:visibility="gone"
@@ -225,11 +226,12 @@
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@drawable/shape_big_button"
 				android:text="@string/create_account"
 				android:textColor="@color/primaryDark"
+				android:insetBottom="0dp"
 
-				app:backgroundTint="@color/accent" />
+				app:backgroundTint="@color/accent"
+				app:cornerRadius="@dimen/big_button_corner_radius" />
 
 			<Button
 				android:id="@+id/login_govbr_button"
