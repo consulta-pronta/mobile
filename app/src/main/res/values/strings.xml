@@ -73,4 +73,6 @@
 	<string name="delete_account">Excluir dados e deletar conta</string>
 	<string name="exit_account">Sair da conta</string>
 	<string name="succesfully_cache_deleted">Cache apagado com sucesso!</string>
+	<string name="auth_login_title">Bem-Vindo</string>
+	<string name="auth_login_subtitle">Faça o login para acessar seus dados.</string>
 </resources>
