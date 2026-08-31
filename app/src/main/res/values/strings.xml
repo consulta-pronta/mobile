@@ -75,4 +75,7 @@
 	<string name="succesfully_cache_deleted">Cache apagado com sucesso!</string>
 	<string name="auth_login_title">Bem-Vindo</string>
 	<string name="auth_login_subtitle">Faça o login para acessar seus dados.</string>
+	<string name="send_crm_subtitle">Envie seu CRM/E-CRM para comprovarmos sua identidade</string>
+	<string name="send_crm_text_main">Tirar foto ou enviar documento</string>
+	<string name="send_crm_text_file_type">(Arquivo deve ser .jpg .jpeg .png .pdf)</string>
 </resources>

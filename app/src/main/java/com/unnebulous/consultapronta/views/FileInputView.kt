@@ -89,7 +89,7 @@ class FileInputView @JvmOverloads constructor(
 		context.withStyledAttributes(attrs, R.styleable.FileInputView) {
 			val mainText = getString(R.styleable.FileInputView_textMain) ?: ""
 			val fileTypeText = getString(R.styleable.FileInputView_textFileType) ?: ""
-			val icon = getDrawable(R.styleable.FileInputView_iconSrc)
+			val icon = getDrawable(R.styleable.FileInputView_icon)
 			val inputMode = getColor(R.styleable.FileInputView_inputMode, 0)
 
 			setMainText(mainText)
