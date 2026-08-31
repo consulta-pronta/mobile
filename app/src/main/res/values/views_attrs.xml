@@ -25,4 +25,14 @@
 		<attr name="hasArrow" format="boolean" />
 		<attr name="color" format="color" />
 	</declare-styleable>
+
+	<declare-styleable name="FileInputView">
+		<attr name="icon" format="reference" />
+		<attr name="textMain" format="string" />
+		<attr name="textFileType" format="string" />
+		<attr name="inputMode" format="enum">
+			<enum name="sendFile" value="0" />
+			<enum name="getFile" value="1" />
+		</attr>
+ 	</declare-styleable>
 </resources>

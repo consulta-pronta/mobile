@@ -38,6 +38,10 @@ class Login : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		binding.header.setGoBackButtonOnClickListener {
+			popBackStack()
+		}
+
 		binding.signUpButton.setOnClickListener {
 			changeFragmentWithBackStack(Cadastro())
 		}

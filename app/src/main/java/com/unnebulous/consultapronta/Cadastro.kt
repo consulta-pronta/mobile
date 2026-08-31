@@ -166,6 +166,10 @@ class Cadastro : Fragment() {
 				validPassword = isGreaterOrEqualThan8 && haveLowerAndUppercase && haveNumber
 			}
 		}
+
+		binding.sendCrmButton.setOnClickListener {
+			changeFragmentWithBackStack(EnviarCrm())
+		}
 	}
 
 	override fun onDestroyView() {
