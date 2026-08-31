@@ -54,7 +54,25 @@
 
 			app:icon="@drawable/ic_add_circle"
 			app:textMain="@string/send_crm_text_main"
-			app:textFileType="@string/send_crm_text_file_type" />
+			app:textFileType="@string/send_crm_text_file_type"
+			app:inputMode="sendFile" />
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="1" />
+
+		<Button
+			android:id="@+id/send_crm_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/send_crm"
+			android:textColor="@color/primaryDark"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/accent"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
 
 	</LinearLayout>
 
