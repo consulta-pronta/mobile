@@ -78,4 +78,11 @@
 	<string name="send_crm_subtitle">Envie seu CRM/E-CRM para comprovarmos sua identidade</string>
 	<string name="send_crm_text_main">Tirar foto ou enviar documento</string>
 	<string name="send_crm_text_file_type">(Arquivo deve ser .jpg .jpeg .png .pdf)</string>
+	<string name="reports_search_hint">Buscar relatórios</string>
+	<string name="add_report">Adicionar relatório</string>
+	<string name="export_list">Exportar lista</string>
+	<string name="report_card_title_prefix">Relatório:\ </string>
+	<string name="report_card_period">Período:\ </string>
+	<string name="report_card_add_date">Adicionado em\ </string>
+	<string name="reports_screen_title">Relatórios</string>
 </resources>
