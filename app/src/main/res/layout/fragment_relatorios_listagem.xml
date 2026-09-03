@@ -40,7 +40,6 @@
 		android:text="@string/add_report"
 		android:textColor="@color/primaryDark"
 		android:insetBottom="0dp"
-
 		android:insetTop="0dp"
 
 		app:backgroundTint="@color/accent"

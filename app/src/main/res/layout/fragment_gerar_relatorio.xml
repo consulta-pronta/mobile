@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".GerarRelatorio">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:showDividers="middle"
+		android:divider="@drawable/divider_default" >
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/gen_reports_screen_subtitle" />
+
+		<EditText
+			android:id="@+id/report_title_input"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_input"
+			android:backgroundTint="@color/surface"
+			android:drawableStart="@drawable/ic_reports"
+			android:drawablePadding="10dp"
+			android:drawableTint="@color/primaryDark"
+			android:hint="@string/reports_title_input_hint"
+			android:inputType="text"
+			android:autofillHints="name"
+
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60" />
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="@dimen/default_card_padding"
+			android:background="@drawable/shape_rounded_background"
+			android:backgroundTint="@color/surface" >
+
+			<!-- um TextView não tem a opção de trocar o tamanho do drawable -->
+			<!-- isso é só uma gambiarra para alcançar isso -->
+			<Button
+				style="@style/Widget.Material3.Button.TextButton"
+
+				android:id="@+id/period_title"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/period"
+				android:clickable="false"
+				android:focusable="false"
+				android:minHeight="0dp"
+				android:minWidth="0dp"
+				android:insetTop="0dp"
+				android:insetBottom="0dp"
+				android:insetLeft="0dp"
+				android:insetRight="0dp"
+				android:padding="0dp"
+				android:textColor="@color/primaryDark"
+				android:textSize="16sp"
+
+				app:icon="@drawable/ic_calendar"
+				app:iconSize="30dp"
+				app:iconPadding="@dimen/default_drawable_icon_padding"
+				app:iconTint="@color/primaryDark"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent" />
+
+			<TextView
+				android:id="@+id/period_text_from"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/primaryDark"
+				android:text="@string/gen_reports_period_from"
+				android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+				app:layout_constraintTop_toBottomOf="@id/period_title"
+				app:layout_constraintStart_toStartOf="parent" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/primaryDark"
+				android:text="@string/gen_reports_period_to"
+
+				app:layout_constraintTop_toTopOf="@id/period_text_from"
+				app:layout_constraintBottom_toBottomOf="@id/period_text_from"
+				app:layout_constraintEnd_toEndOf="parent" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+
+				app:layout_constraintTop_toBottomOf="@id/period_text_from"
+				app:layout_constraintStart_toStartOf="parent">
+
+				<Button
+					android:id="@+id/select_date_from"
+
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:text="@string/select..."
+					android:layout_weight="2"
+					android:textAlignment="viewStart"
+					android:textColor="@color/textLight60"
+
+					app:cornerRadius="@dimen/big_button_corner_radius"
+					app:backgroundTint="@color/primaryDark"
+					app:icon="@drawable/ic_calendar"
+					app:iconGravity="end"
+					app:iconTint="@color/textLight" />
+
+				<Space
+					android:layout_width="0dp"
+					android:layout_height="0dp"
+					android:layout_weight="0.5" />
+
+				<Button
+					android:id="@+id/select_date_to"
+
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="2"
+					android:text="@string/today"
+					android:textAlignment="viewStart"
+					android:textColor="@color/textLight60"
+
+					app:cornerRadius="@dimen/big_button_corner_radius"
+					app:backgroundTint="@color/primaryDark"
+					app:icon="@drawable/ic_calendar"
+					app:iconGravity="end"
+					app:iconTint="@color/textLight" />
+
+			</LinearLayout>
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<Button
+			android:id="@+id/professionals_select"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/select_professionals_authorized"
+			android:textAlignment="viewStart"
+			android:textColor="@color/textDark60"
+			android:padding="@dimen/default_card_padding"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
+
+			app:icon="@drawable/ic_arrow_down"
+			app:iconSize="30dp"
+			app:iconGravity="end"
+			app:iconTint="@color/primaryDark"
+			app:backgroundTint="@color/surface"
+			app:cornerRadius="@dimen/big_button_corner_radius"/>
+
+		<Button
+			android:id="@+id/view_symptoms_included"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/view_symptoms_included"
+			android:textSize="20sp"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/primary"
+			app:cornerRadius="@dimen/big_button_corner_radius"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/period_resume"
+			android:textStyle="bold"
+			android:textSize="20sp"/>
+
+		<GridLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:columnCount="2"
+			android:rowCount="2">
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:gravity="center"
+				android:background="@drawable/shape_rounded_stroke"
+				android:padding="30dp"
+				android:layout_gravity="fill"
+				android:layout_columnWeight="1"
+				android:layout_marginEnd="@dimen/default_inner_elements_spacing"
+				android:layout_marginBottom="@dimen/default_inner_elements_spacing">
+
+				<TextView
+					android:id="@+id/number_symptoms_registers"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="40sp"
+					android:text="@string/not_available"
+					android:drawablePadding="@dimen/default_drawable_icon_padding"
+
+					app:drawableStartCompat="@drawable/ic_book"
+					app:drawableTint="@color/textLight" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="20sp"
+					android:textStyle="bold"
+					android:text="@string/registers"
+					android:background="" />
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:gravity="center"
+				android:background="@drawable/shape_rounded_stroke"
+				android:padding="40dp"
+				android:layout_gravity="fill"
+				android:layout_columnWeight="1"
+				android:layout_marginBottom="@dimen/default_inner_elements_spacing">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:gravity="center_vertical">
+
+					<ImageView
+						android:id="@+id/intensity_icon"
+
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:src="@drawable/ic_graphic"
+						android:layout_marginEnd="@dimen/default_drawable_icon_padding"
+
+						app:tint="@color/success" />
+
+					<TextView
+						android:id="@+id/intensity_average"
+
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/not_available"
+						android:textSize="30sp" />
+
+				</LinearLayout>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="20sp"
+					android:textStyle="bold"
+					android:text="@string/registers"
+					android:background="" />
+
+			</LinearLayout>
+
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@drawable/shape_rounded_stroke"
+				android:padding="20dp"
+				android:layout_columnSpan="2">
+
+				<ImageView
+					android:id="@+id/map_icon"
+
+					android:layout_width="50dp"
+					android:layout_height="50dp"
+					android:src="@drawable/ic_map_marker"
+
+					app:tint="@color/success"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"/>
+
+				<TextView
+					android:id="@+id/most_affected_area_title"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/most_affected_area"
+					android:background=""
+
+					app:layout_constraintTop_toTopOf="@id/map_icon"
+					app:layout_constraintStart_toEndOf="@id/map_icon" />
+
+				<TextView
+					android:id="@+id/most_affected_area"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/not_available"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					android:background=""
+
+					app:layout_constraintTop_toBottomOf="@id/most_affected_area_title"
+					app:layout_constraintStart_toEndOf="@id/map_icon" />
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</GridLayout>
+
+		<Button
+			android:id="@+id/generate_report_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/create_account"
+			android:textColor="@color/primaryDark"
+			android:insetBottom="0dp"
+
+			app:icon="@drawable/ic_add_circle"
+			app:iconGravity="textStart"
+			app:iconTint="@color/primaryDark"
+			app:iconSize="24dp"
+			app:backgroundTint="@color/accent"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
+
+		<Button
+			style="@style/Widget.Material3.Button.TextButton"
+
+			android:id="@+id/create_download_report_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/create_download_report"
+			android:textColor="@color/accent"
+			android:visibility="gone"
+
+			app:icon="@drawable/ic_download"
+			app:iconGravity="textStart"
+			app:iconSize="30dp"
+			app:iconTint="@color/accent"
+
+			tools:visibility="visible" />
+
+	</LinearLayout>
+
+</ScrollView>

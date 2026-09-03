@@ -85,4 +85,19 @@
 	<string name="report_card_period">Período:\ </string>
 	<string name="report_card_add_date">Adicionado em\ </string>
 	<string name="reports_screen_title">Relatórios</string>
+	<string name="gen_reports_screen_subtitle">Gere um relatório completo de seus sintomas para compartilhar com seu médico</string>
+	<string name="reports_title_input_hint">Título do relatório</string>
+	<string name="period">Período</string>
+	<string name="gen_reports_period_from">De:</string>
+	<string name="gen_reports_period_to">Até:</string>
+	<string name="today">Hoje</string>
+	<string name="select...">Selecionar…</string>
+	<string name="select_professionals_authorized">Profissionais que podem visualizar</string>
+	<string name="view_symptoms_included">Visualizar sintomas incluídos</string>
+	<string name="period_resume">Resumo do período</string>
+	<string name="registers">Registros</string>
+	<string name="most_affected_area">Área mais afetada</string>
+	<string name="not_available">N/A</string>
+	<string name="create_download_report">Criar e baixar relatório em PDF</string>
+	<string name="gen_reports_screen_title">Gerar relatório</string>
 </resources>
