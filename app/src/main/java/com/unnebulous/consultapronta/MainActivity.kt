@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		if (savedInstanceState == null) {
-			changeFragment(Home(), R.id.main_fragment_container)
+			changeFragment(VisualizarRelatorio(), R.id.main_fragment_container)
 		}
 
 		binding.navbar.setOnClickListener(Utils.NavbarButton.FIRST) { view ->

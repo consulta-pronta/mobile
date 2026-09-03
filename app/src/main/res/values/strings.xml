@@ -100,4 +100,11 @@
 	<string name="not_available">N/A</string>
 	<string name="create_download_report">Criar e baixar relatório em PDF</string>
 	<string name="gen_reports_screen_title">Gerar relatório</string>
+	<string name="average_intensity">Intensidade média</string>
+	<string name="report_id">Relatório ID-</string>
+	<string name="view_report_duration">Duração:\ </string>
+	<string name="view_report_period">Período:\ </string>
+	<string name="geral_summary">Resumo Geral</string>
+	<string name="most_commom_symptom">Sintoma mais comum:</string>
+	<string name="chronology_symptoms">Cronologia dos sintomas</string>
 </resources>

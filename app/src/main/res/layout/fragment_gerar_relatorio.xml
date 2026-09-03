@@ -218,8 +218,7 @@
 					android:layout_height="wrap_content"
 					android:textSize="20sp"
 					android:textStyle="bold"
-					android:text="@string/registers"
-					android:background="" />
+					android:text="@string/registers" />
 
 			</LinearLayout>
 
@@ -265,8 +264,7 @@
 					android:layout_height="wrap_content"
 					android:textSize="20sp"
 					android:textStyle="bold"
-					android:text="@string/registers"
-					android:background="" />
+					android:text="@string/intensity" />
 
 			</LinearLayout>
 
@@ -295,7 +293,6 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/most_affected_area"
-					android:background=""
 
 					app:layout_constraintTop_toTopOf="@id/map_icon"
 					app:layout_constraintStart_toEndOf="@id/map_icon" />
@@ -308,7 +305,6 @@
 					android:text="@string/not_available"
 					android:textSize="18sp"
 					android:textStyle="bold"
-					android:background=""
 
 					app:layout_constraintTop_toBottomOf="@id/most_affected_area_title"
 					app:layout_constraintStart_toEndOf="@id/map_icon" />
