@@ -103,8 +103,8 @@
 	<string name="average_intensity">Intensidade média</string>
 	<string name="report_id">Relatório ID-</string>
 	<string name="view_report_duration">Duração:\ </string>
-	<string name="view_report_period">Período:\ </string>
 	<string name="geral_summary">Resumo Geral</string>
 	<string name="most_commom_symptom">Sintoma mais comum:</string>
 	<string name="chronology_symptoms">Cronologia dos sintomas</string>
+	<string name="report_card_added_in">Adicionado em\ </string>
 </resources>

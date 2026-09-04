@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.unnebulous.consultapronta.databinding.FragmentRelatoriosListagemBinding
+import com.unnebulous.consultapronta.recyclerview.adapter.ReportListAdapter
 
 class RelatoriosListagem : Fragment() {
 
@@ -32,7 +33,19 @@ class RelatoriosListagem : Fragment() {
 			}
 		}
 
-		// TODO: iniciar adapter
+		val adapter = ReportListAdapter().apply {
+			onClick = { report ->
+
+			}
+		}
+
+		binding.apply {
+			recyclerview.adapter = adapter
+
+			addNewReport.setOnClickListener {
+				changeFragmentWithBackStack(GerarRelatorio())
+			}
+		}
 	}
 
 	override fun onDestroyView() {

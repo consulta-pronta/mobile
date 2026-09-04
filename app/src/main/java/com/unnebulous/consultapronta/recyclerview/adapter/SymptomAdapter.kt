@@ -41,7 +41,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 	}
 
 	class SymptomViewHolder(private val binding: CardSymptomBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(symptom: Symptom, onCLick: (Symptom) -> Unit) {
+		fun bind(symptom: Symptom, onClick: (Symptom) -> Unit) {
 			binding.apply {
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description
@@ -58,7 +58,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 				symptomAnnexesQuantityText.visibility = View.GONE
 				editButton.visibility = View.GONE
 
-				root.setOnClickListener { onCLick(symptom) }
+				root.setOnClickListener { onClick(symptom) }
 			}
 		}
 	}
