@@ -26,6 +26,8 @@ object Utils {
 
 	enum class HeaderType { COMPACT, TITLED }
 
+	enum class SelectOptionItemType { RADIO, CHECKBOX, COMPLETE }
+
 	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
 		val constraintBuilder = CalendarConstraints.Builder()
 			.setValidator(DateValidatorPointBackward.now())

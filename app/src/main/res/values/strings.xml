@@ -111,4 +111,5 @@
 	<string name="time_picker_title">Selecione o horário</string>
 	<string name="DATE_FORMAT">dd/MM/yyyy</string>
 	<string name="create_report">Criar relatório</string>
+	<string name="cancel">Cancelar</string>
 </resources>

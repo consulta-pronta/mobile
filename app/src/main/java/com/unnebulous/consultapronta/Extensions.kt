@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
@@ -36,6 +38,16 @@ fun Fragment.updateHeader(updateBlock: HeaderView.() -> Unit) {
 
 fun Fragment.popBackStack() {
 	parentFragmentManager.popBackStack()
+}
+
+fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding) -> Unit) {
+	val dialog = BottomSheetDialog(requireContext())
+	val dialogBinding = BottomSheetBinding.inflate(layoutInflater, null, false)
+
+	configBlock(dialogBinding)
+
+	dialog.setContentView(dialogBinding.root)
+	dialog.show()
 }
 
 fun Context.clearCache() {
