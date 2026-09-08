@@ -6,14 +6,16 @@
 
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+
 	tools:context=".GerarRelatorio">
 
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		android:showDividers="middle"
-		android:divider="@drawable/divider_default" >
+		android:divider="@drawable/divider_default"
+		android:paddingBottom="@dimen/default_padding_bottom" >
 
 		<TextView
 			android:layout_width="wrap_content"
@@ -74,7 +76,7 @@
 				app:layout_constraintStart_toStartOf="parent" />
 
 			<TextView
-				android:id="@+id/period_text_from"
+				android:id="@+id/period_text_start"
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -86,13 +88,15 @@
 				app:layout_constraintStart_toStartOf="parent" />
 
 			<TextView
+				android:id="@+id/period_text_end"
+
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="@color/primaryDark"
 				android:text="@string/gen_reports_period_to"
 
-				app:layout_constraintTop_toTopOf="@id/period_text_from"
-				app:layout_constraintBottom_toBottomOf="@id/period_text_from"
+				app:layout_constraintTop_toTopOf="@id/period_text_start"
+				app:layout_constraintBottom_toBottomOf="@id/period_text_start"
 				app:layout_constraintEnd_toEndOf="parent" />
 
 			<LinearLayout
@@ -100,16 +104,16 @@
 				android:layout_height="wrap_content"
 				android:orientation="horizontal"
 
-				app:layout_constraintTop_toBottomOf="@id/period_text_from"
+				app:layout_constraintTop_toBottomOf="@id/period_text_start"
 				app:layout_constraintStart_toStartOf="parent">
 
 				<Button
-					android:id="@+id/select_date_from"
+					android:id="@+id/select_date_start"
 
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:text="@string/select..."
-					android:layout_weight="2"
+					android:layout_weight="1"
 					android:textAlignment="viewStart"
 					android:textColor="@color/textLight60"
 
@@ -120,16 +124,15 @@
 					app:iconTint="@color/textLight" />
 
 				<Space
-					android:layout_width="0dp"
-					android:layout_height="0dp"
-					android:layout_weight="0.5" />
+					android:layout_width="5dp"
+					android:layout_height="0dp" />
 
 				<Button
-					android:id="@+id/select_date_to"
+					android:id="@+id/select_date_end"
 
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_weight="2"
+					android:layout_weight="1"
 					android:text="@string/today"
 					android:textAlignment="viewStart"
 					android:textColor="@color/textLight60"
@@ -195,7 +198,7 @@
 				android:orientation="vertical"
 				android:gravity="center"
 				android:background="@drawable/shape_rounded_stroke"
-				android:padding="30dp"
+				android:padding="20dp"
 				android:layout_gravity="fill"
 				android:layout_columnWeight="1"
 				android:layout_marginEnd="@dimen/default_inner_elements_spacing"
@@ -206,7 +209,7 @@
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textSize="40sp"
+					android:textSize="25sp"
 					android:text="@string/not_available"
 					android:drawablePadding="@dimen/default_drawable_icon_padding"
 
@@ -216,7 +219,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textSize="20sp"
+					android:textSize="15sp"
 					android:textStyle="bold"
 					android:text="@string/registers" />
 
@@ -228,7 +231,7 @@
 				android:orientation="vertical"
 				android:gravity="center"
 				android:background="@drawable/shape_rounded_stroke"
-				android:padding="40dp"
+				android:padding="20dp"
 				android:layout_gravity="fill"
 				android:layout_columnWeight="1"
 				android:layout_marginBottom="@dimen/default_inner_elements_spacing">
@@ -255,16 +258,16 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="@string/not_available"
-						android:textSize="30sp" />
+						android:textSize="25sp" />
 
 				</LinearLayout>
 
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textSize="20sp"
+					android:textSize="15sp"
 					android:textStyle="bold"
-					android:text="@string/intensity" />
+					android:text="@string/average_intensity" />
 
 			</LinearLayout>
 
@@ -318,7 +321,7 @@
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/create_account"
+			android:text="@string/create_report"
 			android:textColor="@color/primaryDark"
 			android:insetBottom="0dp"
 
@@ -338,14 +341,11 @@
 			android:layout_height="wrap_content"
 			android:text="@string/create_download_report"
 			android:textColor="@color/accent"
-			android:visibility="gone"
 
 			app:icon="@drawable/ic_download"
 			app:iconGravity="textStart"
 			app:iconSize="30dp"
-			app:iconTint="@color/accent"
-
-			tools:visibility="visible" />
+			app:iconTint="@color/accent" />
 
 	</LinearLayout>
 

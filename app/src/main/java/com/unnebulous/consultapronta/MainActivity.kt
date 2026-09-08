@@ -2,7 +2,6 @@ package com.unnebulous.consultapronta
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		if (savedInstanceState == null) {
-			changeFragment(VisualizarRelatorio(), R.id.main_fragment_container)
+			changeFragment(GerarRelatorio(), R.id.main_fragment_container)
 		}
 
 		binding.navbar.setOnClickListener(Utils.NavbarButton.FIRST) { view ->
