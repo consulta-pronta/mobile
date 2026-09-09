@@ -5,11 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import androidx.core.content.withStyledAttributes
-import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.Utils
-import com.unnebulous.consultapronta.databinding.OptionItemViewBinding
 import com.unnebulous.consultapronta.databinding.SelectOptionItemViewBinding
 
 class SelectOptionItemView @JvmOverloads constructor(
@@ -19,6 +15,8 @@ class SelectOptionItemView @JvmOverloads constructor(
 	defStyleAttr: Int = 0
 ): LinearLayout(context, attrs, defStyleAttr) {
 	private val binding: SelectOptionItemViewBinding
+
+	var itemId: String = ""
 
 	init {
 		binding = SelectOptionItemViewBinding.inflate(
@@ -60,6 +58,14 @@ class SelectOptionItemView @JvmOverloads constructor(
 		}
 
 		binding.aside.removeAllViews()
+	}
+
+	fun getChecked(getInAside: ((SelectOptionItemViewBinding) -> Boolean)? = null): Boolean {
+		return when (type) {
+			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.isChecked
+			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.isChecked
+			Utils.SelectOptionItemType.COMPLETE -> getInAside?.invoke(binding) ?: false
+		}
 	}
 
 	private fun configType() {

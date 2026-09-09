@@ -40,11 +40,15 @@ fun Fragment.popBackStack() {
 	parentFragmentManager.popBackStack()
 }
 
-fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding) -> Unit) {
-	val dialog = BottomSheetDialog(requireContext())
+fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding, BottomSheetDialog) -> Unit) {
+	val dialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
 	val dialogBinding = BottomSheetBinding.inflate(layoutInflater, null, false)
 
-	configBlock(dialogBinding)
+	dialogBinding.negativeButton.setOnClickListener {
+		dialog.dismiss()
+	}
+
+	configBlock(dialogBinding, dialog)
 
 	dialog.setContentView(dialogBinding.root)
 	dialog.show()

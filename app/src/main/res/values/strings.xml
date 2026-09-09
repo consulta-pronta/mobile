@@ -112,4 +112,6 @@
 	<string name="DATE_FORMAT">dd/MM/yyyy</string>
 	<string name="create_report">Criar relatório</string>
 	<string name="cancel">Cancelar</string>
+	<string name="bottom_sheet_view_permission_title">Permissões de visualização</string>
+	<string name="save">Salvar</string>
 </resources>

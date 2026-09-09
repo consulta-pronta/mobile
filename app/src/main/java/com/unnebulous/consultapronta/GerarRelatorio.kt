@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
+import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentGerarRelatorioBinding
+import com.unnebulous.consultapronta.views.SelectOptionItemView
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -66,6 +69,51 @@ class GerarRelatorio : Fragment() {
 				reportPeriodEndDate = date
 			}
 		}
+
+		binding.professionalsSelect.setOnClickListener {
+			configBottomSheet { dialogBinding, dialog ->
+				dialogBinding.icon.setImageResource(R.drawable.ic_shield_switch)
+				dialogBinding.title.text = getString(R.string.bottom_sheet_view_permission_title)
+
+				dialogBinding.body.apply {
+					val _examples = mapOf(
+						"1" to "Dra. Cláudia Leite",
+						"2" to "Dr. Cláudio Leitoso",
+						"Yotsuba" to "!"
+					)
+
+					for (professional in _examples) {
+						val option = SelectOptionItemView(requireContext(), Utils.SelectOptionItemType.CHECKBOX)
+						option.setTitle(professional.value)
+						option.itemId = professional.key
+						addView(option)
+					}
+				}
+
+				dialogBinding.positiveButton.text = getString(R.string.save)
+
+				dialogBinding.positiveButton.setOnClickListener {
+					for (itemSelected in catchOptionsSelected(dialogBinding)) {
+						Log.i("InfoPronto", itemSelected)
+					}
+
+					dialog.dismiss()
+				}
+			}
+		}
+	}
+
+	private fun catchOptionsSelected(dialog: BottomSheetBinding): ArrayList<String> {
+		val values = ArrayList<String>()
+
+		dialog.body.children.forEach { view ->
+			val option = view as SelectOptionItemView
+			if (option.getChecked()) {
+				values.add(option.itemId)
+			}
+		}
+
+		return values
 	}
 
 	override fun onDestroyView() {
