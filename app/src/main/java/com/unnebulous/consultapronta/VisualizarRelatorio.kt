@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.unnebulous.consultapronta.databinding.FragmentVisualizarRelatorioBinding
+import com.unnebulous.consultapronta.recyclerview.adapter.ChronologyAdapter
 
 class VisualizarRelatorio : Fragment() {
 
@@ -52,6 +53,10 @@ class VisualizarRelatorio : Fragment() {
 		configChart()
 
 		_populateChart()
+
+		val adapter = ChronologyAdapter()
+
+		binding.recyclerview.adapter = adapter
 	}
 
 	// TODO: remover isso após o backend
