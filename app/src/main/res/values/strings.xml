@@ -73,4 +73,6 @@
 	<string name="hour_title">Hora</string>
 	<string name="date_hint">dd/mm/yyyy</string>
 	<string name="date_title">Data</string>
+	<string name="symptom_intensity">Qual a intensidade do sintoma?</string>
+	<string name="img_instructions">Tirar foto ou anexar imagem</string>
 </resources>
