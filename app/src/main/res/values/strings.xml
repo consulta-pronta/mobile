@@ -114,4 +114,5 @@
 	<string name="cancel">Cancelar</string>
 	<string name="bottom_sheet_view_permission_title">Permissões de visualização</string>
 	<string name="save">Salvar</string>
+	<string name="auth_create_account_contact_forms_subtitle">Seleciona suas formas de contato (no mínimo uma)</string>
 </resources>
