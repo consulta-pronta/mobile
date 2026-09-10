@@ -26,6 +26,10 @@ class Home : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		updateHeader {
+			changeHeaderType(Utils.HeaderType.COMPACT)
+		}
 	}
 
 	override fun onDestroyView() {

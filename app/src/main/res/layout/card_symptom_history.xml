@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_marginBottom="@dimen/default_inner_elements_spacing" >
+
+	<TextView
+		android:id="@+id/date_text"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:drawablePadding="@dimen/date_drawable_padding"
+
+		app:drawableStartCompat="@drawable/ic_calendar"
+		app:drawableTint="@color/textLight"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+
+		tools:text="@string/placeholder_date" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:background="@drawable/shape_rounded_background"
+		android:backgroundTint="@color/surface"
+		android:padding="@dimen/default_card_padding"
+		android:showDividers="middle"
+		android:divider="@drawable/divider_default"
+		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+		app:layout_constraintTop_toBottomOf="@id/date_text"
+		app:layout_constraintStart_toStartOf="parent" >
+
+		<com.unnebulous.consultapronta.views.IntensityView
+			android:id="@+id/intensity"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+		<TextView
+			android:id="@+id/title_text"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/textDark"
+			android:textStyle="bold"
+			android:textSize="20sp"
+
+			tools:text="@string/placeholder" />
+
+		<TextView
+			android:id="@+id/description_text"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/textDark"
+			android:textSize="16sp"
+			android:maxLines="3"
+			android:ellipsize="end"
+
+			tools:text="@string/very_long_placeholder"/>
+
+		<com.unnebulous.consultapronta.views.LocationChipView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+		<View
+			android:id="@+id/separator"
+
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/primary"
+			android:alpha="0.7" />
+
+		<HorizontalScrollView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<LinearLayout
+				android:id="@+id/annexes_list"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_list" />
+		</HorizontalScrollView>
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

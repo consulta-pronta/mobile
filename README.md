@@ -9,4 +9,4 @@ Esse repostitório contém a implementação mobile do projeto ConsultaPronta.
 Instale o Android Studio!
 
 ## Usando
-Para usar e rodar a aplicação, basta usar o Android Studio"
+Para usar e rodar a aplicação, basta usar o Android Studio

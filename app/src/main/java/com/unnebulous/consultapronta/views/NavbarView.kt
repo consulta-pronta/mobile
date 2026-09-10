@@ -24,7 +24,7 @@ class NavbarView @JvmOverloads constructor(
 	private var currentButton: Utils.NavbarButton = Utils.NavbarButton.FIRST
 		set(newButton) {
 			resetColors()
-			setColor(newButton, R.color.accent.toInt())
+			setColor(newButton, R.color.accent)
 
 			field = newButton
 		}
@@ -119,9 +119,9 @@ class NavbarView @JvmOverloads constructor(
 	private fun resetColors() {
 		Utils.NavbarButton.entries.forEach { button ->
 			if (button !== Utils.NavbarButton.MAIN) {
-				setColor(button, R.color.textLight.toInt())
+				setColor(button, R.color.textLight)
 			} else {
-				setColor(button, R.color.textDark.toInt())
+				setColor(button, R.color.textDark)
 			}
 		}
 	}

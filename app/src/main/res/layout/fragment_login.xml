@@ -24,6 +24,7 @@
 		android:layout_height="0dp"
 		android:orientation="vertical"
 		android:paddingStart="@dimen/default_screen_padding"
+		android:paddingTop="@dimen/default_screen_padding"
 		android:paddingEnd="@dimen/default_screen_padding"
 		android:paddingBottom="@dimen/default_screen_padding"
 		android:showDividers="middle"
@@ -33,12 +34,17 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@id/header">
 
-		<com.unnebulous.consultapronta.views.UserTypeSelectorView
-			android:id="@+id/user_type_switch"
-
+		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal" />
+			android:text="@string/auth_login_title"
+			android:textSize="28sp"
+			android:textStyle="bold" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/auth_login_subtitle" />
 
 		<EditText
 			android:id="@+id/email_input"
@@ -46,7 +52,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:autofillHints="emailAddress"
-			android:background="@drawable/input_shape"
+			android:background="@drawable/shape_input"
 			android:drawableStart="@drawable/ic_email"
 			android:drawablePadding="10dp"
 			android:hint="@string/input_email"
@@ -61,7 +67,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:autofillHints="password"
-			android:background="@drawable/input_shape"
+			android:background="@drawable/shape_input"
 			android:drawableStart="@drawable/ic_password_lock"
 			android:drawablePadding="10dp"
 			android:hint="@string/input_password"
@@ -95,11 +101,12 @@
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/big_button_shape"
 			android:text="@string/enter"
 			android:textColor="@color/primaryDark"
+			android:insetBottom="0dp"
 
-			app:backgroundTint="@color/accent" />
+			app:backgroundTint="@color/accent"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
 
 		<Button
 			android:layout_width="wrap_content"

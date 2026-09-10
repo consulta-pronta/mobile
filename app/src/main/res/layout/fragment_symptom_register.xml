@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingBottom="30dp">
+
+		<TextView
+			android:id="@+id/question_symptom"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+
+			android:text="@string/question_symptom"
+			android:textSize="14sp"
+
+			app:drawableStartCompat="@drawable/ic_asterisk"
+			app:drawableTint="@color/error"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<EditText
+			android:id="@+id/question_symptom_area"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_search_background"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:hint="@string/question_symptom_area"
+			android:inputType="text"
+			android:autofillHints="symptons"
+
+			app:layout_constraintTop_toBottomOf="@id/question_symptom"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/detail_symptom"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_screen_padding"
+			android:text="@string/question_symptom"
+			android:textSize="14sp"
+
+			app:drawableStartCompat="@drawable/ic_asterisk"
+			app:drawableTint="@color/error"
+			app:layout_constraintTop_toBottomOf="@id/question_symptom_area"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<EditText
+			android:id="@+id/detail_symptom_area"
+
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:background="@drawable/shape_search_background"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:hint="@string/detail_symptom_area"
+			android:gravity="start"
+			android:inputType="text"
+			android:autofillHints="description"
+
+			app:layout_constraintTop_toBottomOf="@id/detail_symptom"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/symptom_event"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/symptom_event"
+			android:textSize="14sp"
+
+			app:drawableStartCompat="@drawable/ic_asterisk"
+			app:drawableTint="@color/error"
+			app:layout_constraintTop_toBottomOf="@id/detail_symptom_area"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/date"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/date_title"
+			android:textSize="14sp"
+
+			app:layout_constraintTop_toBottomOf="@+id/symptom_event"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<Button
+			android:id="@+id/date_select"
+
+			android:layout_width="175dp"
+			android:layout_height="45dp"
+			android:autofillHints="date"
+			android:background="@drawable/shape_search_background"
+			android:drawableEnd="@drawable/ic_calendar"
+			android:drawablePadding="15dp"
+			android:drawableTint="@color/primary"
+			android:hint="@string/date_hint"
+
+			app:backgroundTint="@color/white"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/date" />
+
+		<TextView
+			android:id="@+id/time"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/hour_title"
+			android:textSize="14sp"
+			android:autofillHints="hour"
+
+			app:layout_constraintTop_toBottomOf="@+id/symptom_event"
+			app:layout_constraintStart_toStartOf="@id/time_select"
+			/>
+
+		<Button
+			android:id="@+id/time_select"
+
+			android:layout_width="175dp"
+			android:layout_height="45dp"
+			android:background="@drawable/shape_search_background"
+			android:hint="@string/hour_hint"
+			android:drawableEnd="@drawable/ic_clock"
+			android:drawablePadding="15dp"
+			android:drawableTint="@color/primary"
+
+			app:backgroundTint="@color/white"
+			app:layout_constraintTop_toBottomOf="@id/time"
+			app:layout_constraintEnd_toEndOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/symptom_body_part"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/which_body_part"
+			android:textSize="14sp"
+
+			app:drawableStartCompat="@drawable/ic_asterisk"
+			app:drawableTint="@color/error"
+			app:layout_constraintTop_toBottomOf="@id/date_select"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<com.google.android.material.textfield.TextInputLayout
+			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+			android:id="@+id/body_part_dropdown"
+
+			android:layout_width="0dp"
+			android:layout_height="50dp"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:textColorHint="@color/textDark"
+
+			app:boxCornerRadiusTopStart="12dp"
+			app:boxCornerRadiusTopEnd="12dp"
+			app:boxCornerRadiusBottomStart="12dp"
+			app:boxCornerRadiusBottomEnd="12dp"
+			app:boxBackgroundColor="@color/white"
+			app:counterTextColor="@color/textDark"
+			app:counterOverflowTextColor="@color/textDark"
+			app:endIconMode="custom"
+			app:endIconDrawable="@drawable/ic_arrow_down"
+			app:endIconTint="@color/primaryDark"
+			app:layout_constraintTop_toBottomOf="@id/symptom_body_part"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
+				android:id="@+id/body_part_spinner"
+
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:hint="@string/select_place"
+				android:textColorHint="@color/textDark"
+				android:inputType="none"
+				android:textSize="14sp"
+				android:textColor="@color/textDark"
+				android:padding="@dimen/default_card_padding"
+				android:drawableStart="@drawable/ic_location"
+				android:drawablePadding="12dp"
+				android:drawableTint="@color/primary"
+				android:paddingStart="16dp"
+				android:paddingEnd="16dp"
+				/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<TextView
+			android:id="@+id/symptom_intensity"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/symptom_intensity"
+			android:textSize="14sp"
+
+			app:drawableStartCompat="@drawable/ic_asterisk"
+			app:drawableTint="@color/error"
+			app:layout_constraintTop_toBottomOf="@id/body_part_dropdown"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<FrameLayout
+			android:id="@+id/frame"
+
+			android:layout_width="0dp"
+			android:layout_height="40dp"
+			android:layout_marginTop="8dp"
+
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/symptom_intensity">
+
+			<TextView
+				android:id="@+id/intensity_value"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/placeholder_number"
+				android:textSize="14sp"
+				android:textColor="@color/warning"
+				android:layout_gravity="top|start"
+				/>
+
+			<View
+				android:id="@+id/gradient_view"
+
+				android:layout_width="match_parent"
+				android:layout_height="10dp"
+				android:layout_gravity="center"
+				android:background="@drawable/intensity_gradient"
+				android:layout_marginTop="4dp"
+				/>
+
+			<com.google.android.material.slider.Slider
+				android:id="@+id/intensity_slider"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:value="5"
+				android:valueFrom="0"
+				android:valueTo="10"
+
+				app:thumbColor="@color/primary"
+				app:thumbHeight="12dp"
+				app:thumbWidth="12dp"
+				app:trackColorActive="@android:color/transparent"
+				app:trackColorInactive="@android:color/transparent"
+				app:trackHeight="10dp"
+				app:labelBehavior="gone"/>
+		</FrameLayout>
+
+		<LinearLayout
+			android:id="@+id/intensity_labels"
+
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:weightSum="3"
+
+			app:layout_constraintTop_toBottomOf="@id/frame"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<TextView
+				android:id="@+id/light"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/light"
+				android:textSize="12sp"
+				android:textColor="@color/success"
+				android:layout_marginStart="@dimen/default_inner_elements_spacing"/>
+
+			<TextView
+				android:id="@+id/moderated"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="center"
+				android:text="@string/moderated"
+				android:textSize="12sp"
+				android:textColor="@color/warning"/>
+
+			<TextView
+				android:id="@+id/strong"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="end"
+				android:text="@string/strong"
+				android:textSize="12sp"
+				android:textColor="@color/error"
+				android:layout_marginEnd="@dimen/default_inner_elements_spacing"/>
+
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/image"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/picture"
+
+			app:layout_constraintTop_toBottomOf="@+id/intensity_labels"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<LinearLayout
+			android:id="@+id/image_upload"
+
+			android:layout_width="0dp"
+			android:layout_height="100dp"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/img_upload_area"
+			android:clickable="true"
+			android:focusable="true"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:padding="8dp"
+
+			app:layout_constraintTop_toBottomOf="@id/image"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<ImageView
+				android:id="@+id/camera_icon"
+
+				android:layout_width="28dp"
+				android:layout_height="28dp"
+				android:src="@drawable/ic_camera"
+
+				app:tint="@android:color/white" />
+
+			<TextView
+				android:id="@+id/image_upload_text"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:text="@string/img_instructions"
+				android:textColor="@android:color/white"
+				android:textSize="12sp" />
+
+		</LinearLayout>
+
+		<Button
+			android:id="@+id/symptom_register"
+
+			android:layout_width="match_parent"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+			android:layout_height="wrap_content"
+			android:text="@string/symptom_register"
+			android:textColor="@color/textDark"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/accent"
+			app:layout_constraintTop_toBottomOf="@id/image_upload"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			/>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

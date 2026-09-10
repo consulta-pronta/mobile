@@ -12,7 +12,7 @@ import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.UserTypeSelectorViewBinding
 
-class UserTypeSelectorView @JvmOverloads constructor(
+class   UserTypeSelectorView @JvmOverloads constructor(
 	context: Context,
 	attrs: AttributeSet? = null,
 	defStyleAttr: Int = 0
@@ -20,7 +20,7 @@ class UserTypeSelectorView @JvmOverloads constructor(
 
 	private val binding: UserTypeSelectorViewBinding
 
-	private var userType = Utils.UserType.PATIENT
+	var userType = Utils.UserType.PATIENT
 
 	init {
 		binding = UserTypeSelectorViewBinding.inflate(

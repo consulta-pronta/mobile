@@ -38,23 +38,12 @@ class Login : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		binding.userTypeSwitch.setOnClickListener {
-			/*
-			* Retorna 0 se usuário for Paciente
-			* Retorna 1 se usuário for Profissional
-			* */
-			binding.userTypeSwitch.changeUser()
+		binding.header.setGoBackButtonOnClickListener {
+			popBackStack()
 		}
 
 		binding.signUpButton.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setReorderingAllowed(true)
-				.replace(
-					R.id.fragment_container,
-					Cadastro()
-				)
-				.addToBackStack(null)
-				.commit()
+			changeFragmentWithBackStack(Cadastro())
 		}
 
 		binding.enterButton.setOnClickListener {

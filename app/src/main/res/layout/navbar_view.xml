@@ -86,7 +86,7 @@
 
 		android:layout_width="@dimen/default_navbar_big_button_size"
 		android:layout_height="@dimen/default_navbar_big_button_size"
-		android:background="@drawable/circle_accent"
+		android:background="@drawable/shape_circle_accent"
 		android:clickable="true"
 		android:elevation="10dp"
 		android:focusable="true"

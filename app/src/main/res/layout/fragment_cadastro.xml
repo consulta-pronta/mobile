@@ -71,7 +71,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:autofillHints="name"
-				android:background="@drawable/input_shape"
+				android:background="@drawable/shape_input"
 				android:drawableStart="@drawable/ic_person"
 				android:drawablePadding="10dp"
 				android:hint="@string/input_name"
@@ -87,7 +87,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:autofillHints=""
-				android:background="@drawable/input_shape"
+				android:background="@drawable/shape_input"
 				android:drawableStart="@drawable/ic_document"
 				android:drawablePadding="10dp"
 				android:hint="@string/input_cpf"
@@ -102,7 +102,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:autofillHints="emailAddress"
-				android:background="@drawable/input_shape"
+				android:background="@drawable/shape_input"
 				android:drawableStart="@drawable/ic_email"
 				android:drawablePadding="10dp"
 				android:hint="@string/input_email"
@@ -117,7 +117,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:autofillHints="phone"
-				android:background="@drawable/input_shape"
+				android:background="@drawable/shape_input"
 				android:drawableStart="@drawable/ic_telephone"
 				android:drawablePadding="10dp"
 				android:hint="@string/input_phone_number"
@@ -178,7 +178,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:autofillHints="password"
-				android:background="@drawable/input_shape"
+				android:background="@drawable/shape_input"
 				android:drawableStart="@drawable/ic_password_lock"
 				android:maxLength="4096"
 				android:drawablePadding="10dp"
@@ -193,7 +193,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:autofillHints="password"
-				android:background="@drawable/input_shape"
+				android:background="@drawable/shape_input"
 				android:drawableStart="@drawable/ic_password_lock"
 				android:drawablePadding="10dp"
 				android:hint="@string/input_password_confirm"
@@ -204,11 +204,12 @@
 
 
 			<Button
+				style="@style/Widget.Material3.Button.TextButton"
+
 				android:id="@+id/send_crm_button"
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@color/transparent"
 				android:text="@string/send_crm"
 				android:textColor="@color/accent"
 				android:visibility="gone"
@@ -225,11 +226,12 @@
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@drawable/big_button_shape"
 				android:text="@string/create_account"
 				android:textColor="@color/primaryDark"
+				android:insetBottom="0dp"
 
-				app:backgroundTint="@color/accent" />
+				app:backgroundTint="@color/accent"
+				app:cornerRadius="@dimen/big_button_corner_radius" />
 
 			<Button
 				android:id="@+id/login_govbr_button"
@@ -259,7 +261,7 @@
 					android:layout_height="wrap_content"
 
 					app:buttonTint="@color/textLight"
-					app:buttonIconTint="@color/checkbox_color" />
+					app:buttonIconTint="@color/light_checkbox_color" />
 
 				<TextView
 					android:layout_width="wrap_content"

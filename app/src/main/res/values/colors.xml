@@ -19,4 +19,6 @@
 	<color name="textDark">@color/primaryDark</color>
 
 	<color name="textLight60">#99FFFFFF</color>
+	<color name="textDark60">#992B254D</color>
+	<color name="primary70">#B34D4A73</color>
 </resources>
