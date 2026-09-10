@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.database.Symptom
-import com.unnebulous.consultapronta.databinding.SymptomCardBinding
+import com.unnebulous.consultapronta.databinding.CardSymptomBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SintomaViewHolder>(SintomaComparator()) {
+class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(SymptomComparator()) {
 	enum class SymptomViewType { COMPACT, DETAILED }
 
 	lateinit var onClick: (Symptom) -> Unit
@@ -20,27 +20,27 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SintomaViewHolder>(Sin
 		return super.getItemViewType(position)
 	}
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SintomaViewHolder {
-		val binding = SymptomCardBinding.inflate(
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomViewHolder {
+		val binding = CardSymptomBinding.inflate(
 			LayoutInflater.from(parent.context),
 			parent,
 			false
 		)
 
-		return SintomaViewHolder(binding)
+		return SymptomViewHolder(binding)
 	}
 
-	override fun onBindViewHolder(viewHolder: SintomaViewHolder, position: Int) {
+	override fun onBindViewHolder(viewHolder: SymptomViewHolder, position: Int) {
 		viewHolder.bind(getItem(position), onClick)
 	}
 
-	class SintomaComparator : DiffUtil.ItemCallback<Symptom>() {
+	class SymptomComparator : DiffUtil.ItemCallback<Symptom>() {
 		override fun areItemsTheSame(old: Symptom, new: Symptom) = old.id == new.id
 
 		override fun areContentsTheSame(old: Symptom, new: Symptom) = old == new
 	}
 
-	class SintomaViewHolder(private val binding: SymptomCardBinding): RecyclerView.ViewHolder(binding.root) {
+	class SymptomViewHolder(private val binding: CardSymptomBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(symptom: Symptom, onCLick: (Symptom) -> Unit) {
 			binding.apply {
 				titleText.text = symptom.title

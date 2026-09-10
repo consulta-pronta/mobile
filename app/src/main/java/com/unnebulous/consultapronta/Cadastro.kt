@@ -61,14 +61,7 @@ class Cadastro : Fragment() {
 		}
 
 		binding.signInButton.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setReorderingAllowed(true)
-				.replace(
-					R.id.fragment_container,
-					Login()
-				)
-				.addToBackStack(null)
-				.commit()
+			changeFragmentWithBackStack(Login())
 		}
 
 		binding.createAccountButton.setOnClickListener {
@@ -146,7 +139,7 @@ class Cadastro : Fragment() {
 					haveNumber = (char.isDigit() || haveNumber)
 				}
 
-				val isGreaterOrEqualThan8 = it.length > 8
+				val isGreaterOrEqualThan8 = it.length >= 8
 				val haveLowerAndUppercase = haveLowercase && haveUppercase
 
 				colors[0] = if (isGreaterOrEqualThan8) successColor else errorColor
@@ -173,6 +166,10 @@ class Cadastro : Fragment() {
 				validPassword = isGreaterOrEqualThan8 && haveLowerAndUppercase && haveNumber
 			}
 		}
+
+		binding.sendCrmButton.setOnClickListener {
+			changeFragmentWithBackStack(EnviarCrm())
+		}
 	}
 
 	override fun onDestroyView() {
@@ -195,7 +192,8 @@ class Cadastro : Fragment() {
 			email = user.email!!,
 			phone = binding.phoneNumberInput.text.toString(),
 			cpf = binding.cpfInput.text.toString(),
-			createdAt = Timestamp(Date(creationTime!!))
+			user_type = binding.userTypeSwitch.userType.toString().lowercase(),
+			created_at = Timestamp(Date(creationTime!!))
 		)
 
 		db.collection("users")

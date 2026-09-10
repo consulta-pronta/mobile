@@ -1,18 +1,15 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.unnebulous.consultapronta.databinding.FragmentEnviarCrmBinding
 
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
-import com.unnebulous.consultapronta.databinding.FragmentHomeBinding
+class EnviarCrm : Fragment() {
 
-class Home : Fragment() {
-	private var _binding: FragmentHomeBinding? = null
+	private var _binding: FragmentEnviarCrmBinding? = null
 	private val binding get() = _binding!!
 
 	override fun onCreateView(
@@ -20,15 +17,15 @@ class Home : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		_binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+		_binding = FragmentEnviarCrmBinding.inflate(inflater, container, false)
 		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		updateHeader {
-			changeHeaderType(Utils.HeaderType.COMPACT)
+		binding.header.setGoBackButtonOnClickListener {
+			popBackStack()
 		}
 	}
 

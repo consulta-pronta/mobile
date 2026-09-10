@@ -16,13 +16,14 @@
 		android:layout_height="wrap_content"
 		android:hint="@string/search_hint"
 		android:textColorHint="@color/textDark60"
-		android:background="@drawable/search_background"
+		android:background="@drawable/shape_search_background"
 		android:drawableStart="@drawable/ic_search"
 		android:drawableTint="@color/textDark"
 		android:drawablePadding="10dp"
 		android:padding="15dp"
 		android:autofillHints="name"
 		android:textColor="@color/textDark"
+		android:inputType="text"
 
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +48,8 @@
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
 		app:layout_constraintTop_toBottomOf="@+id/filter"
-		app:layout_constraintStart_toStartOf="parent" />
+		app:layout_constraintStart_toStartOf="parent"
+		app:isOrderByFilter="true" />
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/historico_sintoma_recyclerview"
