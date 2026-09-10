@@ -15,16 +15,26 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		if (savedInstanceState == null) {
-			changeFragment(GerarRelatorio(), R.id.main_fragment_container)
+			changeFragment(Home(), R.id.main_fragment_container)
 		}
 
 		binding.navbar.setOnClickListener(Utils.NavbarButton.FIRST) { view ->
 			//if (binding.mainFragmentContainer.getFragment<>())
 			changeFragment(Home(), R.id.main_fragment_container)
 		}
+
 		binding.navbar.setOnClickListener(Utils.NavbarButton.SECOND) { view ->
 			changeFragment(HistoricoSintoma(), R.id.main_fragment_container)
 		}
+
+		binding.navbar.setOnClickListener(Utils.NavbarButton.MAIN) { view ->
+			changeFragmentWithBackStack(SymptomRegister(), R.id.main_fragment_container)
+		}
+
+		binding.navbar.setOnClickListener(Utils.NavbarButton.FOURTH) { view ->
+			changeFragment(Hospital(), R.id.main_fragment_container)
+		}
+
 		binding.navbar.setOnClickListener(Utils.NavbarButton.FIFTH) { view ->
 			changeFragment(Mais(), R.id.main_fragment_container)
 		}

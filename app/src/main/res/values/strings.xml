@@ -132,4 +132,5 @@
 	<string name="moderated">Moderada (5)</string>
 	<string name="light">Leve (0)</string>
 	<string name="select_place">Selecione o local</string>
+	<string name="time_format">HH:mm</string>
 </resources>

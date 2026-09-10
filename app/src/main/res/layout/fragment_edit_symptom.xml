@@ -18,7 +18,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 
-			android:text="@string/question_symptom"
+			android:text="Qual o motivo da edição?"
 			android:textSize="14sp"
 
 			app:drawableStartCompat="@drawable/ic_asterisk"
@@ -34,7 +34,7 @@
 			android:layout_height="wrap_content"
 			android:background="@drawable/shape_search_background"
 			android:layout_marginTop="@dimen/default_card_padding"
-			android:hint="@string/question_symptom_area"
+			android:hint="Digite o motivo"
 			android:inputType="text"
 			android:autofillHints="symptons"
 
@@ -49,7 +49,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/default_screen_padding"
-			android:text="@string/question_symptom"
+			android:text="O que você está sentindo?"
 			android:textSize="14sp"
 
 			app:drawableStartCompat="@drawable/ic_asterisk"
@@ -84,8 +84,6 @@
 			android:text="@string/symptom_event"
 			android:textSize="14sp"
 
-			app:drawableStartCompat="@drawable/ic_asterisk"
-			app:drawableTint="@color/error"
 			app:layout_constraintTop_toBottomOf="@id/detail_symptom_area"
 			app:layout_constraintStart_toStartOf="parent"
 			/>
@@ -158,8 +156,6 @@
 			android:text="@string/which_body_part"
 			android:textSize="14sp"
 
-			app:drawableStartCompat="@drawable/ic_asterisk"
-			app:drawableTint="@color/error"
 			app:layout_constraintTop_toBottomOf="@id/date_select"
 			app:layout_constraintStart_toStartOf="parent"
 			/>
@@ -217,8 +213,6 @@
 			android:text="@string/symptom_intensity"
 			android:textSize="14sp"
 
-			app:drawableStartCompat="@drawable/ic_asterisk"
-			app:drawableTint="@color/error"
 			app:layout_constraintTop_toBottomOf="@id/body_part_dropdown"
 			app:layout_constraintStart_toStartOf="parent"
 			/>
@@ -377,9 +371,11 @@
 			android:layout_width="match_parent"
 			android:layout_marginTop="@dimen/default_inner_elements_spacing"
 			android:layout_height="wrap_content"
-			android:text="@string/symptom_register"
+			android:text="Salvar Edição"
 			android:textColor="@color/textDark"
 			android:insetBottom="0dp"
+			android:drawableStart="@drawable/ic_edit_square"
+			android:drawableTint="@color/primary"
 
 			app:backgroundTint="@color/accent"
 			app:layout_constraintTop_toBottomOf="@id/image_upload"

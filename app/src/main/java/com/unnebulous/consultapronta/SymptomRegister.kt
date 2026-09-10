@@ -11,35 +11,27 @@ import android.widget.TextView
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
+import com.unnebulous.consultapronta.databinding.FragmentHomeBinding
+import com.unnebulous.consultapronta.databinding.FragmentSymptomRegisterBinding
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class SymptomRegister : Fragment() {
 
-	private var param1: String? = null
-	private var param2: String? = null
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		arguments?.let {
-			param1 = it.getString(ARG_PARAM1)
-			param2 = it.getString(ARG_PARAM2)
-		}
-	}
+	private var _binding: FragmentSymptomRegisterBinding? = null
+	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
+	private val timeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.time_format)) }
+	private val binding get() = _binding!!
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
-
-		return inflater.inflate(
-			R.layout.fragment_symptom_register,
-			container,
-			false
-		)
+	): View {
+		_binding = FragmentSymptomRegisterBinding.inflate(layoutInflater, container, false)
+		return binding.root
 	}
 
 	override fun onViewCreated(
@@ -48,59 +40,58 @@ class SymptomRegister : Fragment() {
 	) {
 		super.onViewCreated(view, savedInstanceState)
 
-		// Spinner
-		val bodyPartSpinner =
-			view.findViewById<MaterialAutoCompleteTextView>(
-				R.id.body_part_spinner
-			)
-
-		val bodyPartLayout =
-			view.findViewById<TextInputLayout>(
-				R.id.body_part_dropdown
-			)
+		updateHeader {
+			changeHeaderType(Utils.HeaderType.TITLED, true)
+			setScreenTitle(getString(R.string.title_register_page))
+			setGoBackButtonOnClickListener {
+				popBackStack()
+			}
+		}
 
 		val bodyParts = arrayOf(
 			"Cabeça",
+			"Rosto",
 			"Pescoço",
-			"Peito",
+			"Tórax",
+			"Abdômen",
 			"Costas",
+			"Ombro",
 			"Braço",
+			"Antebraço",
 			"Mão",
-			"Barriga",
+			"Coxa",
 			"Perna",
-			"Pé"
+			"Tornozelo",
+			"Pé",
+			"Nádegas",
+			"Vagina",
+			"Pênis"
+
 		)
 
 		val adapter = ArrayAdapter(
 			requireContext(),
-			android.R.layout.simple_dropdown_item_1line,
+			R.layout.item_body_part,
 			bodyParts
 		)
 
-		bodyPartSpinner.setAdapter(adapter)
+		adapter.setDropDownViewResource(R.layout.item_body_part)
 
-		bodyPartSpinner.setOnClickListener {
-			bodyPartSpinner.showDropDown()
+		binding.bodyPartSpinner.setAdapter(adapter)
+
+		binding.bodyPartSpinner.setOnClickListener {
+			binding.bodyPartSpinner.showDropDown()
 		}
 
-		bodyPartLayout.setEndIconOnClickListener {
-			bodyPartSpinner.showDropDown()
+		binding.bodyPartDropdown.setEndIconOnClickListener {
+			binding.bodyPartSpinner.showDropDown()
 		}
 
-		//Slider
-		val frame = view.findViewById<FrameLayout>(R.id.frame)
+		binding.intensitySlider.addOnChangeListener { slider, value, _ ->
 
-		val slider =
-			view.findViewById<Slider>(R.id.intensity_slider)
+			binding.intensityValue.text = value.toInt().toString()
 
-		val intensityValue =
-			view.findViewById<TextView>(R.id.intensity_value)
-
-		slider.addOnChangeListener { slider, value, _ ->
-
-			intensityValue.text = value.toInt().toString()
-
-			frame.post {
+			binding.frame.post {
 
 				val fraction =
 					(value - slider.valueFrom) /
@@ -117,26 +108,45 @@ class SymptomRegister : Fragment() {
 					start +
 						fraction * (end - start)
 
-				intensityValue.translationX =
+				binding.intensityValue.translationX =
 					thumbX -
-						intensityValue.width / 2f
+						binding.intensityValue.width / 2f
 			}
 		}
 
-		frame.post {
-			slider.value = 5f
+		binding.frame.post {
+			binding.intensitySlider.value = 5f
 		}
-	}
 
-	companion object {
-
-		@JvmStatic
-		fun newInstance(param1: String, param2: String) =
-			SymptomRegister().apply {
-				arguments = Bundle().apply {
-					putString(ARG_PARAM1, param1)
-					putString(ARG_PARAM2, param2)
+		binding.dateSelect.setOnClickListener {
+			Utils.showDatePicker(this) { date ->
+				val buttonText = if (LocalDate.now().isEqual(date)) {
+					getString(R.string.today)
+				} else {
+					date.format(dateFormatter)
 				}
+
+				binding.dateSelect.text = buttonText
 			}
+		}
+
+		binding.timeSelect.setOnClickListener {
+			Utils.showTimePicker(this) { time ->
+				val buttonText = if (LocalTime.now().equals(time)) {
+					getString(R.string.time_format)
+				} else {
+					time.format(timeFormatter)
+				}
+
+				binding.timeSelect.text = buttonText
+			}
+		}
 	}
+
+	override fun onDestroyView() {
+		super.onDestroyView()
+		_binding = null
+	}
+
+
 }
