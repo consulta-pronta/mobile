@@ -2,12 +2,10 @@
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-
-	tools:context=".SymptomRegister">
+	>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
@@ -139,7 +137,7 @@
 			android:background="@drawable/search_background"
 			android:drawableEnd="@drawable/ic_calendar"
 			android:drawablePadding="15dp"
-			android:drawableTint="@color/primaryDark"
+			android:drawableTint="@color/primary"
 			android:hint="@string/date_hint"
 			android:inputType="date"
 
@@ -169,7 +167,7 @@
 			android:hint="@string/hour_hint"
 			android:drawableEnd="@drawable/ic_clock"
 			android:drawablePadding="15dp"
-			android:drawableTint="@color/primaryDark"
+			android:drawableTint="@color/primary"
 			android:inputType="datetime"
 
 			app:layout_constraintTop_toBottomOf="@id/time"
@@ -191,20 +189,46 @@
 			app:layout_constraintStart_toStartOf="parent"
 			/>
 
-		<Spinner
-			android:id="@+id/body_part_spinner"
+		<com.google.android.material.textfield.TextInputLayout
+			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:id="@+id/body_part_dropdown"
+
+			android:layout_width="0dp"
+			android:layout_height="50dp"
 			android:layout_marginTop="@dimen/default_card_padding"
 
-			app:icon="@drawable/ic_location"
-			app:iconSize="30dp"
+			app:boxCornerRadiusTopStart="12dp"
+			app:boxCornerRadiusTopEnd="12dp"
+			app:boxCornerRadiusBottomStart="12dp"
+			app:boxCornerRadiusBottomEnd="12dp"
+			app:boxBackgroundColor="@color/white"
+
+			app:endIconMode="custom"
+			app:endIconDrawable="@drawable/ic_arrow_down"
+			app:endIconTint="@color/primaryDark"
 
 			app:layout_constraintTop_toBottomOf="@id/symptom_body_part"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			/>
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
+				android:id="@+id/body_part_spinner"
+
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:hint="@string/select_place"
+				android:inputType="none"
+				android:textSize="14sp"
+
+				android:drawableStart="@drawable/ic_location"
+				android:drawablePadding="12dp"
+				android:drawableTint="@color/primary"
+				android:paddingStart="16dp"
+				android:paddingEnd="16dp"
+				/>
+
+		</com.google.android.material.textfield.TextInputLayout>
 
 		<TextView
 			android:id="@+id/symptom_intensity"
@@ -217,24 +241,107 @@
 
 			app:drawableStartCompat="@drawable/ic_asterisk"
 			app:drawableTint="@color/error"
-			app:layout_constraintTop_toBottomOf="@id/body_part_spinner"
+			app:layout_constraintTop_toBottomOf="@id/body_part_dropdown"
 			app:layout_constraintStart_toStartOf="parent"
 			/>
 
-		<com.google.android.material.slider.Slider
-			android:id="@+id/intensity_slider"
+		<FrameLayout
+			android:id="@+id/frame"
 
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
+			android:layout_height="40dp"
+			android:layout_marginTop="8dp"
+
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/symptom_intensity">
+
+			<TextView
+				android:id="@+id/intensity_value"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/placeholder_number"
+				android:textSize="14sp"
+				android:textColor="@color/warning"
+				android:layout_gravity="top|start"
+				/>
+
+			<View
+				android:id="@+id/gradient_view"
+
+				android:layout_width="match_parent"
+				android:layout_height="10dp"
+				android:layout_gravity="center"
+				android:background="@drawable/intensity_gradient"
+				android:layout_marginTop="4dp" />
+
+			<com.google.android.material.slider.Slider
+				android:id="@+id/intensity_slider"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:stepSize="1"
+				android:value="5"
+				android:valueFrom="0"
+				android:valueTo="10"
+
+				app:thumbColor="@color/primary"
+				app:thumbHeight="12dp"
+				app:thumbWidth="12dp"
+
+				app:trackColorActive="@android:color/transparent"
+				app:trackColorInactive="@android:color/transparent"
+				app:trackHeight="10dp" />
+		</FrameLayout>
+
+		<LinearLayout
+			android:id="@+id/intensity_labels"
+
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="@dimen/default_card_padding"
-			android:value="5"
-			android:valueFrom="0"
-			android:valueTo="10"
-			android:stepSize="1"
+			android:orientation="horizontal"
+			android:weightSum="3"
 
-			app:layout_constraintTop_toBottomOf="@id/symptom_intensity"
+			app:layout_constraintTop_toBottomOf="@id/frame"
 			app:layout_constraintStart_toStartOf="parent"
-			/>
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<TextView
+				android:id="@+id/light"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/light"
+				android:textSize="12sp"
+				android:textColor="@color/success"
+				android:layout_marginStart="@dimen/default_inner_elements_spacing"/>
+
+			<TextView
+				android:id="@+id/moderated"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="center"
+				android:text="@string/moderated"
+				android:textSize="12sp"
+				android:textColor="@color/warning"/>
+
+			<TextView
+				android:id="@+id/strong"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="end"
+				android:text="@string/strong"
+				android:textSize="12sp"
+				android:textColor="@color/error"
+				android:layout_marginEnd="@dimen/default_inner_elements_spacing"/>
+
+		</LinearLayout>
 
 		<TextView
 			android:id="@+id/image"
@@ -242,9 +349,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/default_card_padding"
-			android:text="Foto"
+			android:text="@string/picture"
 
-			app:layout_constraintTop_toBottomOf="@+id/intensity_slider"
+			app:layout_constraintTop_toBottomOf="@+id/intensity_labels"
 			app:layout_constraintStart_toStartOf="parent"
 			/>
 
@@ -252,7 +359,7 @@
 			android:id="@+id/image_upload"
 
 			android:layout_width="0dp"
-			android:layout_height="92dp"
+			android:layout_height="100dp"
 			android:layout_marginTop="8dp"
 			android:background="@drawable/img_upload_area"
 			android:clickable="true"
@@ -270,9 +377,9 @@
 
 				android:layout_width="28dp"
 				android:layout_height="28dp"
-				android:contentDescription="Adicionar imagem"
 				android:src="@drawable/ic_camera"
-				android:tint="@android:color/white" />
+
+				app:tint="@android:color/white" />
 
 			<TextView
 				android:id="@+id/image_upload_text"
@@ -292,17 +399,15 @@
 			android:layout_width="match_parent"
 			android:layout_marginTop="@dimen/default_inner_elements_spacing"
 			android:layout_height="wrap_content"
-			android:text="Registrar Sintoma"
+			android:text="@string/symptom_register"
 			android:textColor="@color/textDark"
 			android:background="@drawable/big_button_shape"
-			android:backgroundTint="@color/accent"
 
-
+			app:backgroundTint="@color/accent"
 			app:layout_constraintTop_toBottomOf="@id/image_upload"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			/>
-
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
