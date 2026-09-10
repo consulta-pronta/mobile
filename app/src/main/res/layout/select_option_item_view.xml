@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:orientation="horizontal"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+
+	tools:orientation="vertical"
+	tools:background="@color/surface">
+
+	<RadioButton
+		android:id="@+id/item_radio_button"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/textDark"
+		android:visibility="gone"
+
+		app:buttonTint="@color/textDark"
+
+		tools:text="@string/placeholder"
+		tools:visibility="visible" />
+
+	<CheckBox
+		android:id="@+id/item_checkbox_button"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/textDark"
+		android:visibility="gone"
+
+		app:buttonTint="@color/textDark"
+		app:buttonIconTint="@color/dark_checkbox_color"
+
+		tools:text="@string/placeholder"
+		tools:visibility="visible" />
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/item_complete_layout"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:visibility="gone"
+
+		tools:visibility="visible">
+		<androidx.appcompat.widget.AppCompatImageView
+			android:id="@+id/icon"
+
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			android:tint="@color/textDark"
+
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+
+			tools:src="@drawable/ic_info"/>
+
+		<TextView
+			android:id="@+id/title"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/textDark"
+			android:layout_marginStart="@dimen/default_drawable_icon_padding"
+
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toEndOf="@id/icon"
+
+			tools:text="@string/placeholder"/>
+
+		<TextView
+			android:id="@+id/subtitle"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/textDark60"
+			android:textSize="14sp"
+			android:layout_marginStart="@dimen/default_drawable_icon_padding"
+
+			app:layout_constraintTop_toBottomOf="@id/title"
+			app:layout_constraintStart_toEndOf="@id/icon"
+
+			tools:text="@string/placeholder"/>
+
+		<FrameLayout
+			android:id="@+id/aside"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_info"
+			android:tint="@color/textDark"
+
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

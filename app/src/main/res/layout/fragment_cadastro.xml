@@ -261,7 +261,7 @@
 					android:layout_height="wrap_content"
 
 					app:buttonTint="@color/textLight"
-					app:buttonIconTint="@color/checkbox_color" />
+					app:buttonIconTint="@color/light_checkbox_color" />
 
 				<TextView
 					android:layout_width="wrap_content"
