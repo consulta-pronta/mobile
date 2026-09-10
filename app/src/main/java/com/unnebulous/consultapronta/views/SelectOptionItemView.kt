@@ -5,8 +5,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.withStyledAttributes
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.SelectOptionItemViewBinding
+import androidx.core.view.isNotEmpty
+import com.unnebulous.consultapronta.R
 
 class SelectOptionItemView @JvmOverloads constructor(
 	context: Context,
@@ -15,6 +18,7 @@ class SelectOptionItemView @JvmOverloads constructor(
 	defStyleAttr: Int = 0
 ): LinearLayout(context, attrs, defStyleAttr) {
 	private val binding: SelectOptionItemViewBinding
+	private var isInflating = true
 
 	var itemId: String = ""
 
@@ -25,7 +29,21 @@ class SelectOptionItemView @JvmOverloads constructor(
 			true
 		)
 
+		attrs?.let {
+			applyAttributes(it)
+		}
+
 		configType()
+
+		isInflating = false
+	}
+
+	override fun addView(child: View?) {
+		if (isInflating) {
+			super.addView(child)
+		} else {
+			addAside(child)
+		}
 	}
 
 	fun setTitle(title: String) {
@@ -44,8 +62,8 @@ class SelectOptionItemView @JvmOverloads constructor(
 		binding.subtitle.text = title
 	}
 
-	fun addAside(view: View) {
-		if (type != Utils.SelectOptionItemType.COMPLETE || binding.aside.childCount > 0) {
+	fun addAside(view: View?) {
+		if (type != Utils.SelectOptionItemType.COMPLETE || binding.aside.isNotEmpty()) {
 			return
 		}
 
@@ -81,6 +99,12 @@ class SelectOptionItemView @JvmOverloads constructor(
 			Utils.SelectOptionItemType.COMPLETE -> {
 				binding.itemCompleteLayout.visibility = VISIBLE
 			}
+		}
+	}
+
+	private fun applyAttributes(attrs: AttributeSet) {
+		context.withStyledAttributes(attrs, R.styleable.SelectOptionItemView) {
+
 		}
 	}
 }

@@ -34,7 +34,4 @@
 		android:layout_height="wrap_content"
 		android:text="@string/auth_create_account_contact_forms_subtitle" />
 
-
-
-
 </LinearLayout>

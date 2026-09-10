@@ -35,4 +35,12 @@
 			<enum name="getFile" value="1" />
 		</attr>
  	</declare-styleable>
+	
+	<declare-styleable name="SelectOptionItemView">
+		<attr name="selectOptionType" format="enum">
+			<enum name="radio" value="0"/>
+			<enum name="checkbox" value="1"/>
+			<enum name="complete" value="2"/>
+		</attr>
+	</declare-styleable>
 </resources>
