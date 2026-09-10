@@ -6,24 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.FrameLayout
-import android.widget.TextView
-import com.google.android.material.slider.Slider
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import com.google.android.material.textfield.TextInputLayout
-import com.unnebulous.consultapronta.databinding.FragmentHomeBinding
 import com.unnebulous.consultapronta.databinding.FragmentSymptomRegisterBinding
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-
-
 class SymptomRegister : Fragment() {
 
 	private var _binding: FragmentSymptomRegisterBinding? = null
+	private val binding get() = _binding!!
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 	private val timeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.time_format)) }
-	private val binding get() = _binding!!
+
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -147,6 +140,4 @@ class SymptomRegister : Fragment() {
 		super.onDestroyView()
 		_binding = null
 	}
-
-
 }

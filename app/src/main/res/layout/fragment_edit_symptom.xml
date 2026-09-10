@@ -13,12 +13,12 @@
 		android:paddingBottom="30dp">
 
 		<TextView
-			android:id="@+id/question_symptom"
+			android:id="@+id/question_edit_motive"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 
-			android:text="Qual o motivo da edição?"
+			android:text="@string/question_edition_motive"
 			android:textSize="14sp"
 
 			app:drawableStartCompat="@drawable/ic_asterisk"
@@ -28,17 +28,17 @@
 			/>
 
 		<EditText
-			android:id="@+id/question_symptom_area"
+			android:id="@+id/question_edit_area"
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="@drawable/shape_search_background"
 			android:layout_marginTop="@dimen/default_card_padding"
-			android:hint="Digite o motivo"
+			android:hint="@string/type_motive"
 			android:inputType="text"
 			android:autofillHints="symptons"
 
-			app:layout_constraintTop_toBottomOf="@id/question_symptom"
+			app:layout_constraintTop_toBottomOf="@id/question_edit_motive"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			/>
@@ -49,12 +49,12 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/default_screen_padding"
-			android:text="O que você está sentindo?"
+			android:text="@string/symptom_question"
 			android:textSize="14sp"
 
 			app:drawableStartCompat="@drawable/ic_asterisk"
 			app:drawableTint="@color/error"
-			app:layout_constraintTop_toBottomOf="@id/question_symptom_area"
+			app:layout_constraintTop_toBottomOf="@id/question_edit_area"
 			app:layout_constraintStart_toStartOf="parent"
 			/>
 
@@ -371,12 +371,13 @@
 			android:layout_width="match_parent"
 			android:layout_marginTop="@dimen/default_inner_elements_spacing"
 			android:layout_height="wrap_content"
-			android:text="Salvar Edição"
+			android:text="@string/save_edited"
 			android:textColor="@color/textDark"
 			android:insetBottom="0dp"
-			android:drawableStart="@drawable/ic_edit_square"
-			android:drawableTint="@color/primary"
 
+			app:icon="@drawable/ic_edit_square"
+			app:iconTint="@color/primaryDark"
+			app:iconGravity="textStart"
 			app:backgroundTint="@color/accent"
 			app:layout_constraintTop_toBottomOf="@id/image_upload"
 			app:layout_constraintStart_toStartOf="parent"

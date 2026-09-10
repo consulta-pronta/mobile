@@ -115,6 +115,7 @@
 	<string name="bottom_sheet_view_permission_title">Permissões de visualização</string>
 	<string name="save">Salvar</string>
 	<string name="title_register_page">Registrar Sintoma</string>
+	<string name="title_edit_page">Editar Sintoma</string>
 	<string name="question_symptom">O que você está sentindo?</string>
 	<string name="question_symptom_area">Resuma seus sintomas</string>
 	<string name="detail_symptom_area">Descreva seus sintomas com detalhes</string>
@@ -133,4 +134,8 @@
 	<string name="light">Leve (0)</string>
 	<string name="select_place">Selecione o local</string>
 	<string name="time_format">HH:mm</string>
+	<string name="question_edition_motive">Qual o motivo da edição?</string>
+	<string name="type_motive">Digite o motivo</string>
+	<string name="symptom_question">O que você está sentindo?</string>
+	<string name="save_edited">Salvar Edição</string>
 </resources>
