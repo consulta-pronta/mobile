@@ -140,4 +140,7 @@
 	<string name="save_edited">Salvar Edição</string>
 	<string name="exam_search_hint">Buscar exames</string>
 	<string name="see_exams_etc">Veja os exames que já foram concluídos ou que estão em processo.</string>
+	<string name="exams_info_placeholder">Nome do exame\nHospital</string>
+	<string name="result_text">Resultado</string>
+
 </resources>
