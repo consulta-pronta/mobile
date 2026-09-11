@@ -41,7 +41,8 @@
 			android:orientation="horizontal"
 
 			app:layout_constraintStart_toEndOf="@id/exam_icon"
-			app:layout_constraintTop_toBottomOf="@id/exam_info">
+			app:layout_constraintTop_toBottomOf="@id/exam_info"
+			app:layout_constraintEnd_toStartOf="@id/view_more">
 
 			<TextView
 				android:id="@+id/exam_hospital"
@@ -52,11 +53,13 @@
 				android:textColor="@color/primary"
 				/>
 
-			<Space
-				android:layout_width="10dp"
-				android:layout_height="10dp"
+			<View
+				android:layout_width="6dp"
+				android:layout_height="6dp"
+				android:layout_gravity="center_vertical"
+				android:layout_marginHorizontal="8dp"
 				android:background="@drawable/shape_circle_accent"
-				android:backgroundTint="@color/primaryDark"/>
+				android:backgroundTint="@color/primaryDark" />
 
 			<TextView
 				android:id="@+id/exam_date"
@@ -76,12 +79,15 @@
 		android:padding="10dp"
 		android:src="@drawable/ic_arrow_down"
 		android:background="@drawable/shape_circular_button"
+		android:rotation="0"
 
 		app:tint="@color/white"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
 
 	<GridLayout
+		android:id="@+id/exam_details"
+
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:columnCount="2"
@@ -92,6 +98,7 @@
 		app:layout_constraintTop_toBottomOf="@id/exam_icon"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
 
 		tools:visibility="visible">
 

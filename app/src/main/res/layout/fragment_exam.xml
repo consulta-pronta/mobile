@@ -42,6 +42,19 @@
 		app:layout_constraintTop_toBottomOf="@id/search"
 		/>
 
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/exam_cards"
 
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:orientation="vertical"
+		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+		app:layout_constraintTop_toBottomOf="@+id/informative"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

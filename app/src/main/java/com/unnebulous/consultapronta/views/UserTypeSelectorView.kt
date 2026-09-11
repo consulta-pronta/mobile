@@ -57,7 +57,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 				accentColor,
 				primaryDarkColor
 			).apply {
-				setDuration(animationDuration)
+				duration = animationDuration
 				start()
 			}
 
@@ -68,7 +68,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 				primaryDarkColor,
 				accentColor
 			).apply {
-				setDuration(animationDuration)
+				duration = animationDuration
 				start()
 			}
 
@@ -81,7 +81,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 				primaryDarkColor,
 				accentColor
 			).apply {
-				setDuration(animationDuration)
+				duration = animationDuration
 				start()
 			}
 
@@ -92,7 +92,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 				accentColor,
 				primaryDarkColor
 			).apply {
-				setDuration(animationDuration)
+				duration = animationDuration
 				start()
 			}
 		}
