@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<EditText
+		android:id="@+id/search"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/exam_search_hint"
+		android:textColorHint="@color/textDark60"
+		android:background="@drawable/shape_search_background"
+		android:drawableStart="@drawable/ic_search"
+		android:drawableTint="@color/textDark"
+		android:drawablePadding="10dp"
+		android:padding="15dp"
+		android:autofillHints="name"
+		android:textColor="@color/textDark"
+		android:inputType="text"
+
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+		android:id="@+id/informative"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@drawable/shape_thinner_rounded_stroke"
+		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+		android:text="@string/see_exams_etc"
+		android:textAlignment="textStart"
+		android:padding="12dp"
+		android:drawablePadding="7dp"
+
+		app:drawableStartCompat="@drawable/ic_shield"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/search"
+		/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
