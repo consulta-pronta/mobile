@@ -106,8 +106,11 @@ class SelectOptionItemView @JvmOverloads constructor(
 	private fun applyAttributes(attrs: AttributeSet) {
 		context.withStyledAttributes(attrs, R.styleable.SelectOptionItemView) {
 			val type = getColor(R.styleable.SelectOptionItemView_selectOptionType, 0)
-			val color = getColor(R.styleable.SelectOptionItemView_color, ContextCompat.getColor(context, R.color.textDark))
+			val color = getColor(R.styleable.SelectOptionItemView_textColor, ContextCompat.getColor(context, R.color.textDark))
 			val buttonColor = getColorStateList(R.styleable.SelectOptionItemView_buttonColor)
+			val optionIcon = getDrawable(R.styleable.SelectOptionItemView_completeLayoutIcon)
+			val text = getString(R.styleable.SelectOptionItemView_selectText)
+			val textSubtitle = getString(R.styleable.SelectOptionItemView_selectSubtitleText)
 
 			this@SelectOptionItemView.type = when (type) {
 				0 -> Utils.SelectOptionItemType.RADIO
@@ -118,6 +121,7 @@ class SelectOptionItemView @JvmOverloads constructor(
 
 			when (this@SelectOptionItemView.type) {
 				Utils.SelectOptionItemType.RADIO -> {
+					binding.itemRadioButton.text = text
 					binding.itemRadioButton.setTextColor(color)
 					buttonColor?.let {
 						binding.itemRadioButton.buttonTintList = it
@@ -125,6 +129,7 @@ class SelectOptionItemView @JvmOverloads constructor(
 				}
 
 				Utils.SelectOptionItemType.CHECKBOX -> {
+					binding.itemCheckboxButton.text = text
 					binding.itemCheckboxButton.setTextColor(color)
 					buttonColor?.let {
 						binding.itemCheckboxButton.buttonTintList = it
@@ -133,6 +138,9 @@ class SelectOptionItemView @JvmOverloads constructor(
 
 				Utils.SelectOptionItemType.COMPLETE -> {
 					binding.apply {
+						binding.title.text = text
+						binding.subtitle.text = textSubtitle
+						icon.setImageDrawable(optionIcon)
 						icon.setColorFilter(color)
 						title.setTextColor(color)
 						subtitle.setTextColor(color)

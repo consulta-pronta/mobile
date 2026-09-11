@@ -34,4 +34,20 @@
 		android:layout_height="wrap_content"
 		android:text="@string/auth_create_account_contact_forms_subtitle" />
 
+	<com.unnebulous.consultapronta.views.SelectOptionItemView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		app:selectOptionType="complete"
+		app:icon="@drawable/ic_email"
+		app:selectText="@string/input_email" />
+
+	<com.unnebulous.consultapronta.views.SelectOptionItemView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		app:selectOptionType="complete"
+		app:icon="@drawable/ic_email"
+		app:selectText="@string/input_email" />
+
 </LinearLayout>
