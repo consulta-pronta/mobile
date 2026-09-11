@@ -35,6 +35,14 @@ class Exam : Fragment() {
 	) {
 		super.onViewCreated(view, savedInstanceState)
 
+		updateHeader {
+			changeHeaderType(Utils.HeaderType.TITLED, true)
+			setScreenTitle(getString(R.string.title_register_page))
+			setGoBackButtonOnClickListener {
+				popBackStack()
+			}
+		}
+
 		binding.examCards.adapter = ExamListAdapter()
 
 		val spacing = resources.getDimensionPixelSize(

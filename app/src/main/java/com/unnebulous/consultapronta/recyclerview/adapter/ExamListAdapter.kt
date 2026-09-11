@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
 import com.unnebulous.consultapronta.databinding.CardExamBinding
 import android.animation.ValueAnimator
 import androidx.core.animation.doOnEnd
