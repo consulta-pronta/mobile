@@ -138,4 +138,6 @@
 	<string name="type_motive">Digite o motivo</string>
 	<string name="symptom_question">O que você está sentindo?</string>
 	<string name="save_edited">Salvar Edição</string>
+	<string name="detailed_explanation_hint">Explicação detalhada</string>
+	<string name="explain_command">Explique com mais detalhes</string>
 </resources>
