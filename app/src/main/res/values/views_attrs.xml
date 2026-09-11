@@ -42,5 +42,7 @@
 			<enum name="checkbox" value="1"/>
 			<enum name="complete" value="2"/>
 		</attr>
+		<attr name="color" format="color" />
+		<attr name="buttonColor" format="color" />
 	</declare-styleable>
 </resources>

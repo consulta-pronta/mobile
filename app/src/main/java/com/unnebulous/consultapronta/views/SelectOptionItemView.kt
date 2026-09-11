@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.SelectOptionItemViewBinding
@@ -13,7 +14,7 @@ import com.unnebulous.consultapronta.R
 
 class SelectOptionItemView @JvmOverloads constructor(
 	context: Context,
-	private val type: Utils.SelectOptionItemType = Utils.SelectOptionItemType.CHECKBOX,
+	private var type: Utils.SelectOptionItemType = Utils.SelectOptionItemType.CHECKBOX,
 	attrs: AttributeSet? = null,
 	defStyleAttr: Int = 0
 ): LinearLayout(context, attrs, defStyleAttr) {
@@ -104,7 +105,40 @@ class SelectOptionItemView @JvmOverloads constructor(
 
 	private fun applyAttributes(attrs: AttributeSet) {
 		context.withStyledAttributes(attrs, R.styleable.SelectOptionItemView) {
+			val type = getColor(R.styleable.SelectOptionItemView_selectOptionType, 0)
+			val color = getColor(R.styleable.SelectOptionItemView_color, ContextCompat.getColor(context, R.color.textDark))
+			val buttonColor = getColorStateList(R.styleable.SelectOptionItemView_buttonColor)
 
+			this@SelectOptionItemView.type = when (type) {
+				0 -> Utils.SelectOptionItemType.RADIO
+				1 -> Utils.SelectOptionItemType.CHECKBOX
+				2 -> Utils.SelectOptionItemType.COMPLETE
+				else -> Utils.SelectOptionItemType.RADIO
+			}
+
+			when (this@SelectOptionItemView.type) {
+				Utils.SelectOptionItemType.RADIO -> {
+					binding.itemRadioButton.setTextColor(color)
+					buttonColor?.let {
+						binding.itemRadioButton.buttonTintList = it
+					}
+				}
+
+				Utils.SelectOptionItemType.CHECKBOX -> {
+					binding.itemCheckboxButton.setTextColor(color)
+					buttonColor?.let {
+						binding.itemCheckboxButton.buttonTintList = it
+					}
+				}
+
+				Utils.SelectOptionItemType.COMPLETE -> {
+					binding.apply {
+						icon.setColorFilter(color)
+						title.setTextColor(color)
+						subtitle.setTextColor(color)
+					}
+				}
+			}
 		}
 	}
 }
