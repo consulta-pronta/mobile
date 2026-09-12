@@ -83,7 +83,7 @@ class GerarRelatorio : Fragment() {
 					)
 
 					for (professional in _examples) {
-						val option = SelectOptionItemView(requireContext(), Utils.SelectOptionItemType.CHECKBOX)
+						val option = SelectOptionItemView(requireContext(), type = Utils.SelectOptionItemType.CHECKBOX)
 						option.setTitle(professional.value)
 						option.itemId = professional.key
 						addView(option)

@@ -21,7 +21,7 @@ class AuthActivity : AppCompatActivity() {
 			// variável separada para permitir a troca de qual o fragmento será iniciado
 			var fragment: Fragment
 
-			fragment = Cadastro()
+			fragment = CadastroFormaContato()
 
 			changeFragment(fragment, R.id.fragment_container)
 		}

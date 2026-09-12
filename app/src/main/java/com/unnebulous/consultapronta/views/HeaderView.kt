@@ -29,7 +29,7 @@ class HeaderView @JvmOverloads constructor(
 		attrs?.let {
 			context.withStyledAttributes(attrs, R.styleable.HeaderView) {
 
-				headerType = if (getColor(R.styleable.HeaderView_headerType, 0) == 0) {
+				headerType = if (getInt(R.styleable.HeaderView_headerType, 0) == 0) {
 					Utils.HeaderType.COMPACT
 				} else {
 					Utils.HeaderType.TITLED

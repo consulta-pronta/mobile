@@ -47,5 +47,6 @@
 		<attr name="completeLayoutIcon" format="reference" />
 		<attr name="selectText" format="string" />
 		<attr name="selectSubtitleText" format="string" />
+		<attr name="showIconAsRaw" format="boolean" />
 	</declare-styleable>
 </resources>

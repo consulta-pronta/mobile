@@ -115,4 +115,7 @@
 	<string name="bottom_sheet_view_permission_title">Permissões de visualização</string>
 	<string name="save">Salvar</string>
 	<string name="auth_create_account_contact_forms_subtitle">Seleciona suas formas de contato (no mínimo uma)</string>
+	<string name="sms_contact_form">SMS</string>
+	<string name="whatsapp_contact_form">WhatsApp</string>
+	<string name="telegram_contact_form">Telegram</string>
 </resources>

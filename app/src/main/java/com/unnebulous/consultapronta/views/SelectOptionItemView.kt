@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
@@ -14,9 +15,9 @@ import com.unnebulous.consultapronta.R
 
 class SelectOptionItemView @JvmOverloads constructor(
 	context: Context,
-	private var type: Utils.SelectOptionItemType = Utils.SelectOptionItemType.CHECKBOX,
 	attrs: AttributeSet? = null,
-	defStyleAttr: Int = 0
+	defStyleAttr: Int = 0,
+	private var type: Utils.SelectOptionItemType = Utils.SelectOptionItemType.CHECKBOX
 ): LinearLayout(context, attrs, defStyleAttr) {
 	private val binding: SelectOptionItemViewBinding
 	private var isInflating = true
@@ -39,9 +40,9 @@ class SelectOptionItemView @JvmOverloads constructor(
 		isInflating = false
 	}
 
-	override fun addView(child: View?) {
+	override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
 		if (isInflating) {
-			super.addView(child)
+			super.addView(child, index, params)
 		} else {
 			addAside(child)
 		}
@@ -105,12 +106,13 @@ class SelectOptionItemView @JvmOverloads constructor(
 
 	private fun applyAttributes(attrs: AttributeSet) {
 		context.withStyledAttributes(attrs, R.styleable.SelectOptionItemView) {
-			val type = getColor(R.styleable.SelectOptionItemView_selectOptionType, 0)
+			val type = getInt(R.styleable.SelectOptionItemView_selectOptionType, 0)
 			val color = getColor(R.styleable.SelectOptionItemView_textColor, ContextCompat.getColor(context, R.color.textDark))
 			val buttonColor = getColorStateList(R.styleable.SelectOptionItemView_buttonColor)
 			val optionIcon = getDrawable(R.styleable.SelectOptionItemView_completeLayoutIcon)
 			val text = getString(R.styleable.SelectOptionItemView_selectText)
 			val textSubtitle = getString(R.styleable.SelectOptionItemView_selectSubtitleText)
+			val showIconAsRaw = getBoolean(R.styleable.SelectOptionItemView_showIconAsRaw, false)
 
 			this@SelectOptionItemView.type = when (type) {
 				0 -> Utils.SelectOptionItemType.RADIO
@@ -141,7 +143,12 @@ class SelectOptionItemView @JvmOverloads constructor(
 						binding.title.text = text
 						binding.subtitle.text = textSubtitle
 						icon.setImageDrawable(optionIcon)
-						icon.setColorFilter(color)
+						if (!showIconAsRaw) {
+							icon.setColorFilter(color)
+						}
+						if (showIconAsRaw) {
+							icon.imageTintList = null
+						}
 						title.setTextColor(color)
 						subtitle.setTextColor(color)
 					}
