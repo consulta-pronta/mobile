@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta.views
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,8 +24,7 @@ class NavbarView @JvmOverloads constructor(
 	private val binding: NavbarViewBinding
 	private var currentButton: Utils.NavbarButton = Utils.NavbarButton.FIRST
 		set(newButton) {
-			resetColors()
-			setColor(newButton, R.color.accent)
+			setActive(newButton)
 
 			field = newButton
 		}
@@ -33,11 +33,7 @@ class NavbarView @JvmOverloads constructor(
 		clipChildren = false
 		clipToPadding = false
 
-		binding = NavbarViewBinding.inflate(
-			LayoutInflater.from(context),
-			this,
-			true
-		)
+		binding = NavbarViewBinding.inflate(LayoutInflater.from(context), this, true)
 
 		attrs?.let {
 			applyAttributes(it)
@@ -106,6 +102,18 @@ class NavbarView @JvmOverloads constructor(
 		}
 	}
 
+	private fun setActive(who: Utils.NavbarButton) {
+		resetStyle()
+
+		if (who == Utils.NavbarButton.MAIN) {
+			val color = ContextCompat.getColor(context, R.color.black20)
+			getButtonByEnum(who).background.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+			return
+		} else {
+			setColor(who, R.color.accent)
+		}
+	}
+
 	private fun setColor(who: Utils.NavbarButton, color: Int) {
 		val variable = ContextCompat.getColor(context, color)
 
@@ -116,7 +124,8 @@ class NavbarView @JvmOverloads constructor(
 		}
 	}
 
-	private fun resetColors() {
+	private fun resetStyle() {
+		getButtonByEnum(Utils.NavbarButton.MAIN).background.clearColorFilter()
 		Utils.NavbarButton.entries.forEach { button ->
 			if (button !== Utils.NavbarButton.MAIN) {
 				setColor(button, R.color.textLight)
