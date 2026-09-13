@@ -5,8 +5,13 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlin.enums.enumEntries
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
 	supportFragmentManager
@@ -61,4 +66,16 @@ fun Context.clearCache() {
 		e.printStackTrace()
 		Log.e("ErroPronto", "Erro ao apagar cache", e)
 	}
+}
+
+fun Timestamp.toBrazilianLocale(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
+}
+
+inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
+	val value = get(field).toString()
+	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
 }

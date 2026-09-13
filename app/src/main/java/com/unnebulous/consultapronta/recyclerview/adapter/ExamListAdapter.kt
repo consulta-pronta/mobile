@@ -7,17 +7,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.databinding.CardExamBinding
 import android.animation.ValueAnimator
 import androidx.core.animation.doOnEnd
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import com.unnebulous.consultapronta.database.ExamModel
+import com.unnebulous.consultapronta.toBrazilianLocale
 
-class ExamListAdapter :
-	RecyclerView.Adapter<ExamListAdapter.ExamViewHolder>() {
+class ExamListAdapter: ListAdapter<ExamModel, ExamListAdapter.ExamViewHolder>(ExamComparator()) {
 
-	inner class ExamViewHolder(
+	class ExamViewHolder(
 		private val binding: CardExamBinding
 	) : RecyclerView.ViewHolder(binding.root) {
 
 		private var isExpanded = false
 
-		fun bind() {
+		fun bind(exam: ExamModel) {
+			binding.apply {
+				examInfo.text = exam.name
+				examHospital.text = exam.place
+				examDate.text = exam.date!!.toBrazilianLocale()
+				examState.text = exam.status.toString()
+			}
 
 			binding.viewMore.setOnClickListener {
 
@@ -105,20 +114,17 @@ class ExamListAdapter :
 		val binding = CardExamBinding.inflate(
 			LayoutInflater.from(parent.context),
 			parent,
-			false
-		)
+			false)
 
 		return ExamViewHolder(binding)
 	}
 
-	override fun onBindViewHolder(
-		holder: ExamViewHolder,
-		position: Int
-	) {
-		holder.bind()
+	override fun onBindViewHolder(holder: ExamViewHolder, position: Int) {
+		holder.bind(getItem(position))
 	}
 
-	override fun getItemCount(): Int {
-		return 10
+	class ExamComparator : DiffUtil.ItemCallback<ExamModel>() {
+		override fun areItemsTheSame(old: ExamModel, new: ExamModel) = old.id == new.id
+		override fun areContentsTheSame(old: ExamModel, new: ExamModel) = old == new
 	}
 }
