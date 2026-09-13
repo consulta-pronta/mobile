@@ -6,9 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.databinding.CardExamBinding
 import android.animation.ValueAnimator
+import android.content.res.ColorStateList
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
+import com.unnebulous.consultapronta.capitalizeFix
 import com.unnebulous.consultapronta.database.ExamModel
 import com.unnebulous.consultapronta.toBrazilianLocale
 
@@ -23,9 +29,39 @@ class ExamListAdapter: ListAdapter<ExamModel, ExamListAdapter.ExamViewHolder>(Ex
 		fun bind(exam: ExamModel) {
 			binding.apply {
 				examInfo.text = exam.name
-				examHospital.text = exam.place
+				examIcon.setImageResource(when (exam.type) {
+					"hemograma" -> R.drawable.ic_bloodtype
+					"radiografia" -> R.drawable.ic_radiology
+					"urina" -> R.drawable.ic_water_drop
+				        else -> R.drawable.ic_broken_image
+				})
+				examState.text = when (exam.status) {
+					Utils.ExamStatus.SOLICITADO -> "Agendado"
+					Utils.ExamStatus.TRIAGEM -> "Em andamento"
+					Utils.ExamStatus.LIBERADO -> "Resultado liberado"
+					Utils.ExamStatus.PENDENTE -> "Ação pendente"
+					null -> "Desconhecio"
+				}
+				examStateIcon.setImageResource(when (exam.status) {
+					Utils.ExamStatus.SOLICITADO -> R.drawable.ic_more_three_dots
+					Utils.ExamStatus.TRIAGEM -> R.drawable.ic_clock
+					Utils.ExamStatus.LIBERADO -> R.drawable.ic_check_circle
+					Utils.ExamStatus.PENDENTE -> R.drawable.ic_pending_actions
+					null -> R.drawable.ic_question_mark
+				})
+				examStateIcon.imageTintList = ColorStateList.valueOf(
+					ContextCompat.getColor(root.context, when (exam.status) {
+						Utils.ExamStatus.SOLICITADO -> R.color.primary
+						Utils.ExamStatus.TRIAGEM -> R.color.primary
+						Utils.ExamStatus.LIBERADO -> R.color.success
+						Utils.ExamStatus.PENDENTE -> R.color.primary
+						null -> R.color.error
+					}
+					)
+				)
+				examCategory.text = exam.category.toString().capitalizeFix()
 				examDate.text = exam.date!!.toBrazilianLocale()
-				examState.text = exam.status.toString()
+				examHospital.text = exam.place
 			}
 
 			binding.viewMore.setOnClickListener {

@@ -11,6 +11,7 @@ import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.Locale.getDefault
 import kotlin.enums.enumEntries
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
@@ -78,4 +79,8 @@ fun Timestamp.toBrazilianLocale(): String {
 inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
 	val value = get(field).toString()
 	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+}
+
+fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
+	if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString()
 }
