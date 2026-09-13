@@ -45,7 +45,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 			binding.apply {
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description
-				symptomDateText.text = symptom.dateTime.let { timestamp ->
+				symptomDateText.text = symptom.date_time.let { timestamp ->
 					val date = timestamp!!.toDate()
 					val locale = Locale.forLanguageTag("pt-BR")
 

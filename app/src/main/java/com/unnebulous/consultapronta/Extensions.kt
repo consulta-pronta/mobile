@@ -5,8 +5,11 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.Timestamp
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
 	supportFragmentManager
@@ -62,3 +65,6 @@ fun Context.clearCache() {
 		Log.e("ErroPronto", "Erro ao apagar cache", e)
 	}
 }
+
+fun LocalDateTime.toFirestoreTimestamp() =
+	Timestamp(atZone(ZoneId.systemDefault()).toInstant())

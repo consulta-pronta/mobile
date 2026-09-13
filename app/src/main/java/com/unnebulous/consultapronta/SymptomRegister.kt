@@ -1,13 +1,19 @@
 package com.unnebulous.consultapronta
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.google.firebase.firestore.FieldValue
+import com.unnebulous.consultapronta.database.DatabaseController
+import com.unnebulous.consultapronta.database.SymptomData
 import com.unnebulous.consultapronta.databinding.FragmentSymptomRegisterBinding
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 class SymptomRegister : Fragment() {
@@ -16,6 +22,9 @@ class SymptomRegister : Fragment() {
 	private val binding get() = _binding!!
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 	private val timeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.time_format)) }
+
+	private lateinit var localDate: LocalDate
+	private lateinit var localTime: LocalTime
 
 
 	override fun onCreateView(
@@ -113,6 +122,8 @@ class SymptomRegister : Fragment() {
 
 		binding.dateSelect.setOnClickListener {
 			Utils.showDatePicker(this) { date ->
+				localDate = date
+
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -125,6 +136,8 @@ class SymptomRegister : Fragment() {
 
 		binding.timeSelect.setOnClickListener {
 			Utils.showTimePicker(this) { time ->
+				localTime = time
+
 				val buttonText = if (LocalTime.now().equals(time)) {
 					getString(R.string.time_format)
 				} else {
@@ -133,6 +146,31 @@ class SymptomRegister : Fragment() {
 
 				binding.timeSelect.text = buttonText
 			}
+		}
+
+		binding.symptomRegister.setOnClickListener {
+			val symptomDoc = binding.run {
+				SymptomData(
+					title = questionSymptomArea.text.toString(),
+					description = detailSymptomArea.text.toString(),
+					date_time = LocalDateTime.of(localDate, localTime)
+						.toFirestoreTimestamp(),
+					place = bodyPartSpinner.text.toString(),
+					intensity = intensitySlider.value.toInt(),
+					created_at = FieldValue.serverTimestamp(),
+				)
+			}
+
+			DatabaseController.userCollection("symptom")
+				.add(symptomDoc)
+				.addOnSuccessListener {
+					Log.i("symptom", "addSymptomDocument:success")
+
+					popBackStack()
+				}
+				.addOnFailureListener { e ->
+					Log.w("symptom", "addSymptomDocument:failure", e)
+				}
 		}
 	}
 
