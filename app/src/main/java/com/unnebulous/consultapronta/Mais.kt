@@ -58,8 +58,7 @@ class Mais : Fragment() {
 				Home()
 			},
 			MenuOption(R.drawable.ic_exams, R.string.my_exams_text) {
-				// TODO: INSTANCIAR TELA DE MEUS EXAMES
-				Home()
+				Exam()
 			},
 			MenuOption(R.drawable.ic_pill, R.string.my_medicines_text) {
 				// TODO: INSTANCIAR TELA DE MEUS MEDICAMENTOS

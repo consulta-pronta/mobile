@@ -68,7 +68,8 @@
 
 		app:layout_constraintTop_toBottomOf="@+id/order"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toEndOf="parent" />
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

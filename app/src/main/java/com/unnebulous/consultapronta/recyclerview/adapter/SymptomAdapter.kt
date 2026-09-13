@@ -8,17 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.CardSymptomBinding
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.unnebulous.consultapronta.toBrazilianLocale
 
 class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(SymptomComparator()) {
 	enum class SymptomViewType { COMPACT, DETAILED }
 
 	lateinit var onClick: (Symptom) -> Unit
-
-	override fun getItemViewType(position: Int): Int {
-		return super.getItemViewType(position)
-	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomViewHolder {
 		val binding = CardSymptomBinding.inflate(
@@ -41,16 +36,11 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 	}
 
 	class SymptomViewHolder(private val binding: CardSymptomBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(symptom: Symptom, onCLick: (Symptom) -> Unit) {
+		fun bind(symptom: Symptom, onClick: (Symptom) -> Unit) {
 			binding.apply {
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description
-				symptomDateText.text = symptom.dateTime.let { timestamp ->
-					val date = timestamp!!.toDate()
-					val locale = Locale.forLanguageTag("pt-BR")
-
-					SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
-				}
+				symptomDateText.text = symptom.dateTime!!.toBrazilianLocale()
 				intensityView.setIntensity(symptom.intensity)
 				placeView.setLocation(symptom.place)
 
@@ -58,7 +48,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 				symptomAnnexesQuantityText.visibility = View.GONE
 				editButton.visibility = View.GONE
 
-				root.setOnClickListener { onCLick(symptom) }
+				root.setOnClickListener { onClick(symptom) }
 			}
 		}
 	}
