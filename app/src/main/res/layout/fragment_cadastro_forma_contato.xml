@@ -47,13 +47,14 @@
 			android:text="@string/auth_create_account_contact_forms_subtitle" />
 
 		<com.unnebulous.consultapronta.views.SelectOptionItemView
+			android:id="@+id/email_option"
+
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
 			app:selectOptionType="complete"
 			app:textColor="@color/textLight"
 			app:completeLayoutIcon="@drawable/ic_email"
-			app:selectSubtitleText="@string/not_available"
 			app:selectText="@string/input_email" >
 			<androidx.appcompat.widget.SwitchCompat
 				android:id="@+id/switch_email"
@@ -68,13 +69,14 @@
 		</com.unnebulous.consultapronta.views.SelectOptionItemView>
 
 		<com.unnebulous.consultapronta.views.SelectOptionItemView
+			android:id="@+id/sms_option"
+
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
 			app:selectOptionType="complete"
 			app:textColor="@color/textLight"
 			app:completeLayoutIcon="@drawable/ic_sms"
-			app:selectSubtitleText="@string/not_available"
 			app:selectText="@string/sms_contact_form" >
 			<androidx.appcompat.widget.SwitchCompat
 				android:id="@+id/switch_sms"
@@ -98,7 +100,6 @@
 			app:textColor="@color/textLight"
 			app:showIconAsRaw="true"
 			app:completeLayoutIcon="@drawable/ic_whatsapp_app"
-			app:selectSubtitleText="@string/not_available"
 			app:selectText="@string/whatsapp_contact_form" >
 
 			<androidx.appcompat.widget.SwitchCompat
@@ -115,6 +116,8 @@
 		</com.unnebulous.consultapronta.views.SelectOptionItemView>
 
 		<com.unnebulous.consultapronta.views.SelectOptionItemView
+			android:id="@+id/telegram_option"
+
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
@@ -122,7 +125,6 @@
 			app:textColor="@color/textLight"
 			app:showIconAsRaw="true"
 			app:completeLayoutIcon="@drawable/ic_telegram_app"
-			app:selectSubtitleText="@string/not_available"
 			app:selectText="@string/telegram_contact_form" >
 			<androidx.appcompat.widget.SwitchCompat
 				android:id="@+id/switch_telegram"

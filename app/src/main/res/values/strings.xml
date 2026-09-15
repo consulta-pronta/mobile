@@ -118,4 +118,6 @@
 	<string name="sms_contact_form">SMS</string>
 	<string name="whatsapp_contact_form">WhatsApp</string>
 	<string name="telegram_contact_form">Telegram</string>
+	<string name="type_contact_form">Digite a forma de contato</string>
+	<string name="register_contact_form">Registrar forma de contato</string>
 </resources>

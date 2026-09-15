@@ -40,7 +40,8 @@
 
 			android:layout_width="40dp"
 			android:layout_height="40dp"
-			android:tint="@color/textDark"
+
+			app:tint="@color/textDark"
 
 			tools:src="@drawable/ic_info" />
 
@@ -75,6 +76,7 @@
 		android:orientation="horizontal"
 		android:showDividers="middle"
 		android:divider="@drawable/divider_default_vertical"
+		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
 		app:layout_constraintTop_toBottomOf="@id/body"
 		app:layout_constraintEnd_toEndOf="parent">
