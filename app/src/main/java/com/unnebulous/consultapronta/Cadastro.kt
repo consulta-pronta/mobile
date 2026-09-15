@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.gms.tasks.Task
@@ -29,15 +30,6 @@ class Cadastro : Fragment() {
 
 	private var _binding: FragmentCadastroBinding? = null
 	private val binding get() = _binding!!
-	private lateinit var auth: FirebaseAuth
-	private lateinit var db: FirebaseFirestore
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		db = Firebase.firestore
-		auth = Firebase.auth
-	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -66,6 +58,7 @@ class Cadastro : Fragment() {
 
 		binding.createAccountButton.setOnClickListener {
 			val name = binding.nameInput.text.toString()
+			userType = binding.userTypeSwitch.userType
 			val cpf = binding.cpfInput.text.toString()
 			val email = binding.emailInput.text.toString()
 			val phoneNumber = binding.phoneNumberInput.text.toString()
@@ -84,8 +77,19 @@ class Cadastro : Fragment() {
 			}
 
 			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank) {
-				auth.createUserWithEmailAndPassword(email, password)
-					.addOnCompleteListener { task -> handlePostSignUp(task) }
+				(activity as AuthActivity).userTemp.apply {
+					this.name = name
+					this.userType = userType
+					this.cpf = cpf
+					this.email = email
+					this.phoneNumber = phoneNumber
+					this.password = password
+
+					this.contactForms["email"] = this.email
+					this.contactForms["sms"] = this.phoneNumber
+				}
+
+				changeFragmentWithBackStack(CadastroFormaContato())
 			} else {
 				val error = if (oneOrMoreInputBlank) {
 					getString(R.string.error_blank_input)
@@ -178,39 +182,5 @@ class Cadastro : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
-	}
-
-	private fun handlePostSignUp(task: Task<AuthResult>) {
-		if (!task.isSuccessful) {
-			Log.w("auth", "signUpWithEmail:failure", task.exception)
-			return
-		}
-		Log.i("auth", "signUpWithEmail:success")
-
-		val user = task.result.user!!
-		val creationTime = user.metadata?.creationTimestamp
-
-		val userDocument = User(
-			name = binding.nameInput.text.toString(),
-			email = user.email!!,
-			phone = binding.phoneNumberInput.text.toString(),
-			cpf = binding.cpfInput.text.toString(),
-			user_type = binding.userTypeSwitch.userType.toString().lowercase(),
-			created_at = Timestamp(Date(creationTime!!))
-		)
-
-		db.collection("users")
-			.document(user.uid)
-			.set(userDocument)
-			.addOnSuccessListener {
-				Log.i("auth", "setUserDocument:success")
-
-				val activity = requireActivity()
-				startActivity(Intent(activity, MainActivity::class.java))
-				activity.finish()
-			}
-			.addOnFailureListener { e ->
-				Log.w("auth", "setUserDocument:failure", e)
-			}
 	}
 }
