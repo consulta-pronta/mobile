@@ -120,4 +120,10 @@
 	<string name="telegram_contact_form">Telegram</string>
 	<string name="type_contact_form">Digite a forma de contato</string>
 	<string name="register_contact_form">Registrar forma de contato</string>
+	<string name="auth_create_account_contact_forms_verification_subtitle">Iremos enviar um código para cada forma de contato selecionado</string>
+	<string name="type_code_send">Digite o código enviado por\ </string>
+	<string name="verify_code">Verificar código</string>
+	<string name="verify">Verificar</string>
+	<string name="code_delay_advice">Você pode levar alguns instantes para receber o código.</string>
+	<string name="click_to_resend">Clique aqui para enviar outro código</string>
 </resources>

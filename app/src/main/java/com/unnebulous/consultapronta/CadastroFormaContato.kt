@@ -42,6 +42,15 @@ class CadastroFormaContato : Fragment() {
 		configSmsSwitch()
 		configWhatsappSwitch()
 		configTelegramSwitch()
+
+		binding.verifyButton.setOnClickListener {
+			binding.contentBody.visibility = View.GONE
+			binding.contentBodyVerification.visibility = View.VISIBLE
+		}
+
+		binding.verifyCodeButton.setOnClickListener {
+
+		}
 	}
 
 	private fun configEmailSwitch() {

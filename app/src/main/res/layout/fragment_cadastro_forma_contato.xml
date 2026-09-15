@@ -29,6 +29,7 @@
 		android:orientation="vertical"
 		android:showDividers="middle"
 		android:padding="@dimen/default_screen_padding"
+		android:visibility="gone"
 
 		app:layout_constraintTop_toBottomOf="@id/header"
 		app:layout_constraintBottom_toBottomOf="parent"
@@ -138,8 +139,117 @@
 				app:thumbTint="@color/textLight" />
 		</com.unnebulous.consultapronta.views.SelectOptionItemView>
 
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="1" />
+
+		<Button
+			android:id="@+id/verify_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="32dp"
+			android:text="@string/verify"
+			android:textColor="@color/primaryDark"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/accent"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
+
 	</LinearLayout>
 
+	<LinearLayout
+		android:id="@+id/content_body_verification"
 
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:divider="@drawable/divider_default"
+		android:orientation="vertical"
+		android:showDividers="middle"
+		android:padding="@dimen/default_screen_padding"
+
+		app:layout_constraintTop_toBottomOf="@id/header"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/create_account"
+			android:textSize="28sp"
+			android:textStyle="bold" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/auth_create_account_contact_forms_verification_subtitle" />
+
+		<LinearLayout
+			android:id="@+id/code_titles_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:showDividers="middle"
+			android:divider="@drawable/divider_list">
+			<TextView
+				android:id="@+id/code_title"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/accent"
+				android:textSize="20sp"
+
+				tools:text="@string/placeholder" />
+		</LinearLayout>
+
+		<com.unnebulous.consultapronta.views.VerificationCodeView
+			android:id="@+id/verification_code"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			app:codeLength="6" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/code_delay_advice"/>
+
+		<Button
+			style="@style/Widget.Material3.Button.TextButton"
+
+			android:id="@+id/resend_code_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/click_to_resend"
+			android:textColor="@color/accent"
+
+			app:icon="@drawable/ic_refresh"
+			app:iconGravity="textStart"
+			app:iconSize="30dp"
+			app:iconTint="@color/accent" />
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="1" />
+
+		<Button
+			android:id="@+id/verify_code_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="32dp"
+			android:text="@string/verify_code"
+			android:textColor="@color/primaryDark"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/accent"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
+
+	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
