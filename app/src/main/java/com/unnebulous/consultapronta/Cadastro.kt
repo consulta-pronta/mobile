@@ -66,7 +66,7 @@ class Cadastro : Fragment() {
 
 		binding.createAccountButton.setOnClickListener {
 			val name = binding.nameInput.text.toString()
-			val cpf = binding.nameInput.text.toString()
+			val cpf = binding.cpfInput.text.toString()
 			val email = binding.emailInput.text.toString()
 			val phoneNumber = binding.phoneNumberInput.text.toString()
 			val password = binding.passwordInput.text.toString()
@@ -170,6 +170,9 @@ class Cadastro : Fragment() {
 		binding.sendCrmButton.setOnClickListener {
 			changeFragmentWithBackStack(EnviarCrm())
 		}
+
+		binding.cpfInput.addTextChangedListener(Utils.buildCpfMask())
+		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
 	}
 
 	override fun onDestroyView() {

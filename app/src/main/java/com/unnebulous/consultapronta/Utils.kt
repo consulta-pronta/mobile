@@ -1,5 +1,7 @@
 package com.unnebulous.consultapronta
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
@@ -70,5 +72,49 @@ object Utils {
 		}
 
 		timePicker.show(fragment.parentFragmentManager, "time_picker")
+	}
+
+	fun buildCpfMask(): MaskWatcher = MaskWatcher("###.###.###-##")
+	fun buildPhoneMask(): MaskWatcher = MaskWatcher("(##) #####-####")
+
+	class MaskWatcher(private val mask: String) : TextWatcher {
+		private var isUpdating: Boolean = false
+		private var old = ""
+
+		override fun afterTextChanged(s: Editable?) {}
+
+		override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+		override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+			val str = unmask(s.toString())
+			var mascara = ""
+
+			if (isUpdating) {
+				old = str
+				isUpdating = false
+				return
+			}
+
+			var i = 0
+			for (m in mask.toCharArray()) {
+				if (m != '#' && str.length > old.length) {
+					mascara += m
+					continue
+				}
+				try {
+					mascara += str[i]
+				} catch (e: Exception) {
+					break
+				}
+				i++
+			}
+
+			isUpdating = true
+			(s as? Editable)?.replace(0, s.length, mascara)
+		}
+
+		private fun unmask(s: String): String {
+			return s.replace("[^0-9]*".toRegex(), "")
+		}
 	}
 }

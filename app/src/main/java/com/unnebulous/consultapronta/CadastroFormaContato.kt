@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
+import android.content.res.ColorStateList
 import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -72,6 +73,7 @@ class CadastroFormaContato : Fragment() {
 						hint = getString(R.string.type_contact_form)
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
 					}
 
 					dialogBinding.body.addView(input)
@@ -137,6 +139,8 @@ class CadastroFormaContato : Fragment() {
 						hint = getString(R.string.type_contact_form)
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+						addTextChangedListener(Utils.buildPhoneMask())
 					}
 
 					dialogBinding.body.addView(input)
@@ -202,6 +206,8 @@ class CadastroFormaContato : Fragment() {
 						hint = getString(R.string.type_contact_form)
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+						addTextChangedListener(Utils.buildPhoneMask())
 					}
 
 					dialogBinding.body.addView(input)
@@ -267,6 +273,8 @@ class CadastroFormaContato : Fragment() {
 						hint = getString(R.string.type_contact_form)
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+						addTextChangedListener(Utils.buildPhoneMask())
 					}
 
 					dialogBinding.body.addView(input)
