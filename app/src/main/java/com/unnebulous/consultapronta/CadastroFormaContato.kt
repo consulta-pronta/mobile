@@ -1,5 +1,6 @@
 package com.unnebulous.consultapronta
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.content.res.ColorStateList
@@ -82,8 +83,15 @@ class CadastroFormaContato : Fragment() {
 		}
 
 		binding.verifyButton.setOnClickListener {
+			showSnackbar("Hell yeah")
+			//val activity = requireActivity()
+			//startActivity(Intent(activity, MainActivity::class.java))
+			//activity.finish()
+
+			/*
 			binding.contentBody.visibility = View.GONE
 			binding.contentBodyVerification.visibility = View.VISIBLE
+			* */
 		}
 
 		binding.verifyCodeButton.setOnClickListener {
