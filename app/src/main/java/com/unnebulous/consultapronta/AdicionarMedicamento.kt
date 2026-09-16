@@ -33,7 +33,7 @@ class AdicionarMedicamento : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
-			setScreenTitle(getString(R.string.medications_screen_title))
+			setScreenTitle(getString(R.string.register_medications_screen_title))
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
