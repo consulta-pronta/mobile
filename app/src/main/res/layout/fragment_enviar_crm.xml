@@ -46,6 +46,8 @@
 			android:text="@string/send_crm_subtitle" />
 
 		<com.unnebulous.consultapronta.views.FileInputView
+			android:id="@+id/file_input"
+
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 

@@ -30,6 +30,10 @@ class Home : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
+
+		binding.thirdButton.setOnClickListener {
+			changeFragmentWithBackStack(MedicamentosListagem())
+		}
 	}
 
 	override fun onDestroyView() {

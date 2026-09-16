@@ -27,6 +27,9 @@ class MedicamentosListagem : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
 			setScreenTitle(getString(R.string.medications_screen_title))
+			setGoBackButtonOnClickListener {
+				popBackStack()
+			}
 		}
 
 		val adapter = MedicationAdapter()
@@ -34,7 +37,7 @@ class MedicamentosListagem : Fragment() {
 		binding.recyclerview.adapter = adapter
 
 		binding.addNewMedication.setOnClickListener {
-
+			changeFragmentWithBackStack(AdicionarMedicamento())
 		}
 	}
 

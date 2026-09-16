@@ -130,4 +130,13 @@
 	<string name="search_medications_hint">Buscar medicamentos</string>
 	<string name="medications_check_advice">Marque diariamente a caixa após o uso de medicamento.</string>
 	<string name="medications_title">Medicamentos</string>
+	<string name="medication_name">Nome do medicamento</string>
+	<string name="medication_name_hint">Escreva o nome do medicamento</string>
+	<string name="type_consumption">Tipo de consumo</string>
+	<string name="type_consumption_hint">Selecione o consumo</string>
+	<string name="usage_time">De quantas em quantas horas</string>
+	<string name="time_not_selected">--:--</string>
+	<string name="photo">Foto</string>
+	<string name="photo_or_annex">Tirar foto ou anexar imagem</string>
+	<string name="register_medication">Registrar medicamento</string>
 </resources>
