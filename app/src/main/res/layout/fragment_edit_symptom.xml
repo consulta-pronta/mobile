@@ -394,7 +394,7 @@
 		</LinearLayout>
 
 		<Button
-			android:id="@+id/symptom_register"
+			android:id="@+id/button_submit"
 
 			android:layout_width="match_parent"
 			android:layout_marginTop="@dimen/default_inner_elements_spacing"
