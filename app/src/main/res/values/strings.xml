@@ -126,4 +126,8 @@
 	<string name="verify">Verificar</string>
 	<string name="code_delay_advice">Você pode levar alguns instantes para receber o código.</string>
 	<string name="click_to_resend">Clique aqui para enviar outro código</string>
+	<string name="medications_screen_title">Meus medicamentos</string>
+	<string name="search_medications_hint">Buscar medicamentos</string>
+	<string name="medications_check_advice">Marque diariamente a caixa após o uso de medicamento.</string>
+	<string name="medications_title">Medicamentos</string>
 </resources>
