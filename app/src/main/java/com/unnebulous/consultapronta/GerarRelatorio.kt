@@ -7,9 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.lifecycle.lifecycleScope
+import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentGerarRelatorioBinding
 import com.unnebulous.consultapronta.views.SelectOptionItemView
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -17,7 +21,7 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	// TODO: substituir após o término da branch
+	// TODO: Teoricamente usar esse comentado se conseguir sem dar erro
 	// private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 
@@ -99,6 +103,24 @@ class GerarRelatorio : Fragment() {
 
 					dialog.dismiss()
 				}
+			}
+		}
+
+		binding.generateReportButton.setOnClickListener {
+			viewLifecycleOwner.lifecycleScope.launch {
+				try {
+//					val userDoc = DatabaseManager
+//						.userCollection("symptom")
+//						.get()
+//						.await()
+
+//					if (!userDoc.isEmpty) {
+//						Log.i("teste", userDoc.documents.toString())
+//					}
+				} catch (e: Exception) {
+					Log.w("report", "createReport:failure", e)
+				}
+
 			}
 		}
 	}
