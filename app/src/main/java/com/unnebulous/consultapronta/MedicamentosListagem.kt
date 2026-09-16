@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.unnebulous.consultapronta.databinding.FragmentMedicamentosListagemBinding
+import com.unnebulous.consultapronta.recyclerview.adapter.MedicationAdapter
 
 class MedicamentosListagem : Fragment() {
 
@@ -26,6 +27,14 @@ class MedicamentosListagem : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
 			setScreenTitle(getString(R.string.medications_screen_title))
+		}
+
+		val adapter = MedicationAdapter()
+
+		binding.recyclerview.adapter = adapter
+
+		binding.addNewMedication.setOnClickListener {
+
 		}
 	}
 
