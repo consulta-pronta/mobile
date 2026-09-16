@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.unnebulous.consultapronta.databinding.FragmentMaisBinding
+import com.unnebulous.consultapronta.showSnackbar
 import com.unnebulous.consultapronta.views.OptionItemView
 
 class Mais : Fragment() {
@@ -42,7 +44,8 @@ class Mais : Fragment() {
 		binding.apply {
 			cleanCacheButton.setOnClickListener {
 				requireContext().clearCache()
-				Toast.makeText(context, getString(R.string.succesfully_cache_deleted), Toast.LENGTH_SHORT).show()
+				showSnackbar(getString(R.string.succesfully_cache_deleted), Utils.SnackBarType.SUCCESS,
+					Snackbar.LENGTH_SHORT)
 			}
 		}
 	}

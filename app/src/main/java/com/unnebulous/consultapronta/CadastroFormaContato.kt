@@ -83,11 +83,11 @@ class CadastroFormaContato : Fragment() {
 		}
 
 		binding.verifyButton.setOnClickListener {
-			showSnackbar("Hell yeah")
-			//val activity = requireActivity()
-			//startActivity(Intent(activity, MainActivity::class.java))
-			//activity.finish()
+			val activity = requireActivity()
+			startActivity(Intent(activity, MainActivity::class.java))
+			activity.finish()
 
+			// TODO: após adicionar backend, remover
 			/*
 			binding.contentBody.visibility = View.GONE
 			binding.contentBodyVerification.visibility = View.VISIBLE

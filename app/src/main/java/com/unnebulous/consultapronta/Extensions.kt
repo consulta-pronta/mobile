@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta
 
 import android.app.ActionBar
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -71,27 +72,27 @@ fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding, BottomSheetDial
 
 fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.SnackBarType.INFO, duration: Int = Snackbar.LENGTH_LONG) {
 	var drawable: Drawable?
-	var color: Int
+	var color: ColorStateList?
 
 	when (type) {
 		Utils.SnackBarType.INFO -> {
 			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_info)
-			color = ContextCompat.getColor(requireContext(), R.color.neutral)
+			color = ContextCompat.getColorStateList(requireContext(), R.color.neutral)
 		}
 
 		Utils.SnackBarType.SUCCESS -> {
 			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
-			color = ContextCompat.getColor(requireContext(), R.color.success)
+			color = ContextCompat.getColorStateList(requireContext(), R.color.success)
 		}
 
 		Utils.SnackBarType.WARNING -> {
 			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_warning)
-			color = ContextCompat.getColor(requireContext(), R.color.warning)
+			color = ContextCompat.getColorStateList(requireContext(), R.color.warning)
 		}
 
 		Utils.SnackBarType.DANGER -> {
 			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_danger)
-			color = ContextCompat.getColor(requireContext(), R.color.error)
+			color = ContextCompat.getColorStateList(requireContext(), R.color.error)
 		}
 	}
 
@@ -101,9 +102,9 @@ fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.Snac
 	val snackbarBinding = SnackbarBinding.inflate(layoutInflater)
 
 	textView.visibility = View.INVISIBLE
-	snackbarBinding.toastText.text = message
-	snackbarBinding.toastIcon.setImageDrawable(drawable)
-	snackbarBinding.toastIcon.setBackgroundColor(color)
+	snackbarBinding.snackbarText.text = message
+	snackbarBinding.snackbarIcon.setImageDrawable(drawable)
+	snackbarBinding.snackbarIcon.backgroundTintList = color
 
 	snackbarView.setPadding(0, 0, 0, 250)
 	snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))

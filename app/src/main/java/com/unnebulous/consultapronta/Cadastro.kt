@@ -99,7 +99,7 @@ class Cadastro : Fragment() {
 					getString(R.string.error_password_not_the_same)
 				}
 
-				Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+				showSnackbar(error, Utils.SnackBarType.DANGER)
 			}
 		}
 
