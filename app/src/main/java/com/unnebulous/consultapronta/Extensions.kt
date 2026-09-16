@@ -1,6 +1,9 @@
 package com.unnebulous.consultapronta
 
+import android.app.ActionBar
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,7 +14,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
-import com.unnebulous.consultapronta.databinding.ToastBinding
+import androidx.core.view.children
+import com.bumptech.glide.util.Util
+import com.unnebulous.consultapronta.databinding.SnackbarBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -64,26 +69,47 @@ fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding, BottomSheetDial
 	dialog.show()
 }
 
-fun Fragment.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_LONG) {
-	Log.i("TestePronto", "snackbar")
+fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.SnackBarType.INFO, duration: Int = Snackbar.LENGTH_LONG) {
+	var drawable: Drawable?
+	var color: Int
+
+	when (type) {
+		Utils.SnackBarType.INFO -> {
+			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_info)
+			color = ContextCompat.getColor(requireContext(), R.color.neutral)
+		}
+
+		Utils.SnackBarType.SUCCESS -> {
+			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+			color = ContextCompat.getColor(requireContext(), R.color.success)
+		}
+
+		Utils.SnackBarType.WARNING -> {
+			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_warning)
+			color = ContextCompat.getColor(requireContext(), R.color.warning)
+		}
+
+		Utils.SnackBarType.DANGER -> {
+			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_danger)
+			color = ContextCompat.getColor(requireContext(), R.color.error)
+		}
+	}
 
 	val snackbar = Snackbar.make(requireView(), "", duration)
 	val snackbarView = snackbar.view as ViewGroup
-
-	// Esconde o texto padrão do Snackbar
 	val textView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+	val snackbarBinding = SnackbarBinding.inflate(layoutInflater)
+
 	textView.visibility = View.INVISIBLE
+	snackbarBinding.toastText.text = message
+	snackbarBinding.toastIcon.setImageDrawable(drawable)
+	snackbarBinding.toastIcon.setBackgroundColor(color)
 
-	// Infla o seu layout customizado (toast.xml)
-	val customBinding = ToastBinding.inflate(layoutInflater)
-	customBinding.toastText.text = message
-
-	// Remove paddings e o fundo padrão para usar o seu drawable arredondado
-	snackbarView.setPadding(0, 0, 0, 0)
+	snackbarView.setPadding(0, 0, 0, 250)
 	snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
-	snackbarView.background = null
-	
-	snackbarView.addView(customBinding.root, 0)
+	snackbarView.removeAllViews()
+	snackbarView.addView(snackbarBinding.root, 0)
+
 	snackbar.show()
 }
 

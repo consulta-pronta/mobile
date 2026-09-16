@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -14,12 +14,15 @@
 	<ImageView
 		android:id="@+id/toast_icon"
 
-		android:layout_width="35dp"
-		android:layout_height="35dp"
-		android:background="@color/success"
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		android:background="@drawable/shape_left_rounded_background"
+		android:backgroundTint="@color/success"
 		android:padding="5dp"
 
 		app:tint="@color/textLight"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
 
 		tools:src="@drawable/ic_info" />
 
@@ -30,6 +33,10 @@
 		android:layout_height="wrap_content"
 		android:layout_marginStart="@dimen/default_inner_elements_spacing"
 
+		app:layout_constraintStart_toEndOf="@id/toast_icon"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+
 		tools:text="@string/placeholder" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
