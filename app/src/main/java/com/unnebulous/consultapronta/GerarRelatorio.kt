@@ -13,6 +13,7 @@ import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentGerarRelatorioBinding
+import com.unnebulous.consultapronta.views.OptionItemView
 import com.unnebulous.consultapronta.views.SelectOptionItemView
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -23,13 +24,12 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	// TODO: Teoricamente usar esse comentado se conseguir sem dar erro
-	// private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
-	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
+	private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
 
 	private var periodStartDate = Timestamp.now()
 	private var periodEndDate = Timestamp.now()
 	private var professionalList = ArrayList<String>()
+	private var symptomList = emptyList<Symptom>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -111,6 +111,26 @@ class GerarRelatorio : Fragment() {
 			}
 		}
 
+		binding.viewSymptomsIncluded.setOnClickListener {
+			configBottomSheet { dialogBinding, dialog ->
+				dialogBinding.icon.setImageResource(R.drawable.ic_history)
+				dialogBinding.title.text = getString(R.string.symptoms_included)
+				dialogBinding.positiveButton.visibility = View.INVISIBLE
+				dialogBinding.negativeButton.text = "Fechar"
+
+				dialogBinding.body.apply {
+					for (symptom in symptomList) {
+						val item = OptionItemView(requireContext())
+						item.setText(symptom.title)
+						item.setArrowVisibilityTo(false)
+
+						addView(item)
+					}
+				}
+
+			}
+		}
+
 		binding.generateReportButton.setOnClickListener {
 			val reportData = Report.Companion.FormData(
 				binding.reportTitleInput.text.toString(),
@@ -121,10 +141,10 @@ class GerarRelatorio : Fragment() {
 
 			viewLifecycleOwner.lifecycleScope.launch {
 				try {
-//					Report.collection.add(reportData).await()
-//
-//					Log.i("report", "createReport:success")
-//					popBackStack()
+					Report.collection.add(reportData).await()
+
+					Log.i("report", "createReport:success")
+					popBackStack()
 				} catch (e: Exception) {
 					Log.e("report", "createReport:failure", e)
 				}
@@ -161,13 +181,13 @@ class GerarRelatorio : Fragment() {
 						.get()
 						.await()
 
-					val symptoms = queryResult.documents.map { Symptom.fromDocument(it) }
+					symptomList = queryResult.documents.map { Symptom.fromDocument(it) }
 
-					numberSymptomsRegisters.text = symptoms.size.toString()
-					intensityAverage.text = symptoms.map { it.intensity }.average().let { value ->
+					numberSymptomsRegisters.text = symptomList.size.toString()
+					intensityAverage.text = symptomList.map { it.intensity }.average().let { value ->
 						if (value.isNaN()) "0" else value.toString()
 					}
-					mostAffectedArea.text = symptoms
+					mostAffectedArea.text = symptomList
 						.groupBy { it.place }
 						.maxByOrNull { it.value.size }
 						?.key ?: "Nenhuma registrada"

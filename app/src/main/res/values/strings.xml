@@ -94,6 +94,7 @@
 	<string name="select...">Selecionar…</string>
 	<string name="select_professionals_authorized">Profissionais que podem visualizar</string>
 	<string name="view_symptoms_included">Visualizar sintomas incluídos</string>
+	<string name="symptoms_included">Sintomas incluídos</string>
 	<string name="period_resume">Resumo do período</string>
 	<string name="registers">Registros</string>
 	<string name="most_affected_area">Área mais afetada</string>
