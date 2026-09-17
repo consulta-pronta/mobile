@@ -39,6 +39,7 @@ class AdicionarMedicamento : Fragment() {
 			}
 		}
 
+		// val typeConsumptions = resources.getStringArray(R.array.type_consumptions)
 		val typeConsumptions = arrayOf(
 			"Oral (comprimido)",
 			"Oral (gotas)",

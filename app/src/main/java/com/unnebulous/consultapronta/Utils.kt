@@ -32,9 +32,15 @@ object Utils {
 
 	enum class SnackBarType { INFO, SUCCESS, WARNING, DANGER }
 
-	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
+	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, onDateSelected: (LocalDate) -> Unit) {
+		val validator = if (isDateValidatorPointBackward) {
+			DateValidatorPointBackward.now()
+		} else {
+			DateValidatorPointForward.now()
+		}
+
 		val constraintBuilder = CalendarConstraints.Builder()
-			.setValidator(DateValidatorPointBackward.now())
+			.setValidator(validator)
 
 		val datePicker = MaterialDatePicker.Builder.datePicker()
 			.setTitleText(fragment.getString(R.string.date_picker_title))

@@ -17,9 +17,7 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	// TODO: substituir após o término da branch
-	// private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
-	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
+	private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
 
 	private var reportPeriodStartDate = LocalDate.now()
 	private var reportPeriodEndDate = LocalDate.now()
