@@ -8,10 +8,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.Timestamp
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.util.Locale
+import kotlin.math.abs
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
 	supportFragmentManager
@@ -73,3 +76,14 @@ fun LocalDateTime.toFirestoreTimestamp() =
 
 fun LocalDate.toLocalDateTime() =
 	LocalDateTime.of(this, LocalTime.MIDNIGHT)
+
+fun Timestamp.toBrazilianLocale(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
+}
+
+fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
+
+fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)

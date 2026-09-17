@@ -24,7 +24,9 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
+	private val dateFormatter: DateTimeFormatter by lazy {
+		DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
+	}
 
 	private var periodStartDate = Timestamp.now()
 	private var periodEndDate = Timestamp.now()

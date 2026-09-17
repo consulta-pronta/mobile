@@ -1,9 +1,11 @@
 package com.unnebulous.consultapronta.database
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 
 data class Report(
+	val id: String = "",
 	val title: String = "",
 	val professionals: List<String> = emptyList(),
 	val period_start: Timestamp? = null,
@@ -13,6 +15,15 @@ data class Report(
 	companion object {
 		const val COLLECTION_NAME = "reports"
 		val collection get() = DatabaseManager.userCollection(COLLECTION_NAME)
+
+		fun fromDocument(doc: DocumentSnapshot): Report? {
+			if (!doc.exists()) { return null }
+
+			val report = doc.toObject(Report::class.java)!!
+				.copy(id = doc.id)
+
+			return report
+		}
 
 		data class FormData(
 			var title: String = "",

@@ -28,18 +28,6 @@
 		>
 
 		<TextView
-			android:id="@+id/report_card_title_prefix"
-
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/report_card_title_prefix"
-			android:textStyle="bold"
-			android:textSize="20sp"
-
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintStart_toStartOf="parent" />
-
-		<TextView
 			android:id="@+id/report_card_period_prefix"
 
 			android:layout_width="wrap_content"
@@ -47,20 +35,34 @@
 			android:text="@string/report_card_period"
 			android:textStyle="bold"
 			android:layout_marginTop="5dp"
+			android:textSize="14sp"
 
-			app:layout_constraintTop_toBottomOf="@id/report_card_title_prefix"
-			app:layout_constraintStart_toStartOf="parent" />
+			app:layout_constraintTop_toBottomOf="@id/report_card_title"
+			app:layout_constraintStart_toStartOf="@id/report_card_title"/>
 
 		<TextView
-			android:id="@+id/report_card_add_date"
+			android:id="@+id/report_card_date_prefix"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/report_card_added_in"
 			android:layout_marginTop="5dp"
+			android:text="@string/report_card_added_in"
+			android:textSize="14sp"
 
 			app:layout_constraintTop_toBottomOf="@id/report_card_period_prefix"
-			app:layout_constraintStart_toStartOf="parent" />
+			app:layout_constraintStart_toStartOf="@id/report_card_title"/>
+
+		<TextView
+			android:id="@+id/report_card_date"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:text="@string/placeholder_date"
+			android:textSize="14sp"
+
+			app:layout_constraintStart_toEndOf="@id/report_card_date_prefix"
+			app:layout_constraintTop_toBottomOf="@id/report_card_period_prefix" />
 
 		<TextView
 			android:id="@+id/report_card_title"
@@ -69,23 +71,22 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 
-			app:layout_constraintTop_toTopOf="@id/report_card_title_prefix"
-			app:layout_constraintBottom_toBottomOf="@id/report_card_title_prefix"
-			app:layout_constraintStart_toEndOf="@id/report_card_title_prefix"
-
-			tools:text="@string/placeholder" />
+			tools:text="@string/placeholder"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"/>
 
 		<TextView
 			android:id="@+id/report_card_period"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:textSize="14sp"
 
 			app:layout_constraintTop_toTopOf="@id/report_card_period_prefix"
 			app:layout_constraintBottom_toBottomOf="@id/report_card_period_prefix"
 			app:layout_constraintStart_toEndOf="@id/report_card_period_prefix"
 
-			tools:text="@string/placeholder" />
+			tools:text="@string/report_card_period_placeholder" />
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 

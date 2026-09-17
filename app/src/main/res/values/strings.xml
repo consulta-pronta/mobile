@@ -83,6 +83,7 @@
 	<string name="export_list">Exportar lista</string>
 	<string name="report_card_title_prefix">Relatório:\ </string>
 	<string name="report_card_period">Período:\ </string>
+	<string name="report_card_period_placeholder">%1$d dias</string>
 	<string name="report_card_add_date">Adicionado em\ </string>
 	<string name="reports_screen_title">Relatórios</string>
 	<string name="gen_reports_screen_subtitle">Gere um relatório completo de seus sintomas para compartilhar com seu médico</string>
