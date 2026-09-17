@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
-import com.unnebulous.consultapronta.database.DatabaseManager
+import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentGerarRelatorioBinding
 import com.unnebulous.consultapronta.views.SelectOptionItemView
@@ -25,8 +25,9 @@ class GerarRelatorio : Fragment() {
 	// private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 
-	private var reportPeriodStartDate = LocalDate.now()
-	private var reportPeriodEndDate = LocalDate.now()
+	private var periodStartDate = LocalDate.now()
+	private var periodEndDate = LocalDate.now()
+	private var professionalList = ArrayList<String>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -57,7 +58,7 @@ class GerarRelatorio : Fragment() {
 				}
 
 				binding.selectDateStart.text = buttonText
-				reportPeriodStartDate = date
+				periodStartDate = date
 			}
 		}
 
@@ -70,7 +71,7 @@ class GerarRelatorio : Fragment() {
 				}
 
 				binding.selectDateEnd.text = buttonText
-				reportPeriodEndDate = date
+				periodEndDate = date
 			}
 		}
 
@@ -80,14 +81,14 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.title.text = getString(R.string.bottom_sheet_view_permission_title)
 
 				dialogBinding.body.apply {
-					val _examples = mapOf(
-						"1" to "Dra. Cláudia Leite",
-						"2" to "Dr. Cláudio Leitoso",
-						"Yotsuba" to "!"
-					)
+					// TODO: Get from database when uhh thing done if ykyk 
+					val professionals = HashMap<String, String>()
 
-					for (professional in _examples) {
-						val option = SelectOptionItemView(requireContext(), Utils.SelectOptionItemType.CHECKBOX)
+					for (professional in professionals) {
+						val option = SelectOptionItemView(
+							requireContext(),
+							Utils.SelectOptionItemType.CHECKBOX
+						)
 						option.setTitle(professional.value)
 						option.itemId = professional.key
 						addView(option)
@@ -97,9 +98,7 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.positiveButton.text = getString(R.string.save)
 
 				dialogBinding.positiveButton.setOnClickListener {
-					for (itemSelected in catchOptionsSelected(dialogBinding)) {
-						Log.i("InfoPronto", itemSelected)
-					}
+					professionalList = catchOptionsSelected(dialogBinding)
 
 					dialog.dismiss()
 				}
@@ -107,16 +106,19 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.generateReportButton.setOnClickListener {
+			val reportData = Report.Companion.FormData(
+				binding.reportTitleInput.text.toString(),
+				professionalList,
+				periodStartDate.toLocalDateTime().toFirestoreTimestamp(),
+				periodEndDate.toLocalDateTime().toFirestoreTimestamp(),
+			).toMap()
+
 			viewLifecycleOwner.lifecycleScope.launch {
 				try {
-//					val userDoc = DatabaseManager
-//						.userCollection("symptom")
-//						.get()
-//						.await()
-
-//					if (!userDoc.isEmpty) {
-//						Log.i("teste", userDoc.documents.toString())
-//					}
+					Report.collection.add(reportData).await()
+					
+					Log.i("report", "createReport:success")
+					popBackStack()
 				} catch (e: Exception) {
 					Log.w("report", "createReport:failure", e)
 				}
