@@ -50,8 +50,8 @@ class HistoricoSintoma : Fragment() {
 
 		binding.historicoSintomaRecyclerview.adapter = adapter
 
-		symptomListener = DatabaseManager
-			.userCollection("symptom")
+		symptomListener = Symptom
+			.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
 					Log.e("firestore:getSymptoms", "Error getting documents: ", exception)
@@ -65,10 +65,10 @@ class HistoricoSintoma : Fragment() {
 							id = document.id,
 							title = data["title"] as String,
 							description = data["description"] as String,
-							dateTime = data["date_time"] as Timestamp,
+							date_time = data["date_time"] as Timestamp,
 							place = data["place"].toString(),
 							intensity = data["intensity"].toString().toInt(),
-							createdAt = data["created_at"] as Timestamp,
+							created_at = data["created_at"] as Timestamp,
 						)
 					}
 

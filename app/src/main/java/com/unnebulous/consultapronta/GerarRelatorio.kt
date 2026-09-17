@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.Timestamp
 import com.unnebulous.consultapronta.database.Report
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentGerarRelatorioBinding
 import com.unnebulous.consultapronta.views.SelectOptionItemView
@@ -25,8 +27,8 @@ class GerarRelatorio : Fragment() {
 	// private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 
-	private var periodStartDate = LocalDate.now()
-	private var periodEndDate = LocalDate.now()
+	private var periodStartDate = Timestamp.now()
+	private var periodEndDate = Timestamp.now()
 	private var professionalList = ArrayList<String>()
 
 	override fun onCreateView(
@@ -58,7 +60,9 @@ class GerarRelatorio : Fragment() {
 				}
 
 				binding.selectDateStart.text = buttonText
-				periodStartDate = date
+				periodStartDate = date.toLocalDateTime().toFirestoreTimestamp()
+
+				updateSummary()
 			}
 		}
 
@@ -71,7 +75,9 @@ class GerarRelatorio : Fragment() {
 				}
 
 				binding.selectDateEnd.text = buttonText
-				periodEndDate = date
+				periodEndDate = date.toLocalDateTime().toFirestoreTimestamp()
+
+				updateSummary()
 			}
 		}
 
@@ -109,18 +115,18 @@ class GerarRelatorio : Fragment() {
 			val reportData = Report.Companion.FormData(
 				binding.reportTitleInput.text.toString(),
 				professionalList,
-				periodStartDate.toLocalDateTime().toFirestoreTimestamp(),
-				periodEndDate.toLocalDateTime().toFirestoreTimestamp(),
+				periodStartDate,
+				periodEndDate,
 			).toMap()
 
 			viewLifecycleOwner.lifecycleScope.launch {
 				try {
-					Report.collection.add(reportData).await()
-					
-					Log.i("report", "createReport:success")
-					popBackStack()
+//					Report.collection.add(reportData).await()
+//
+//					Log.i("report", "createReport:success")
+//					popBackStack()
 				} catch (e: Exception) {
-					Log.w("report", "createReport:failure", e)
+					Log.e("report", "createReport:failure", e)
 				}
 
 			}
@@ -143,5 +149,32 @@ class GerarRelatorio : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	private fun updateSummary() {
+		binding.apply {
+			lifecycleScope.launch {
+				try {
+					val queryResult = Symptom.collection
+						.whereGreaterThanOrEqualTo("created_at", periodStartDate)
+						.whereLessThanOrEqualTo("created_at", periodEndDate)
+						.get()
+						.await()
+
+					val symptoms = queryResult.documents.map { Symptom.fromDocument(it) }
+
+					numberSymptomsRegisters.text = symptoms.size.toString()
+					intensityAverage.text = symptoms.map { it.intensity }.average().let { value ->
+						if (value.isNaN()) "0" else value.toString()
+					}
+					mostAffectedArea.text = symptoms
+						.groupBy { it.place }
+						.maxByOrNull { it.value.size }
+						?.key ?: "Nenhuma registrada"
+				} catch (e: Exception) {
+					Log.e("report", "getSymptomsByDate:failure", e)
+				}
+			}
+		}
 	}
 }
