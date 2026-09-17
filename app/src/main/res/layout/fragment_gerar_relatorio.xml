@@ -75,6 +75,7 @@
 				app:layout_constraintTop_toTopOf="parent"
 				app:layout_constraintStart_toStartOf="parent" />
 
+			<!-- TODO: INCLUIR ESSES TEXTVIEWS NUM CONSTRAINT LAYOUT -->
 			<TextView
 				android:id="@+id/period_text_start"
 

@@ -140,4 +140,16 @@
 	<string name="photo">Foto</string>
 	<string name="photo_or_annex">Tirar foto ou anexar imagem</string>
 	<string name="register_medication">Registrar medicamento</string>
+	<string name="question_what_professional_consultation">Deseja solicitar consulta para que profissional?</string>
+	<string name="select_professional">Selecione o profissional</string>
+	<string name="question_consultation_motivation">Selecione a motivação da consulta</string>
+	<string name="select_motivation">Selecione a motivação</string>
+	<string name="give_more_details">Dê mais detalhes</string>
+	<string name="give_more_symptom_details_hint">Descreva seus sintomas com detalhes</string>
+	<string name="question_consultation_datetime">Quando deseja realizar a consulta?</string>
+	<string name="date">Data</string>
+	<string name="time">Hora</string>
+	<string name="question_what_hospital">Em qual hospital?</string>
+	<string name="select_hospital">Selecione o hospital</string>
+	<string name="request_consultation">Solicitar consulta</string>
 </resources>
