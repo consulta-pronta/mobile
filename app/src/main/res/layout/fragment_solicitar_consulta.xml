@@ -116,22 +116,16 @@
 			app:drawableStartCompat="@drawable/ic_asterisk"
 			app:drawableTint="@color/error" />
 
-		<!-- TODO: TRANSFORMAR EM ConstraintLayout -->
-		<LinearLayout
+		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-
-			app:layout_constraintTop_toBottomOf="@id/period_text_start"
-			app:layout_constraintStart_toStartOf="parent">
+			android:layout_height="wrap_content">
 
 			<Button
 				android:id="@+id/consultation_date_input"
 
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:text="@string/DATE_FORMAT"
-				android:layout_weight="1"
+				android:text="@string/date_not_selected"
 				android:textAlignment="viewStart"
 				android:textColor="@color/textDark60"
 
@@ -139,18 +133,34 @@
 				app:backgroundTint="@color/surface"
 				app:icon="@drawable/ic_calendar"
 				app:iconGravity="end"
-				app:iconTint="@color/textDark" />
+				app:iconTint="@color/textDark"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/space"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/date"
+
+				app:layout_constraintBottom_toTopOf="@id/consultation_date_input"
+				app:layout_constraintStart_toStartOf="parent" />
 
 			<Space
+				android:id="@+id/space"
+
 				android:layout_width="5dp"
-				android:layout_height="0dp" />
+				android:layout_height="0dp"
+
+				app:layout_constraintStart_toEndOf="@id/consultation_date_input"
+				app:layout_constraintEnd_toStartOf="@id/consultation_time_input"
+				app:layout_constraintTop_toTopOf="parent" />
 
 			<Button
 				android:id="@+id/consultation_time_input"
 
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_weight="1"
 				android:text="@string/time_not_selected"
 				android:textAlignment="viewStart"
 				android:textColor="@color/textDark60"
@@ -159,9 +169,20 @@
 				app:backgroundTint="@color/surface"
 				app:icon="@drawable/ic_clock"
 				app:iconGravity="end"
-				app:iconTint="@color/textDark" />
+				app:iconTint="@color/textDark"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@id/space"
+				app:layout_constraintBottom_toBottomOf="parent"/>
 
-		</LinearLayout>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/time"
+
+				app:layout_constraintBottom_toTopOf="@id/consultation_time_input"
+				app:layout_constraintStart_toStartOf="@id/consultation_time_input" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
 		<TextView
 			android:layout_width="wrap_content"

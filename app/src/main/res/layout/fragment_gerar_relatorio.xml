@@ -75,7 +75,6 @@
 				app:layout_constraintTop_toTopOf="parent"
 				app:layout_constraintStart_toStartOf="parent" />
 
-			<!-- TODO: INCLUIR ESSES TEXTVIEWS NUM CONSTRAINT LAYOUT -->
 			<TextView
 				android:id="@+id/period_text_start"
 
@@ -86,6 +85,7 @@
 				android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
 				app:layout_constraintTop_toBottomOf="@id/period_title"
+				app:layout_constraintBottom_toTopOf="@id/select_date_start"
 				app:layout_constraintStart_toStartOf="parent" />
 
 			<TextView
@@ -96,55 +96,54 @@
 				android:textColor="@color/primaryDark"
 				android:text="@string/gen_reports_period_to"
 
-				app:layout_constraintTop_toTopOf="@id/period_text_start"
-				app:layout_constraintBottom_toBottomOf="@id/period_text_start"
-				app:layout_constraintEnd_toEndOf="parent" />
+				app:layout_constraintBottom_toTopOf="@id/select_date_end"
+				app:layout_constraintStart_toStartOf="@id/select_date_end" />
 
-			<LinearLayout
-				android:layout_width="match_parent"
+			<Button
+				android:id="@+id/select_date_start"
+
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal"
+				android:text="@string/select..."
+				android:textAlignment="viewStart"
+				android:textColor="@color/textLight60"
 
-				app:layout_constraintTop_toBottomOf="@id/period_text_start"
-				app:layout_constraintStart_toStartOf="parent">
+				app:cornerRadius="@dimen/big_button_corner_radius"
+				app:backgroundTint="@color/primaryDark"
+				app:icon="@drawable/ic_calendar"
+				app:iconGravity="end"
+				app:iconTint="@color/textLight"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/space" />
 
-				<Button
-					android:id="@+id/select_date_start"
+			<Space
+				android:id="@+id/space"
 
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/select..."
-					android:layout_weight="1"
-					android:textAlignment="viewStart"
-					android:textColor="@color/textLight60"
+				android:layout_width="5dp"
+				android:layout_height="0dp"
 
-					app:cornerRadius="@dimen/big_button_corner_radius"
-					app:backgroundTint="@color/primaryDark"
-					app:icon="@drawable/ic_calendar"
-					app:iconGravity="end"
-					app:iconTint="@color/textLight" />
+				app:layout_constraintStart_toEndOf="@id/select_date_start"
+				app:layout_constraintEnd_toStartOf="@id/select_date_end"
+				app:layout_constraintBottom_toBottomOf="parent"/>
 
-				<Space
-					android:layout_width="5dp"
-					android:layout_height="0dp" />
+			<Button
+				android:id="@+id/select_date_end"
 
-				<Button
-					android:id="@+id/select_date_end"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:text="@string/today"
+				android:textAlignment="viewStart"
+				android:textColor="@color/textLight60"
 
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:text="@string/today"
-					android:textAlignment="viewStart"
-					android:textColor="@color/textLight60"
-
-					app:cornerRadius="@dimen/big_button_corner_radius"
-					app:backgroundTint="@color/primaryDark"
-					app:icon="@drawable/ic_calendar"
-					app:iconGravity="end"
-					app:iconTint="@color/textLight" />
-
-			</LinearLayout>
+				app:cornerRadius="@dimen/big_button_corner_radius"
+				app:backgroundTint="@color/primaryDark"
+				app:icon="@drawable/ic_calendar"
+				app:iconGravity="end"
+				app:iconTint="@color/textLight"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@id/space"/>
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 

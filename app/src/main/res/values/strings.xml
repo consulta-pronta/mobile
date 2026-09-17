@@ -152,4 +152,5 @@
 	<string name="question_what_hospital">Em qual hospital?</string>
 	<string name="select_hospital">Selecione o hospital</string>
 	<string name="request_consultation">Solicitar consulta</string>
+	<string name="date_not_selected">dd/mm/yyyy</string>
 </resources>
