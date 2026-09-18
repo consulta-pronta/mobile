@@ -3,6 +3,7 @@ package com.unnebulous.consultapronta.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.withStyledAttributes
 import com.unnebulous.consultapronta.R
@@ -40,6 +41,14 @@ class HeaderView @JvmOverloads constructor(
 		}
 
 		setupLayout()
+	}
+
+	fun addAside(view: View) {
+		if (headerType == Utils.HeaderType.COMPACT) {
+			return
+		}
+
+		bindingAlt.aside.addView(view)
 	}
 
 	fun changeHeaderType(newType: Utils.HeaderType, screenTitled: Boolean = false) {
