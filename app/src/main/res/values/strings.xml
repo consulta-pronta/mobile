@@ -162,4 +162,7 @@
 	<string name="location">Local:</string>
 	<string name="health_information">Informações de Saúde</string>
 	<string name="professional_data">Dados Profissionais</string>
+	<string name="call">Ligar</string>
+	<string name="message">Mensagem</string>
+	<string name="medical_record">Prontuário</string>
 </resources>

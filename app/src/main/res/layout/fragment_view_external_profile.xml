@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+
+	tools:context=".ViewExternalProfile">
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingBottom="@dimen/default_padding_bottom" >
+
+		<com.unnebulous.consultapronta.views.ProfilePictureView
+			android:id="@+id/profile_picture"
+
+			android:layout_width="120dp"
+			android:layout_height="120dp"
+
+			app:isInput="false"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/user_name"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="24sp"
+			android:textStyle="bold"
+
+			app:layout_constraintTop_toBottomOf="@id/profile_picture"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+
+			tools:text="@tools:sample/full_names" />
+
+		<LinearLayout
+			android:id="@+id/contact_buttons_layout"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:showDividers="middle"
+			android:divider="@drawable/divider_default_vertical"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/user_name"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent" >
+
+			<Button
+				style="@style/Widget.Material3.Button.TextButton"
+
+				android:id="@+id/call_user"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/call"
+				android:textColor="@color/accent"
+
+				app:icon="@drawable/ic_telephone"
+				app:iconGravity="top"
+				app:iconSize="25dp"
+				app:iconTint="@color/accent" />
+
+			<Button
+				style="@style/Widget.Material3.Button.TextButton"
+
+				android:id="@+id/message_user"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/message"
+				android:textColor="@color/accent"
+
+				app:icon="@drawable/ic_sms"
+				app:iconGravity="top"
+				app:iconSize="25dp"
+				app:iconTint="@color/accent" />
+
+			<Button
+				style="@style/Widget.Material3.Button.TextButton"
+
+				android:id="@+id/email_user"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/input_email"
+				android:textColor="@color/accent"
+
+				app:icon="@drawable/ic_email"
+				app:iconGravity="top"
+				app:iconSize="25dp"
+				app:iconTint="@color/accent" />
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/goto_buttons_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:showDividers="beginning|end"
+			android:divider="@drawable/divider_default_vertical"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/contact_buttons_layout">
+
+			<Button
+				android:id="@+id/goto_user_specific_screen_button"
+
+				android:layout_width="0dp"
+				android:layout_height="60dp"
+				android:layout_weight="1"
+				android:insetBottom="0dp"
+				android:layout_marginEnd="20dp"
+				android:textSize="20sp"
+
+				app:backgroundTint="@color/primary"
+				app:cornerRadius="@dimen/big_button_corner_radius"
+
+				tools:ignore="ButtonStyle"
+				tools:text="@string/appointments_text"/>
+
+			<Button
+				android:id="@+id/goto_medical_record_button"
+
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:text="@string/medical_record"
+				android:layout_weight="1"
+				android:insetBottom="0dp"
+				android:textSize="20sp"
+
+				app:backgroundTint="@color/primary"
+				app:cornerRadius="@dimen/big_button_corner_radius"
+
+				tools:ignore="ButtonStyle" />
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/contact_info_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:showDividers="middle|end"
+			android:divider="@drawable/divider_options_list"
+			android:dividerPadding="2dp"
+			android:orientation="vertical"
+			android:background="@drawable/shape_rounded_background"
+			android:padding="@dimen/default_card_padding"
+			android:backgroundTint="@color/surface"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/goto_buttons_layout">
+			<com.unnebulous.consultapronta.views.OptionItemView
+				android:id="@+id/user_email"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+
+				app:iconSrc="@drawable/ic_email"
+
+				tools:text="@tools:sample/lorem[1]" />
+
+			<com.unnebulous.consultapronta.views.OptionItemView
+				android:id="@+id/user_phone_number"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+
+				app:iconSrc="@drawable/ic_telephone"
+
+				tools:text="@tools:sample/us_phones" />
+
+		</LinearLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/external_user_data_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/contact_info_layout">
+
+			<Button
+				style="?attr/materialIconButtonStyle"
+
+				android:id="@+id/minimize_external_user_data_layout_button"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="10dp"
+				android:rotation="90"
+
+				app:icon="@drawable/ic_chevron_generic"
+				app:iconSize="30dp"
+				app:iconTint="@color/textLight"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<TextView
+				android:id="@+id/external_user_data_title"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="20sp"
+
+				app:layout_constraintStart_toEndOf="@id/minimize_external_user_data_layout_button"
+				app:layout_constraintTop_toTopOf="@id/minimize_external_user_data_layout_button"
+				app:layout_constraintBottom_toBottomOf="@id/minimize_external_user_data_layout_button"
+
+				tools:text="@string/health_information"/>
+
+			<LinearLayout
+				android:id="@+id/external_user_data_card"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_default"
+				android:background="@drawable/shape_rounded_background"
+				android:backgroundTint="@color/surface"
+				android:padding="@dimen/default_card_padding"
+
+				app:layout_constraintTop_toBottomOf="@id/minimize_external_user_data_layout_button" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
