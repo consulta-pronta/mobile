@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.Timestamp
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
 import java.text.SimpleDateFormat
@@ -87,3 +88,11 @@ fun Timestamp.toBrazilianLocale(): String {
 fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
 
 fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)
+
+fun List<Symptom>.getIntensityAverage() =
+	map { it.intensity }.average().let { value ->
+		if (value.isNaN()) "0" else value.toString()
+	}
+
+fun List<Symptom>.getMostAffectArea() =
+	groupBy { it.place }.maxByOrNull { it.value.size }?.key ?: "Nenhuma registrada"

@@ -177,22 +177,11 @@ class GerarRelatorio : Fragment() {
 		binding.apply {
 			lifecycleScope.launch {
 				try {
-					val queryResult = Symptom.collection
-						.whereGreaterThanOrEqualTo("created_at", periodStartDate)
-						.whereLessThanOrEqualTo("created_at", periodEndDate)
-						.get()
-						.await()
-
-					symptomList = queryResult.documents.map { Symptom.fromDocument(it) }
+					symptomList = Symptom.getBetweenDates(periodStartDate, periodEndDate)
 
 					numberSymptomsRegisters.text = symptomList.size.toString()
-					intensityAverage.text = symptomList.map { it.intensity }.average().let { value ->
-						if (value.isNaN()) "0" else value.toString()
-					}
-					mostAffectedArea.text = symptomList
-						.groupBy { it.place }
-						.maxByOrNull { it.value.size }
-						?.key ?: "Nenhuma registrada"
+					intensityAverage.text = symptomList.getIntensityAverage()
+					mostAffectedArea.text = symptomList.getMostAffectArea()
 				} catch (e: Exception) {
 					Log.e("report", "getSymptomsByDate:failure", e)
 				}

@@ -6,20 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.unnebulous.consultapronta.database.Report
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentVisualizarRelatorioBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.ChronologyAdapter
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class VisualizarRelatorio : Fragment() {
-
-	private lateinit var reportId: String
-
 	private var _binding: FragmentVisualizarRelatorioBinding? = null
 	private val binding get() = _binding!!
+
+	private lateinit var reportId: String
+	private lateinit var report: Report
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -43,8 +48,7 @@ class VisualizarRelatorio : Fragment() {
 
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
-			// TODO: título do relatório
-			setScreenTitle("Eu sou o Visualizar relatório, e eu visualizo relatório.")
+			setScreenTitle("Titulo")
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
@@ -57,6 +61,35 @@ class VisualizarRelatorio : Fragment() {
 		val adapter = ChronologyAdapter()
 
 		binding.recyclerview.adapter = adapter
+
+		lifecycleScope.launch {
+			try {
+				val doc = Report.collection.document(reportId).get().await()
+				val report = Report.fromDocument(doc)
+				if (report == null || report.period_start == null || report.period_end == null) {
+					popBackStack()
+					return@launch
+				}
+
+				updateHeader { setScreenTitle(report.title) }
+				binding.apply {
+					reportIdText.text = getString(R.string.report_id, report.id)
+					reportPeriodText.text = getString(
+						R.string.view_report_period,
+						report.period_start.toBrazilianLocale(),
+						report.period_end.toBrazilianLocale()
+					)
+					reportDurationText.text = getString(
+						R.string.view_report_duration,
+						report.period_start.diffDays(report.period_end)
+					)
+				}
+
+//				val symptoms = Symptom.getBetweenDates(report.period_start, report.period_end)
+			} catch (e: Exception) {
+
+			}
+		}
 	}
 
 	// TODO: remover isso após o backend

@@ -1,7 +1,11 @@
 package com.unnebulous.consultapronta.database
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.toFirestoreTimestamp
+import kotlinx.coroutines.tasks.await
+import java.time.LocalDateTime
 
 data class Symptom(
 	val id: String = "",
@@ -26,5 +30,17 @@ data class Symptom(
 			created_at = doc.getTimestamp("created_at"),
 		)
 
+		suspend fun getBetweenDates(start: LocalDateTime, end: LocalDateTime) =
+			getBetweenDates(start.toFirestoreTimestamp(), end.toFirestoreTimestamp())
+
+		suspend fun getBetweenDates(start: Timestamp, end: Timestamp): List<Symptom> {
+			val queryResult = collection
+				.whereGreaterThanOrEqualTo("created_at", start)
+				.whereLessThanOrEqualTo("created_at", end)
+				.get()
+				.await()
+
+			return queryResult.documents.map { fromDocument(it) }
+		}
 	}
 }
