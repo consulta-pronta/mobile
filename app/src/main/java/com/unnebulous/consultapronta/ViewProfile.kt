@@ -14,6 +14,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import android.widget.Button
 import androidx.transition.TransitionManager
+import com.unnebulous.consultapronta.views.OptionItemView
 
 class ViewProfile : Fragment() {
 
@@ -52,6 +53,17 @@ class ViewProfile : Fragment() {
 			isAditionalDataMinimized = !isAditionalDataMinimized
 			minimizeSection(binding.aditionalDataCard, it, isAditionalDataMinimized)
 		}
+	}
+
+	private fun addLinkedAppOption(drawableResId: Int, name: String, onClickListener: View.OnClickListener) {
+		val option = OptionItemView(requireContext()).apply {
+			setText(name)
+			setIcon(drawableResId)
+
+			setOnClickListener(onClickListener)
+		}
+
+		binding.linkedAppsLayout.addView(option)
 	}
 
 	private fun addAditionalData(key: String, value: String) {
