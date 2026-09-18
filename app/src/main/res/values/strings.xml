@@ -153,4 +153,13 @@
 	<string name="select_hospital">Selecione o hospital</string>
 	<string name="request_consultation">Solicitar consulta</string>
 	<string name="date_not_selected">dd/mm/yyyy</string>
+	<string name="linked_apps">Aplicativos conectados</string>
+	<string name="personal_data">Dados Pessoais</string>
+	<string name="age">Idade:</string>
+	<string name="birth_date">Data de nascimento:</string>
+	<string name="gender">Gênero:</string>
+	<string name="cpf">CPF:</string>
+	<string name="location">Local:</string>
+	<string name="health_information">Informações de Saúde</string>
+	<string name="professional_data">Dados Profissionais</string>
 </resources>
