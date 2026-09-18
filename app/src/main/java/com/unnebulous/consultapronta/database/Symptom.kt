@@ -1,23 +1,28 @@
 package com.unnebulous.consultapronta.database
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
-import com.unnebulous.consultapronta.toFirestoreTimestamp
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDateTime
 
 data class Symptom(
-	val id: String = "",
+	override val id: String = "",
 	val title: String = "",
 	val description: String = "",
 	val date_time: Timestamp? = null,
 	val place: String = "",
 	val intensity: Int = 0,
 	val created_at: Timestamp? = null
-) {
+): BaseDocument {
+	val historicCollection get() = collection.document(id).collection(HISTORIC_COLLECTION_NAME)
+
+	suspend fun getHistoric(): List<Symptom> {
+		val queryResult = historicCollection.get().await()
+		return queryResult.documents.map { fromDocument(it) }
+	}
+
 	companion object {
 		const val COLLECTION_NAME = "symptom"
+		const val HISTORIC_COLLECTION_NAME = "historic"
 		val collection get() = DatabaseManager.userCollection(COLLECTION_NAME)
 
 		fun fromDocument(doc: DocumentSnapshot) = Symptom(
@@ -30,17 +35,24 @@ data class Symptom(
 			created_at = doc.getTimestamp("created_at"),
 		)
 
-		suspend fun getBetweenDates(start: LocalDateTime, end: LocalDateTime) =
-			getBetweenDates(start.toFirestoreTimestamp(), end.toFirestoreTimestamp())
-
-		suspend fun getBetweenDates(start: Timestamp, end: Timestamp): List<Symptom> {
+		suspend fun getBetweenDates(
+			start: Timestamp,
+            end: Timestamp,
+			deep: Boolean = false
+		): List<Symptom> {
 			val queryResult = collection
 				.whereGreaterThanOrEqualTo("created_at", start)
 				.whereLessThanOrEqualTo("created_at", end)
 				.get()
 				.await()
 
-			return queryResult.documents.map { fromDocument(it) }
+			var list = queryResult.documents.map { fromDocument(it) }
+			if (deep) {
+				val fullHistoric = list.map { it.getHistoric() }.flatten()
+				list = (list + fullHistoric).sortedBy { it.date_time }.reversed()
+			}
+
+			return list
 		}
 	}
 }

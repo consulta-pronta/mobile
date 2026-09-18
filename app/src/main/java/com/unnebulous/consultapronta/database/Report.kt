@@ -1,21 +1,17 @@
 package com.unnebulous.consultapronta.database
 
-import android.util.Log
-import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 data class Report(
-	val id: String = "",
+	override val id: String = "",
 	val title: String = "",
 	val professionals: List<String> = emptyList(),
 	val period_start: Timestamp? = null,
 	val period_end: Timestamp? = null,
 	val created_at: Timestamp? = null,
-) {
+): BaseDocument {
 	companion object {
 		const val COLLECTION_NAME = "reports"
 		val collection get() = DatabaseManager.userCollection(COLLECTION_NAME)

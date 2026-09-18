@@ -85,7 +85,13 @@ class VisualizarRelatorio : Fragment() {
 					)
 				}
 
-//				val symptoms = Symptom.getBetweenDates(report.period_start, report.period_end)
+				val symptoms = Symptom.getBetweenDates(
+					report.period_start,
+					report.period_end,
+					deep = true
+				)
+
+				adapter.submitList(symptoms)
 			} catch (e: Exception) {
 
 			}
