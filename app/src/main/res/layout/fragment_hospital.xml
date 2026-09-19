@@ -63,13 +63,12 @@
 		android:id="@+id/hospital_card_list"
 
 		android:layout_width="0dp"
-		android:layout_height="0dp"
+		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
 		app:layout_constraintTop_toBottomOf="@+id/order"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
