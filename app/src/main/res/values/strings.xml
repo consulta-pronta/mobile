@@ -72,6 +72,9 @@
 	<string name="clean_cache">Limpar cache</string>
 	<string name="delete_account">Excluir dados e deletar conta</string>
 	<string name="exit_account">Sair da conta</string>
+	<string name="exit_account_subtitle">Tem certeza que deseja sair sua conta?</string>
+	<string name="exit_account_description">Seus dados continuarão salvos, mas será necessário logar novamente para acessa-los</string>
+
 	<string name="succesfully_cache_deleted">Cache apagado com sucesso!</string>
 	<string name="auth_login_title">Bem-Vindo</string>
 	<string name="auth_login_subtitle">Faça o login para acessar seus dados.</string>

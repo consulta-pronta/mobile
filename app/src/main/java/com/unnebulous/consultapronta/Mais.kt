@@ -1,11 +1,15 @@
 package com.unnebulous.consultapronta
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.FragmentMaisBinding
 import com.unnebulous.consultapronta.views.OptionItemView
 
@@ -43,6 +47,46 @@ class Mais : Fragment() {
 			cleanCacheButton.setOnClickListener {
 				requireContext().clearCache()
 				Toast.makeText(context, getString(R.string.succesfully_cache_deleted), Toast.LENGTH_SHORT).show()
+			}
+
+			exitAccountButton.setOnClickListener {
+				val parentActivitiy = requireActivity()
+
+				configBottomSheet { dialogBinding, dialog ->
+					dialogBinding.apply {
+						icon.setImageResource(R.drawable.ic_logout)
+						icon.visibility = View.GONE
+						title.text = getString(R.string.exit_account)
+						body.apply {
+							val subtitle = TextView(parentActivitiy).apply {
+								text = getString(R.string.exit_account_subtitle)
+							}
+							val description = TextView(parentActivitiy).apply {
+								text = getString(R.string.exit_account_description)
+								textSize = 14f
+							}
+
+							listOf(subtitle, description).forEach {
+								it.textAlignment = View.TEXT_ALIGNMENT_CENTER
+								it.setTextColor(ContextCompat.getColor(context, R.color.textDark))
+							}
+
+							addView(subtitle)
+							addView(description)
+						}
+
+						positiveButton.text = title.text
+						positiveButton.setOnClickListener {
+							AuthManager.auth.signOut()
+
+							parentActivitiy.startActivity(Intent(
+								parentActivitiy,
+								AuthActivity::class.java)
+							)
+							parentActivitiy.finish()
+						}
+					}
+				}
 			}
 		}
 	}
