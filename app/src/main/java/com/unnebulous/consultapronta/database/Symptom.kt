@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta.database
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.mergedHistoric
 import kotlinx.coroutines.tasks.await
 
 data class Symptom(
@@ -47,10 +48,7 @@ data class Symptom(
 				.await()
 
 			var list = queryResult.documents.map { fromDocument(it) }
-			if (deep) {
-				val fullHistoric = list.map { it.getHistoric() }.flatten()
-				list = (list + fullHistoric).sortedBy { it.date_time }.reversed()
-			}
+			if (deep) { list = list.mergedHistoric() }
 
 			return list
 		}

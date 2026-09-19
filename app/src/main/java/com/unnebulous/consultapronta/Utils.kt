@@ -1,6 +1,8 @@
 package com.unnebulous.consultapronta
 
+import android.content.Context
 import android.text.format.DateFormat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -71,4 +73,11 @@ object Utils {
 
 		timePicker.show(fragment.parentFragmentManager, "time_picker")
 	}
+
+	fun intensityToColor(context: Context, intensity: Double) =
+		ContextCompat.getColor(context, when {
+			intensity <= 4 -> R.color.success
+			intensity <= 7 -> R.color.warning
+			else -> R.color.error
+		})
 }

@@ -117,4 +117,6 @@
 	<string name="cancel">Cancelar</string>
 	<string name="bottom_sheet_view_permission_title">Permissões de visualização</string>
 	<string name="save">Salvar</string>
+	<string name="most_affected_area_num_register">%1$d registros</string>
+	<string name="most_affected_area_intensity">Média: %.2f\n</string>
 </resources>

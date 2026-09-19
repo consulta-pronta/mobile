@@ -1,6 +1,8 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -92,8 +94,26 @@ class VisualizarRelatorio : Fragment() {
 				)
 
 				adapter.submitList(symptoms)
-			} catch (e: Exception) {
 
+				binding.apply {
+					val area = symptoms.getMostAffectArea()
+					val areas = symptoms.getAreaMap()[area]!!
+					mostAffectedArea.text = area ?: "Nenhuma"
+					mostAffectedAreaNumRegister.text = getString(
+						R.string.most_affected_area_num_register,
+						areas.size
+					)
+					val intensity = areas.getIntensityAverage()
+					mostAffectedAreaIntensity.text = getString(
+						R.string.most_affected_area_intensity,
+						intensity
+					)
+					mostAffectedAreaIntensity.chipBackgroundColor = ColorStateList.valueOf(
+						Utils.intensityToColor(requireContext(), intensity)
+					)
+				}
+			} catch (e: Exception) {
+				Log.e("report", "getReportAndSymptoms:failure", e)
 			}
 		}
 	}

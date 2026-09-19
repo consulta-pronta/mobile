@@ -180,8 +180,8 @@ class GerarRelatorio : Fragment() {
 					symptomList = Symptom.getBetweenDates(periodStartDate, periodEndDate)
 
 					numberSymptomsRegisters.text = symptomList.size.toString()
-					intensityAverage.text = symptomList.getIntensityAverage()
-					mostAffectedArea.text = symptomList.getMostAffectArea()
+					intensityAverage.text = symptomList.getIntensityAverage().toString()
+					mostAffectedArea.text = symptomList.getMostAffectArea() ?: "Nenhuma registrada"
 				} catch (e: Exception) {
 					Log.e("report", "getSymptomsByDate:failure", e)
 				}

@@ -89,10 +89,17 @@ fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
 
 fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)
 
+suspend fun List<Symptom>.mergedHistoric() =
+	plus(flatMap { it.getHistoric() })
+		.sortedBy { it.date_time }
+		.reversed()
+
 fun List<Symptom>.getIntensityAverage() =
 	map { it.intensity }.average().let { value ->
-		if (value.isNaN()) "0" else value.toString()
+		if (value.isNaN()) 0.0 else value
 	}
 
+fun List<Symptom>.getAreaMap() = groupBy { it.place }
+
 fun List<Symptom>.getMostAffectArea() =
-	groupBy { it.place }.maxByOrNull { it.value.size }?.key ?: "Nenhuma registrada"
+	getAreaMap().maxByOrNull { it.value.size }?.key

@@ -77,12 +77,12 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/most_commom_symptom"
+					android:text="@string/most_affected_area"
 					android:textSize="14sp"
 					android:textColor="@color/primaryDark"/>
 
 				<TextView
-					android:id="@+id/most_commom_symptom_name"
+					android:id="@+id/most_affected_area"
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -92,30 +92,30 @@
 					tools:text="@string/placeholder" />
 
 				<TextView
-					android:id="@+id/most_commom_symptom_period"
+					android:id="@+id/most_affected_area_num_register"
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textSize="14sp"
 					android:textColor="@color/primaryDark"
 
-					tools:text="@string/placeholder" />
+					tools:text="@string/most_affected_area_num_register" />
 
 				<com.google.android.material.chip.Chip
-					android:id="@+id/most_commom_symptom_priority"
+					android:id="@+id/most_affected_area_intensity"
 
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textSize="12sp"
+					android:text="@string/most_affected_area_intensity"
+					android:textColor="@color/textLight"
 
 					app:chipCornerRadius="50dp"
 					app:chipStrokeColor="@color/transparent"
+					app:chipIcon="@drawable/ic_graphic"
+					app:chipIconTint="@color/textLight"
 
-					tools:text="@string/placeholder"
-					tools:chipIcon="@drawable/ic_warning"
-					tools:textColor="@color/textLight"
-					tools:chipBackgroundColor="@color/error"
-					tools:chipIconTint="@color/textLight" />
+					tools:chipBackgroundColor="@color/error" />
 			</LinearLayout>
 
 			<LinearLayout
