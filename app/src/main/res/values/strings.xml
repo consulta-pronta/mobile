@@ -119,6 +119,7 @@
 	<string name="save">Salvar</string>
 	<string name="title_register_page">Registrar Sintoma</string>
 	<string name="title_edit_page">Editar Sintoma</string>
+	<string name="title_exam_page">Meus Exames</string>
 	<string name="question_symptom">O que você está sentindo?</string>
 	<string name="question_symptom_area">Resuma seus sintomas</string>
 	<string name="detail_symptom_area">Descreva seus sintomas com detalhes</string>
@@ -141,6 +142,11 @@
 	<string name="type_motive">Digite o motivo</string>
 	<string name="symptom_question">O que você está sentindo?</string>
 	<string name="save_edited">Salvar Edição</string>
+	<string name="exam_search_hint">Buscar exames</string>
+	<string name="see_exams_etc">Veja os exames que já foram concluídos ou que estão em processo.</string>
+	<string name="exams_info_placeholder">Nome do exame\nHospital</string>
+	<string name="result_text">Resultado</string>
+	<string name="exam_card_category_label">Categoria: </string>
 	<string name="detailed_explanation_hint">Explicação detalhada</string>
 	<string name="explain_command">Explique com mais detalhes</string>
 	<string name="most_affected_area_num_register">%1$d registros</string>

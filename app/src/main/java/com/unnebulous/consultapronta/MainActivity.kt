@@ -14,10 +14,6 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		if (savedInstanceState == null) {
-			changeFragment(Home(), R.id.main_fragment_container)
-		}
-
 		binding.navbar.setOnClickListener(Utils.NavbarButton.FIRST) { view ->
 			//if (binding.mainFragmentContainer.getFragment<>())
 			changeFragment(Home(), R.id.main_fragment_container)

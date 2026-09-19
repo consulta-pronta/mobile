@@ -54,12 +54,10 @@ class Mais : Fragment() {
 			// opção de informações de saúde
 			// opção de permissões médicas
 			MenuOption(R.drawable.ic_reports, R.string.reports_text) {
-				// TODO: INSTANCIAR TELA DE RELATÓRIOS
-				Home()
+				RelatoriosListagem()
 			},
 			MenuOption(R.drawable.ic_exams, R.string.my_exams_text) {
-				// TODO: INSTANCIAR TELA DE MEUS EXAMES
-				Home()
+				Exam()
 			},
 			MenuOption(R.drawable.ic_pill, R.string.my_medicines_text) {
 				// TODO: INSTANCIAR TELA DE MEUS MEDICAMENTOS

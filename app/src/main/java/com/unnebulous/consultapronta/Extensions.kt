@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
@@ -15,6 +16,8 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.Locale
+import java.util.Locale.getDefault
+import kotlin.enums.enumEntries
 import kotlin.math.abs
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
@@ -85,6 +88,15 @@ fun Timestamp.toBrazilianLocale(): String {
 	val locale = Locale.forLanguageTag("pt-BR")
 
 	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
+}
+
+inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
+	val value = get(field).toString()
+	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+}
+
+fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
+	if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString()
 }
 
 fun Timestamp.toSimpleDate(): String {

@@ -29,6 +29,10 @@ object Utils {
 
 	enum class SelectOptionItemType { RADIO, CHECKBOX, COMPLETE }
 
+	enum class ExamCategory { LABORATORIAL, IMAGEM, FUNCIONAL, PREVENTIVO }
+
+	enum class ExamStatus { SOLICITADO, TRIAGEM, LIBERADO, PENDENTE }
+
 	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
 		val constraintBuilder = CalendarConstraints.Builder()
 			.setValidator(DateValidatorPointBackward.now())

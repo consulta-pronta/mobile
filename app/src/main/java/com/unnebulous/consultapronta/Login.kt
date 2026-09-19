@@ -52,9 +52,13 @@ class Login : Fragment() {
 		if (task.isSuccessful) {
 			Log.i("auth", "signInWithEmail:success")
 
-			val activity = requireActivity()
-			startActivity(Intent(activity, MainActivity::class.java))
-			activity.finish()
+			try {
+				val activity = requireActivity()
+				startActivity(Intent(activity, MainActivity::class.java))
+				activity.finish()
+			} catch (error: IllegalStateException) {
+				Log.wtf("auth", "signInWithEmail:failure", error)
+			}
 		} else {
 			Log.w("auth", "signInWithEmail:failure", task.exception)
 		}
