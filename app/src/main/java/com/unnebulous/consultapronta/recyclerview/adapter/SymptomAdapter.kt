@@ -16,10 +16,6 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 
 	lateinit var onClick: (Symptom) -> Unit
 
-	override fun getItemViewType(position: Int): Int {
-		return super.getItemViewType(position)
-	}
-
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomViewHolder {
 		val binding = CardSymptomBinding.inflate(
 			LayoutInflater.from(parent.context),
@@ -41,11 +37,11 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 	}
 
 	class SymptomViewHolder(private val binding: CardSymptomBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(symptom: Symptom, onCLick: (Symptom) -> Unit) {
+		fun bind(symptom: Symptom, onClick: (Symptom) -> Unit) {
 			binding.apply {
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description
-				symptomDateText.text = symptom.dateTime.let { timestamp ->
+				symptomDateText.text = symptom.date_time.let { timestamp ->
 					val date = timestamp!!.toDate()
 					val locale = Locale.forLanguageTag("pt-BR")
 
@@ -58,7 +54,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 				symptomAnnexesQuantityText.visibility = View.GONE
 				editButton.visibility = View.GONE
 
-				root.setOnClickListener { onCLick(symptom) }
+				root.setOnClickListener { onClick(symptom) }
 			}
 		}
 	}

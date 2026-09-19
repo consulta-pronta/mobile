@@ -30,6 +30,12 @@ class Home : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
+
+		binding.apply {
+			firstButton.setOnClickListener {
+				changeFragmentWithBackStack(RelatoriosListagem())
+			}
+		}
 	}
 
 	override fun onDestroyView() {

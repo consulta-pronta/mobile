@@ -13,30 +13,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
-import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.firestore
+import com.unnebulous.consultapronta.database.AuthManager
+import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.Date
 
 class Cadastro : Fragment() {
 
 	private var _binding: FragmentCadastroBinding? = null
 	private val binding get() = _binding!!
-	private lateinit var auth: FirebaseAuth
-	private lateinit var db: FirebaseFirestore
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-
-		db = Firebase.firestore
-		auth = Firebase.auth
 	}
 
 	override fun onCreateView(
@@ -84,7 +79,7 @@ class Cadastro : Fragment() {
 			}
 
 			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank) {
-				auth.createUserWithEmailAndPassword(email, password)
+				AuthManager.auth.createUserWithEmailAndPassword(email, password)
 					.addOnCompleteListener { task -> handlePostSignUp(task) }
 			} else {
 				val error = if (oneOrMoreInputBlank) {
@@ -196,18 +191,20 @@ class Cadastro : Fragment() {
 			created_at = Timestamp(Date(creationTime!!))
 		)
 
-		db.collection("users")
-			.document(user.uid)
-			.set(userDocument)
-			.addOnSuccessListener {
+		lifecycleScope.launch {
+			try {
+				DatabaseManager.userDocument
+					.set(userDocument)
+					.await()
+
 				Log.i("auth", "setUserDocument:success")
 
 				val activity = requireActivity()
 				startActivity(Intent(activity, MainActivity::class.java))
 				activity.finish()
-			}
-			.addOnFailureListener { e ->
+			} catch (e: Exception) {
 				Log.w("auth", "setUserDocument:failure", e)
 			}
+		}
 	}
 }
