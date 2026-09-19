@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -31,5 +32,9 @@ class MainActivity : AppCompatActivity() {
 		binding.navbar.setOnClickListener(Utils.NavbarButton.FIFTH) { view ->
 			changeFragment(Mais(), R.id.main_fragment_container)
 		}
+	}
+
+	fun setFragmentPadding(horizontalPadding: Int = resources.getDimensionPixelSize(R.dimen.default_screen_padding)) {
+		binding.mainFragmentContainer.setPadding(horizontalPadding, 0, horizontalPadding, 0)
 	}
 }

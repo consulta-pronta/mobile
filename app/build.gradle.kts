@@ -55,6 +55,7 @@ dependencies {
 	implementation(libs.firebase.firestore)
 	implementation(libs.chart)
 	implementation(libs.map.view)
+	implementation(libs.play.services.location)
 	coreLibraryDesugaring(libs.desugar)
 
 	testImplementation(libs.junit)

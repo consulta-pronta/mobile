@@ -33,6 +33,8 @@
 		android:autofillHints="name"
 		android:textColor="@color/textDark"
 		android:inputType="text"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +49,8 @@
 		android:text="@string/map_view"
 		android:insetBottom="0dp"
 		android:insetTop="0dp"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:icon="@drawable/ic_map"
 		app:iconGravity="textStart"
@@ -63,6 +67,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:layout_constraintTop_toBottomOf="@+id/button_map_view"
 		app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +80,8 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:layout_constraintTop_toBottomOf="@+id/order"
 		app:layout_constraintStart_toStartOf="parent"
