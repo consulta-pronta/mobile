@@ -141,7 +141,7 @@ class GerarRelatorio : Fragment() {
 				periodEndDate,
 			).toMap()
 
-			viewLifecycleOwner.lifecycleScope.launch {
+			lifecycleScope.launch {
 				try {
 					Report.collection.add(reportData).await()
 

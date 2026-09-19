@@ -26,7 +26,6 @@ class VisualizarRelatorio : Fragment() {
 	private val binding get() = _binding!!
 
 	private lateinit var reportId: String
-	private lateinit var report: Report
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -123,8 +122,8 @@ class VisualizarRelatorio : Fragment() {
 
 		val xAxisLabels = listOf(data.first(), data.last()).map { it.first.toSimpleDate() }
 
-		val maxDiff = data.first().first.diffSeconds(data.last().first).toDouble()
 //		// Jeito mais preciso, mas fica dificil de ver
+//		val maxDiff = data.first().first.diffSeconds(data.last().first).toDouble()
 //		val ratios = data.map {
 //			it.first
 //				.diffSeconds(data.first().first)
@@ -132,7 +131,7 @@ class VisualizarRelatorio : Fragment() {
 //				.remap(0.0, maxDiff, 0.0, 1.0)
 //				.toFloat()
 //		}
-		val ratios = data.mapIndexed { index, pair ->
+		val ratios = List(data.size) { index ->
 			index.toDouble().remap(0.0, data.size - 1.0, 0.0, 1.0).toFloat()
 		}
 

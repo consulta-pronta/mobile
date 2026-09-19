@@ -6,8 +6,6 @@ import android.graphics.PorterDuffColorFilter
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.IntensityViewBinding
 
@@ -17,15 +15,11 @@ class IntensityView @JvmOverloads constructor(
 	defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-	private val binding: IntensityViewBinding
-
-	init {
-		binding = IntensityViewBinding.inflate(
-			LayoutInflater.from(context),
-			this,
-			true
-		)
-	}
+	private val binding: IntensityViewBinding = IntensityViewBinding.inflate(
+		LayoutInflater.from(context),
+		this,
+		true
+	)
 
 	fun setIntensity(intensity: String) {
 		setIntensity(intensity.toInt())

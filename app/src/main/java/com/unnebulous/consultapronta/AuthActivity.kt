@@ -1,10 +1,8 @@
 package com.unnebulous.consultapronta
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {

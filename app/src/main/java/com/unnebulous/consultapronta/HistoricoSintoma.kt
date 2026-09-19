@@ -2,16 +2,12 @@ package com.unnebulous.consultapronta
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.Firebase
+import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.auth
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.firestore
-import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentHistoricoSintomaBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.SymptomAdapter
@@ -59,20 +55,25 @@ class HistoricoSintoma : Fragment() {
 				}
 
 				if (snapshots != null) {
-					val symptoms = snapshots.documents.mapNotNull { document ->
-						val data = document.data!!
-						Symptom(
-							id = document.id,
-							title = data["title"] as String,
-							description = data["description"] as String,
-							date_time = data["date_time"] as Timestamp,
-							place = data["place"].toString(),
-							intensity = data["intensity"].toString().toInt(),
-							created_at = data["created_at"] as Timestamp,
-						)
-					}
+					try {
+						val symptoms = snapshots.documents.mapNotNull { document ->
+							val data = document.data!!
+							Symptom(
+								id = document.id,
+								title = data["title"] as String,
+								description = data["description"] as String,
+								date_time = data["date_time"] as Timestamp,
+								place = data["place"].toString(),
+								intensity = data["intensity"].toString().toInt(),
+								created_at = data["created_at"] as Timestamp,
+							)
+						}
 
-					adapter.submitList(symptoms)
+						adapter.submitList(symptoms)
+					} catch (error: Exception) {
+						Log.i("symptom", snapshots.documents.toString())
+						Log.wtf("symptom", "getSymptoms:failure", error)
+					}
 				}
 			}
 	}

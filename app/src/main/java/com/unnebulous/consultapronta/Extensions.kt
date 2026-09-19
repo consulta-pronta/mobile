@@ -78,8 +78,7 @@ fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
 fun LocalDateTime.toFirestoreTimestamp() =
 	Timestamp(atZone(ZoneId.systemDefault()).toInstant())
 
-fun LocalDate.toLocalDateTime() =
-	LocalDateTime.of(this, LocalTime.MIDNIGHT)
+fun LocalDate.toLocalDateTime(): LocalDateTime = LocalDateTime.of(this, LocalTime.MIDNIGHT)
 
 fun Timestamp.toBrazilianLocale(): String {
 	val date = toDate()
