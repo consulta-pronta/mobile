@@ -165,4 +165,5 @@
 	<string name="call">Ligar</string>
 	<string name="message">Mensagem</string>
 	<string name="medical_record">Prontuário</string>
+	<string name="list_view">Visualizar lista</string>
 </resources>

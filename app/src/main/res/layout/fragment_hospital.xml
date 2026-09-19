@@ -9,6 +9,15 @@
 
 	tools:context=".Hospital">
 
+	<de.afarber.openmapview.OpenMapView
+		android:id="@+id/map_view"
+
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone"
+
+		tools:visibility="visible"/>
+
 	<EditText
 		android:id="@+id/search"
 
@@ -42,7 +51,7 @@
 		app:icon="@drawable/ic_map"
 		app:iconGravity="textStart"
 		app:iconSize="30dp"
-		app:iconTint="@color/surface"
+		app:iconTint="@color/textLight"
 		app:cornerRadius="@dimen/big_button_corner_radius"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +69,7 @@
 		app:isOrderByFilter="true" />
 
 	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/hospital_card_list"
+		android:id="@+id/recyclerview"
 
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
@@ -70,5 +79,4 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
