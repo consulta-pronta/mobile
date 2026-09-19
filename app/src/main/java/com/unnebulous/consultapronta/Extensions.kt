@@ -7,12 +7,18 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 import java.util.Locale
 import java.util.Locale.getDefault
 import kotlin.enums.enumEntries
+import kotlin.math.abs
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
 	supportFragmentManager
@@ -69,6 +75,14 @@ fun Context.clearCache() {
 	}
 }
 
+fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
+	ostart + (this - istart) * (ostop - ostart) / (istop - istart)
+
+fun LocalDateTime.toFirestoreTimestamp() =
+	Timestamp(atZone(ZoneId.systemDefault()).toInstant())
+
+fun LocalDate.toLocalDateTime(): LocalDateTime = LocalDateTime.of(this, LocalTime.MIDNIGHT)
+
 fun Timestamp.toBrazilianLocale(): String {
 	val date = toDate()
 	val locale = Locale.forLanguageTag("pt-BR")
@@ -84,3 +98,27 @@ inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
 fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
 	if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString()
 }
+
+fun Timestamp.toSimpleDate(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("dd'/'MM", locale).format(date)
+}
+
+fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
+
+fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)
+
+suspend fun List<Symptom>.mergedHistoric() =
+	plus(flatMap { it.getHistoric() }).sortedByDescending { it.date_time }
+
+fun List<Symptom>.getIntensityAverage() =
+	map { it.intensity }.average().let { value ->
+		if (value.isNaN()) 0.0 else value
+	}
+
+fun List<Symptom>.getAreaMap() = groupBy { it.place }
+
+fun List<Symptom>.getMostAffectArea() =
+	getAreaMap().maxByOrNull { it.value.size }?.key

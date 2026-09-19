@@ -6,15 +6,18 @@ import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.getEnum
 
 data class ExamModel(
-	val id: String = "",
+	override val id: String = "",
 	val name: String = "",
 	val category: Utils.ExamCategory? = null,
 	val type: String = "",
 	val place: String = "",
 	val date: Timestamp? = null,
 	val status: Utils.ExamStatus? = null,
-) {
+): BaseDocument {
 	companion object {
+		const val COLLECTION_NAME = "exams"
+		val collection get() = DatabaseManager.userCollection(COLLECTION_NAME)
+
 		fun fromDocument(doc: DocumentSnapshot) = ExamModel(
 			id = doc.id,
 			name = doc["name"].toString(),

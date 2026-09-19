@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.database.Hospital
 import com.unnebulous.consultapronta.databinding.HospitalCardBinding
-import android.content.Context
 
 class HospitalAdapter : ListAdapter<Hospital, HospitalAdapter.HospitalViewHolder>(HospitalComparator()){
 	lateinit var onClick: (Hospital) -> Unit

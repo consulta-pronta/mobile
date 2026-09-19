@@ -11,7 +11,7 @@ import com.unnebulous.consultapronta.databinding.CardSymptomBinding
 import com.unnebulous.consultapronta.toBrazilianLocale
 
 class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(SymptomComparator()) {
-	enum class SymptomViewType { COMPACT, DETAILED }
+//	enum class SymptomViewType { COMPACT, DETAILED }
 
 	lateinit var onClick: (Symptom) -> Unit
 
@@ -40,7 +40,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 			binding.apply {
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description
-				symptomDateText.text = symptom.dateTime!!.toBrazilianLocale()
+				symptomDateText.text = symptom.date_time!!.toBrazilianLocale()
 				intensityView.setIntensity(symptom.intensity)
 				placeView.setLocation(symptom.place)
 

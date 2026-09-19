@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.ListenerRegistration
-import com.unnebulous.consultapronta.database.DatabaseController
+import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.ExamModel
 import com.unnebulous.consultapronta.databinding.FragmentExamBinding
 import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
@@ -51,11 +51,10 @@ class Exam : Fragment() {
 
 		val adapter = ExamListAdapter()
 		binding.examCards.adapter = adapter
-		firestoreListener = DatabaseController
-			.userCollection("exams")
+		firestoreListener = ExamModel.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
-					Log.e("firestore:getExams", "Error getting documents", exception)
+					Log.e(ExamModel.COLLECTION_NAME, "getExams", exception)
 					return@addSnapshotListener
 				}
 
@@ -63,9 +62,7 @@ class Exam : Fragment() {
 					return@addSnapshotListener
 				}
 
-				val exams = snapshots.documents.mapNotNull { document ->
-					ExamModel.fromDocument(document)
-				}
+				val exams = snapshots.documents.mapNotNull { ExamModel.fromDocument(it) }
 
 				adapter.submitList(exams)
 			}

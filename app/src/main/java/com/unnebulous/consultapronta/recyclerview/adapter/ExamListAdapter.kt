@@ -1,21 +1,20 @@
 package com.unnebulous.consultapronta.recyclerview.adapter
 
+import android.animation.ValueAnimator
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.unnebulous.consultapronta.databinding.CardExamBinding
-import android.animation.ValueAnimator
-import android.content.res.ColorStateList
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.capitalizeFix
 import com.unnebulous.consultapronta.database.ExamModel
+import com.unnebulous.consultapronta.databinding.CardExamBinding
 import com.unnebulous.consultapronta.toBrazilianLocale
 
 class ExamListAdapter: ListAdapter<ExamModel, ExamListAdapter.ExamViewHolder>(ExamComparator()) {

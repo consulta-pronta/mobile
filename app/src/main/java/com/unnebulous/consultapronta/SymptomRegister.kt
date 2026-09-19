@@ -1,21 +1,31 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.FieldValue
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentSymptomRegisterBinding
+import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+
 class SymptomRegister : Fragment() {
 
 	private var _binding: FragmentSymptomRegisterBinding? = null
 	private val binding get() = _binding!!
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 	private val timeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.time_format)) }
+
+	private lateinit var localDate: LocalDate
+	private lateinit var localTime: LocalTime
 
 
 	override fun onCreateView(
@@ -113,6 +123,8 @@ class SymptomRegister : Fragment() {
 
 		binding.dateSelect.setOnClickListener {
 			Utils.showDatePicker(this) { date ->
+				localDate = date
+
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -125,6 +137,8 @@ class SymptomRegister : Fragment() {
 
 		binding.timeSelect.setOnClickListener {
 			Utils.showTimePicker(this) { time ->
+				localTime = time
+
 				val buttonText = if (LocalTime.now().equals(time)) {
 					getString(R.string.time_format)
 				} else {
@@ -132,6 +146,30 @@ class SymptomRegister : Fragment() {
 				}
 
 				binding.timeSelect.text = buttonText
+			}
+		}
+
+		binding.symptomRegister.setOnClickListener {
+			val symptomDoc = binding.run {
+				Symptom.Companion.FormData(
+					title = questionSymptomArea.text.toString(),
+					description = detailSymptomArea.text.toString(),
+					date_time = LocalDateTime.of(localDate, localTime)
+						.toFirestoreTimestamp(),
+					place = bodyPartSpinner.text.toString(),
+					intensity = intensitySlider.value.toInt(),
+				)
+			}
+
+			lifecycleScope.launch {
+				try {
+					Symptom.collection.add(symptomDoc)
+
+					Log.i(Symptom.COLLECTION_NAME, "addSymptom:success")
+					popBackStack()
+				} catch (e: Exception) {
+					Log.e(Symptom.COLLECTION_NAME, "addSymptom:failure", e)
+				}
 			}
 		}
 	}

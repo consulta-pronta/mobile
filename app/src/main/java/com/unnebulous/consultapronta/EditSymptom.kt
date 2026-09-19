@@ -1,13 +1,21 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.DocumentReference
+import com.unnebulous.consultapronta.database.Symptom
+import com.unnebulous.consultapronta.database.SymptomUpdateData
 import com.unnebulous.consultapronta.databinding.FragmentEditSymptomBinding
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -18,6 +26,18 @@ class EditSymptom : Fragment() {
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 	private val timeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.time_format)) }
 
+	private lateinit var symptomId: String
+	private lateinit var localDate: LocalDate
+	private lateinit var localTime: LocalTime
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		arguments?.let {
+			symptomId = it.getString(ARG_SYMPTOM_ID, "ERROR")
+		}
+	}
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
@@ -26,6 +46,7 @@ class EditSymptom : Fragment() {
 		_binding = FragmentEditSymptomBinding.inflate(layoutInflater, container, false)
 		return binding.root
 	}
+
 	override fun onViewCreated(
 		view: View,
 		savedInstanceState: Bundle?
@@ -111,6 +132,8 @@ class EditSymptom : Fragment() {
 
 		binding.dateSelect.setOnClickListener {
 			Utils.showDatePicker(this) { date ->
+				localDate = date
+
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -123,6 +146,8 @@ class EditSymptom : Fragment() {
 
 		binding.timeSelect.setOnClickListener {
 			Utils.showTimePicker(this) { time ->
+				localTime = time
+
 				val buttonText = if (LocalTime.now().equals(time)) {
 					getString(R.string.time_format)
 				} else {
@@ -132,10 +157,77 @@ class EditSymptom : Fragment() {
 				binding.timeSelect.text = buttonText
 			}
 		}
+
+		binding.buttonSubmit.setOnClickListener {
+			val topLevelRef = Symptom.collection.document(symptomId)
+			lifecycleScope.launch {
+				try {
+					createHistoric(topLevelRef)
+					updateCurrent(topLevelRef)
+
+					Log.i(Symptom.COLLECTION_NAME, "editSymptom:success")
+					popBackStack()
+				} catch (e: Exception) {
+					Log.e(Symptom.COLLECTION_NAME, "editSymptom:failure", e)
+				}
+			}
+		}
+	}
+
+	private fun createHistoric(ref: DocumentReference) {
+		lifecycleScope.launch {
+			try {
+				val data = ref.get().await()
+				val symptom = Symptom.fromDocument(data)
+				val symptomHistoricData = SymptomUpdateData.fromDocument(
+					data,
+					reason = binding.questionEditArea.text.toString()
+				)
+
+				symptom.historicCollection
+					.add(symptomHistoricData)
+					.await()
+			} catch (e: Exception) {
+				throw e
+			}
+		}
+	}
+
+	private fun updateCurrent(ref: DocumentReference) {
+		lifecycleScope.launch {
+			try {
+				val symptomData = binding.run {
+					Symptom.Companion.FormData(
+						title = detailSymptomArea.text.toString(),
+						description = detailSymptomArea.text.toString(),
+						date_time = LocalDateTime.of(localDate, localTime)
+							.toFirestoreTimestamp(),
+						place = bodyPartSpinner.text.toString(),
+						intensity = intensitySlider.value.toInt(),
+					)
+				}
+
+				ref.set(symptomData.toMap())
+			} catch (e: Exception) {
+				throw e
+			}
+		}
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	companion object {
+		private const val ARG_SYMPTOM_ID = "symptom_id"
+
+		@JvmStatic
+		fun newInstance(id: String) =
+			EditSymptom().apply {
+				arguments = Bundle().apply {
+					putString(ARG_SYMPTOM_ID, id)
+				}
+			}
 	}
 }
