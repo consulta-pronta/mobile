@@ -13,6 +13,7 @@ activityKtx = "1.13.0"
 firebaseBom = "34.17.0"
 desugar = "2.0.4"
 mpAndroidChart = "3.1.0"
+openMapView = "0.13.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -25,11 +26,12 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 bumptech-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-auth = { module = "com.google.firebase:firebase-auth" }
-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
-desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
-chart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpAndroidChart" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore"}
+desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
+chart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpAndroidChart" }
+map-view = { group = "de.afarber", name = "openmapview", version.ref = "openMapView" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
