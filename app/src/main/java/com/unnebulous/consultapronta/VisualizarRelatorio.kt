@@ -58,8 +58,6 @@ class VisualizarRelatorio : Fragment() {
 
 		configChart()
 
-		_populateChart()
-
 		val adapter = ChronologyAdapter()
 
 		binding.recyclerview.adapter = adapter
@@ -112,25 +110,45 @@ class VisualizarRelatorio : Fragment() {
 						Utils.intensityToColor(requireContext(), intensity)
 					)
 				}
+
+				populateChart(symptoms)
 			} catch (e: Exception) {
 				Log.e("report", "getReportAndSymptoms:failure", e)
 			}
 		}
 	}
 
-	// TODO: remover isso após o backend
-	private fun _populateChart() {
-		// lista de pontos
-		val entries = listOf(
-			Entry(0f, 8f),
-			Entry(1f, 3.5f),
-			Entry(2f, 6.2f)
-		)
+	private fun populateChart(symptoms: List<Symptom>) {
+		val data = symptoms.map { it.date_time!! to it.intensity }.sortedBy { it.first }
 
-		// conjunto de dados
+		val xAxisLabels = listOf(data.first(), data.last()).map { it.first.toSimpleDate() }
+
+		val maxDiff = data.first().first.diffSeconds(data.last().first).toDouble()
+//		// Jeito mais preciso, mas fica dificil de ver
+//		val ratios = data.map {
+//			it.first
+//				.diffSeconds(data.first().first)
+//				.toDouble()
+//				.remap(0.0, maxDiff, 0.0, 1.0)
+//				.toFloat()
+//		}
+		val ratios = data.mapIndexed { index, pair ->
+			index.toDouble().remap(0.0, data.size - 1.0, 0.0, 1.0).toFloat()
+		}
+
+		val entries = ratios
+			.zip(data.map { it.second })
+			.map { Entry(it.first, it.second.toFloat()) }
+		Log.i("BRUH", entries.toString())
+
+		populateChartHelper(entries, xAxisLabels)
+
+	}
+
+	private fun populateChartHelper(entries: List<Entry>, xAxisLabels: List<String>) {
 		val dataSet = LineDataSet(entries, "").apply {
-			lineWidth = 5f
-			color = ContextCompat.getColor(requireContext(), R.color.primaryDark) // cor da linha
+			lineWidth = 3f
+			color = ContextCompat.getColor(requireContext(), R.color.primaryDark)
 			circleRadius = 4f
 			mode = LineDataSet.Mode.LINEAR
 
@@ -140,8 +158,7 @@ class VisualizarRelatorio : Fragment() {
 			setDrawValues(false)
 		}
 
-		// esse comando define quais serão os valores do eixo X
-		binding.chart.xAxis.valueFormatter = IndexAxisValueFormatter(listOf("10/04", "12/04", "14/04"))
+		binding.chart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabels)
 
 		binding.chart.data = LineData(dataSet)
 		binding.chart.invalidate() // reinicia o gráfico

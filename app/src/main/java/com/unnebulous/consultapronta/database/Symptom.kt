@@ -50,7 +50,7 @@ data class Symptom(
 			var list = queryResult.documents.map { fromDocument(it) }
 			if (deep) { list = list.mergedHistoric() }
 
-			return list
+			return list.sortedByDescending { it.date_time }
 		}
 	}
 }

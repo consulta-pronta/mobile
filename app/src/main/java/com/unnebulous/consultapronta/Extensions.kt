@@ -72,6 +72,9 @@ fun Context.clearCache() {
 	}
 }
 
+fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
+	ostart + (this - istart) * (ostop - ostart) / (istop - istart)
+
 fun LocalDateTime.toFirestoreTimestamp() =
 	Timestamp(atZone(ZoneId.systemDefault()).toInstant())
 
@@ -85,14 +88,19 @@ fun Timestamp.toBrazilianLocale(): String {
 	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
 }
 
+fun Timestamp.toSimpleDate(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("dd'/'MM", locale).format(date)
+}
+
 fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
 
 fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)
 
 suspend fun List<Symptom>.mergedHistoric() =
-	plus(flatMap { it.getHistoric() })
-		.sortedBy { it.date_time }
-		.reversed()
+	plus(flatMap { it.getHistoric() }).sortedByDescending { it.date_time }
 
 fun List<Symptom>.getIntensityAverage() =
 	map { it.intensity }.average().let { value ->

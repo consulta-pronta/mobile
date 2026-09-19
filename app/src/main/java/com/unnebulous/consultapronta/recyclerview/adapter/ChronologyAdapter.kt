@@ -48,7 +48,7 @@ class ChronologyAdapter: ListAdapter<BaseDocument, RecyclerView.ViewHolder>(WeAr
 		fun bind(item: Symptom, isLast: Boolean = false) {
 			binding.apply {
 				title.text = item.title
-				date.text = item.created_at?.toBrazilianLocale() ?: "Data desconhecida"
+				date.text = item.date_time?.toBrazilianLocale() ?: "Data desconhecida"
 				description.text = item.description
 				icon.setImageResource(R.drawable.ic_graphic)
 
