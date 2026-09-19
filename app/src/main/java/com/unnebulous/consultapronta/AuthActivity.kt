@@ -1,8 +1,9 @@
 package com.unnebulous.consultapronta
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
@@ -15,15 +16,11 @@ class AuthActivity : AppCompatActivity() {
 		binding = ActivityAuthBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		// se a AuthActivity está rodando pela primeira vez
-		// (isso não mostra que o usuário está usando o aplicativo pela primeira vez!)
-		if (savedInstanceState == null) {
-			// variável separada para permitir a troca de qual o fragmento será iniciado
-			var fragment: Fragment
-
-			fragment = Cadastro()
-
-			changeFragment(fragment, R.id.fragment_container)
+		if (AuthManager.user != null) {
+			startActivity(Intent(this, MainActivity::class.java))
+			finish()
+		} else {
+			changeFragment(Cadastro(), R.id.fragment_container)
 		}
 	}
 }
