@@ -3,28 +3,19 @@ package com.unnebulous.consultapronta
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
-import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.FragmentLoginBinding
 
 class Login : Fragment() {
 
 	private var _binding: FragmentLoginBinding? = null
 	private val binding get() = _binding!!
-	private lateinit var auth: FirebaseAuth
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		auth = Firebase.auth
-	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -50,7 +41,7 @@ class Login : Fragment() {
 			val email = binding.emailInput.text.toString()
 			val password = binding.passwordInput.text.toString()
 
-			auth.signInWithEmailAndPassword(email, password)
+			AuthManager.auth.signInWithEmailAndPassword(email, password)
 				.addOnCompleteListener { task ->
 					handlePostSignIn(task)
 				}

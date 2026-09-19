@@ -2,17 +2,18 @@ package com.unnebulous.consultapronta
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
-import com.unnebulous.consultapronta.database.DatabaseController
-import com.unnebulous.consultapronta.database.SymptomData
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.DocumentReference
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.database.SymptomUpdateData
 import com.unnebulous.consultapronta.databinding.FragmentEditSymptomBinding
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -158,62 +159,64 @@ class EditSymptom : Fragment() {
 		}
 
 		binding.buttonSubmit.setOnClickListener {
-			val oldDocRef = DatabaseController.userDocument("symptom", symptomId)
-			oldDocRef
-				.get()
-				.addOnSuccessListener { document ->
-					if (document.exists()) {
-						val symptom = SymptomUpdateData.fromDocument(
-							document,
-							binding.questionEditArea.text.toString()
-						)
+			val topLevelRef = Symptom.collection.document(symptomId)
+			lifecycleScope.launch {
+				try {
+					createHistoric(topLevelRef)
+					updateCurrent(topLevelRef)
 
-						oldDocRef
-							.collection("historic")
-							.add(symptom)
-							.addOnSuccessListener {
-								Log.i("symptom", "editSymptomDocument:createHistoric:success")
-
-								onCreateHistoric(document)
-
-								popBackStack()
-							}
-							.addOnFailureListener { e ->
-								Log.w("symptom", "editSymptomDocument:createHistoric:failure", e)
-							}
-					}
+					Log.i(Symptom.COLLECTION_NAME, "editSymptom:success")
+					popBackStack()
+				} catch (e: Exception) {
+					Log.e(Symptom.COLLECTION_NAME, "editSymptom:failure", e)
 				}
+			}
+		}
+	}
+
+	private fun createHistoric(ref: DocumentReference) {
+		lifecycleScope.launch {
+			try {
+				val data = ref.get().await()
+				val symptom = Symptom.fromDocument(data)
+				val symptomHistoricData = SymptomUpdateData.fromDocument(
+					data,
+					reason = binding.questionEditArea.text.toString()
+				)
+
+				symptom.historicCollection
+					.add(symptomHistoricData)
+					.await()
+			} catch (e: Exception) {
+				throw e
+			}
+		}
+	}
+
+	private fun updateCurrent(ref: DocumentReference) {
+		lifecycleScope.launch {
+			try {
+				val symptomData = binding.run {
+					Symptom.Companion.FormData(
+						title = detailSymptomArea.text.toString(),
+						description = detailSymptomArea.text.toString(),
+						date_time = LocalDateTime.of(localDate, localTime)
+							.toFirestoreTimestamp(),
+						place = bodyPartSpinner.text.toString(),
+						intensity = intensitySlider.value.toInt(),
+					)
+				}
+
+				ref.set(symptomData.toMap())
+			} catch (e: Exception) {
+				throw e
+			}
 		}
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
-	}
-
-	fun onCreateHistoric(document: DocumentSnapshot) {
-		val symptomData = binding.run {
-			SymptomData(
-				title = detailSymptomArea.text.toString(),
-				description = detailSymptomArea.text.toString(),
-				date_time = LocalDateTime.of(localDate, localTime)
-					.toFirestoreTimestamp(),
-				place = bodyPartSpinner.text.toString(),
-				intensity = intensitySlider.value.toInt(),
-				created_at = FieldValue.serverTimestamp(),
-			)
-		}
-
-		DatabaseController.userDocument("symptom", document.id)
-			.set(symptomData)
-			.addOnSuccessListener {
-				Log.i("symptom", "editSymptomDocument:updateTopLevel:success")
-
-				popBackStack()
-			}
-			.addOnFailureListener { e ->
-				Log.w("symptom", "editSymptomDocument:updateTopLevel:failure", e)
-			}
 	}
 
 	companion object {

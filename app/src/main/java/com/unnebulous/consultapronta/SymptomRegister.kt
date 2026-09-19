@@ -1,21 +1,22 @@
 package com.unnebulous.consultapronta
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FieldValue
-import com.unnebulous.consultapronta.database.DatabaseController
-import com.unnebulous.consultapronta.database.SymptomData
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentSymptomRegisterBinding
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+
 class SymptomRegister : Fragment() {
 
 	private var _binding: FragmentSymptomRegisterBinding? = null
@@ -150,27 +151,26 @@ class SymptomRegister : Fragment() {
 
 		binding.symptomRegister.setOnClickListener {
 			val symptomDoc = binding.run {
-				SymptomData(
+				Symptom.Companion.FormData(
 					title = questionSymptomArea.text.toString(),
 					description = detailSymptomArea.text.toString(),
 					date_time = LocalDateTime.of(localDate, localTime)
 						.toFirestoreTimestamp(),
 					place = bodyPartSpinner.text.toString(),
 					intensity = intensitySlider.value.toInt(),
-					created_at = FieldValue.serverTimestamp(),
 				)
 			}
 
-			DatabaseController.userCollection("symptom")
-				.add(symptomDoc)
-				.addOnSuccessListener {
-					Log.i("symptom", "addSymptomDocument:success")
+			lifecycleScope.launch {
+				try {
+					Symptom.collection.add(symptomDoc)
 
+					Log.i(Symptom.COLLECTION_NAME, "addSymptom:success")
 					popBackStack()
+				} catch (e: Exception) {
+					Log.e(Symptom.COLLECTION_NAME, "addSymptom:failure", e)
 				}
-				.addOnFailureListener { e ->
-					Log.w("symptom", "addSymptomDocument:failure", e)
-				}
+			}
 		}
 	}
 

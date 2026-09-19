@@ -7,9 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.Timestamp
+import com.unnebulous.consultapronta.database.Report
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentGerarRelatorioBinding
+import com.unnebulous.consultapronta.views.OptionItemView
 import com.unnebulous.consultapronta.views.SelectOptionItemView
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -17,12 +24,14 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	// TODO: substituir após o término da branch
-	// private val dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
-	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
+	private val dateFormatter: DateTimeFormatter by lazy {
+		DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
+	}
 
-	private var reportPeriodStartDate = LocalDate.now()
-	private var reportPeriodEndDate = LocalDate.now()
+	private var periodStartDate = Timestamp.now()
+	private var periodEndDate = Timestamp.now()
+	private var professionalList = ArrayList<String>()
+	private var symptomList = emptyList<Symptom>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -53,7 +62,9 @@ class GerarRelatorio : Fragment() {
 				}
 
 				binding.selectDateStart.text = buttonText
-				reportPeriodStartDate = date
+				periodStartDate = date.toLocalDateTime().toFirestoreTimestamp()
+
+				updateSummary()
 			}
 		}
 
@@ -66,7 +77,9 @@ class GerarRelatorio : Fragment() {
 				}
 
 				binding.selectDateEnd.text = buttonText
-				reportPeriodEndDate = date
+				periodEndDate = date.toLocalDateTime().toFirestoreTimestamp()
+
+				updateSummary()
 			}
 		}
 
@@ -76,14 +89,14 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.title.text = getString(R.string.bottom_sheet_view_permission_title)
 
 				dialogBinding.body.apply {
-					val _examples = mapOf(
-						"1" to "Dra. Cláudia Leite",
-						"2" to "Dr. Cláudio Leitoso",
-						"Yotsuba" to "!"
-					)
+					// TODO: Get from database when uhh thing done if ykyk 
+					val professionals = HashMap<String, String>()
 
-					for (professional in _examples) {
-						val option = SelectOptionItemView(requireContext(), Utils.SelectOptionItemType.CHECKBOX)
+					for (professional in professionals) {
+						val option = SelectOptionItemView(
+							requireContext(),
+							Utils.SelectOptionItemType.CHECKBOX
+						)
 						option.setTitle(professional.value)
 						option.itemId = professional.key
 						addView(option)
@@ -93,12 +106,51 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.positiveButton.text = getString(R.string.save)
 
 				dialogBinding.positiveButton.setOnClickListener {
-					for (itemSelected in catchOptionsSelected(dialogBinding)) {
-						Log.i("InfoPronto", itemSelected)
-					}
+					professionalList = catchOptionsSelected(dialogBinding)
 
 					dialog.dismiss()
 				}
+			}
+		}
+
+		binding.viewSymptomsIncluded.setOnClickListener {
+			configBottomSheet { dialogBinding, dialog ->
+				dialogBinding.icon.setImageResource(R.drawable.ic_history)
+				dialogBinding.title.text = getString(R.string.symptoms_included)
+				dialogBinding.positiveButton.visibility = View.INVISIBLE
+				dialogBinding.negativeButton.text = "Fechar"
+
+				dialogBinding.body.apply {
+					for (symptom in symptomList) {
+						val item = OptionItemView(requireContext())
+						item.setText(symptom.title)
+						item.setArrowVisibilityTo(false)
+
+						addView(item)
+					}
+				}
+
+			}
+		}
+
+		binding.generateReportButton.setOnClickListener {
+			val reportData = Report.Companion.FormData(
+				binding.reportTitleInput.text.toString(),
+				professionalList,
+				periodStartDate,
+				periodEndDate,
+			).toMap()
+
+			lifecycleScope.launch {
+				try {
+					Report.collection.add(reportData).await()
+
+					Log.i("report", "createReport:success")
+					popBackStack()
+				} catch (e: Exception) {
+					Log.e("report", "createReport:failure", e)
+				}
+
 			}
 		}
 	}
@@ -119,5 +171,21 @@ class GerarRelatorio : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	private fun updateSummary() {
+		binding.apply {
+			lifecycleScope.launch {
+				try {
+					symptomList = Symptom.getBetweenDates(periodStartDate, periodEndDate)
+
+					numberSymptomsRegisters.text = symptomList.size.toString()
+					intensityAverage.text = symptomList.getIntensityAverage().toString()
+					mostAffectedArea.text = symptomList.getMostAffectArea() ?: "Nenhuma registrada"
+				} catch (e: Exception) {
+					Log.e("report", "getSymptomsByDate:failure", e)
+				}
+			}
+		}
 	}
 }

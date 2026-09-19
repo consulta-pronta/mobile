@@ -1,17 +1,21 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.firestore.ListenerRegistration
+import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.databinding.FragmentRelatoriosListagemBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.ReportListAdapter
 
 class RelatoriosListagem : Fragment() {
-
 	private var _binding: FragmentRelatoriosListagemBinding? = null
 	private val binding get() = _binding!!
+
+	private lateinit var reportListener: ListenerRegistration
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -35,7 +39,9 @@ class RelatoriosListagem : Fragment() {
 
 		val adapter = ReportListAdapter().apply {
 			onClick = { report ->
-
+				changeFragmentWithBackStack(
+					VisualizarRelatorio.newInstance(report.id)
+				)
 			}
 		}
 
@@ -46,10 +52,24 @@ class RelatoriosListagem : Fragment() {
 				changeFragmentWithBackStack(GerarRelatorio())
 			}
 		}
+
+		reportListener = Report
+			.collection
+			.addSnapshotListener { snapshots, exception ->
+				if (exception != null) {
+					Log.e("report", "getReportsListener:failure", exception)
+					return@addSnapshotListener
+				}
+				if (snapshots == null) { return@addSnapshotListener }
+
+				val reports = snapshots.documents.mapNotNull { Report.fromDocument(it) }
+				adapter.submitList(reports)
+			}
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+		reportListener.remove()
 	}
 }

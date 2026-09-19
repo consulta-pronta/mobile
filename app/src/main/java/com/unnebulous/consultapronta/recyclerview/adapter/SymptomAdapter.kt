@@ -16,10 +16,6 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 
 	lateinit var onClick: (Symptom) -> Unit
 
-	override fun getItemViewType(position: Int): Int {
-		return super.getItemViewType(position)
-	}
-
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomViewHolder {
 		val binding = CardSymptomBinding.inflate(
 			LayoutInflater.from(parent.context),

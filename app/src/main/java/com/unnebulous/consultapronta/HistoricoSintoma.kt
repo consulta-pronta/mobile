@@ -2,17 +2,12 @@ package com.unnebulous.consultapronta
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.Firebase
+import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.firestore
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentHistoricoSintomaBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.SymptomAdapter
@@ -21,9 +16,7 @@ class HistoricoSintoma : Fragment() {
 	private var _binding: FragmentHistoricoSintomaBinding? = null
 	private val binding get() = _binding!!
 
-	private lateinit var auth: FirebaseAuth
-	private lateinit var db: FirebaseFirestore
-	private lateinit var firestoreListener: ListenerRegistration
+	private lateinit var symptomListener: ListenerRegistration
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -31,9 +24,6 @@ class HistoricoSintoma : Fragment() {
 		savedInstanceState: Bundle?
 	): View {
 		_binding = FragmentHistoricoSintomaBinding.inflate(layoutInflater, container, false)
-
-		auth = Firebase.auth
-		db = Firebase.firestore
 
 		return binding.root
 	}
@@ -56,9 +46,8 @@ class HistoricoSintoma : Fragment() {
 
 		binding.historicoSintomaRecyclerview.adapter = adapter
 
-		firestoreListener = db.collection("users")
-			.document(auth.uid!!)
-			.collection("symptom")
+		symptomListener = Symptom
+			.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
 					Log.e("firestore:getSymptoms", "Error getting documents: ", exception)
@@ -74,7 +63,7 @@ class HistoricoSintoma : Fragment() {
 								title = data["title"] as String,
 								description = data["description"] as String,
 								date_time = data["date_time"] as Timestamp,
-								place = data["place"] as String,
+								place = data["place"].toString(),
 								intensity = data["intensity"].toString().toInt(),
 								created_at = data["created_at"] as Timestamp,
 							)
@@ -92,7 +81,7 @@ class HistoricoSintoma : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
-		firestoreListener?.remove()
+		symptomListener?.remove()
 	}
 
 }

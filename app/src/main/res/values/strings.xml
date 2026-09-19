@@ -83,6 +83,7 @@
 	<string name="export_list">Exportar lista</string>
 	<string name="report_card_title_prefix">Relatório:\ </string>
 	<string name="report_card_period">Período:\ </string>
+	<string name="report_card_period_placeholder">%1$d dias</string>
 	<string name="report_card_add_date">Adicionado em\ </string>
 	<string name="reports_screen_title">Relatórios</string>
 	<string name="gen_reports_screen_subtitle">Gere um relatório completo de seus sintomas para compartilhar com seu médico</string>
@@ -94,6 +95,7 @@
 	<string name="select...">Selecionar…</string>
 	<string name="select_professionals_authorized">Profissionais que podem visualizar</string>
 	<string name="view_symptoms_included">Visualizar sintomas incluídos</string>
+	<string name="symptoms_included">Sintomas incluídos</string>
 	<string name="period_resume">Resumo do período</string>
 	<string name="registers">Registros</string>
 	<string name="most_affected_area">Área mais afetada</string>
@@ -101,8 +103,9 @@
 	<string name="create_download_report">Criar e baixar relatório em PDF</string>
 	<string name="gen_reports_screen_title">Gerar relatório</string>
 	<string name="average_intensity">Intensidade média</string>
-	<string name="report_id">Relatório ID-</string>
-	<string name="view_report_duration">Duração:\ </string>
+	<string name="report_id">Relatório ID: %1$s</string>
+	<string name="view_report_duration">Duração: %1$d dias\ </string>
+	<string name="view_report_period">Periodo: %1$s a %2$s\ </string>
 	<string name="geral_summary">Resumo Geral</string>
 	<string name="most_commom_symptom">Sintoma mais comum:</string>
 	<string name="chronology_symptoms">Cronologia dos sintomas</string>
@@ -140,4 +143,6 @@
 	<string name="save_edited">Salvar Edição</string>
 	<string name="detailed_explanation_hint">Explicação detalhada</string>
 	<string name="explain_command">Explique com mais detalhes</string>
+	<string name="most_affected_area_num_register">%1$d registros</string>
+	<string name="most_affected_area_intensity">Média: %.2f\n</string>
 </resources>

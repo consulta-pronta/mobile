@@ -4,11 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
 import com.unnebulous.consultapronta.databinding.FragmentHomeBinding
 
 class Home : Fragment() {
@@ -29,6 +25,12 @@ class Home : Fragment() {
 
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
+		}
+
+		binding.apply {
+			firstButton.setOnClickListener {
+				changeFragmentWithBackStack(RelatoriosListagem())
+			}
 		}
 	}
 

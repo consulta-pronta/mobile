@@ -40,8 +40,9 @@
 
 			android:layout_width="40dp"
 			android:layout_height="40dp"
-			android:tint="@color/textDark"
 
+
+			app:tint="@color/textDark"
 			tools:src="@drawable/ic_info" />
 
 		<TextView
