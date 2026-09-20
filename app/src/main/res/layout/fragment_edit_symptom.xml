@@ -13,48 +13,16 @@
 		android:paddingBottom="30dp">
 
 		<TextView
-			android:id="@+id/question_edit_motive"
-
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-
-			android:text="@string/question_edition_motive"
-			android:textSize="14sp"
-
-			app:drawableStartCompat="@drawable/ic_asterisk"
-			app:drawableTint="@color/error"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			/>
-
-		<EditText
-			android:id="@+id/question_edit_area"
-
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/shape_search_background"
-			android:layout_marginTop="@dimen/default_card_padding"
-			android:hint="@string/type_motive"
-			android:inputType="text"
-			android:autofillHints="symptons"
-
-			app:layout_constraintTop_toBottomOf="@id/question_edit_motive"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			/>
-
-		<TextView
 			android:id="@+id/detail_symptom"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="@dimen/default_screen_padding"
 			android:text="@string/symptom_question"
 			android:textSize="14sp"
 
 			app:drawableStartCompat="@drawable/ic_asterisk"
 			app:drawableTint="@color/error"
-			app:layout_constraintTop_toBottomOf="@id/question_edit_area"
+			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			/>
 
