@@ -1,13 +1,20 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.FragmentAdicionarMedicamentoBinding
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlin.String
 
 class AdicionarMedicamento : Fragment() {
 
@@ -44,6 +51,51 @@ class AdicionarMedicamento : Fragment() {
 				.map { it.display }
 				.toTypedArray()
 			setupSelect(medicationFrequencyUnit, frequencyUnits, resetOnClick = true)
+			
+			registerMedicationButton.setOnClickListener {
+				val route = Utils.MedicationRoute.fromDisplay(
+					medicationRouteSelect.text.toString()
+				)
+				val doseUnit = Utils.MedicationDoseUnit.fromDisplay(
+					medicationDoseUnit.text.toString()
+				)
+				val frequencyUnit = Utils.MedicationFrequencyUnit.fromDisplay(
+					medicationFrequencyUnit.text.toString()
+				)
+
+				if (route == null || doseUnit == null || frequencyUnit == null) {
+					Toast
+						.makeText(context, "Preencha os inputs corretamente", Toast.LENGTH_SHORT)
+						.show()
+					return@setOnClickListener
+				}
+
+				lifecycleScope.launch {
+					try {
+						Medication.collection.add(Medication.Companion.FormData(
+							name = medicationNameInput.text.toString(),
+
+							route = route,
+							dose = Pair(
+								medicationDoseValue.text.toString().toDouble(),
+								doseUnit
+							),
+							frequency = Pair(
+								medicationFrequencyValue.text.toString().toDouble(),
+								frequencyUnit),
+							duration_days = medicationDuration.text.toString().toInt(),
+
+							custom_instructions = medicationCustomInstructions.text.toString(),
+							notes = medicationNotes.text.toString(),
+						).toMap()).await()
+
+						Log.i(Medication.COLLECTION_NAME, "addMedication:success")
+						popBackStack()
+					} catch (e: Exception) {
+						Log.e(Medication.COLLECTION_NAME, "addMedication:failure", e)
+					}
+				}
+			}
 		}
 	}
 

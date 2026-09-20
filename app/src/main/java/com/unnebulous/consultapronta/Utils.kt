@@ -69,7 +69,7 @@ object Utils {
 
 		companion object {
 			fun fromDisplay(value: String) =
-				MedicationRoute.entries.firstOrNull { it.display == value }
+				MedicationDoseUnit.entries.firstOrNull { it.display == value }
 		}
 	}
 
@@ -83,7 +83,7 @@ object Utils {
 
 		companion object {
 			fun fromDisplay(value: String) =
-				MedicationRoute.entries.firstOrNull { it.display == value }
+				MedicationFrequencyUnit.entries.firstOrNull { it.display == value }
 		}
 	}
 
