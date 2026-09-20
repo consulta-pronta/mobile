@@ -50,7 +50,12 @@ class HistoricoDoSintoma : Fragment() {
 
 		val adapter = SymptomHistoryAdapter()
 
-		binding.recyclerview.adapter = adapter
+		binding.apply {
+			recyclerview.adapter = adapter
+			editSymptom.setOnClickListener {
+				changeFragmentWithBackStack(EditSymptom.newInstance(symptomId))
+			}
+		}
 
 		lifecycleScope.launch {
 			try {
