@@ -1,28 +1,30 @@
 package com.unnebulous.consultapronta
 
-import android.app.ActionBar
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
-import androidx.core.view.children
-import com.bumptech.glide.util.Util
-import com.unnebulous.consultapronta.databinding.SnackbarBinding
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
+import com.unnebulous.consultapronta.databinding.SnackbarBinding
 import com.unnebulous.consultapronta.views.HeaderView
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
+import java.util.Locale
+import java.util.Locale.getDefault
+import kotlin.enums.enumEntries
+import kotlin.math.abs
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
 	supportFragmentManager
@@ -71,30 +73,17 @@ fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding, BottomSheetDial
 }
 
 fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.SnackBarType.INFO, duration: Int = Snackbar.LENGTH_LONG) {
-	var drawable: Drawable?
-	var color: ColorStateList?
-
-	when (type) {
-		Utils.SnackBarType.INFO -> {
-			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_info)
-			color = ContextCompat.getColorStateList(requireContext(), R.color.neutral)
-		}
-
-		Utils.SnackBarType.SUCCESS -> {
-			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
-			color = ContextCompat.getColorStateList(requireContext(), R.color.success)
-		}
-
-		Utils.SnackBarType.WARNING -> {
-			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_warning)
-			color = ContextCompat.getColorStateList(requireContext(), R.color.warning)
-		}
-
-		Utils.SnackBarType.DANGER -> {
-			drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_danger)
-			color = ContextCompat.getColorStateList(requireContext(), R.color.error)
-		}
+	val context = requireContext()
+	
+	val values = when (type) {
+		Utils.SnackBarType.INFO -> R.drawable.ic_info to R.color.neutral
+		Utils.SnackBarType.SUCCESS -> R.drawable.ic_check to R.color.success
+		Utils.SnackBarType.WARNING -> R.drawable.ic_warning to R.color.warning
+		Utils.SnackBarType.DANGER -> R.drawable.ic_danger to R.color.error
 	}
+	val drawable = ContextCompat.getDrawable(context, values.first)
+	val color = ContextCompat.getColorStateList(context, values.second)
+
 
 	val snackbar = Snackbar.make(requireView(), "", duration)
 	val snackbarView = snackbar.view as ViewGroup
@@ -107,7 +96,7 @@ fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.Snac
 	snackbarBinding.snackbarIcon.backgroundTintList = color
 
 	snackbarView.setPadding(0, 0, 0, 250)
-	snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
+	snackbarView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
 	snackbarView.removeAllViews()
 	snackbarView.addView(snackbarBinding.root, 0)
 
@@ -122,3 +111,50 @@ fun Context.clearCache() {
 		Log.e("ErroPronto", "Erro ao apagar cache", e)
 	}
 }
+
+fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
+	ostart + (this - istart) * (ostop - ostart) / (istop - istart)
+
+fun LocalDateTime.toFirestoreTimestamp() =
+	Timestamp(atZone(ZoneId.systemDefault()).toInstant())
+
+fun LocalDate.toLocalDateTime(): LocalDateTime = LocalDateTime.of(this, LocalTime.MIDNIGHT)
+
+fun Timestamp.toBrazilianLocale(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
+}
+
+inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
+	val value = get(field).toString()
+	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+}
+
+fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
+	if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString()
+}
+
+fun Timestamp.toSimpleDate(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("dd'/'MM", locale).format(date)
+}
+
+fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
+
+fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)
+
+suspend fun List<Symptom>.mergedHistoric() = this + flatMap { it.getHistoric() }
+
+fun List<Symptom>.getIntensityAverage() =
+	map { it.intensity }.average().let { value ->
+		if (value.isNaN()) 0.0 else value
+	}
+
+fun List<Symptom>.getAreaMap() = groupBy { it.place }
+
+fun List<Symptom>.getMostAffectArea() =
+	getAreaMap().maxByOrNull { it.value.size }?.key

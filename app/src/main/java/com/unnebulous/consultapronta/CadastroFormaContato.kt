@@ -66,7 +66,7 @@ class CadastroFormaContato : Fragment() {
 		configWhatsappSwitch()
 		configTelegramSwitch()
 
-		userTemp = (activity as AuthActivity).userTemp
+//		userTemp = (activity as AuthActivity).userTemp
 
 		userTemp.contactForms.entries.forEach { entry ->
 			when (entry.key) {

@@ -1,13 +1,17 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.unnebulous.consultapronta.database.SymptomHistory
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentHistoricoDoSintomaBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.SymptomHistoryAdapter
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class HistoricoDoSintoma : Fragment() {
 
@@ -46,7 +50,27 @@ class HistoricoDoSintoma : Fragment() {
 
 		val adapter = SymptomHistoryAdapter()
 
-		binding.recyclerview.adapter = adapter
+		binding.apply {
+			recyclerview.adapter = adapter
+			editSymptom.setOnClickListener {
+				changeFragmentWithBackStack(EditSymptom.newInstance(symptomId))
+			}
+		}
+
+		lifecycleScope.launch {
+			try {
+				val topLevelSymptom = Symptom.collection.document(symptomId).get().await()
+				val list = listOf(Symptom.fromDocument(topLevelSymptom))
+					.mergedHistoric()
+					.sortedByDescending { it.date_time }
+
+				adapter.submitList(list)
+
+				Log.i(Symptom.HISTORIC_COLLECTION_NAME, "getHistoric:success")
+			} catch (e: Exception) {
+				Log.e(Symptom.HISTORIC_COLLECTION_NAME, "getHistoric:failure", e)
+			}
+		}
 	}
 
 	override fun onDestroyView() {

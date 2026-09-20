@@ -2,16 +2,17 @@ package com.unnebulous.consultapronta
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.content.Context
 import android.text.format.DateFormat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
-import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import java.time.LocalDate
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneOffset
 
@@ -31,6 +32,10 @@ object Utils {
 	enum class SelectOptionItemType { RADIO, CHECKBOX, COMPLETE }
 
 	enum class SnackBarType { INFO, SUCCESS, WARNING, DANGER }
+
+	enum class ExamCategory { LABORATORIAL, IMAGEM, FUNCIONAL, PREVENTIVO }
+
+	enum class ExamStatus { SOLICITADO, TRIAGEM, LIBERADO, PENDENTE }
 
 	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
 		val constraintBuilder = CalendarConstraints.Builder()
@@ -119,4 +124,11 @@ object Utils {
 			return s.replace("[^0-9]*".toRegex(), "")
 		}
 	}
+
+	fun intensityToColor(context: Context, intensity: Double) =
+		ContextCompat.getColor(context, when {
+			intensity <= 4 -> R.color.success
+			intensity <= 7 -> R.color.warning
+			else -> R.color.error
+		})
 }

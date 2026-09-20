@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -9,142 +9,149 @@
 	android:orientation="vertical"
 	android:showDividers="middle"
 	android:divider="@drawable/divider_default"
+	android:fillViewport="true"
 
 	tools:context=".VisualizarRelatorio">
 
-	<TextView
-		android:id="@+id/report_id_text"
-
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/report_id"
-		android:textStyle="italic" />
-
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
 		<TextView
-			android:id="@+id/report_period_text"
+			android:id="@+id/report_id_text"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/report_card_period"
+			android:text="@string/report_id"
+			android:textStyle="italic"
+			android:layout_marginBottom="@dimen/default_inner_elements_spacing"/>
 
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintStart_toStartOf="parent" />
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<TextView
+				android:id="@+id/report_period_text"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/view_report_period"
+
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent" />
+
+			<TextView
+				android:id="@+id/report_duration_text"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/view_report_duration"
+
+				app:layout_constraintTop_toBottomOf="@id/report_period_text"
+				app:layout_constraintStart_toStartOf="parent"/>
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
 		<TextView
-			android:id="@+id/report_duration_text"
-
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/view_report_duration"
+			android:text="@string/geral_summary"
+			android:textStyle="bold"
+			android:textSize="24sp"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing" />
 
-			app:drawableEndCompat="@drawable/ic_info"
-			app:drawableTint="@color/textLight"
-			app:layout_constraintTop_toBottomOf="@id/report_period_text"
-			app:layout_constraintStart_toStartOf="parent"/>
-
-	</androidx.constraintlayout.widget.ConstraintLayout>
-
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/geral_summary"
-		android:textStyle="bold"
-		android:textSize="24sp"/>
-
-	<GridLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:rowCount="1"
-		android:columnCount="2">
-		<LinearLayout
-			android:layout_width="0dp"
+		<GridLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:background="@drawable/shape_rounded_background"
-			android:backgroundTint="@color/surface"
-			android:layout_columnWeight="1"
-			android:layout_gravity="fill"
-			android:padding="@dimen/default_card_padding"
-			android:layout_marginEnd="@dimen/default_inner_elements_spacing">
-			<TextView
-				android:layout_width="wrap_content"
+			android:rowCount="1"
+			android:columnCount="2">
+			<LinearLayout
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:text="@string/most_commom_symptom"
-				android:textSize="14sp"
-				android:textColor="@color/primaryDark"/>
+				android:orientation="vertical"
+				android:background="@drawable/shape_rounded_background"
+				android:backgroundTint="@color/surface"
+				android:layout_columnWeight="1"
+				android:layout_gravity="fill"
+				android:padding="@dimen/default_card_padding"
+				android:layout_marginEnd="@dimen/default_inner_elements_spacing">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/most_affected_area"
+					android:textSize="14sp"
+					android:textColor="@color/primaryDark"/>
 
-			<TextView
-				android:id="@+id/most_commom_symptom_name"
+				<TextView
+					android:id="@+id/most_affected_area"
 
-				android:layout_width="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:textColor="@color/primaryDark"
+
+					tools:text="@string/placeholder" />
+
+				<TextView
+					android:id="@+id/most_affected_area_num_register"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="14sp"
+					android:textColor="@color/primaryDark"
+
+					tools:text="@string/most_affected_area_num_register" />
+
+				<com.google.android.material.chip.Chip
+					android:id="@+id/most_affected_area_intensity"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="12sp"
+					android:text="@string/most_affected_area_intensity"
+					android:textColor="@color/textLight"
+
+					app:chipCornerRadius="50dp"
+					app:chipStrokeColor="@color/transparent"
+					app:chipIcon="@drawable/ic_graphic"
+					app:chipIconTint="@color/textLight"
+
+					tools:chipBackgroundColor="@color/error" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:textStyle="bold"
-				android:textColor="@color/primaryDark"
+				android:orientation="vertical"
+				android:background="@drawable/shape_rounded_background"
+				android:backgroundTint="@color/surface"
+				android:layout_columnWeight="1"
+				android:layout_gravity="fill"
+				android:padding="@dimen/default_card_padding">
 
-				tools:text="@string/placeholder" />
+				<com.github.mikephil.charting.charts.LineChart
+					android:id="@+id/chart"
 
-			<TextView
-				android:id="@+id/most_commom_symptom_period"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"/>
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textSize="14sp"
-				android:textColor="@color/primaryDark"
+			</LinearLayout>
+		</GridLayout>
 
-				tools:text="@string/placeholder" />
-
-			<com.google.android.material.chip.Chip
-				android:id="@+id/most_commom_symptom_priority"
-
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textSize="12sp"
-
-				app:chipCornerRadius="50dp"
-				app:chipStrokeColor="@color/transparent"
-
-				tools:text="@string/placeholder"
-				tools:chipIcon="@drawable/ic_warning"
-				tools:textColor="@color/textLight"
-				tools:chipBackgroundColor="@color/error"
-				tools:chipIconTint="@color/textLight" />
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="0dp"
+		<TextView
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:background="@drawable/shape_rounded_background"
-			android:backgroundTint="@color/surface"
-			android:layout_columnWeight="1"
-			android:layout_gravity="fill"
-			android:padding="@dimen/default_card_padding">
+			android:textSize="24sp"
+			android:text="@string/chronology_symptoms"
+			android:textStyle="bold"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"/>
 
-			<com.github.mikephil.charting.charts.LineChart
-				android:id="@+id/chart"
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recyclerview"
 
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"/>
-			
-		</LinearLayout>
-	</GridLayout>
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:nestedScrollingEnabled="false"
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="24sp"
-		android:text="@string/chronology_symptoms"
-		android:textStyle="bold" />
-
-	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/recyclerview"
-
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
-
-		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-</LinearLayout>
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+	</LinearLayout>
+</androidx.core.widget.NestedScrollView>

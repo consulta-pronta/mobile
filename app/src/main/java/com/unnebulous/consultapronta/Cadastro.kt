@@ -5,27 +5,24 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
-import com.google.firebase.Firebase
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.firestore
+import com.google.firebase.auth.AuthResult
+import com.unnebulous.consultapronta.database.AuthManager
+import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.Date
-
 class Cadastro : Fragment() {
 
 	private var _binding: FragmentCadastroBinding? = null
@@ -77,19 +74,19 @@ class Cadastro : Fragment() {
 			}
 
 			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank) {
-				(activity as AuthActivity).userTemp.apply {
-					this.name = name
-					this.userType = userType
-					this.cpf = cpf
-					this.email = email
-					this.phoneNumber = phoneNumber
-					this.password = password
-
-					this.contactForms["email"] = this.email
-					this.contactForms["sms"] = this.phoneNumber
-				}
-
-				changeFragmentWithBackStack(CadastroFormaContato())
+//				(activity as AuthActivity).userTemp.apply {
+//					this.name = name
+//					this.userType = userType
+//					this.cpf = cpf
+//					this.email = email
+//					this.phoneNumber = phoneNumber
+//					this.password = password
+//
+//					this.contactForms["email"] = this.email
+//					this.contactForms["sms"] = this.phoneNumber
+//				}
+				AuthManager.auth.createUserWithEmailAndPassword(email, password)
+					.addOnCompleteListener { task -> handlePostSignUp(task) }
 			} else {
 				val error = if (oneOrMoreInputBlank) {
 					getString(R.string.error_blank_input)
@@ -182,5 +179,41 @@ class Cadastro : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	private fun handlePostSignUp(task: Task<AuthResult>) {
+		if (!task.isSuccessful) {
+			Log.w("auth", "signUpWithEmail:failure", task.exception)
+			return
+		}
+		Log.i("auth", "signUpWithEmail:success")
+
+		val user = task.result.user!!
+		val creationTime = user.metadata?.creationTimestamp
+
+		val userDocument = User(
+			name = binding.nameInput.text.toString(),
+			email = user.email!!,
+			phone = binding.phoneNumberInput.text.toString(),
+			cpf = binding.cpfInput.text.toString(),
+			user_type = binding.userTypeSwitch.userType.toString().lowercase(),
+			created_at = Timestamp(Date(creationTime!!))
+		)
+
+		lifecycleScope.launch {
+			try {
+				DatabaseManager.userDocument
+					.set(userDocument)
+					.await()
+
+				Log.i("auth", "setUserDocument:success")
+
+				val activity = requireActivity()
+				startActivity(Intent(activity, MainActivity::class.java))
+				activity.finish()
+			} catch (e: Exception) {
+				Log.w("auth", "setUserDocument:failure", e)
+			}
+		}
 	}
 }
