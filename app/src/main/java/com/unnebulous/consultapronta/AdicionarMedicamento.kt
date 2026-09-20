@@ -1,24 +1,18 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.unnebulous.consultapronta.databinding.FragmentAdicionarMedicamentoBinding
-import com.unnebulous.consultapronta.databinding.FragmentMedicamentosListagemBinding
-import com.unnebulous.consultapronta.recyclerview.adapter.MedicationAdapter
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class AdicionarMedicamento : Fragment() {
 
 	private var _binding: FragmentAdicionarMedicamentoBinding? = null
 	private val binding get() = _binding!!
-
-	private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -39,49 +33,38 @@ class AdicionarMedicamento : Fragment() {
 			}
 		}
 
-		val typeConsumptions = arrayOf(
-			"Oral (comprimido)",
-			"Oral (gotas)",
-			"Sublingual (comprimido)",
-			"Sublingual (gotas)",
-			"Injetável",
-			"Externo (Pomadas, cremes, etc)",
-			"Inalatório",
-			"Retal",
-			"Oftálmico (colírios)",
-			"Oftológico (orelha)",
-		)
+		binding.apply {
+			val routes = Utils.MedicationRoute.entries.map { it.display }.toTypedArray()
+			setupSelect(medicationRouteSelect, routes)
 
-		val adapter = ArrayAdapter(
-			requireContext(),
-			R.layout.item_spinner,
-			typeConsumptions
-		)
+			val doseUnits = Utils.MedicationDoseUnit.entries.map { it.display }.toTypedArray()
+			setupSelect(medicationDoseUnit, doseUnits, resetOnClick = true)
 
-		adapter.setDropDownViewResource(R.layout.item_spinner)
-
-		binding.typeConsumptionSelect.setAdapter(adapter)
-
-		binding.typeConsumptionSelect.setOnClickListener {
-			binding.typeConsumptionSelect.showDropDown()
+			val frequencyUnits = Utils.MedicationFrequencyUnit.entries
+				.map { it.display }
+				.toTypedArray()
+			setupSelect(medicationFrequencyUnit, frequencyUnits, resetOnClick = true)
 		}
+	}
 
-		binding.typeConsumptionDropdown.setEndIconOnClickListener {
-			binding.typeConsumptionSelect.showDropDown()
-		}
-
-		binding.usageTimeInput.setOnClickListener {
-			Utils.showTimePicker(this, LocalTime.of(0, 0)) { time ->
-				if (time.hour == 0) {
-					return@showTimePicker
-				}
-
-				val buttonText = time.format(timeFormatter)
-
-				binding.usageTimeInput.text = buttonText
+	private fun setupSelect(
+		select: MaterialAutoCompleteTextView,
+		array: Array<String>,
+		resetOnClick: Boolean = false
+	) {
+		select.apply {
+			setAdapter(createAdapter(array))
+			setOnClickListener {
+				if (resetOnClick) { setText("", false) }
+				showDropDown()
 			}
 		}
 	}
+
+	private fun createAdapter(array: Array<String>) =
+		ArrayAdapter(requireContext(), R.layout.item_spinner, array).apply {
+			setDropDownViewResource(R.layout.item_spinner)
+		}
 
 	override fun onDestroyView() {
 		super.onDestroyView()

@@ -11,6 +11,10 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.unnebulous.consultapronta.Utils.MedicationRoute.INALATORIO
+import com.unnebulous.consultapronta.Utils.MedicationRoute.INJETAVEL
+import com.unnebulous.consultapronta.Utils.MedicationRoute.OFTALMICO
+import com.unnebulous.consultapronta.Utils.MedicationRoute.OFTOLOGICO
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -33,9 +37,56 @@ object Utils {
 
 	enum class SnackBarType { INFO, SUCCESS, WARNING, DANGER }
 
+	/* TODO: Mudar para inglês */
 	enum class ExamCategory { LABORATORIAL, IMAGEM, FUNCIONAL, PREVENTIVO }
 
 	enum class ExamStatus { SOLICITADO, TRIAGEM, LIBERADO, PENDENTE }
+
+	enum class MedicationRoute {
+		ORAL, SUBLINGUAL, INJETAVEL, EXTERNO, INALATORIO, RETAL, OFTALMICO, OFTOLOGICO;
+
+		val display get() = when (this) {
+			INJETAVEL -> "Injetável"
+			INALATORIO -> "Inalatório"
+			OFTALMICO -> "Oftálmico"
+			OFTOLOGICO -> "Oftológico"
+			else -> this.toString().capitalizeFix()
+		}
+
+		companion object {
+			fun fromDisplay(value: String) =
+				entries.firstOrNull { it.display == value }
+		}
+	}
+
+	enum class MedicationDoseUnit {
+		MILIGRAMA, GRAMA, MICROGRAMA, MILILITRO, UNIDADE_INTERNACIONAL, TABLETE;
+
+		val display get() = when (this) {
+			UNIDADE_INTERNACIONAL -> "Un. Internacional"
+			else -> this.toString().capitalizeFix()
+		}
+
+		companion object {
+			fun fromDisplay(value: String) =
+				MedicationRoute.entries.firstOrNull { it.display == value }
+		}
+	}
+
+	enum class MedicationFrequencyUnit {
+		MINUTO, HORA, DIA, SEMANA, MES;
+
+		val display get() = when (this) {
+			MES -> "Mês"
+			else -> this.toString().capitalizeFix()
+		}
+
+		companion object {
+			fun fromDisplay(value: String) =
+				MedicationRoute.entries.firstOrNull { it.display == value }
+		}
+	}
+
 
 	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
 		val constraintBuilder = CalendarConstraints.Builder()

@@ -180,4 +180,17 @@
 	<string name="explain_command">Explique com mais detalhes</string>
 	<string name="most_affected_area_num_register">%1$d registros</string>
 	<string name="most_affected_area_intensity">Média: %.2f\n</string>
+	<string name="medication_dose_unit_title">Dose</string>
+	<string name="medication_dose_unit_subtitle">Ex.: 500 mg, 1 tablete</string>
+	<string name="medication_dose_unit_hint">Escreva a dose</string>
+	<string name="unit">unidade</string>
+	<string name="medication_frequency_unit_title">Frequência</string>
+	<string name="medication_frequency_unit_subtitle">Ex.: A cada 4 horas, a cada 2 dias</string>
+	<string name="medication_frequency_unit_hint">Escreva a frequencia</string>
+	<string name="medication_duration_title">Duração</string>
+	<string name="medication_duration_hint">Escreva a duração em dias</string>
+	<string name="medication_extra_instructions_title">Instruções extras</string>
+	<string name="medication_extra_instructions_hint">Escreva instruções extras da dosagem</string>
+	<string name="medication_notes_title">Anotações</string>
+	<string name="medication_notes_hint">Outras informações (opcional)</string>
 </resources>

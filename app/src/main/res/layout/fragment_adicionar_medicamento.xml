@@ -1,127 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:showDividers="middle"
-	android:divider="@drawable/divider_default"
 
 	tools:context=".AdicionarMedicamento">
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/medication_name"
-		android:textSize="20sp" />
-
-	<EditText
-		android:id="@+id/medication_name_input"
-
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/shape_input"
-		android:backgroundTint="@color/surface"
-		android:hint="@string/medication_name_hint"
-		android:inputType="text"
-		android:autofillHints="name"
-		android:textColor="@color/textDark"
-		android:textColorHint="@color/textDark60" />
+		android:orientation="vertical"
+		android:showDividers="middle"
+		android:divider="@drawable/divider_default"
+		android:paddingBottom="30dp" >
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/type_consumption"
-		android:textSize="20sp" />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/medication_name"
+			android:textSize="20sp" />
 
-	<com.google.android.material.textfield.TextInputLayout
-		style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-
-		android:id="@+id/type_consumption_dropdown"
-
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:textColorHint="@color/textDark"
-
-		app:hintEnabled="false"
-		app:boxCornerRadiusTopStart="12dp"
-		app:boxCornerRadiusTopEnd="12dp"
-		app:boxCornerRadiusBottomStart="12dp"
-		app:boxCornerRadiusBottomEnd="12dp"
-		app:boxBackgroundColor="@color/surface"
-		app:counterTextColor="@color/textDark"
-		app:counterOverflowTextColor="@color/textDark"
-		app:endIconMode="custom"
-		app:endIconDrawable="@drawable/ic_arrow_down"
-		app:endIconTint="@color/primaryDark">
-
-		<com.google.android.material.textfield.MaterialAutoCompleteTextView
-			android:id="@+id/type_consumption_select"
+		<EditText
+			android:id="@+id/medication_name_input"
 
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:hint="@string/type_consumption_hint"
-			android:textColorHint="@color/textDark60"
-			android:inputType="textAutoComplete"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_input"
+			android:backgroundTint="@color/surface"
+			android:hint="@string/medication_name_hint"
+			android:inputType="text"
+			android:autofillHints="name"
 			android:textColor="@color/textDark"
-			android:padding="@dimen/default_card_padding" />
+			android:textColorHint="@color/textDark60" />
 
-	</com.google.android.material.textfield.TextInputLayout>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/type_consumption"
+			android:textSize="20sp" />
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/usage_time"
-		android:textSize="20sp" />
+		<com.google.android.material.textfield.TextInputLayout
+			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 
-	<Button
-		android:id="@+id/usage_time_input"
+			android:id="@+id/type_consumption_dropdown"
 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/time_not_selected"
-		android:textAlignment="viewStart"
-		android:textColor="@color/textDark60"
-		android:padding="@dimen/default_card_padding"
-		android:insetTop="0dp"
-		android:insetBottom="0dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColorHint="@color/textDark"
+			android:layout_marginBottom="@dimen/default_inner_elements_spacing"
 
-		app:icon="@drawable/ic_clock"
-		app:iconSize="30dp"
-		app:iconGravity="end"
-		app:iconTint="@color/textDark60"
-		app:backgroundTint="@color/surface"
-		app:cornerRadius="@dimen/big_button_corner_radius"/>
+			app:hintEnabled="false"
+			app:boxCornerRadiusTopStart="12dp"
+			app:boxCornerRadiusTopEnd="12dp"
+			app:boxCornerRadiusBottomStart="12dp"
+			app:boxCornerRadiusBottomEnd="12dp"
+			app:boxBackgroundColor="@color/surface"
+			app:counterTextColor="@color/textDark"
+			app:counterOverflowTextColor="@color/textDark"
+			app:endIconMode="custom"
+			app:endIconDrawable="@drawable/ic_arrow_down"
+			app:endIconTint="@color/primaryDark">
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/photo"
-		android:textSize="20sp" />
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
+				android:id="@+id/medication_route_select"
 
-	<com.unnebulous.consultapronta.views.FileInputView
-		android:id="@+id/file_input"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:hint="@string/type_consumption_hint"
+				android:textColorHint="@color/textDark60"
+				android:inputType="textAutoComplete"
+				android:textColor="@color/textDark"
+				android:padding="@dimen/default_card_padding" />
 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		</com.google.android.material.textfield.TextInputLayout>
 
-		app:icon="@drawable/ic_camera"
-		app:textMain="@string/photo_or_annex"
-		app:inputMode="getFile" />
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<TextView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:text="@string/medication_dose_unit_title"
+				android:textSize="20sp"
+				android:layout_weight="1" />
 
-	<Button
-		android:id="@+id/register_medication_button"
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/medication_dose_unit_subtitle"
+				android:textSize="14sp" />
+		</LinearLayout>
 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/register_medication"
-		android:textColor="@color/primaryDark"
-		android:insetBottom="0dp"
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 
-		app:backgroundTint="@color/accent"
-		app:cornerRadius="@dimen/big_button_corner_radius" />
+			<EditText
+				android:id="@+id/medication_dose_value"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/medication_dose_select"
+				android:layout_marginEnd="20dp"
 
-</LinearLayout>
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:background="@drawable/shape_input"
+				android:backgroundTint="@color/surface"
+				android:hint="@string/medication_dose_unit_hint"
+				android:inputType="numberSigned"
+				android:textColor="@color/textDark"
+				android:textColorHint="@color/textDark60" />
+
+
+			<com.google.android.material.textfield.TextInputLayout
+				style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+				android:id="@+id/medication_dose_select"
+				app:layout_constraintTop_toTopOf="@id/medication_dose_value"
+				app:layout_constraintBottom_toBottomOf="@id/medication_dose_value"
+				app:layout_constraintEnd_toEndOf="parent"
+
+				android:layout_width="140dp"
+				android:layout_height="0dp"
+				android:textColorHint="@color/textDark"
+
+				app:hintEnabled="false"
+				app:boxCornerRadiusTopStart="12dp"
+				app:boxCornerRadiusTopEnd="12dp"
+				app:boxCornerRadiusBottomStart="12dp"
+				app:boxCornerRadiusBottomEnd="12dp"
+				app:boxBackgroundColor="@color/surface"
+				app:counterTextColor="@color/textDark"
+				app:counterOverflowTextColor="@color/textDark"
+				app:endIconMode="custom"
+				app:endIconDrawable="@drawable/ic_arrow_down"
+				app:endIconTint="@color/primaryDark">
+
+				<com.google.android.material.textfield.MaterialAutoCompleteTextView
+					android:id="@+id/medication_dose_unit"
+
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:hint="@string/unit"
+					android:textColorHint="@color/textDark60"
+					android:inputType="none"
+					android:textColor="@color/textDark"
+					android:padding="@dimen/default_card_padding" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<TextView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:text="@string/medication_frequency_unit_title"
+				android:textSize="20sp"
+				android:layout_weight="1" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/medication_frequency_unit_subtitle"
+				android:textSize="14sp" />
+
+		</LinearLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<EditText
+				android:id="@+id/medication_frequency_value"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/medication_frequency_select"
+				android:layout_marginEnd="20dp"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:background="@drawable/shape_input"
+				android:backgroundTint="@color/surface"
+				android:hint="@string/medication_frequency_unit_hint"
+				android:inputType="numberSigned"
+				android:textColor="@color/textDark"
+				android:textColorHint="@color/textDark60" />
+
+
+			<com.google.android.material.textfield.TextInputLayout
+				style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+				android:id="@+id/medication_frequency_select"
+				app:layout_constraintTop_toTopOf="@id/medication_frequency_value"
+				app:layout_constraintBottom_toBottomOf="@id/medication_frequency_value"
+				app:layout_constraintEnd_toEndOf="parent"
+
+				android:layout_width="140dp"
+				android:layout_height="0dp"
+				android:textColorHint="@color/textDark"
+
+				app:hintEnabled="false"
+				app:boxCornerRadiusTopStart="12dp"
+				app:boxCornerRadiusTopEnd="12dp"
+				app:boxCornerRadiusBottomStart="12dp"
+				app:boxCornerRadiusBottomEnd="12dp"
+				app:boxBackgroundColor="@color/surface"
+				app:counterTextColor="@color/textDark"
+				app:counterOverflowTextColor="@color/textDark"
+				app:endIconMode="custom"
+				app:endIconDrawable="@drawable/ic_arrow_down"
+				app:endIconTint="@color/primaryDark">
+
+				<com.google.android.material.textfield.MaterialAutoCompleteTextView
+					android:id="@+id/medication_frequency_unit"
+
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:hint="@string/unit"
+					android:textColorHint="@color/textDark60"
+					android:inputType="none"
+					android:textColor="@color/textDark"
+					android:padding="@dimen/default_card_padding" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/medication_duration_title"
+			android:textSize="20sp" />
+
+		<EditText
+			android:id="@+id/medication_duration"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_input"
+			android:backgroundTint="@color/surface"
+			android:hint="@string/medication_duration_hint"
+			android:inputType="numberSigned"
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60"
+			android:layout_marginBottom="@dimen/default_inner_elements_spacing" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/medication_extra_instructions_title"
+			android:textSize="20sp" />
+
+		<EditText
+			android:id="@+id/medication_custom_instructions"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_input"
+			android:backgroundTint="@color/surface"
+			android:hint="@string/medication_extra_instructions_hint"
+			android:gravity="top"
+			android:inputType="textMultiLine"
+			android:maxLines="5"
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/medication_notes_title"
+			android:textSize="20sp" />
+
+		<EditText
+			android:id="@+id/medication_notes"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_input"
+			android:backgroundTint="@color/surface"
+			android:hint="@string/medication_notes_hint"
+			android:gravity="top"
+			android:inputType="textMultiLine"
+			android:lines="3"
+			android:maxLines="5"
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60" />
+
+		<Button
+			android:id="@+id/register_medication_button"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/register_medication"
+			android:textColor="@color/primaryDark"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/accent"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
+	</LinearLayout>
+
+</ScrollView>
