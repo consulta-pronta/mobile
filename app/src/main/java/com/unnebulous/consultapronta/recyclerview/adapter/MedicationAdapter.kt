@@ -2,11 +2,17 @@ package com.unnebulous.consultapronta.recyclerview.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.CardMedicationBinding
+import kotlinx.coroutines.launch
 
 class MedicationAdapter: ListAdapter<Medication, MedicationAdapter.MedicationViewHolder>(MedicationComparator()) {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicationViewHolder {
@@ -24,12 +30,51 @@ class MedicationAdapter: ListAdapter<Medication, MedicationAdapter.MedicationVie
 	}
 
 	class MedicationComparator : DiffUtil.ItemCallback<Medication>() {
-		override fun areItemsTheSame(old: Medication, new: Medication) = false //old.id == new.id
+		override fun areItemsTheSame(old: Medication, new: Medication) = old.id == new.id
 
-		override fun areContentsTheSame(old: Medication, new: Medication) = false // old == new
+		override fun areContentsTheSame(old: Medication, new: Medication) = old == new
 	}
 
-	class MedicationViewHolder(private val binding: CardMedicationBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(medication: Medication) {}
+	class MedicationViewHolder(
+		private val binding: CardMedicationBinding
+	): RecyclerView.ViewHolder(binding.root) {
+		fun bind(medication: Medication) {
+			binding.apply {
+				medication.apply {
+					if (route == null || frequency_unit == null || dose_unit == null) {
+						return
+					}
+
+					val context = itemView.context
+
+					medicationName.text = name
+
+					val frequencyUnitString = (
+						if (frequency_value.toInt() > 1) frequency_unit.plural
+						else frequency_unit.display
+					).lowercase()
+					useTime.text = context.getString(
+						R.string.medication_card_use_time,
+						dose_value.toInt(),
+						dose_unit.unit,
+						frequency_value.toInt(),
+						frequencyUnitString,
+					)
+
+					typeUsage.text = context.getString(
+						R.string.medication_card_type_usage,
+						route.display.lowercase(),
+					)
+
+					icon.setImageResource(R.drawable.ic_medication)
+
+					checkbox.setOnClickListener {
+						itemView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+
+						}
+					}
+				}
+			}
+		}
 	}
 }

@@ -67,6 +67,15 @@ object Utils {
 			else -> this.toString().capitalizeFix()
 		}
 
+		val unit get() = when (this) {
+			MILIGRAMA -> "mg"
+			GRAMA -> "g"
+			MICROGRAMA -> "mcg"
+			MILILITRO -> "mL"
+			UNIDADE_INTERNACIONAL -> "UI"
+			TABLETE -> "un."
+		}
+
 		companion object {
 			fun fromDisplay(value: String) =
 				MedicationDoseUnit.entries.firstOrNull { it.display == value }
@@ -79,6 +88,14 @@ object Utils {
 		val display get() = when (this) {
 			MES -> "Mês"
 			else -> this.toString().capitalizeFix()
+		}
+
+		val plural get() = when (this) {
+			MINUTO -> "Minutos"
+			HORA -> "Horas"
+			DIA -> "Dias"
+			SEMANA -> "Semanas"
+			MES -> "Meses"
 		}
 
 		companion object {

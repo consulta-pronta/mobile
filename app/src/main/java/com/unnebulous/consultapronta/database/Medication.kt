@@ -20,6 +20,7 @@ data class Medication(
 
 	val custom_instructions: String = "",
 	val notes: String = "",
+	// criar data de comeco
 	val registered_in: Timestamp? = null,
 ): BaseDocument {
 	val dose get() = dose_value to dose_unit
