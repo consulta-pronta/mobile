@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.DocumentReference
 import com.unnebulous.consultapronta.database.Symptom
-import com.unnebulous.consultapronta.database.SymptomUpdateData
 import com.unnebulous.consultapronta.databinding.FragmentEditSymptomBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -179,14 +178,8 @@ class EditSymptom : Fragment() {
 			try {
 				val data = ref.get().await()
 				val symptom = Symptom.fromDocument(data)
-				val symptomHistoricData = SymptomUpdateData.fromDocument(
-					data,
-					reason = binding.questionEditArea.text.toString()
-				)
 
-				symptom.historicCollection
-					.add(symptomHistoricData)
-					.await()
+				symptom.historicCollection.add(symptom.toFormData()).await()
 			} catch (e: Exception) {
 				throw e
 			}

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.database.BaseDocument
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.views.HeaderView
@@ -110,8 +111,7 @@ fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
 
 fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)
 
-suspend fun List<Symptom>.mergedHistoric() =
-	plus(flatMap { it.getHistoric() }).sortedByDescending { it.date_time }
+suspend fun List<Symptom>.mergedHistoric() = this + flatMap { it.getHistoric() }
 
 fun List<Symptom>.getIntensityAverage() =
 	map { it.intensity }.average().let { value ->

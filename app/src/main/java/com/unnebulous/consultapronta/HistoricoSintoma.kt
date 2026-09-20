@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ListenerRegistration
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentHistoricoSintomaBinding
@@ -56,22 +55,12 @@ class HistoricoSintoma : Fragment() {
 
 				if (snapshots != null) {
 					try {
-						val symptoms = snapshots.documents.mapNotNull { document ->
-							val data = document.data!!
-							Symptom(
-								id = document.id,
-								title = data["title"] as String,
-								description = data["description"] as String,
-								date_time = data["date_time"] as Timestamp,
-								place = data["place"].toString(),
-								intensity = data["intensity"].toString().toInt(),
-								created_at = data["created_at"] as Timestamp,
-							)
+						val symptoms = snapshots.documents.mapNotNull {
+							Symptom.fromDocument(it)
 						}
 
 						adapter.submitList(symptoms)
 					} catch (error: Exception) {
-						Log.i("symptom", snapshots.documents.toString())
 						Log.wtf("symptom", "getSymptoms:failure", error)
 					}
 				}
