@@ -2,7 +2,6 @@ package com.unnebulous.consultapronta
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,22 +14,24 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		if (savedInstanceState == null) {
-			replaceFragment(Home())
-		}
+		binding.navbar.apply {
+			val fragmentId = R.id.main_fragment_container
 
-		binding.navbar.setOnClickListener(Utils.NavbarButton.FIRST) { view ->
-			//if (binding.mainFragmentContainer.getFragment<>())
-			replaceFragment(Home())
+			setOnClickListener(Utils.NavbarButton.FIRST) {
+				changeFragment(Home(), fragmentId)
+			}
+			setOnClickListener(Utils.NavbarButton.SECOND) {
+				changeFragment(HistoricoSintoma(), fragmentId)
+			}
+			setOnClickListener(Utils.NavbarButton.MAIN) {
+				changeFragment(SymptomRegister(), fragmentId)
+			}
+			setOnClickListener(Utils.NavbarButton.FOURTH) {
+				changeFragment(Hospital(), fragmentId)
+			}
+			setOnClickListener(Utils.NavbarButton.FIFTH) {
+				changeFragment(Mais(), fragmentId)
+			}
 		}
-		binding.navbar.setOnClickListener(Utils.NavbarButton.SECOND) { view ->
-			replaceFragment(HistoricoSintoma())
-		}
-	}
-
-	private fun replaceFragment(fragment: Fragment) {
-		supportFragmentManager.beginTransaction()
-			.replace(R.id.main_fragment_container, fragment)
-			.commit()
 	}
 }

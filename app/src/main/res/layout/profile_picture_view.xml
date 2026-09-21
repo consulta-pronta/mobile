@@ -26,7 +26,7 @@
 		android:layout_width="36dp"
 		android:layout_height="36dp"
 		android:layout_gravity="bottom|end"
-		android:background="@drawable/rounded_stroke_background"
+		android:background="@drawable/shape_rounded_stroke_background"
 		android:clickable="true"
 		android:focusable="true"
 		android:visibility="gone"

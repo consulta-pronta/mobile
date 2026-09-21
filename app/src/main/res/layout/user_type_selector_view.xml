@@ -5,7 +5,7 @@
 
 	android:layout_width="350dp"
 	android:layout_height="wrap_content"
-	android:background="@drawable/rounded_background"
+	android:background="@drawable/shape_rounded_background"
 	android:backgroundTint="@color/primaryDark"
 	android:clickable="true"
 	android:focusable="true"
@@ -16,7 +16,7 @@
 
 		android:layout_width="169dp"
 		android:layout_height="34dp"
-		android:background="@drawable/rounded_background"
+		android:background="@drawable/shape_rounded_background"
 		android:backgroundTint="@color/accent"
 
 		app:layout_constraintBottom_toBottomOf="parent"

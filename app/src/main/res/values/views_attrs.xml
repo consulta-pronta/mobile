@@ -14,4 +14,43 @@
 		</attr>
 		<attr name="isScreenTitled" format="boolean" />
 	</declare-styleable>
+
+	<declare-styleable name="FilterView">
+		<attr name="isOrderByFilter" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="OptionItemView">
+		<attr name="iconSrc" format="reference" />
+		<attr name="text" format="string" />
+		<attr name="hasArrow" format="boolean" />
+		<attr name="color" format="color" />
+	</declare-styleable>
+
+	<declare-styleable name="FileInputView">
+		<attr name="icon" format="reference" />
+		<attr name="textMain" format="string" />
+		<attr name="textFileType" format="string" />
+		<attr name="inputMode" format="enum">
+			<enum name="sendFile" value="0" />
+			<enum name="getFile" value="1" />
+		</attr>
+ 	</declare-styleable>
+	
+	<declare-styleable name="SelectOptionItemView">
+		<attr name="selectOptionType" format="enum">
+			<enum name="radio" value="0"/>
+			<enum name="checkbox" value="1"/>
+			<enum name="complete" value="2"/>
+		</attr>
+		<attr name="textColor" format="color" />
+		<attr name="buttonColor" format="color" />
+		<attr name="completeLayoutIcon" format="reference" />
+		<attr name="selectText" format="string" />
+		<attr name="selectSubtitleText" format="string" />
+		<attr name="showIconAsRaw" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="VerificationCodeView">
+		<attr name="codeLength" format="integer" />
+	</declare-styleable>
 </resources>

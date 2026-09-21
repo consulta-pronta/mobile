@@ -3,28 +3,19 @@ package com.unnebulous.consultapronta
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
-import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.FragmentLoginBinding
 
 class Login : Fragment() {
 
 	private var _binding: FragmentLoginBinding? = null
 	private val binding get() = _binding!!
-	private lateinit var auth: FirebaseAuth
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		auth = Firebase.auth
-	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -38,30 +29,19 @@ class Login : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		binding.userTypeSwitch.setOnClickListener {
-			/*
-			* Retorna 0 se usuário for Paciente
-			* Retorna 1 se usuário for Profissional
-			* */
-			binding.userTypeSwitch.changeUser()
+		binding.header.setGoBackButtonOnClickListener {
+			popBackStack()
 		}
 
 		binding.signUpButton.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setReorderingAllowed(true)
-				.replace(
-					R.id.fragment_container,
-					Cadastro()
-				)
-				.addToBackStack(null)
-				.commit()
+			changeFragmentWithBackStack(Cadastro())
 		}
 
 		binding.enterButton.setOnClickListener {
 			val email = binding.emailInput.text.toString()
 			val password = binding.passwordInput.text.toString()
 
-			auth.signInWithEmailAndPassword(email, password)
+			AuthManager.auth.signInWithEmailAndPassword(email, password)
 				.addOnCompleteListener { task ->
 					handlePostSignIn(task)
 				}
@@ -72,9 +52,13 @@ class Login : Fragment() {
 		if (task.isSuccessful) {
 			Log.i("auth", "signInWithEmail:success")
 
-			val activity = requireActivity()
-			startActivity(Intent(activity, MainActivity::class.java))
-			activity.finish()
+			try {
+				val activity = requireActivity()
+				startActivity(Intent(activity, MainActivity::class.java))
+				activity.finish()
+			} catch (error: IllegalStateException) {
+				Log.wtf("auth", "signInWithEmail:failure", error)
+			}
 		} else {
 			Log.w("auth", "signInWithEmail:failure", task.exception)
 		}

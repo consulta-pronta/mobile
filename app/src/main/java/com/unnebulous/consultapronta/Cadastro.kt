@@ -5,39 +5,28 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
-import com.google.firebase.Firebase
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.firestore
+import com.google.firebase.auth.AuthResult
+import com.unnebulous.consultapronta.database.AuthManager
+import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.Date
-
 class Cadastro : Fragment() {
 
 	private var _binding: FragmentCadastroBinding? = null
 	private val binding get() = _binding!!
-	private lateinit var auth: FirebaseAuth
-	private lateinit var db: FirebaseFirestore
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		db = Firebase.firestore
-		auth = Firebase.auth
-	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -61,19 +50,13 @@ class Cadastro : Fragment() {
 		}
 
 		binding.signInButton.setOnClickListener {
-			parentFragmentManager.beginTransaction()
-				.setReorderingAllowed(true)
-				.replace(
-					R.id.fragment_container,
-					Login()
-				)
-				.addToBackStack(null)
-				.commit()
+			changeFragmentWithBackStack(Login())
 		}
 
 		binding.createAccountButton.setOnClickListener {
 			val name = binding.nameInput.text.toString()
-			val cpf = binding.nameInput.text.toString()
+			userType = binding.userTypeSwitch.userType
+			val cpf = binding.cpfInput.text.toString()
 			val email = binding.emailInput.text.toString()
 			val phoneNumber = binding.phoneNumberInput.text.toString()
 			val password = binding.passwordInput.text.toString()
@@ -91,7 +74,18 @@ class Cadastro : Fragment() {
 			}
 
 			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank) {
-				auth.createUserWithEmailAndPassword(email, password)
+//				(activity as AuthActivity).userTemp.apply {
+//					this.name = name
+//					this.userType = userType
+//					this.cpf = cpf
+//					this.email = email
+//					this.phoneNumber = phoneNumber
+//					this.password = password
+//
+//					this.contactForms["email"] = this.email
+//					this.contactForms["sms"] = this.phoneNumber
+//				}
+				AuthManager.auth.createUserWithEmailAndPassword(email, password)
 					.addOnCompleteListener { task -> handlePostSignUp(task) }
 			} else {
 				val error = if (oneOrMoreInputBlank) {
@@ -102,7 +96,7 @@ class Cadastro : Fragment() {
 					getString(R.string.error_password_not_the_same)
 				}
 
-				Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+				showSnackbar(error, Utils.SnackBarType.DANGER)
 			}
 		}
 
@@ -146,7 +140,7 @@ class Cadastro : Fragment() {
 					haveNumber = (char.isDigit() || haveNumber)
 				}
 
-				val isGreaterOrEqualThan8 = it.length > 8
+				val isGreaterOrEqualThan8 = it.length >= 8
 				val haveLowerAndUppercase = haveLowercase && haveUppercase
 
 				colors[0] = if (isGreaterOrEqualThan8) successColor else errorColor
@@ -173,6 +167,13 @@ class Cadastro : Fragment() {
 				validPassword = isGreaterOrEqualThan8 && haveLowerAndUppercase && haveNumber
 			}
 		}
+
+		binding.sendCrmButton.setOnClickListener {
+			changeFragmentWithBackStack(EnviarCrm())
+		}
+
+		binding.cpfInput.addTextChangedListener(Utils.buildCpfMask())
+		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
 	}
 
 	override fun onDestroyView() {
@@ -195,21 +196,24 @@ class Cadastro : Fragment() {
 			email = user.email!!,
 			phone = binding.phoneNumberInput.text.toString(),
 			cpf = binding.cpfInput.text.toString(),
-			createdAt = Timestamp(Date(creationTime!!))
+			user_type = binding.userTypeSwitch.userType.toString().lowercase(),
+			created_at = Timestamp(Date(creationTime!!))
 		)
 
-		db.collection("users")
-			.document(user.uid)
-			.set(userDocument)
-			.addOnSuccessListener {
+		lifecycleScope.launch {
+			try {
+				DatabaseManager.userDocument
+					.set(userDocument)
+					.await()
+
 				Log.i("auth", "setUserDocument:success")
 
 				val activity = requireActivity()
 				startActivity(Intent(activity, MainActivity::class.java))
 				activity.finish()
-			}
-			.addOnFailureListener { e ->
+			} catch (e: Exception) {
 				Log.w("auth", "setUserDocument:failure", e)
 			}
+		}
 	}
 }

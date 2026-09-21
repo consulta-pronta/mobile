@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:background="@drawable/shape_rounded_background"
+	android:backgroundTint="@color/primary"
+	android:gravity="center_vertical">
+
+	<ImageView
+		android:id="@+id/snackbar_icon"
+
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		android:background="@drawable/shape_left_rounded_background"
+		android:padding="5dp"
+
+		app:tint="@color/textLight"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+
+		tools:src="@drawable/ic_info"
+		tools:backgroundTint="@color/neutral" />
+
+	<TextView
+		android:id="@+id/snackbar_text"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="@dimen/default_inner_elements_spacing"
+
+		app:layout_constraintStart_toEndOf="@id/snackbar_icon"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+
+		tools:text="@string/placeholder" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
