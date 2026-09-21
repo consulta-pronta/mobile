@@ -2,14 +2,19 @@ package com.unnebulous.consultapronta
 
 import android.content.Context
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
-import com.unnebulous.consultapronta.database.BaseDocument
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
+import com.unnebulous.consultapronta.databinding.SnackbarBinding
 import com.unnebulous.consultapronta.views.HeaderView
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -67,6 +72,37 @@ fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding, BottomSheetDial
 	dialog.show()
 }
 
+fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.SnackBarType.INFO, duration: Int = Snackbar.LENGTH_LONG) {
+	val context = requireContext()
+	
+	val values = when (type) {
+		Utils.SnackBarType.INFO -> R.drawable.ic_info to R.color.neutral
+		Utils.SnackBarType.SUCCESS -> R.drawable.ic_check to R.color.success
+		Utils.SnackBarType.WARNING -> R.drawable.ic_warning to R.color.warning
+		Utils.SnackBarType.DANGER -> R.drawable.ic_danger to R.color.error
+	}
+	val drawable = ContextCompat.getDrawable(context, values.first)
+	val color = ContextCompat.getColorStateList(context, values.second)
+
+
+	val snackbar = Snackbar.make(requireView(), "", duration)
+	val snackbarView = snackbar.view as ViewGroup
+	val textView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+	val snackbarBinding = SnackbarBinding.inflate(layoutInflater)
+
+	textView.visibility = View.INVISIBLE
+	snackbarBinding.snackbarText.text = message
+	snackbarBinding.snackbarIcon.setImageDrawable(drawable)
+	snackbarBinding.snackbarIcon.backgroundTintList = color
+
+	snackbarView.setPadding(0, 0, 0, 250)
+	snackbarView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+	snackbarView.removeAllViews()
+	snackbarView.addView(snackbarBinding.root, 0)
+
+	snackbar.show()
+}
+
 fun Context.clearCache() {
 	try {
 		cacheDir.deleteRecursively()
@@ -105,6 +141,13 @@ fun Timestamp.toSimpleDate(): String {
 	val locale = Locale.forLanguageTag("pt-BR")
 
 	return SimpleDateFormat("dd'/'MM", locale).format(date)
+}
+
+fun Timestamp.toISODate(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("yyyy-MM-dd", locale).format(date)
 }
 
 fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)

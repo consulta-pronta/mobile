@@ -5,18 +5,17 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.AuthResult
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.User
@@ -24,7 +23,6 @@ import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Date
-
 class Cadastro : Fragment() {
 
 	private var _binding: FragmentCadastroBinding? = null
@@ -57,7 +55,8 @@ class Cadastro : Fragment() {
 
 		binding.createAccountButton.setOnClickListener {
 			val name = binding.nameInput.text.toString()
-			val cpf = binding.nameInput.text.toString()
+			userType = binding.userTypeSwitch.userType
+			val cpf = binding.cpfInput.text.toString()
 			val email = binding.emailInput.text.toString()
 			val phoneNumber = binding.phoneNumberInput.text.toString()
 			val password = binding.passwordInput.text.toString()
@@ -75,6 +74,17 @@ class Cadastro : Fragment() {
 			}
 
 			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank) {
+//				(activity as AuthActivity).userTemp.apply {
+//					this.name = name
+//					this.userType = userType
+//					this.cpf = cpf
+//					this.email = email
+//					this.phoneNumber = phoneNumber
+//					this.password = password
+//
+//					this.contactForms["email"] = this.email
+//					this.contactForms["sms"] = this.phoneNumber
+//				}
 				AuthManager.auth.createUserWithEmailAndPassword(email, password)
 					.addOnCompleteListener { task -> handlePostSignUp(task) }
 			} else {
@@ -86,7 +96,7 @@ class Cadastro : Fragment() {
 					getString(R.string.error_password_not_the_same)
 				}
 
-				Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+				showSnackbar(error, Utils.SnackBarType.DANGER)
 			}
 		}
 
@@ -161,6 +171,9 @@ class Cadastro : Fragment() {
 		binding.sendCrmButton.setOnClickListener {
 			changeFragmentWithBackStack(EnviarCrm())
 		}
+
+		binding.cpfInput.addTextChangedListener(Utils.buildCpfMask())
+		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
 	}
 
 	override fun onDestroyView() {

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/shape_rounded_background"
+	android:backgroundTint="@color/surface"
+	android:padding="@dimen/default_card_padding" >
+
+	<ImageView
+		android:id="@+id/icon"
+
+		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:src="@drawable/ic_medication"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="@id/medication_main"
+
+		app:tint="@color/primaryDark" />
+
+	<LinearLayout
+		android:id="@+id/medication_main"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="@dimen/default_drawable_icon_padding"
+
+		android:layout_marginEnd="@dimen/default_drawable_icon_padding"
+		android:orientation="vertical"
+
+		app:layout_constraintEnd_toStartOf="@+id/checkbox"
+		app:layout_constraintStart_toEndOf="@+id/icon"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<TextView
+			android:id="@+id/medication_name"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primaryDark"
+			android:textStyle="bold"
+
+			tools:text="@string/placeholder" />
+
+		<TextView
+			android:id="@+id/use_time"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primary"
+
+			tools:text="@string/medication_card_use_time" />
+
+		<TextView
+			android:id="@+id/type_usage"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primary"
+
+			app:layout_constraintStart_toEndOf="@id/icon"
+			app:layout_constraintTop_toBottomOf="@id/use_time"
+
+			tools:text="@string/medication_card_type_usage" />
+	</LinearLayout>
+
+	<CheckBox
+		android:id="@+id/checkbox"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+
+		app:buttonIconTint="@color/dark_checkbox_color"
+		app:buttonTint="@color/textDark"
+		app:layout_constraintBottom_toBottomOf="@+id/medication_main"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@+id/medication_main" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

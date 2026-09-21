@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.FragmentMaisBinding
 import com.unnebulous.consultapronta.views.OptionItemView
@@ -46,7 +46,8 @@ class Mais : Fragment() {
 		binding.apply {
 			cleanCacheButton.setOnClickListener {
 				requireContext().clearCache()
-				Toast.makeText(context, getString(R.string.succesfully_cache_deleted), Toast.LENGTH_SHORT).show()
+				showSnackbar(getString(R.string.succesfully_cache_deleted), Utils.SnackBarType.SUCCESS,
+					Snackbar.LENGTH_SHORT)
 			}
 
 			exitAccountButton.setOnClickListener {
@@ -104,8 +105,7 @@ class Mais : Fragment() {
 				Exam()
 			},
 			MenuOption(R.drawable.ic_pill, R.string.my_medicines_text) {
-				// TODO: INSTANCIAR TELA DE MEUS MEDICAMENTOS
-				Home()
+				MedicamentosListagem()
 			},
 			MenuOption(R.drawable.ic_appointment, R.string.appointments_text) {
 				// TODO: INSTANCIAR TELA DE CONSULTAS

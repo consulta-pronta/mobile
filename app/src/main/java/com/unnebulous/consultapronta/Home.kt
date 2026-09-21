@@ -34,6 +34,9 @@ class Home : Fragment() {
 			secondButton.setOnClickListener {
 				changeFragmentWithBackStack(Exam())
 			}
+			thirdButton.setOnClickListener {
+				changeFragmentWithBackStack(MedicamentosListagem())
+			}
 		}
 	}
 

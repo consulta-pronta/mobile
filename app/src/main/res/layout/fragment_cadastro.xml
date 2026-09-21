@@ -91,7 +91,8 @@
 				android:drawableStart="@drawable/ic_document"
 				android:drawablePadding="10dp"
 				android:hint="@string/input_cpf"
-				android:inputType="text"
+				android:inputType="number"
+				android:maxLength="14"
 
 				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />
@@ -122,6 +123,7 @@
 				android:drawablePadding="10dp"
 				android:hint="@string/input_phone_number"
 				android:inputType="phone"
+				android:maxLength="15"
 
 				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />

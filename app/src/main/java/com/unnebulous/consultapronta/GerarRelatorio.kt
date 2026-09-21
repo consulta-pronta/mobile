@@ -89,13 +89,13 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.title.text = getString(R.string.bottom_sheet_view_permission_title)
 
 				dialogBinding.body.apply {
-					// TODO: Get from database when uhh thing done if ykyk 
+					// TODO: Get from database when uhh thing done if ykyk
 					val professionals = HashMap<String, String>()
 
 					for (professional in professionals) {
 						val option = SelectOptionItemView(
 							requireContext(),
-							Utils.SelectOptionItemType.CHECKBOX
+							type = Utils.SelectOptionItemType.CHECKBOX
 						)
 						option.setTitle(professional.value)
 						option.itemId = professional.key

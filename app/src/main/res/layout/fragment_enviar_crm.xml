@@ -26,10 +26,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:orientation="vertical"
-		android:paddingStart="@dimen/default_screen_padding"
-		android:paddingTop="@dimen/default_screen_padding"
-		android:paddingEnd="@dimen/default_screen_padding"
-		android:paddingBottom="@dimen/default_screen_padding"
+		android:padding="@dimen/default_screen_padding"
 		android:showDividers="middle"
 		android:divider="@drawable/divider_default"
 
@@ -49,6 +46,8 @@
 			android:text="@string/send_crm_subtitle" />
 
 		<com.unnebulous.consultapronta.views.FileInputView
+			android:id="@+id/file_input"
+
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 

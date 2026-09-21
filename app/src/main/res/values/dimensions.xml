@@ -20,4 +20,6 @@
 	<dimen name="list_items_spacing">5dp</dimen>
 	<dimen name="big_button_corner_radius">12dp</dimen>
 	<dimen name="bottom_sheet_corner_radius">20dp</dimen>
+	<dimen name="verification_digit_width">45dp</dimen>
+	<dimen name="verification_digit_height">55dp</dimen>
 </resources>
