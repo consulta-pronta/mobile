@@ -1,17 +1,18 @@
 package com.unnebulous.consultapronta.recyclerview.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.CardMedicationBinding
+import com.unnebulous.consultapronta.toISODate
 import kotlinx.coroutines.launch
 
 class MedicationAdapter: ListAdapter<Medication, MedicationAdapter.MedicationViewHolder>(MedicationComparator()) {
@@ -66,11 +67,19 @@ class MedicationAdapter: ListAdapter<Medication, MedicationAdapter.MedicationVie
 						route.display.lowercase(),
 					)
 
-					icon.setImageResource(R.drawable.ic_medication)
+					val today = Timestamp.now().toISODate()
+					checkbox.isChecked = wasTakenOn(today)
 
-					checkbox.setOnClickListener {
+					checkbox.setOnCheckedChangeListener { _, bool ->
 						itemView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+							try {
+								Medication.collection.document(id)
+									.update("taken_dates.$today", bool)
 
+								Log.i(Medication.COLLECTION_NAME, "setMedicationChecked:success")
+							} catch (e: Exception) {
+								Log.e(Medication.COLLECTION_NAME, "setMedicationChecked:failure", e)
+							}
 						}
 					}
 				}

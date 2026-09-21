@@ -5,7 +5,6 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.getEnum
-import kotlin.String
 
 data class Medication(
 	override val id: String = "",
@@ -20,16 +19,21 @@ data class Medication(
 
 	val custom_instructions: String = "",
 	val notes: String = "",
+
 	// criar data de comeco
+	val taken_dates: Map<String, Boolean> = emptyMap(),
 	val registered_in: Timestamp? = null,
 ): BaseDocument {
 	val dose get() = dose_value to dose_unit
 	val frequency get() = frequency_value to frequency_unit
 
+	fun wasTakenOn(date: String) = taken_dates[date]?: false
+
 	companion object {
 		const val COLLECTION_NAME = "medications"
 		val collection get() = DatabaseManager.userCollection(COLLECTION_NAME)
 
+		@Suppress("UNCHECKED_CAST")
 		fun fromDocument(doc: DocumentSnapshot) = Medication(
 			id = doc.id,
 			name = doc["name"].toString(),
@@ -43,6 +47,8 @@ data class Medication(
 
 			custom_instructions = doc["custom_instructions"].toString(),
 			notes = doc["notes"].toString(),
+
+			taken_dates = (doc["taken_dates"] as? Map<String, Boolean>)?: emptyMap(),
 			registered_in = doc.getTimestamp("registered_in"),
 		)
 
@@ -70,7 +76,6 @@ data class Medication(
 				"custom_instructions" to custom_instructions,
 				"notes" to notes,
 				"registered_in" to FieldValue.serverTimestamp(),
-
 			)
 		}
 	}

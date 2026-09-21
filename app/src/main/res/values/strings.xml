@@ -195,4 +195,5 @@
 	<string name="medication_notes_hint">Outras informações (opcional)</string>
 	<string name="medication_card_use_time">%1$d %2$s a cada %3$d %4$s</string>
 	<string name="medication_card_type_usage">Consumo %1$s</string>
+	<string name="medication_card_last_checked">Última vez: %1$s</string>
 </resources>

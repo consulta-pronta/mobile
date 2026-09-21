@@ -143,6 +143,13 @@ fun Timestamp.toSimpleDate(): String {
 	return SimpleDateFormat("dd'/'MM", locale).format(date)
 }
 
+fun Timestamp.toISODate(): String {
+	val date = toDate()
+	val locale = Locale.forLanguageTag("pt-BR")
+
+	return SimpleDateFormat("yyyy-MM-dd", locale).format(date)
+}
+
 fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)
 
 fun Timestamp.diffDays(other: Timestamp) = diffSeconds(other) / (24 * 3600)
