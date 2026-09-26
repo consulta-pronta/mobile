@@ -20,7 +20,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 
 	private val binding: UserTypeSelectorViewBinding
 
-	var userType = Utils.UserType.PATIENT
+	var userType = Utils.UserType.PACIENTE
 
 	init {
 		binding = UserTypeSelectorViewBinding.inflate(
@@ -49,7 +49,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 		val primaryDarkColor = ContextCompat.getColor(context, R.color.primaryDark)
 		val animationDuration = 300L
 
-		if (userType == Utils.UserType.PATIENT) {
+		if (userType == Utils.UserType.PACIENTE) {
 			ObjectAnimator.ofObject(
 				binding.patientText,
 				"textColor",
@@ -100,7 +100,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 	}
 
 	fun changeUser(): Utils.UserType {
-		userType = if (userType == Utils.UserType.PROFESSIONAL) Utils.UserType.PATIENT else Utils.UserType.PROFESSIONAL
+		userType = if (userType == Utils.UserType.PROFISSIONAL) Utils.UserType.PACIENTE else Utils.UserType.PROFISSIONAL
 
 		val params = binding.selectorToggle.layoutParams as LayoutParams
 
@@ -110,7 +110,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 		updateTextColors()
 		binding.selectorToggle.layoutParams = params
 
-		val isPatientSelected = userType == Utils.UserType.PATIENT
+		val isPatientSelected = userType == Utils.UserType.PACIENTE
 
 		binding.patientText.isClickable = !isPatientSelected
 		binding.patientText.isFocusable = !isPatientSelected
