@@ -46,7 +46,7 @@ class Cadastro : Fragment() {
 		binding.userTypeSwitch.setOnClickListener {
 			userType = binding.userTypeSwitch.changeUser()
 
-			binding.sendCrmButton.visibility = if (userType == Utils.UserType.PATIENT) View.GONE else View.VISIBLE
+			binding.sendCrmButton.visibility = if (userType == Utils.UserType.PACIENTE) View.GONE else View.VISIBLE
 		}
 
 		binding.signInButton.setOnClickListener {
@@ -189,21 +189,21 @@ class Cadastro : Fragment() {
 		Log.i("auth", "signUpWithEmail:success")
 
 		val user = task.result.user!!
-		val creationTime = user.metadata?.creationTimestamp
+		val creationTime = user.metadata?.creationTimestamp!!
 
-		val userDocument = User(
+		val userFormData = User.Companion.FormData(
 			name = binding.nameInput.text.toString(),
 			email = user.email!!,
 			phone = binding.phoneNumberInput.text.toString(),
 			cpf = binding.cpfInput.text.toString(),
-			user_type = binding.userTypeSwitch.userType.toString().lowercase(),
-			created_at = Timestamp(Date(creationTime!!))
+			user_type = binding.userTypeSwitch.userType,
+			created_at = Timestamp(Date(creationTime))
 		)
 
 		lifecycleScope.launch {
 			try {
 				DatabaseManager.userDocument
-					.set(userDocument)
+					.set(userFormData.toMap())
 					.await()
 
 				Log.i("auth", "setUserDocument:success")

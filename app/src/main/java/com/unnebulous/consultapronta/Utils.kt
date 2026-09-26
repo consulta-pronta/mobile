@@ -1,8 +1,8 @@
 package com.unnebulous.consultapronta
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.content.Context
 import android.text.format.DateFormat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -11,17 +11,16 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.unnebulous.consultapronta.Utils.MedicationRoute.INALATORIO
-import com.unnebulous.consultapronta.Utils.MedicationRoute.INJETAVEL
-import com.unnebulous.consultapronta.Utils.MedicationRoute.OFTALMICO
-import com.unnebulous.consultapronta.Utils.MedicationRoute.OFTOLOGICO
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneOffset
 
 object Utils {
-	enum class UserType { PATIENT, PROFESSIONAL }
+	const val CPF_MASK = "###.###.###-##"
+	const val PHONE_MASK = "(##) #####-####"
+
+	enum class UserType { PACIENTE, PROFISSIONAL }
 
 	enum class NavbarButton(val id: String) {
 		FIRST("first_element"),
@@ -149,8 +148,8 @@ object Utils {
 		timePicker.show(fragment.parentFragmentManager, "time_picker")
 	}
 
-	fun buildCpfMask(): MaskWatcher = MaskWatcher("###.###.###-##")
-	fun buildPhoneMask(): MaskWatcher = MaskWatcher("(##) #####-####")
+	fun buildCpfMask(): MaskWatcher = MaskWatcher(CPF_MASK)
+	fun buildPhoneMask(): MaskWatcher = MaskWatcher(PHONE_MASK)
 
 	class MaskWatcher(private val mask: String) : TextWatcher {
 		private var isUpdating: Boolean = false
@@ -191,6 +190,11 @@ object Utils {
 		private fun unmask(s: String): String {
 			return s.replace("[^0-9]*".toRegex(), "")
 		}
+	}
+
+	fun applyMask(mask: String, value: String, placeholder: Regex = "#".toRegex()) = run {
+		var i = 0
+		mask.replace(placeholder) { value.getOrNull(i++)?.toString() ?: ""}
 	}
 
 	fun intensityToColor(context: Context, intensity: Double) =
