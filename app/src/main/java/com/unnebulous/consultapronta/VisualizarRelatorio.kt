@@ -3,10 +3,14 @@ package com.unnebulous.consultapronta
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.components.XAxis
@@ -53,6 +57,49 @@ class VisualizarRelatorio : Fragment() {
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
+
+			val button = ImageButton(requireContext()).apply {
+				layoutParams = ViewGroup.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT
+				)
+
+				setImageResource(R.drawable.ic_more_three_dots_vertical)
+				imageTintList = ContextCompat.getColorStateList(context, R.color.textLight)
+				setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+				setPadding(
+					5,
+					5,
+					5,
+					5,
+				)
+			}
+
+			button.setOnClickListener {
+				val contextThemeWrapper = ContextThemeWrapper(requireContext(), R.style.PopupMenuTheme)
+
+				PopupMenu(contextThemeWrapper, button).apply {
+					menuInflater.inflate(R.menu.menu_reports, this.menu)
+
+					setOnMenuItemClickListener { menuItem ->
+						showSnackbar(menuItem.title.toString())
+
+						when (menuItem.itemId) {
+							R.id.menu_allowed_professionals -> {}
+
+							R.id.menu_rename_report -> {}
+
+							R.id.menu_delete_report -> {}
+						}
+
+						true
+					}
+
+					show()
+				}
+			}
+
+			addAside(button)
 		}
 
 		configChart()

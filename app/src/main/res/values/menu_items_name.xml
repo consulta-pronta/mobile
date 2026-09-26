@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- menu: @menu/menu_reports.xml -->
+	<string name="allowed_professionals">Profissionais permitidos</string>
+	<string name="rename_report">Renomear relatório</string>
+	<string name="delete_report">Apagar relatório</string>
+</resources>
