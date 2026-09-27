@@ -42,6 +42,16 @@ class NavbarView @JvmOverloads constructor(
 		currentButton = Utils.NavbarButton.FIRST
 	}
 
+	fun getButtonByEnum(button: Utils.NavbarButton): ViewGroup {
+		return when (button) {
+			Utils.NavbarButton.FIRST -> binding.firstElement
+			Utils.NavbarButton.SECOND -> binding.secondElement
+			Utils.NavbarButton.MAIN -> binding.mainButton
+			Utils.NavbarButton.FOURTH -> binding.fourthElement
+			Utils.NavbarButton.FIFTH -> binding.fifthElement
+		}
+	}
+
 	fun setActive(who: Utils.NavbarButton) {
 		resetStyle()
 
@@ -92,16 +102,6 @@ class NavbarView @JvmOverloads constructor(
 					context.getString(R.string.navbar_fourth_element_patient_text)
 			}
 
-		}
-	}
-
-	private fun getButtonByEnum(button: Utils.NavbarButton): ViewGroup {
-		return when (button) {
-			Utils.NavbarButton.FIRST -> binding.firstElement
-			Utils.NavbarButton.SECOND -> binding.secondElement
-			Utils.NavbarButton.MAIN -> binding.mainButton
-			Utils.NavbarButton.FOURTH -> binding.fourthElement
-			Utils.NavbarButton.FIFTH -> binding.fifthElement
 		}
 	}
 
