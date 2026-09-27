@@ -22,6 +22,7 @@ class Hospital : Fragment() {
 			container,
 			false
 		)
+		setNavbarEntryActive(Utils.NavbarButton.FOURTH)
 
 		return binding.root
 	}

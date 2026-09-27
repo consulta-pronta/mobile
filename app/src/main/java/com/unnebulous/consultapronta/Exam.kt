@@ -40,7 +40,6 @@ class Exam : Fragment() {
 		savedInstanceState: Bundle?
 	) {
 		super.onViewCreated(view, savedInstanceState)
-
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
 			setScreenTitle(getString(R.string.title_exam_page))
@@ -48,6 +47,7 @@ class Exam : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		val adapter = ExamListAdapter()
 		binding.examCards.adapter = adapter

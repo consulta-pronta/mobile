@@ -43,6 +43,7 @@ class Mais : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
+		setNavbarEntryActive(Utils.NavbarButton.FIFTH)
 
 		lifecycleScope.launch {
 			try {

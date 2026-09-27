@@ -33,6 +33,7 @@ class HistoricoSintoma : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
+		setNavbarEntryActive(Utils.NavbarButton.SECOND)
 
 		val adapter = SymptomAdapter().apply {
 			onClick = { symptom ->

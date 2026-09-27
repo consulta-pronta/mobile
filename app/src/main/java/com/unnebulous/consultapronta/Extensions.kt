@@ -103,6 +103,14 @@ fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.Snac
 	snackbar.show()
 }
 
+fun Fragment.setNavbarEntryActive(entry: Utils.NavbarButton) {
+	(activity as? MainActivity)?.setNavbarEntryActive(entry)
+}
+
+fun Fragment.resetNavbarEntryActive() {
+	(activity as? MainActivity)?.resetNavbarEntryActive()
+}
+
 fun Context.clearCache() {
 	try {
 		cacheDir.deleteRecursively()

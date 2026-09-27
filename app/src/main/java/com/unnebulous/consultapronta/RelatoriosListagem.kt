@@ -36,6 +36,7 @@ class RelatoriosListagem : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		val adapter = ReportListAdapter().apply {
 			onClick = { report ->

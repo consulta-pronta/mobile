@@ -52,6 +52,7 @@ class GerarRelatorio : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		binding.selectDateStart.setOnClickListener {
 			Utils.showDatePicker(this) { date ->

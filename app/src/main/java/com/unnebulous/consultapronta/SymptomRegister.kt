@@ -50,6 +50,7 @@ class SymptomRegister : Fragment() {
 				popBackStack()
 			}
 		}
+		setNavbarEntryActive(Utils.NavbarButton.MAIN)
 
 		val bodyParts = arrayOf(
 			"Cabeça",

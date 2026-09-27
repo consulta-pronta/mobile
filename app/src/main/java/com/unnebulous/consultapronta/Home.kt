@@ -34,6 +34,7 @@ class Home : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
+		setNavbarEntryActive(Utils.NavbarButton.FIRST)
 
 		val adapter = SymptomAdapter().apply {
 			onClick = { symptom ->
