@@ -67,7 +67,7 @@
 			android:layout_marginTop="@dimen/default_card_padding"
 			android:hint="@string/detail_symptom_area"
 			android:gravity="start"
-			android:inputType="text"
+			android:inputType="textMultiLine"
 			android:autofillHints="description"
 
 			app:layout_constraintTop_toBottomOf="@id/detail_symptom"
@@ -330,6 +330,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/default_card_padding"
 			android:text="@string/picture"
+			android:visibility="gone"
 
 			app:layout_constraintTop_toBottomOf="@+id/intensity_labels"
 			app:layout_constraintStart_toStartOf="parent"
@@ -347,6 +348,7 @@
 			android:gravity="center"
 			android:orientation="vertical"
 			android:padding="8dp"
+			android:visibility="gone"
 
 			app:layout_constraintTop_toBottomOf="@id/image"
 			app:layout_constraintStart_toStartOf="parent"
