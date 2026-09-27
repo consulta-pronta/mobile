@@ -14,7 +14,9 @@ import com.google.android.material.timepicker.TimeFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 object Utils {
 	const val CPF_MASK = "###.###.###-##"
@@ -104,13 +106,19 @@ object Utils {
 	}
 
 
-	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
+	fun showDatePicker(fragment: Fragment, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
 		val constraintBuilder = CalendarConstraints.Builder()
 			.setValidator(DateValidatorPointBackward.now())
 
+		var dateAsLong = MaterialDatePicker.todayInUtcMilliseconds()
+
+		if (!defaultDate.isEqual(LocalDate.now())) {
+			dateAsLong = defaultDate.toEpochMilli()
+		}
+
 		val datePicker = MaterialDatePicker.Builder.datePicker()
 			.setTitleText(fragment.getString(R.string.date_picker_title))
-			.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+			.setSelection(dateAsLong)
 			.setCalendarConstraints(constraintBuilder.build())
 			.build()
 

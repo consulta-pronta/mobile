@@ -24,9 +24,6 @@ class SymptomRegister : Fragment() {
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 	private val timeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.time_format)) }
 
-	private lateinit var localDate: LocalDate
-	private lateinit var localTime: LocalTime
-
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -51,6 +48,9 @@ class SymptomRegister : Fragment() {
 			}
 		}
 		setNavbarEntryActive(Utils.NavbarButton.MAIN)
+
+		var localDate: LocalDate? = null
+		var localTime: LocalTime? = null
 
 		val bodyParts = arrayOf(
 			"Cabeça",
@@ -123,7 +123,7 @@ class SymptomRegister : Fragment() {
 		}
 
 		binding.dateSelect.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, localDate ?: LocalDate.now()) { date ->
 				localDate = date
 
 				val buttonText = if (LocalDate.now().isEqual(date)) {
@@ -137,7 +137,7 @@ class SymptomRegister : Fragment() {
 		}
 
 		binding.timeSelect.setOnClickListener {
-			Utils.showTimePicker(this) { time ->
+			Utils.showTimePicker(this, localTime ?: LocalTime.now()) { time ->
 				localTime = time
 
 				val buttonText = if (LocalTime.now().equals(time)) {
@@ -151,6 +151,10 @@ class SymptomRegister : Fragment() {
 		}
 
 		binding.symptomRegister.setOnClickListener {
+			if (localTime == null || localDate == null) {
+				TODO()
+			}
+
 			val symptomDoc = binding.run {
 				Symptom.Companion.FormData(
 					title = questionSymptomArea.text.toString(),

@@ -21,6 +21,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Locale
 import java.util.Locale.getDefault
 import kotlin.enums.enumEntries
@@ -127,6 +128,12 @@ fun LocalDateTime.toFirestoreTimestamp() =
 	Timestamp(atZone(ZoneId.systemDefault()).toInstant())
 
 fun LocalDate.toLocalDateTime(): LocalDateTime = LocalDateTime.of(this, LocalTime.MIDNIGHT)
+
+fun LocalDate.toEpochMilli(): Long =
+	ZonedDateTime
+		.of(this.toLocalDateTime(), ZoneId.systemDefault())
+		.toInstant()
+		.toEpochMilli()
 
 fun Timestamp.toBrazilianLocale(): String {
 	val date = toDate()
