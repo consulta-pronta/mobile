@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Timestamp
@@ -114,17 +116,29 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.viewSymptomsIncluded.setOnClickListener {
-			configBottomSheet { dialogBinding, dialog ->
+			configBottomSheet { dialogBinding, _ ->
 				dialogBinding.icon.setImageResource(R.drawable.ic_history)
 				dialogBinding.title.text = getString(R.string.symptoms_included)
 				dialogBinding.positiveButton.visibility = View.INVISIBLE
-				dialogBinding.negativeButton.text = "Fechar"
+				dialogBinding.negativeButton.text = getString(R.string.close)
 
 				dialogBinding.body.apply {
 					for (symptom in symptomList) {
-						val item = OptionItemView(requireContext())
-						item.setText(symptom.title)
-						item.setArrowVisibilityTo(false)
+						val item = SelectOptionItemView(requireContext(), type = Utils.SelectOptionItemType.COMPLETE).apply {
+							setTitle(symptom.title)
+							setSubtitle(symptom.created_at?.toBrazilianLocale() ?: "")
+							setIcon(R.drawable.ic_document)
+
+							val checkbox = CheckBox(requireContext()).apply {
+								buttonTintList = ContextCompat.getColorStateList(context, R.color.light_checkbox_color)
+							}
+
+							checkbox.setOnCheckedChangeListener { button, isChecked ->
+
+							}
+
+							addAside(checkbox)
+						}
 
 						addView(item)
 					}
