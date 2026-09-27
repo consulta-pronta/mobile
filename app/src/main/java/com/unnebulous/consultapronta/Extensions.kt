@@ -135,6 +135,9 @@ fun Timestamp.toBrazilianLocale(): String {
 	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
 }
 
+fun Timestamp.toLocalDateTime(): LocalDateTime =
+	toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+
 inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
 	val value = get(field).toString()
 	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }

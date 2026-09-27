@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +30,17 @@ class EditSymptom : Fragment() {
 	private lateinit var localDate: LocalDate
 	private lateinit var localTime: LocalTime
 
+	private lateinit var topLevelRef: DocumentReference
+	private lateinit var symptom: Symptom
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		arguments?.let {
 			symptomId = it.getString(ARG_SYMPTOM_ID, "ERROR")
 		}
+
+		topLevelRef = Symptom.collection.document(symptomId)
 	}
 
 	override fun onCreateView(
@@ -160,10 +166,9 @@ class EditSymptom : Fragment() {
 		}
 
 		binding.buttonSubmit.setOnClickListener {
-			val topLevelRef = Symptom.collection.document(symptomId)
 			lifecycleScope.launch {
 				try {
-					createHistoric(topLevelRef)
+					createHistoric()
 					updateCurrent(topLevelRef)
 
 					Log.i(Symptom.COLLECTION_NAME, "editSymptom:success")
@@ -173,14 +178,29 @@ class EditSymptom : Fragment() {
 				}
 			}
 		}
+
+		lifecycleScope.launch {
+			val data = topLevelRef.get().await()
+			symptom = Symptom.fromDocument(data)
+
+			val localDateTime = symptom.date_time?.toLocalDateTime()
+			localDate = LocalDate.from(localDateTime)
+			localTime = LocalTime.from(localDateTime)
+
+			binding.apply {
+				detailSymptomArea.text = SpannableStringBuilder(symptom.title)
+				explainArea.text = SpannableStringBuilder(symptom.description)
+				dateSelect.text = localDate.format(dateFormatter)
+				timeSelect.text = localTime.format(timeFormatter)
+				bodyPartSpinner.text = SpannableStringBuilder(symptom.place)
+				intensitySlider.value = symptom.intensity.toFloat()
+			}
+		}
 	}
 
-	private fun createHistoric(ref: DocumentReference) {
+	private fun createHistoric() {
 		lifecycleScope.launch {
 			try {
-				val data = ref.get().await()
-				val symptom = Symptom.fromDocument(data)
-
 				symptom.historicCollection.add(symptom.toFormData()).await()
 			} catch (e: Exception) {
 				throw e
