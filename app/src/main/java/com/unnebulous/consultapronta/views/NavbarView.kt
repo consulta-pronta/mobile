@@ -42,6 +42,29 @@ class NavbarView @JvmOverloads constructor(
 		currentButton = Utils.NavbarButton.FIRST
 	}
 
+	fun setActive(who: Utils.NavbarButton) {
+		resetStyle()
+
+		if (who == Utils.NavbarButton.MAIN) {
+			val color = ContextCompat.getColor(context, R.color.black20)
+			getButtonByEnum(who).background.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+			return
+		} else {
+			setColor(who, R.color.accent)
+		}
+	}
+
+	fun resetStyle() {
+		getButtonByEnum(Utils.NavbarButton.MAIN).background.clearColorFilter()
+		Utils.NavbarButton.entries.forEach { button ->
+			if (button !== Utils.NavbarButton.MAIN) {
+				setColor(button, R.color.textLight)
+			} else {
+				setColor(button, R.color.textDark)
+			}
+		}
+	}
+
 	private fun applyAttributes(attrs: AttributeSet) {
 		context.withStyledAttributes(attrs, R.styleable.NavbarView) {
 
@@ -102,36 +125,13 @@ class NavbarView @JvmOverloads constructor(
 		}
 	}
 
-	private fun setActive(who: Utils.NavbarButton) {
-		resetStyle()
-
-		if (who == Utils.NavbarButton.MAIN) {
-			val color = ContextCompat.getColor(context, R.color.black20)
-			getButtonByEnum(who).background.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-			return
-		} else {
-			setColor(who, R.color.accent)
-		}
-	}
-
 	private fun setColor(who: Utils.NavbarButton, color: Int) {
-		val variable = ContextCompat.getColor(context, color)
+		val color = ContextCompat.getColor(context, color)
 
-		getButtonIconByEnum(who).imageTintList = ColorStateList.valueOf(variable)
+		getButtonIconByEnum(who).imageTintList = ColorStateList.valueOf(color)
 
 		if (who != Utils.NavbarButton.MAIN) {
-			getButtonTextByEnum(who)!!.setTextColor(variable)
-		}
-	}
-
-	private fun resetStyle() {
-		getButtonByEnum(Utils.NavbarButton.MAIN).background.clearColorFilter()
-		Utils.NavbarButton.entries.forEach { button ->
-			if (button !== Utils.NavbarButton.MAIN) {
-				setColor(button, R.color.textLight)
-			} else {
-				setColor(button, R.color.textDark)
-			}
+			getButtonTextByEnum(who)!!.setTextColor(color)
 		}
 	}
 

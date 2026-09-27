@@ -39,6 +39,7 @@ class AdicionarMedicamento : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		binding.apply {
 			val routes = Utils.MedicationRoute.entries.map { it.display }.toTypedArray()

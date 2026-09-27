@@ -3,6 +3,7 @@ package com.unnebulous.consultapronta
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
+import com.unnebulous.consultapronta.views.NavbarView
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,5 +34,14 @@ class MainActivity : AppCompatActivity() {
 				changeFragment(Mais(), fragmentId)
 			}
 		}
+	}
+
+	fun setNavbarEntryActive(entry: Utils.NavbarButton){
+		resetNavbarEntryActive()
+		binding.navbar.setActive(entry)
+	}
+
+	fun resetNavbarEntryActive() {
+		binding.navbar.resetStyle()
 	}
 }

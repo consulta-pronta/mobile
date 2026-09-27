@@ -54,6 +54,7 @@ class VisualizarRelatorio : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		configChart()
 

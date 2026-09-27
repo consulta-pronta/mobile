@@ -59,6 +59,8 @@ class EditSymptom : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
+
 		val bodyParts = arrayOf(
 			"Cabeça",
 			"Rosto",
