@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 				changeFragment(HistoricoSintoma(), fragmentId)
 			}
 			setOnClickListener(Utils.NavbarButton.MAIN) {
-				changeFragment(SymptomRegister(), fragmentId)
+				changeFragmentWithBackStack(SymptomRegister(), fragmentId)
 			}
 			setOnClickListener(Utils.NavbarButton.FOURTH) {
 				changeFragment(Hospital(), fragmentId)
