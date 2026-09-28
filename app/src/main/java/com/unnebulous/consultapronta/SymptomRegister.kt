@@ -1,5 +1,6 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,6 +52,7 @@ class SymptomRegister : Fragment() {
 
 		var localDate: LocalDate? = null
 		var localTime: LocalTime? = null
+		binding.symptomIntensity.text = getString(R.string.symptom_intensity, 1)
 
 		val bodyParts = arrayOf(
 			"Cabeça",
@@ -91,26 +93,12 @@ class SymptomRegister : Fragment() {
 			binding.bodyPartSpinner.showDropDown()
 		}
 
-		binding.intensitySlider.addOnChangeListener { slider, value, _ ->
+		binding.intensitySlider.addOnChangeListener { slider, intensityValue, _ ->
+			val color = Utils.intensityToColor(requireContext(), intensityValue.toDouble())
 
-			binding.intensityValue.text = value.toInt().toString()
-
-			binding.frame.post {
-
-				val fraction = value / slider.valueTo
-
-				val start = slider.thumbWidth
-
-				val end = slider.width - slider.thumbWidth
-
-				val thumbX = start + fraction * (end - start)
-
-				binding.intensityValue.translationX = thumbX
-			}
-		}
-
-		binding.frame.post {
-			binding.intensitySlider.value = 5f
+			slider.trackActiveTintList = ColorStateList.valueOf(color)
+			slider.thumbTintList = ColorStateList.valueOf(color)
+			binding.symptomIntensity.text = getString(R.string.symptom_intensity, intensityValue.toInt())
 		}
 
 		binding.dateSelect.setOnClickListener {

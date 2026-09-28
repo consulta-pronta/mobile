@@ -158,13 +158,13 @@
 	<string name="hour_title">Hora</string>
 	<string name="date_hint">dd/mm/yyyy</string>
 	<string name="date_title">Data</string>
-	<string name="symptom_intensity">Qual a intensidade do sintoma?</string>
+	<string name="symptom_intensity">Qual a intensidade do sintoma?\nIntensidade atual: %1$d</string>
 	<string name="img_instructions">Tirar foto ou anexar imagem</string>
 	<string name="symptom_register">Registrar Sintoma</string>
 	<string name="picture">Foto</string>
 	<string name="strong">Forte (10)</string>
 	<string name="moderated">Moderada (5)</string>
-	<string name="light">Leve (0)</string>
+	<string name="light">Leve (1)</string>
 	<string name="select_place">Selecione o local</string>
 	<string name="time_format">HH:mm</string>
 	<string name="question_edition_motive">Qual o motivo da edição?</string>

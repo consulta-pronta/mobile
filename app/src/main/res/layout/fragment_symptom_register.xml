@@ -225,60 +225,24 @@
 			app:layout_constraintStart_toStartOf="parent"
 			/>
 
-		<FrameLayout
-			android:id="@+id/frame"
+		<com.google.android.material.slider.Slider
+			android:id="@+id/intensity_slider"
 
-			android:layout_width="0dp"
-			android:layout_height="40dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:valueFrom="1"
+			android:valueTo="10"
+			android:stepSize="1.0"
 			android:layout_marginTop="8dp"
 
+			app:labelBehavior="gone"
+			app:thumbColor="@color/success"
+			app:trackColorActive="@color/success"
+			app:tickColorActive="@color/primaryDark"
+			app:trackColorInactive="@color/primary"
+			app:tickColorInactive="@color/primaryLight"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/symptom_intensity">
-
-			<TextView
-				android:id="@+id/intensity_value"
-
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/placeholder_number"
-				android:textSize="14sp"
-				android:textColor="@color/warning"
-				android:layout_gravity="top|start"
-				/>
-
-			<!--
-			<View
-				android:id="@+id/gradient_view"
-
-				android:layout_width="match_parent"
-				android:layout_height="10dp"
-				android:layout_gravity="center"
-				android:background="@drawable/intensity_gradient"
-				android:layout_marginTop="4dp"
-				/>
-
-
-				app:trackColorActive="@android:color/transparent"
-				app:trackColorInactive="@android:color/transparent"
-			-->
-			<com.google.android.material.slider.Slider
-				android:id="@+id/intensity_slider"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:value="5"
-				android:valueFrom="0"
-				android:valueTo="10"
-
-				app:labelBehavior="gone"
-				app:thumbColor="@color/primary"
-				app:thumbHeight="12dp"
-				app:thumbWidth="12dp"
-				app:trackHeight="10dp"
-				android:stepSize="1.0"
-				app:trackStopIndicatorSize="0dp" />
-		</FrameLayout>
+			app:layout_constraintTop_toBottomOf="@id/symptom_intensity" />
 
 		<LinearLayout
 			android:id="@+id/intensity_labels"
@@ -286,9 +250,8 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			android:weightSum="3"
 
-			app:layout_constraintTop_toBottomOf="@id/frame"
+			app:layout_constraintTop_toBottomOf="@id/intensity_slider"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent">
 
