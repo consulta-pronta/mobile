@@ -24,9 +24,7 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	private val dateFormatter: DateTimeFormatter by lazy {
-		DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
-	}
+	private val dateFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 
 	private var periodStartDate = Timestamp.now()
 	private var periodEndDate = Timestamp.now()
@@ -55,7 +53,7 @@ class GerarRelatorio : Fragment() {
 		resetNavbarEntryActive()
 
 		binding.selectDateStart.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, periodStartDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -70,7 +68,7 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.selectDateEnd.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, periodEndDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -115,7 +113,7 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.viewSymptomsIncluded.setOnClickListener {
-			configBottomSheet { dialogBinding, dialog ->
+			configBottomSheet { dialogBinding, _ ->
 				dialogBinding.icon.setImageResource(R.drawable.ic_history)
 				dialogBinding.title.text = getString(R.string.symptoms_included)
 				dialogBinding.positiveButton.visibility = View.INVISIBLE

@@ -1,5 +1,6 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,9 +24,6 @@ class SymptomRegister : Fragment() {
 	private val binding get() = _binding!!
 	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 	private val timeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.time_format)) }
-
-	private lateinit var localDate: LocalDate
-	private lateinit var localTime: LocalTime
 
 
 	override fun onCreateView(
@@ -51,6 +49,10 @@ class SymptomRegister : Fragment() {
 			}
 		}
 		setNavbarEntryActive(Utils.NavbarButton.MAIN)
+
+		var localDate: LocalDate? = null
+		var localTime: LocalTime? = null
+		binding.symptomIntensity.text = getString(R.string.symptom_intensity, 1)
 
 		val bodyParts = arrayOf(
 			"Cabeça",
@@ -91,39 +93,16 @@ class SymptomRegister : Fragment() {
 			binding.bodyPartSpinner.showDropDown()
 		}
 
-		binding.intensitySlider.addOnChangeListener { slider, value, _ ->
+		binding.intensitySlider.addOnChangeListener { slider, intensityValue, _ ->
+			val color = Utils.intensityToColor(requireContext(), intensityValue.toDouble())
 
-			binding.intensityValue.text = value.toInt().toString()
-
-			binding.frame.post {
-
-				val fraction =
-					(value - slider.valueFrom) /
-						(slider.valueTo - slider.valueFrom)
-
-				val start =
-					slider.thumbWidth / 2f
-
-				val end =
-					slider.width -
-						slider.thumbWidth / 2f
-
-				val thumbX =
-					start +
-						fraction * (end - start)
-
-				binding.intensityValue.translationX =
-					thumbX -
-						binding.intensityValue.width / 2f
-			}
-		}
-
-		binding.frame.post {
-			binding.intensitySlider.value = 5f
+			slider.trackActiveTintList = ColorStateList.valueOf(color)
+			slider.thumbTintList = ColorStateList.valueOf(color)
+			binding.symptomIntensity.text = getString(R.string.symptom_intensity, intensityValue.toInt())
 		}
 
 		binding.dateSelect.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, localDate ?: LocalDate.now()) { date ->
 				localDate = date
 
 				val buttonText = if (LocalDate.now().isEqual(date)) {
@@ -137,7 +116,7 @@ class SymptomRegister : Fragment() {
 		}
 
 		binding.timeSelect.setOnClickListener {
-			Utils.showTimePicker(this) { time ->
+			Utils.showTimePicker(this, localTime ?: LocalTime.now()) { time ->
 				localTime = time
 
 				val buttonText = if (LocalTime.now().equals(time)) {
@@ -151,6 +130,10 @@ class SymptomRegister : Fragment() {
 		}
 
 		binding.symptomRegister.setOnClickListener {
+			if (localTime == null || localDate == null) {
+				TODO()
+			}
+
 			val symptomDoc = binding.run {
 				Symptom.Companion.FormData(
 					title = questionSymptomArea.text.toString(),

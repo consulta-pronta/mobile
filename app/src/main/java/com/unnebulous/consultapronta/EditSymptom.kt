@@ -1,6 +1,8 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.pipeline.evaluation.isTimestampInBounds
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentEditSymptomBinding
 import kotlinx.coroutines.launch
@@ -29,12 +32,17 @@ class EditSymptom : Fragment() {
 	private lateinit var localDate: LocalDate
 	private lateinit var localTime: LocalTime
 
+	private lateinit var topLevelRef: DocumentReference
+	private lateinit var symptom: Symptom
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		arguments?.let {
 			symptomId = it.getString(ARG_SYMPTOM_ID, "ERROR")
 		}
+
+		topLevelRef = Symptom.collection.document(symptomId)
 	}
 
 	override fun onCreateView(
@@ -60,6 +68,7 @@ class EditSymptom : Fragment() {
 			}
 		}
 		resetNavbarEntryActive()
+		binding.symptomIntensity.text = getString(R.string.symptom_intensity, 1)
 
 		val bodyParts = arrayOf(
 			"Cabeça",
@@ -100,39 +109,12 @@ class EditSymptom : Fragment() {
 			binding.bodyPartSpinner.showDropDown()
 		}
 
-		binding.intensitySlider.addOnChangeListener { slider, value, _ ->
-
-			binding.intensityValue.text = value.toInt().toString()
-
-			binding.frame.post {
-
-				val fraction =
-					(value - slider.valueFrom) /
-						(slider.valueTo - slider.valueFrom)
-
-				val start =
-					slider.thumbWidth / 2f
-
-				val end =
-					slider.width -
-						slider.thumbWidth / 2f
-
-				val thumbX =
-					start +
-						fraction * (end - start)
-
-				binding.intensityValue.translationX =
-					thumbX -
-						binding.intensityValue.width / 2f
-			}
-		}
-
-		binding.frame.post {
-			binding.intensitySlider.value = 5f
+		binding.intensitySlider.addOnChangeListener { _, intensityValue, _ ->
+			updateSlider(intensityValue)
 		}
 
 		binding.dateSelect.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, localDate) { date ->
 				localDate = date
 
 				val buttonText = if (LocalDate.now().isEqual(date)) {
@@ -146,7 +128,7 @@ class EditSymptom : Fragment() {
 		}
 
 		binding.timeSelect.setOnClickListener {
-			Utils.showTimePicker(this) { time ->
+			Utils.showTimePicker(this, localTime) { time ->
 				localTime = time
 
 				val buttonText = if (LocalTime.now().equals(time)) {
@@ -160,10 +142,9 @@ class EditSymptom : Fragment() {
 		}
 
 		binding.buttonSubmit.setOnClickListener {
-			val topLevelRef = Symptom.collection.document(symptomId)
 			lifecycleScope.launch {
 				try {
-					createHistoric(topLevelRef)
+					createHistoric()
 					updateCurrent(topLevelRef)
 
 					Log.i(Symptom.COLLECTION_NAME, "editSymptom:success")
@@ -173,14 +154,29 @@ class EditSymptom : Fragment() {
 				}
 			}
 		}
+
+		lifecycleScope.launch {
+			val data = topLevelRef.get().await()
+			symptom = Symptom.fromDocument(data)
+
+			val localDateTime = symptom.date_time?.toLocalDateTime()
+			localDate = LocalDate.from(localDateTime)
+			localTime = LocalTime.from(localDateTime)
+
+			binding.apply {
+				detailSymptomArea.text = SpannableStringBuilder(symptom.title)
+				explainArea.text = SpannableStringBuilder(symptom.description)
+				dateSelect.text = localDate.format(dateFormatter)
+				timeSelect.text = localTime.format(timeFormatter)
+				bodyPartSpinner.text = SpannableStringBuilder(symptom.place)
+				updateSlider(symptom.intensity.toFloat())
+			}
+		}
 	}
 
-	private fun createHistoric(ref: DocumentReference) {
+	private fun createHistoric() {
 		lifecycleScope.launch {
 			try {
-				val data = ref.get().await()
-				val symptom = Symptom.fromDocument(data)
-
 				symptom.historicCollection.add(symptom.toFormData()).await()
 			} catch (e: Exception) {
 				throw e
@@ -207,6 +203,15 @@ class EditSymptom : Fragment() {
 				throw e
 			}
 		}
+	}
+
+	private fun updateSlider(intensityValue: Float) {
+		val color = Utils.intensityToColor(requireContext(), intensityValue.toDouble())
+
+		binding.intensitySlider.trackActiveTintList = ColorStateList.valueOf(color)
+		binding.intensitySlider.thumbTintList = ColorStateList.valueOf(color)
+		binding.intensitySlider.value = intensityValue
+		binding.symptomIntensity.text = getString(R.string.symptom_intensity, intensityValue.toInt())
 	}
 
 	override fun onDestroyView() {

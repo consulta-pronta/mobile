@@ -21,6 +21,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Locale
 import java.util.Locale.getDefault
 import kotlin.enums.enumEntries
@@ -128,12 +129,21 @@ fun LocalDateTime.toFirestoreTimestamp() =
 
 fun LocalDate.toLocalDateTime(): LocalDateTime = LocalDateTime.of(this, LocalTime.MIDNIGHT)
 
+fun LocalDate.toEpochMilli(): Long =
+	ZonedDateTime
+		.of(this.toLocalDateTime(), ZoneId.systemDefault())
+		.toInstant()
+		.toEpochMilli()
+
 fun Timestamp.toBrazilianLocale(): String {
 	val date = toDate()
 	val locale = Locale.forLanguageTag("pt-BR")
 
 	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
 }
+
+fun Timestamp.toLocalDateTime(): LocalDateTime =
+	toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
 
 inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
 	val value = get(field).toString()
