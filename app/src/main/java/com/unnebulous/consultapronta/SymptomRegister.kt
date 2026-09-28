@@ -97,24 +97,15 @@ class SymptomRegister : Fragment() {
 
 			binding.frame.post {
 
-				val fraction =
-					(value - slider.valueFrom) /
-						(slider.valueTo - slider.valueFrom)
+				val fraction = value / slider.valueTo
 
-				val start =
-					slider.thumbWidth / 2f
+				val start = slider.thumbWidth
 
-				val end =
-					slider.width -
-						slider.thumbWidth / 2f
+				val end = slider.width - slider.thumbWidth
 
-				val thumbX =
-					start +
-						fraction * (end - start)
+				val thumbX = start + fraction * (end - start)
 
-				binding.intensityValue.translationX =
-					thumbX -
-						binding.intensityValue.width / 2f
+				binding.intensityValue.translationX = thumbX
 			}
 		}
 
