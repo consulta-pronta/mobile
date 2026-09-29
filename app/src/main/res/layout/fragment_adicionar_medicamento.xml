@@ -7,7 +7,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 
-	tools:context=".AdicionarMedicamento">
+	tools:context=".AdicionarMedicamento"
+	tools:layout_marginHorizontal="@dimen/default_screen_padding">
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -50,7 +51,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:textColorHint="@color/textDark"
-			android:layout_marginBottom="@dimen/default_inner_elements_spacing"
 
 			app:hintEnabled="false"
 			app:boxCornerRadiusTopStart="12dp"
@@ -95,38 +95,36 @@
 				android:textSize="14sp" />
 		</LinearLayout>
 
-		<androidx.constraintlayout.widget.ConstraintLayout
+		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:showDividers="middle"
+			android:divider="@drawable/divider_list">
 
 			<EditText
 				android:id="@+id/medication_dose_value"
-				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toStartOf="@id/medication_dose_select"
-				android:layout_marginEnd="20dp"
 
 				android:layout_width="0dp"
-				android:layout_height="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
 				android:background="@drawable/shape_input"
 				android:backgroundTint="@color/surface"
 				android:hint="@string/medication_dose_unit_hint"
 				android:inputType="numberSigned"
 				android:textColor="@color/textDark"
-				android:textColorHint="@color/textDark60" />
+				android:textColorHint="@color/textDark60"/>
 
 
 			<com.google.android.material.textfield.TextInputLayout
 				style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 
 				android:id="@+id/medication_dose_select"
-				app:layout_constraintTop_toTopOf="@id/medication_dose_value"
-				app:layout_constraintBottom_toBottomOf="@id/medication_dose_value"
-				app:layout_constraintEnd_toEndOf="parent"
 
-				android:layout_width="140dp"
-				android:layout_height="0dp"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
 				android:textColorHint="@color/textDark"
+				android:layout_weight="1"
 
 				app:hintEnabled="false"
 				app:boxCornerRadiusTopStart="12dp"
@@ -153,8 +151,7 @@
 
 			</com.google.android.material.textfield.TextInputLayout>
 
-		</androidx.constraintlayout.widget.ConstraintLayout>
-
+		</LinearLayout>
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -175,50 +172,47 @@
 
 		</LinearLayout>
 
-		<androidx.constraintlayout.widget.ConstraintLayout
+		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="match_parent"
+			android:orientation="horizontal"
+			android:showDividers="middle"
+			android:divider="@drawable/divider_list">
 
 			<EditText
 				android:id="@+id/medication_frequency_value"
-				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toStartOf="@id/medication_frequency_select"
-				android:layout_marginEnd="20dp"
-
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:background="@drawable/shape_input"
+				android:layout_weight="1"
 				android:backgroundTint="@color/surface"
 				android:hint="@string/medication_frequency_unit_hint"
 				android:inputType="numberSigned"
 				android:textColor="@color/textDark"
-				android:textColorHint="@color/textDark60" />
+				android:textColorHint="@color/textDark60"/>
 
 
 			<com.google.android.material.textfield.TextInputLayout
 				style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 
 				android:id="@+id/medication_frequency_select"
-				app:layout_constraintTop_toTopOf="@id/medication_frequency_value"
-				app:layout_constraintBottom_toBottomOf="@id/medication_frequency_value"
-				app:layout_constraintEnd_toEndOf="parent"
 
-				android:layout_width="140dp"
-				android:layout_height="0dp"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
 				android:textColorHint="@color/textDark"
+				android:layout_weight="1"
 
-				app:hintEnabled="false"
-				app:boxCornerRadiusTopStart="12dp"
-				app:boxCornerRadiusTopEnd="12dp"
-				app:boxCornerRadiusBottomStart="12dp"
-				app:boxCornerRadiusBottomEnd="12dp"
 				app:boxBackgroundColor="@color/surface"
-				app:counterTextColor="@color/textDark"
+				app:boxCornerRadiusBottomEnd="12dp"
+				app:boxCornerRadiusBottomStart="12dp"
+				app:boxCornerRadiusTopEnd="12dp"
+				app:boxCornerRadiusTopStart="12dp"
 				app:counterOverflowTextColor="@color/textDark"
-				app:endIconMode="custom"
+				app:counterTextColor="@color/textDark"
 				app:endIconDrawable="@drawable/ic_arrow_down"
-				app:endIconTint="@color/primaryDark">
+				app:endIconMode="custom"
+				app:endIconTint="@color/primaryDark"
+				app:hintEnabled="false">
 
 				<com.google.android.material.textfield.MaterialAutoCompleteTextView
 					android:id="@+id/medication_frequency_unit"
@@ -226,14 +220,14 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:hint="@string/unit"
-					android:textColorHint="@color/textDark60"
 					android:inputType="none"
+					android:padding="@dimen/default_card_padding"
 					android:textColor="@color/textDark"
-					android:padding="@dimen/default_card_padding" />
+					android:textColorHint="@color/textDark60" />
 
 			</com.google.android.material.textfield.TextInputLayout>
 
-		</androidx.constraintlayout.widget.ConstraintLayout>
+		</LinearLayout>
 
 		<TextView
 			android:layout_width="wrap_content"
@@ -241,18 +235,40 @@
 			android:text="@string/medication_duration_title"
 			android:textSize="20sp" />
 
-		<EditText
-			android:id="@+id/medication_duration"
 
+
+		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/shape_input"
-			android:backgroundTint="@color/surface"
-			android:hint="@string/medication_duration_hint"
-			android:inputType="numberSigned"
-			android:textColor="@color/textDark"
-			android:textColorHint="@color/textDark60"
-			android:layout_marginBottom="@dimen/default_inner_elements_spacing" />
+			android:layout_height="wrap_content" >
+			<EditText
+				android:id="@+id/medication_duration"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:background="@drawable/shape_input"
+				android:backgroundTint="@color/surface"
+				android:hint="@string/medication_duration_hint"
+				android:inputType="numberSigned"
+				android:textColor="@color/textDark"
+				android:textColorHint="@color/textDark60"
+				android:layout_marginEnd="@dimen/default_inner_elements_spacing"
+
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/days_text"/>
+
+			<TextView
+				android:id="@+id/days_text"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/days"
+				android:textSize="20sp"
+
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toBottomOf="parent"/>
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
 		<TextView
 			android:layout_width="wrap_content"
