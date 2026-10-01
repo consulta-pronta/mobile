@@ -169,4 +169,6 @@
 	<string name="location_not_possible">Não foi possível pegar a sua localização</string>
 	<string name="address_not_found">Endereço não informado</string>
 	<string name="not_possible_get_hospital">Não foi possível consultar hospitais.</string>
+	<string name="user_marker_title">Sua posição</string>
+	<string name="user_marker_snippet">Você está aqui</string>
 </resources>

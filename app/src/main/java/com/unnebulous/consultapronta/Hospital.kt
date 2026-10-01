@@ -93,7 +93,7 @@ class Hospital : Fragment() {
 
 		val adapter = HospitalAdapter().apply {
 			onClick = { hospital ->
-
+				TODO()
 			}
 		}
 
@@ -223,9 +223,11 @@ class Hospital : Fragment() {
 			binding.mapView.removeMarker(it)
 		}
 
-		// TODO: alterar o texto e adicionar no strings.xml
-		// Marker(OBJETO LatLng, TITULO, DESCRICAO)
-		val marker = Marker(latLng, "Sua posição", "Você está aqui!")
+		val marker = Marker(latLng,
+			getString(R.string.user_marker_title),
+			getString(R.string.user_marker_snippet)
+		)
+
 		binding.mapView.addMarker(marker)
 		userLocationMarker = marker
 
@@ -234,6 +236,7 @@ class Hospital : Fragment() {
 
 		lifecycleScope.launch {
 			val hospitals = getHospitals(getQuery(latLng.latitude, latLng.longitude))
+			(binding.recyclerview.adapter as HospitalAdapter).userLatLng = marker.position
 
 			hospitals.forEach { hospital ->
 				binding.mapView.addMarker(Marker(
@@ -242,6 +245,8 @@ class Hospital : Fragment() {
 					hospital.address
 				))
 			}
+
+			(binding.recyclerview.adapter as HospitalAdapter).submitList(hospitals)
 
 			binding.mapView.invalidate()
 		}
