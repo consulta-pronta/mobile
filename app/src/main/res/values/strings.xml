@@ -167,4 +167,6 @@
 	<string name="medical_record">Prontuário</string>
 	<string name="list_view">Visualizar lista</string>
 	<string name="location_not_possible">Não foi possível pegar a sua localização</string>
+	<string name="address_not_found">Endereço não informado</string>
+	<string name="not_possible_get_hospital">Não foi possível consultar hospitais.</string>
 </resources>

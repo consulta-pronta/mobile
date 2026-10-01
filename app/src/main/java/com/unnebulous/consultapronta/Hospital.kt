@@ -7,6 +7,7 @@ import android.content.IntentSender
 import android.graphics.drawable.Drawable
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -22,8 +24,23 @@ import com.unnebulous.consultapronta.databinding.FragmentHospitalBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.HospitalAdapter
 import de.afarber.openmapview.LatLng
 import de.afarber.openmapview.Marker
+import de.westnordost.osmapi.OsmConnection
+import de.westnordost.osmapi.map.data.BoundingBox
+import de.westnordost.osmapi.map.data.Node
+import de.westnordost.osmapi.map.data.Relation
+import de.westnordost.osmapi.map.data.Way
+import de.westnordost.osmapi.map.handler.MapDataHandler
+import de.westnordost.osmapi.overpass.OverpassMapDataApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.SocketTimeoutException
+import kotlin.concurrent.thread
+import com.unnebulous.consultapronta.database.Hospital as HospitalModel
 
-const val ENDPOINT = "https://overpass.private.coffee/api/interpreter"
+//const val ENDPOINT = "https://overpass.private.coffee/api/interpreter"
+const val ENDPOINT = "https://overpass-api.de/api/interpreter"
+const val QUERY_RADIUS = 7000
 
 class Hospital : Fragment() {
 
@@ -212,19 +229,66 @@ class Hospital : Fragment() {
 		binding.mapView.addMarker(marker)
 		userLocationMarker = marker
 
+		binding.mapView.invalidate()
 		binding.mapView.setCenter(latLng)
 
-		binding.mapView.invalidate()
+		lifecycleScope.launch {
+			val hospitals = getHospitals(getQuery(latLng.latitude, latLng.longitude))
+
+			hospitals.forEach { hospital ->
+				binding.mapView.addMarker(Marker(
+					hospital.latLng,
+					hospital.name,
+					hospital.address
+				))
+			}
+
+			binding.mapView.invalidate()
+		}
 	}
 
-	private fun getQuery(latitude: Float, longitude: Float): String {
-		val radiusQuery = 5000
-
-		return """
-			[out:json][timeout:25];
-			node["amenity"="hospital"](around:$radiusQuery, $latitude, $longitude);
+	private fun getQuery(latitude: Double, longitude: Double): String = """
+			[out:csv(::lat, ::lon, name, "addr:street", "addr:housenumber", "addr:suburb"; false; "|")][timeout:25];
+			nwr["amenity"="hospital"](around:$QUERY_RADIUS, $latitude, $longitude);
 			out center;
 		""".trimIndent()
+
+	private suspend fun getHospitals(query: String): List<HospitalModel> = withContext(Dispatchers.IO){
+		val connection = OsmConnection(ENDPOINT, "ConsultaPronta/1.0 (${requireContext().packageName})")
+		val overpass = OverpassMapDataApi(connection)
+		val hospitals = mutableListOf<HospitalModel>()
+
+		try {
+			overpass.queryTable(query) { row ->
+				val lat = row.getOrNull(0)?.toDoubleOrNull() ?: return@queryTable
+				val lon = row.getOrNull(1)?.toDoubleOrNull() ?: return@queryTable
+				val name = row.getOrNull(2)?.takeIf { it.isNotEmpty() } ?: getString(R.string.not_available)
+
+				val street = row.getOrNull(3) ?: ""
+				val number = row.getOrNull(4) ?: ""
+				val suburb = row.getOrNull(5) ?: ""
+
+				val address = if (street.isNotEmpty()) {
+					listOf(street, number, suburb).filter { it.isNotEmpty() }.joinToString(", ")
+				} else {
+					getString(R.string.address_not_found)
+				}
+
+				Log.i("InfoPronto", name)
+
+				hospitals.add(HospitalModel(
+					name,
+					address,
+					LatLng(lat, lon)
+				))
+			}
+		} catch (e: Exception) {
+			showSnackbar(getString(R.string.not_possible_get_hospital), Utils.SnackBarType.DANGER)
+			e.printStackTrace()
+		}
+
+
+		return@withContext hospitals.filter { it.name != getString(R.string.not_available) }
 	}
 
 	override fun onDestroyView() {
