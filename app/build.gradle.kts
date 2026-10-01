@@ -46,6 +46,7 @@ configurations {
 	all {
 		exclude(group = "net.sf.kxml", module = "kxml2")
 		exclude(group = "xmlpull", module = "xmlpull")
+		exclude(group = "org.jetbrains", module = "annotations-java5")
 	}
 }
 
