@@ -23,6 +23,8 @@ import com.unnebulous.consultapronta.recyclerview.adapter.HospitalAdapter
 import de.afarber.openmapview.LatLng
 import de.afarber.openmapview.Marker
 
+const val ENDPOINT = "https://overpass.private.coffee/api/interpreter"
+
 class Hospital : Fragment() {
 
 	private var _binding: FragmentHospitalBinding? = null
@@ -78,11 +80,8 @@ class Hospital : Fragment() {
 			}
 		}
 
-
-
 		binding.recyclerview.adapter = adapter
 
-		binding.mapView.setCenter(LatLng(-20.198054, -40.216428))
 		binding.mapView.setZoom(20f)
 
 		binding.buttonMapView.setOnClickListener {
@@ -216,6 +215,16 @@ class Hospital : Fragment() {
 		binding.mapView.setCenter(latLng)
 
 		binding.mapView.invalidate()
+	}
+
+	private fun getQuery(latitude: Float, longitude: Float): String {
+		val radiusQuery = 5000
+
+		return """
+			[out:json][timeout:25];
+			node["amenity"="hospital"](around:$radiusQuery, $latitude, $longitude);
+			out center;
+		""".trimIndent()
 	}
 
 	override fun onDestroyView() {
