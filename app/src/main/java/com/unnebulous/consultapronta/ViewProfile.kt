@@ -11,9 +11,15 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.unnebulous.consultapronta.databinding.FragmentViewProfileBinding
 import android.graphics.Typeface
+import android.util.Log
 import android.view.Gravity
 import android.widget.Button
 import androidx.transition.TransitionManager
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class ViewProfile : Fragment() {
 
@@ -23,12 +29,19 @@ class ViewProfile : Fragment() {
 	private var isPersonalDataMinimized = false
 	private var isAditionalDataMinimized = false
 
+	private lateinit var auth: FirebaseAuth
+	private lateinit var db: FirebaseFirestore
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
 		_binding = FragmentViewProfileBinding.inflate(inflater, container, false)
+
+		auth = Firebase.auth
+		db = Firebase.firestore
+
 		return binding.root
 	}
 
@@ -41,7 +54,7 @@ class ViewProfile : Fragment() {
 			}
 		}
 
-		setAditionalDataLayoutTitle(Utils.UserType.PATIENT)
+		setAditionalDataLayoutTitle(Utils.UserType.PACIENTE)
 
 		binding.minimizePersonalDataLayoutButton.setOnClickListener {
 			isPersonalDataMinimized = !isPersonalDataMinimized
@@ -52,6 +65,20 @@ class ViewProfile : Fragment() {
 			isAditionalDataMinimized = !isAditionalDataMinimized
 			minimizeSection(binding.aditionalDataCard, it, isAditionalDataMinimized)
 		}
+
+		db.collection("users")
+			.document(auth.uid!!)
+			.addSnapshotListener { snapshot, exception ->
+				if (exception != null) {
+					Log.e("firestore:getUser", "Error getting documents: ", exception)
+					return@addSnapshotListener
+				}
+
+				if (snapshot != null) {
+					val data = snapshot.data!!
+					binding.userName.text = data["name"] as String
+				}
+			}
 	}
 
 	private fun addAditionalData(key: String, value: String) {
@@ -111,8 +138,8 @@ class ViewProfile : Fragment() {
 
 	private fun setAditionalDataLayoutTitle(userType: Utils.UserType) {
 		val title = when (userType) {
-			Utils.UserType.PATIENT -> getString(R.string.health_information)
-			Utils.UserType.PROFESSIONAL -> getString(R.string.professional_data)
+			Utils.UserType.PACIENTE -> getString(R.string.health_information)
+			Utils.UserType.PROFISSIONAL -> getString(R.string.professional_data)
 		}
 
 		binding.aditionalDataTitle.text = title

@@ -114,7 +114,7 @@ class EditSymptom : Fragment() {
 		}
 
 		binding.dateSelect.setOnClickListener {
-			Utils.showDatePicker(this, localDate) { date ->
+			Utils.showDatePicker(this, defaultDate = localDate) { date ->
 				localDate = date
 
 				val buttonText = if (LocalDate.now().isEqual(date)) {

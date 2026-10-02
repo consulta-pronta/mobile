@@ -39,7 +39,7 @@ class ViewExternalProfile : Fragment() {
 			}
 		}
 
-		configUserType(Utils.UserType.PROFESSIONAL)
+		configUserType(Utils.UserType.PROFISSIONAL)
 
 		binding.minimizeExternalUserDataLayoutButton.setOnClickListener {
 			minimizeExternalUserDataLayout()
@@ -118,11 +118,11 @@ class ViewExternalProfile : Fragment() {
 		var specificScreenTitle: String
 
 		when (userType) {
-			Utils.UserType.PATIENT -> {
+			Utils.UserType.PACIENTE -> {
 				title = getString(R.string.professional_data)
 				specificScreenTitle = getString(R.string.appointments_text)
 			}
-			Utils.UserType.PROFESSIONAL -> {
+			Utils.UserType.PROFISSIONAL -> {
 				title = getString(R.string.health_information)
 				specificScreenTitle = getString(R.string.reports_text)
 			}
