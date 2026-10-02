@@ -15,11 +15,14 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Button
 import androidx.transition.TransitionManager
+import com.bumptech.glide.util.Util
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.unnebulous.consultapronta.database.DatabaseManager
 
 class ViewProfile : Fragment() {
 
@@ -66,17 +69,22 @@ class ViewProfile : Fragment() {
 			minimizeSection(binding.aditionalDataCard, it, isAditionalDataMinimized)
 		}
 
-		db.collection("users")
+		DatabaseManager.userCollection
 			.document(auth.uid!!)
 			.addSnapshotListener { snapshot, exception ->
 				if (exception != null) {
-					Log.e("firestore:getUser", "Error getting documents: ", exception)
+					Log.e("firestore:getUser", "Error getting document: ", exception)
 					return@addSnapshotListener
 				}
 
 				if (snapshot != null) {
 					val data = snapshot.data!!
+
 					binding.userName.text = data["name"] as String
+					binding.userEmail.setText(auth.currentUser?.email)
+					binding.userCpf.text = data["cpf"] as String
+					binding.userPhoneNumber.setText(data["phone"] as String)
+					setAditionalDataLayoutTitle(snapshot.getEnum<Utils.UserType>("user_type")!!)
 				}
 			}
 	}
