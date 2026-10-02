@@ -53,7 +53,7 @@ class GerarRelatorio : Fragment() {
 		resetNavbarEntryActive()
 
 		binding.selectDateStart.setOnClickListener {
-			Utils.showDatePicker(this, periodStartDate.toLocalDateTime().toLocalDate()) { date ->
+			Utils.showDatePicker(this, defaultDate = periodStartDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -68,7 +68,7 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.selectDateEnd.setOnClickListener {
-			Utils.showDatePicker(this, periodEndDate.toLocalDateTime().toLocalDate()) { date ->
+			Utils.showDatePicker(this, defaultDate = periodEndDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {

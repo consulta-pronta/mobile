@@ -45,6 +45,10 @@ class Mais : Fragment() {
 		}
 		setNavbarEntryActive(Utils.NavbarButton.FIFTH)
 
+		binding.viewProfileButton.setOnClickListener {
+			changeFragmentWithBackStack(ViewProfile())
+		}
+
 		lifecycleScope.launch {
 			try {
 				val userData = AuthManager.getUserData()

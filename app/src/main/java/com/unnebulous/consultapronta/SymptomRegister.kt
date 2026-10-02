@@ -102,7 +102,7 @@ class SymptomRegister : Fragment() {
 		}
 
 		binding.dateSelect.setOnClickListener {
-			Utils.showDatePicker(this, localDate ?: LocalDate.now()) { date ->
+			Utils.showDatePicker(this, defaultDate = localDate ?: LocalDate.now()) { date ->
 				localDate = date
 
 				val buttonText = if (LocalDate.now().isEqual(date)) {

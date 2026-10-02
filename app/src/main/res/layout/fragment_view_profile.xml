@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+
+	tools:context=".ViewProfile">
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingBottom="@dimen/default_padding_bottom" >
+
+		<Button
+			style="?attr/materialIconButtonStyle"
+
+			android:id="@+id/edit_profile_button"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="10dp"
+
+			app:icon="@drawable/ic_edit_square"
+			app:iconSize="34dp"
+			app:iconTint="@color/textLight"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<com.unnebulous.consultapronta.views.ProfilePictureView
+			android:id="@+id/profile_picture"
+
+			android:layout_width="120dp"
+			android:layout_height="120dp"
+
+			app:isInput="false"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/user_name"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="24sp"
+			android:textStyle="bold"
+
+			app:layout_constraintTop_toBottomOf="@id/profile_picture"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+
+			tools:text="@tools:sample/full_names" />
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/contact_info_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_rounded_background"
+			android:padding="@dimen/default_card_padding"
+			android:backgroundTint="@color/surface"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/user_name">
+
+			<LinearLayout
+				android:id="@+id/basic_account_info_layout"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:showDividers="middle|end"
+				android:divider="@drawable/divider_options_list"
+				android:dividerPadding="2dp"
+				android:orientation="vertical"
+
+				app:layout_constraintTop_toTopOf="parent">
+				<com.unnebulous.consultapronta.views.OptionItemView
+					android:id="@+id/user_email"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+
+					app:iconSrc="@drawable/ic_email"
+
+					tools:text="@tools:sample/lorem[1]" />
+
+				<com.unnebulous.consultapronta.views.OptionItemView
+					android:id="@+id/user_phone_number"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+
+					app:iconSrc="@drawable/ic_telephone"
+
+					tools:text="@tools:sample/us_phones" />
+
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/linked_apps_text"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/linked_apps"
+				android:textColor="@color/textDark"
+				android:layout_marginTop="10dp"
+
+				app:layout_constraintTop_toBottomOf="@id/basic_account_info_layout"
+				app:layout_constraintStart_toStartOf="parent"/>
+
+			<LinearLayout
+				android:id="@+id/linked_apps_layout"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_options_list"
+				android:dividerPadding="2dp"
+				android:orientation="vertical"
+
+				app:layout_constraintTop_toBottomOf="@id/linked_apps_text" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/personal_data_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/contact_info_layout">
+
+			<Button
+				style="?attr/materialIconButtonStyle"
+
+				android:id="@+id/minimize_personal_data_layout_button"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="10dp"
+				android:rotation="90"
+
+				app:icon="@drawable/ic_chevron_generic"
+				app:iconSize="30dp"
+				app:iconTint="@color/textLight"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/personal_data"
+				android:textSize="20sp"
+
+				app:layout_constraintStart_toEndOf="@id/minimize_personal_data_layout_button"
+				app:layout_constraintTop_toTopOf="@id/minimize_personal_data_layout_button"
+				app:layout_constraintBottom_toBottomOf="@id/minimize_personal_data_layout_button"/>
+
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:id="@+id/personal_data_card"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_default"
+				android:background="@drawable/shape_rounded_background"
+				android:backgroundTint="@color/surface"
+				android:padding="@dimen/default_card_padding"
+
+				app:layout_constraintTop_toBottomOf="@id/minimize_personal_data_layout_button">
+				<TextView
+					android:id="@+id/age_label"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/age"
+					android:textColor="@color/textDark"
+					android:textStyle="bold"
+
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintStart_toStartOf="parent" />
+
+				<TextView
+					android:id="@+id/user_age"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/textDark"
+					android:layout_marginStart="@dimen/list_items_spacing"
+
+					app:layout_constraintTop_toTopOf="@id/age_label"
+					app:layout_constraintBottom_toBottomOf="@id/age_label"
+					app:layout_constraintStart_toEndOf="@id/age_label"
+
+					tools:text="@string/placeholder_number" />
+
+				<TextView
+					android:id="@+id/birth_date_label"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/birth_date"
+					android:textColor="@color/textDark"
+					android:textStyle="bold"
+
+					app:layout_constraintTop_toBottomOf="@id/age_label"
+					app:layout_constraintStart_toStartOf="parent" />
+
+				<TextView
+					android:id="@+id/user_birth_date"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/textDark"
+					android:layout_marginStart="@dimen/list_items_spacing"
+
+					app:layout_constraintTop_toTopOf="@id/birth_date_label"
+					app:layout_constraintBottom_toBottomOf="@id/birth_date_label"
+					app:layout_constraintStart_toEndOf="@id/birth_date_label"
+
+					tools:text="@tools:sample/date/ddmmyy" />
+
+				<TextView
+					android:id="@+id/gender_label"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/gender"
+					android:textColor="@color/textDark"
+					android:textStyle="bold"
+
+					app:layout_constraintTop_toBottomOf="@id/birth_date_label"
+					app:layout_constraintStart_toStartOf="parent" />
+
+				<TextView
+					android:id="@+id/user_gender"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/textDark"
+					android:layout_marginStart="@dimen/list_items_spacing"
+
+					app:layout_constraintTop_toTopOf="@id/gender_label"
+					app:layout_constraintBottom_toBottomOf="@id/gender_label"
+					app:layout_constraintStart_toEndOf="@id/gender_label"
+
+					tools:text="@tools:sample/lorem[1]" />
+
+				<TextView
+					android:id="@+id/cpf_label"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/cpf"
+					android:textColor="@color/textDark"
+					android:textStyle="bold"
+
+					app:layout_constraintTop_toBottomOf="@id/gender_label"
+					app:layout_constraintStart_toStartOf="parent" />
+
+				<TextView
+					android:id="@+id/user_cpf"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/textDark"
+					android:layout_marginStart="@dimen/list_items_spacing"
+
+					app:layout_constraintTop_toTopOf="@id/cpf_label"
+					app:layout_constraintBottom_toBottomOf="@id/cpf_label"
+					app:layout_constraintStart_toEndOf="@id/cpf_label"
+
+					tools:text="@string/placeholder_number" />
+
+				<TextView
+					android:id="@+id/location_label"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/location"
+					android:textColor="@color/textDark"
+					android:textStyle="bold"
+
+					app:layout_constraintTop_toBottomOf="@id/cpf_label"
+					app:layout_constraintStart_toStartOf="parent" />
+
+				<TextView
+					android:id="@+id/user_location"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/textDark"
+					android:layout_marginStart="@dimen/list_items_spacing"
+
+					app:layout_constraintTop_toTopOf="@id/location_label"
+					app:layout_constraintBottom_toBottomOf="@id/location_label"
+					app:layout_constraintStart_toEndOf="@id/location_label"
+
+					tools:text="@tools:sample/cities" />
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/aditional_data_layout"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/personal_data_layout">
+
+			<Button
+				style="?attr/materialIconButtonStyle"
+
+				android:id="@+id/minimize_aditional_data_layout_button"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="10dp"
+				android:rotation="90"
+
+				app:icon="@drawable/ic_chevron_generic"
+				app:iconSize="30dp"
+				app:iconTint="@color/textLight"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<TextView
+				android:id="@+id/aditional_data_title"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="20sp"
+
+				app:layout_constraintStart_toEndOf="@id/minimize_aditional_data_layout_button"
+				app:layout_constraintTop_toTopOf="@id/minimize_aditional_data_layout_button"
+				app:layout_constraintBottom_toBottomOf="@id/minimize_aditional_data_layout_button"
+
+				tools:text="@string/health_information"/>
+
+			<LinearLayout
+				android:id="@+id/aditional_data_card"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_default"
+				android:background="@drawable/shape_rounded_background"
+				android:backgroundTint="@color/surface"
+				android:padding="@dimen/default_card_padding"
+
+				app:layout_constraintTop_toBottomOf="@id/minimize_aditional_data_layout_button" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

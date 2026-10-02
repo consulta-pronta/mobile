@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.TouchDelegate
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
 import com.unnebulous.consultapronta.views.NavbarView
 
@@ -76,5 +77,9 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		return super.dispatchTouchEvent(ev)
+	}
+
+	fun setFragmentPadding(horizontalPadding: Int = resources.getDimensionPixelSize(R.dimen.default_screen_padding)) {
+		binding.mainFragmentContainer.setPadding(horizontalPadding, 0, horizontalPadding, 0)
 	}
 }

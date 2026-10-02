@@ -52,7 +52,7 @@ class AdicionarMedicamento : Fragment() {
 				.map { it.display }
 				.toTypedArray()
 			setupSelect(medicationFrequencyUnit, frequencyUnits, resetOnClick = true)
-			
+
 			registerMedicationButton.setOnClickListener {
 				val route = Utils.MedicationRoute.fromDisplay(
 					medicationRouteSelect.text.toString()
