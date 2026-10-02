@@ -227,6 +227,7 @@ class Hospital : Fragment() {
 			getString(R.string.user_marker_title),
 			getString(R.string.user_marker_snippet)
 		)
+		setNavbarEntryActive(Utils.NavbarButton.FOURTH)
 
 		binding.mapView.addMarker(marker)
 		userLocationMarker = marker

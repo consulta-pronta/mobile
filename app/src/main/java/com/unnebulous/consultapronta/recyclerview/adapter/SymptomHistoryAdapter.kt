@@ -9,10 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
-import com.unnebulous.consultapronta.database.SymptomHistory
+import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.CardSymptomHistoryBinding
+import com.unnebulous.consultapronta.toBrazilianLocale
 
-class SymptomHistoryAdapter: ListAdapter<SymptomHistory, SymptomHistoryAdapter.SymptomHistoryViewHolder>(SymptomHistoryComparator()) {
+class SymptomHistoryAdapter: ListAdapter<
+	Symptom,
+	SymptomHistoryAdapter.SymptomHistoryViewHolder>(SymptomHistoryComparator())
+{
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomHistoryViewHolder {
 		val context = parent.context
 
@@ -29,20 +33,22 @@ class SymptomHistoryAdapter: ListAdapter<SymptomHistory, SymptomHistoryAdapter.S
 		holder.bind(getItem(position))
 	}
 
-	class SymptomHistoryComparator : DiffUtil.ItemCallback<SymptomHistory>() {
-		// TODO
-		override fun areItemsTheSame(old: SymptomHistory, new: SymptomHistory) = false
-
-		override fun areContentsTheSame(old: SymptomHistory, new: SymptomHistory) = false
+	class SymptomHistoryComparator : DiffUtil.ItemCallback<Symptom>() {
+		override fun areItemsTheSame(old: Symptom, new: Symptom) = old.id == new.id
+		override fun areContentsTheSame(old: Symptom, new: Symptom) = old == new
 	}
 
 	class SymptomHistoryViewHolder(
 		private val binding: CardSymptomHistoryBinding,
 		private val context: Context
 	): RecyclerView.ViewHolder(binding.root) {
-		fun bind(symptom: SymptomHistory) {
+		fun bind(symptom: Symptom) {
 			binding.apply {
-				// TODO
+				dateText.text = symptom.date_time?.toBrazilianLocale() ?: "Data desconhecida"
+				intensity.setIntensity(symptom.intensity)
+				titleText.text = symptom.title
+				descriptionText.text = symptom.description
+				locationChip.setLocation(symptom.place)
 
 				// sem anexos por enquanto
 				separator.visibility = View.GONE

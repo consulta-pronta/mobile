@@ -16,59 +16,67 @@
 		android:layout_width="40dp"
 		android:layout_height="40dp"
 		android:src="@drawable/ic_medication"
-
-		app:tint="@color/primaryDark"
+		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintStart_toStartOf="parent" />
+		app:layout_constraintBottom_toBottomOf="@id/medication_main"
 
-	<TextView
-		android:id="@+id/medication_name"
+		app:tint="@color/primaryDark" />
 
-		android:layout_width="wrap_content"
+	<LinearLayout
+		android:id="@+id/medication_main"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:textColor="@color/primaryDark"
-		android:textStyle="bold"
+		android:layout_marginStart="@dimen/default_drawable_icon_padding"
 
-		app:layout_constraintStart_toEndOf="@id/icon"
-		app:layout_constraintTop_toTopOf="parent"
+		android:layout_marginEnd="@dimen/default_drawable_icon_padding"
+		android:orientation="vertical"
 
-		tools:text="@string/placeholder" />
+		app:layout_constraintEnd_toStartOf="@+id/checkbox"
+		app:layout_constraintStart_toEndOf="@+id/icon"
+		app:layout_constraintTop_toTopOf="parent">
 
-	<TextView
-		android:id="@+id/use_time"
+		<TextView
+			android:id="@+id/medication_name"
 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textColor="@color/primaryDark"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primaryDark"
+			android:textStyle="bold"
 
-		app:layout_constraintTop_toBottomOf="@id/medication_name"
-		app:layout_constraintStart_toEndOf="@id/icon"
+			tools:text="@string/placeholder" />
 
-		tools:text="@string/placeholder" />
+		<TextView
+			android:id="@+id/use_time"
 
-	<TextView
-		android:id="@+id/type_usage"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primary"
 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textColor="@color/primaryDark"
+			tools:text="@string/medication_card_use_time" />
 
-		app:layout_constraintTop_toBottomOf="@id/use_time"
-		app:layout_constraintStart_toEndOf="@id/icon"
+		<TextView
+			android:id="@+id/type_usage"
 
-		tools:text="@string/placeholder" />
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primary"
+
+			app:layout_constraintStart_toEndOf="@id/icon"
+			app:layout_constraintTop_toBottomOf="@id/use_time"
+
+			tools:text="@string/medication_card_type_usage" />
+	</LinearLayout>
 
 	<CheckBox
 		android:id="@+id/checkbox"
 
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:background="@color/dark_checkbox_color"
 
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
+		app:buttonIconTint="@color/dark_checkbox_color"
 		app:buttonTint="@color/textDark"
-		app:buttonIconTint="@color/dark_checkbox_color"/>
+		app:layout_constraintBottom_toBottomOf="@+id/medication_main"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@+id/medication_main" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

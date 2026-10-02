@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingBottom="30dp">
+
+		<TextView
+			android:id="@+id/detail_symptom"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/symptom_question"
+			android:textSize="14sp"
+
+			app:drawableStartCompat="@drawable/ic_asterisk"
+			app:drawableTint="@color/error"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<EditText
+			android:id="@+id/detail_symptom_area"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_search_background"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:hint="@string/detail_symptom_area"
+			android:gravity="start"
+			android:inputType="text"
+			android:autofillHints="description"
+
+			app:layout_constraintTop_toBottomOf="@id/detail_symptom"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/explain_command"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/explain_command"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/detail_symptom_area"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<EditText
+			android:id="@+id/explain_area"
+
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:background="@drawable/shape_search_background"
+			android:gravity="start"
+			android:inputType="textMultiLine"
+			android:hint="@string/detailed_explanation_hint"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+
+			app:layout_constraintTop_toBottomOf="@id/explain_command"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/symptom_event"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/symptom_event"
+			android:textSize="14sp"
+
+			app:layout_constraintTop_toBottomOf="@id/explain_area"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/date"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/date_title"
+			android:textSize="14sp"
+
+			app:layout_constraintTop_toBottomOf="@+id/symptom_event"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<Button
+			android:id="@+id/date_select"
+
+			android:layout_width="175dp"
+			android:layout_height="wrap_content"
+			android:text="@string/date_hint"
+			android:textColor="@color/textDark60"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/white"
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			app:icon="@drawable/ic_calendar"
+			app:iconGravity="end"
+			app:iconTint="@color/textDark"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/date" />
+
+		<TextView
+			android:id="@+id/time"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/hour_title"
+			android:textSize="14sp"
+			android:autofillHints="hour"
+
+			app:layout_constraintTop_toBottomOf="@+id/symptom_event"
+			app:layout_constraintStart_toStartOf="@id/time_select"
+			/>
+
+		<Button
+			android:id="@+id/time_select"
+
+			android:layout_width="175dp"
+			android:layout_height="wrap_content"
+			android:text="@string/time_not_selected"
+			android:textColor="@color/textDark60"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/white"
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			app:icon="@drawable/ic_clock"
+			app:iconGravity="end"
+			app:iconTint="@color/textDark"
+			app:layout_constraintTop_toBottomOf="@id/time"
+			app:layout_constraintEnd_toEndOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/symptom_body_part"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/which_body_part"
+			android:textSize="14sp"
+
+			app:layout_constraintTop_toBottomOf="@id/date_select"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<com.google.android.material.textfield.TextInputLayout
+			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+			android:id="@+id/body_part_dropdown"
+
+			android:layout_width="0dp"
+			android:layout_height="50dp"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:textColorHint="@color/textDark"
+
+			app:boxCornerRadiusTopStart="12dp"
+			app:boxCornerRadiusTopEnd="12dp"
+			app:boxCornerRadiusBottomStart="12dp"
+			app:boxCornerRadiusBottomEnd="12dp"
+			app:boxBackgroundColor="@color/white"
+			app:counterTextColor="@color/textDark"
+			app:counterOverflowTextColor="@color/textDark"
+			app:endIconMode="custom"
+			app:endIconDrawable="@drawable/ic_arrow_down"
+			app:endIconTint="@color/primaryDark"
+			app:layout_constraintTop_toBottomOf="@id/symptom_body_part"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
+				android:id="@+id/body_part_spinner"
+
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:hint="@string/select_place"
+				android:textColorHint="@color/textDark"
+				android:inputType="none"
+				android:textSize="14sp"
+				android:textColor="@color/textDark"
+				android:padding="@dimen/default_card_padding"
+				android:drawableStart="@drawable/ic_location"
+				android:drawablePadding="12dp"
+				android:drawableTint="@color/primary"
+				android:paddingStart="16dp"
+				android:paddingEnd="16dp"
+				/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<TextView
+			android:id="@+id/symptom_intensity"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/symptom_intensity"
+			android:textSize="14sp"
+
+			app:layout_constraintTop_toBottomOf="@id/body_part_dropdown"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<com.google.android.material.slider.Slider
+			android:id="@+id/intensity_slider"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:valueFrom="1"
+			android:valueTo="10"
+			android:stepSize="1.0"
+			android:layout_marginTop="8dp"
+
+			app:labelBehavior="gone"
+			app:thumbColor="@color/success"
+			app:trackColorActive="@color/success"
+			app:tickColorActive="@color/primaryDark"
+			app:trackColorInactive="@color/primary"
+			app:tickColorInactive="@color/primaryLight"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/symptom_intensity" />
+
+
+		<LinearLayout
+			android:id="@+id/intensity_labels"
+
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+
+			app:layout_constraintTop_toBottomOf="@id/intensity_slider"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<TextView
+				android:id="@+id/light"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/light"
+				android:textSize="12sp"
+				android:textColor="@color/success"
+				android:layout_marginStart="@dimen/default_inner_elements_spacing"/>
+
+			<TextView
+				android:id="@+id/moderated"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="center"
+				android:text="@string/moderated"
+				android:textSize="12sp"
+				android:textColor="@color/warning"/>
+
+			<TextView
+				android:id="@+id/strong"
+
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="end"
+				android:text="@string/strong"
+				android:textSize="12sp"
+				android:textColor="@color/error"
+				android:layout_marginEnd="@dimen/default_inner_elements_spacing"/>
+
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/image"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_card_padding"
+			android:text="@string/picture"
+			android:visibility="gone"
+
+			app:layout_constraintTop_toBottomOf="@+id/intensity_labels"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<LinearLayout
+			android:id="@+id/image_upload"
+
+			android:layout_width="0dp"
+			android:layout_height="100dp"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/img_upload_area"
+			android:clickable="true"
+			android:focusable="true"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:padding="8dp"
+			android:visibility="gone"
+
+			app:layout_constraintTop_toBottomOf="@id/image"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<ImageView
+				android:id="@+id/camera_icon"
+
+				android:layout_width="28dp"
+				android:layout_height="28dp"
+				android:src="@drawable/ic_camera"
+
+				app:tint="@android:color/white" />
+
+			<TextView
+				android:id="@+id/image_upload_text"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:text="@string/img_instructions"
+				android:textColor="@android:color/white"
+				android:textSize="12sp" />
+
+		</LinearLayout>
+
+		<Button
+			android:id="@+id/button_submit"
+
+			android:layout_width="match_parent"
+			android:layout_marginTop="@dimen/default_inner_elements_spacing"
+			android:layout_height="wrap_content"
+			android:text="@string/save_edited"
+			android:textColor="@color/textDark"
+			android:insetBottom="0dp"
+
+			app:icon="@drawable/ic_edit_square"
+			app:iconTint="@color/primaryDark"
+			app:iconGravity="textStart"
+			app:backgroundTint="@color/accent"
+			app:layout_constraintTop_toBottomOf="@id/image_upload"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			/>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

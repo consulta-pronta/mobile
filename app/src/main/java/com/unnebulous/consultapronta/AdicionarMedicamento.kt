@@ -1,24 +1,25 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.FragmentAdicionarMedicamentoBinding
-import com.unnebulous.consultapronta.databinding.FragmentMedicamentosListagemBinding
-import com.unnebulous.consultapronta.recyclerview.adapter.MedicationAdapter
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlin.String
 
 class AdicionarMedicamento : Fragment() {
 
 	private var _binding: FragmentAdicionarMedicamentoBinding? = null
 	private val binding get() = _binding!!
-
-	private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -38,51 +39,85 @@ class AdicionarMedicamento : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
-		// val typeConsumptions = resources.getStringArray(R.array.type_consumptions)
-		val typeConsumptions = arrayOf(
-			"Oral (comprimido)",
-			"Oral (gotas)",
-			"Sublingual (comprimido)",
-			"Sublingual (gotas)",
-			"Injetável",
-			"Externo (Pomadas, cremes, etc)",
-			"Inalatório",
-			"Retal",
-			"Oftálmico (colírios)",
-			"Oftológico (orelha)",
-		)
+		binding.apply {
+			val routes = Utils.MedicationRoute.entries.map { it.display }.toTypedArray()
+			setupSelect(medicationRouteSelect, routes)
 
-		val adapter = ArrayAdapter(
-			requireContext(),
-			R.layout.item_spinner,
-			typeConsumptions
-		)
+			val doseUnits = Utils.MedicationDoseUnit.entries.map { it.display }.toTypedArray()
+			setupSelect(medicationDoseUnit, doseUnits, resetOnClick = true)
 
-		adapter.setDropDownViewResource(R.layout.item_spinner)
+			val frequencyUnits = Utils.MedicationFrequencyUnit.entries
+				.map { it.display }
+				.toTypedArray()
+			setupSelect(medicationFrequencyUnit, frequencyUnits, resetOnClick = true)
 
-		binding.typeConsumptionSelect.setAdapter(adapter)
+			registerMedicationButton.setOnClickListener {
+				val route = Utils.MedicationRoute.fromDisplay(
+					medicationRouteSelect.text.toString()
+				)
+				val doseUnit = Utils.MedicationDoseUnit.fromDisplay(
+					medicationDoseUnit.text.toString()
+				)
+				val frequencyUnit = Utils.MedicationFrequencyUnit.fromDisplay(
+					medicationFrequencyUnit.text.toString()
+				)
 
-		binding.typeConsumptionSelect.setOnClickListener {
-			binding.typeConsumptionSelect.showDropDown()
-		}
-
-		binding.typeConsumptionDropdown.setEndIconOnClickListener {
-			binding.typeConsumptionSelect.showDropDown()
-		}
-
-		binding.usageTimeInput.setOnClickListener {
-			Utils.showTimePicker(this, LocalTime.of(0, 0)) { time ->
-				if (time.hour == 0) {
-					return@showTimePicker
+				if (route == null || doseUnit == null || frequencyUnit == null) {
+					Toast
+						.makeText(context, "Preencha os inputs corretamente", Toast.LENGTH_SHORT)
+						.show()
+					return@setOnClickListener
 				}
 
-				val buttonText = time.format(timeFormatter)
+				lifecycleScope.launch {
+					try {
+						Medication.collection.add(Medication.Companion.FormData(
+							name = medicationNameInput.text.toString(),
 
-				binding.usageTimeInput.text = buttonText
+							route = route,
+							dose = Pair(
+								medicationDoseValue.text.toString().toDouble(),
+								doseUnit
+							),
+							frequency = Pair(
+								medicationFrequencyValue.text.toString().toDouble(),
+								frequencyUnit),
+							duration_days = medicationDuration.text.toString().toInt(),
+
+							custom_instructions = medicationCustomInstructions.text.toString(),
+							notes = medicationNotes.text.toString(),
+						).toMap()).await()
+
+						Log.i(Medication.COLLECTION_NAME, "addMedication:success")
+						popBackStack()
+					} catch (e: Exception) {
+						Log.e(Medication.COLLECTION_NAME, "addMedication:failure", e)
+					}
+				}
 			}
 		}
 	}
+
+	private fun setupSelect(
+		select: MaterialAutoCompleteTextView,
+		array: Array<String>,
+		resetOnClick: Boolean = false
+	) {
+		select.apply {
+			setAdapter(createAdapter(array))
+			setOnClickListener {
+				if (resetOnClick) { setText("", false) }
+				showDropDown()
+			}
+		}
+	}
+
+	private fun createAdapter(array: Array<String>) =
+		ArrayAdapter(requireContext(), R.layout.item_spinner, array).apply {
+			setDropDownViewResource(R.layout.item_spinner)
+		}
 
 	override fun onDestroyView() {
 		super.onDestroyView()

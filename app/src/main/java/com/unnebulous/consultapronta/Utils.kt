@@ -1,8 +1,10 @@
 package com.unnebulous.consultapronta
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -10,13 +12,18 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import java.time.LocalDate
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 object Utils {
-	enum class UserType { PATIENT, PROFESSIONAL }
+	const val CPF_MASK = "###.###.###-##"
+	const val PHONE_MASK = "(##) #####-####"
+
+	enum class UserType { PACIENTE, PROFISSIONAL }
 
 	enum class NavbarButton(val id: String) {
 		FIRST("first_element"),
@@ -32,7 +39,74 @@ object Utils {
 
 	enum class SnackBarType { INFO, SUCCESS, WARNING, DANGER }
 
-	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, onDateSelected: (LocalDate) -> Unit) {
+	/* TODO: Mudar para inglês */
+	enum class ExamCategory { LABORATORIAL, IMAGEM, FUNCIONAL, PREVENTIVO }
+
+	enum class ExamStatus { SOLICITADO, TRIAGEM, LIBERADO, PENDENTE }
+
+	enum class MedicationRoute {
+		ORAL, SUBLINGUAL, INJETAVEL, EXTERNO, INALATORIO, RETAL, OFTALMICO, OFTOLOGICO;
+
+		val display get() = when (this) {
+			INJETAVEL -> "Injetável"
+			INALATORIO -> "Inalatório"
+			OFTALMICO -> "Oftálmico"
+			OFTOLOGICO -> "Oftológico"
+			else -> this.toString().capitalizeFix()
+		}
+
+		companion object {
+			fun fromDisplay(value: String) =
+				entries.firstOrNull { it.display == value }
+		}
+	}
+
+	enum class MedicationDoseUnit {
+		MILIGRAMA, GRAMA, MICROGRAMA, MILILITRO, UNIDADE_INTERNACIONAL, TABLETE;
+
+		val display get() = when (this) {
+			UNIDADE_INTERNACIONAL -> "Un. Internacional"
+			else -> this.toString().capitalizeFix()
+		}
+
+		val unit get() = when (this) {
+			MILIGRAMA -> "mg"
+			GRAMA -> "g"
+			MICROGRAMA -> "mcg"
+			MILILITRO -> "mL"
+			UNIDADE_INTERNACIONAL -> "UI"
+			TABLETE -> "un."
+		}
+
+		companion object {
+			fun fromDisplay(value: String) =
+				MedicationDoseUnit.entries.firstOrNull { it.display == value }
+		}
+	}
+
+	enum class MedicationFrequencyUnit {
+		MINUTO, HORA, DIA, SEMANA, MES;
+
+		val display get() = when (this) {
+			MES -> "Mês"
+			else -> this.toString().capitalizeFix()
+		}
+
+		val plural get() = when (this) {
+			MINUTO -> "Minutos"
+			HORA -> "Horas"
+			DIA -> "Dias"
+			SEMANA -> "Semanas"
+			MES -> "Meses"
+		}
+
+		companion object {
+			fun fromDisplay(value: String) =
+				MedicationFrequencyUnit.entries.firstOrNull { it.display == value }
+		}
+	}
+
+	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
 		val validator = if (isDateValidatorPointBackward) {
 			DateValidatorPointBackward.now()
 		} else {
@@ -42,9 +116,15 @@ object Utils {
 		val constraintBuilder = CalendarConstraints.Builder()
 			.setValidator(validator)
 
+		var dateAsLong = MaterialDatePicker.todayInUtcMilliseconds()
+
+		if (!defaultDate.isEqual(LocalDate.now())) {
+			dateAsLong = defaultDate.toEpochMilli()
+		}
+
 		val datePicker = MaterialDatePicker.Builder.datePicker()
 			.setTitleText(fragment.getString(R.string.date_picker_title))
-			.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+			.setSelection(dateAsLong)
 			.setCalendarConstraints(constraintBuilder.build())
 			.build()
 
@@ -82,8 +162,8 @@ object Utils {
 		timePicker.show(fragment.parentFragmentManager, "time_picker")
 	}
 
-	fun buildCpfMask(): MaskWatcher = MaskWatcher("###.###.###-##")
-	fun buildPhoneMask(): MaskWatcher = MaskWatcher("(##) #####-####")
+	fun buildCpfMask(): MaskWatcher = MaskWatcher(CPF_MASK)
+	fun buildPhoneMask(): MaskWatcher = MaskWatcher(PHONE_MASK)
 
 	class MaskWatcher(private val mask: String) : TextWatcher {
 		private var isUpdating: Boolean = false
@@ -125,4 +205,16 @@ object Utils {
 			return s.replace("[^0-9]*".toRegex(), "")
 		}
 	}
+
+	fun applyMask(mask: String, value: String, placeholder: Regex = "#".toRegex()) = run {
+		var i = 0
+		mask.replace(placeholder) { value.getOrNull(i++)?.toString() ?: ""}
+	}
+
+	fun intensityToColor(context: Context, intensity: Double) =
+		ContextCompat.getColor(context, when {
+			intensity <= 4 -> R.color.success
+			intensity <= 7 -> R.color.warning
+			else -> R.color.error
+		})
 }

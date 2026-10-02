@@ -1,46 +1,61 @@
 package com.unnebulous.consultapronta.recyclerview.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.database.BaseDocument
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.CardChronologyBinding
+import com.unnebulous.consultapronta.toBrazilianLocale
 
-class ChronologyAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-	enum class ItemType { SYMPTOM, IDK_LOL }
+class ChronologyAdapter: ListAdapter<BaseDocument, RecyclerView.ViewHolder>(WeAreCompartor()) {
+	class WeAreCompartor: DiffUtil.ItemCallback<BaseDocument>() {
+		override fun areItemsTheSame(old: BaseDocument, new: BaseDocument) = old.id == new.id
+		override fun areContentsTheSame(old: BaseDocument, new: BaseDocument) =old == new
+	}
+
+	enum class ItemType { SYMPTOM }
 
 	override fun getItemViewType(position: Int): Int {
-		// TODO: alguma coisa para verificar o que é o que
-		return when (position) {
-			else -> ItemType.SYMPTOM.ordinal
+		return when (getItem(position)) {
+			is Symptom -> ItemType.SYMPTOM.ordinal
+			else -> -1
 		}
 	}
 
-	// TODO: com base no tipo, retornar o ViewHolder certo
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-		val binding = CardChronologyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+		val inflater = LayoutInflater.from(parent.context)
+		val binding = CardChronologyBinding.inflate(inflater, parent, false)
 
-		return when (viewType) {
-			ItemType.SYMPTOM.ordinal -> ChronologySymptomViewHolder(binding)
-			else -> ChronologySymptomViewHolder(binding)
-		}
+		return ChronologyViewHolder(binding)
 	}
 
-	// TODO: com base no tipo de ViewHolder, dar binding
 	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-		// val item = something
-
+		val item = getItem(position)
+		val isLast = position == currentList.size - 1
 		when (holder) {
-			is ChronologySymptomViewHolder -> holder.bind(Symptom())
+			is ChronologyViewHolder -> holder.bind(item as Symptom, isLast)
 		}
 	}
 
-	// TODO: tem que retornar a quantidade de items, ora pois
-	override fun getItemCount(): Int = 0
+	class ChronologyViewHolder(
+		val binding: CardChronologyBinding
+	): RecyclerView.ViewHolder(binding.root) {
+		fun bind(item: Symptom, isLast: Boolean = false) {
+			binding.apply {
+				title.text = item.title
+				date.text = item.date_time?.toBrazilianLocale() ?: "Data desconhecida"
+				description.text = item.description
+				icon.setImageResource(R.drawable.ic_graphic)
 
-	class ChronologySymptomViewHolder(val binding: CardChronologyBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(item: Symptom) {
-
+				if (isLast) {
+					stick.visibility = View.INVISIBLE
+				}
+			}
 		}
 	}
 }

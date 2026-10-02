@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta.views
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,8 +24,7 @@ class NavbarView @JvmOverloads constructor(
 	private val binding: NavbarViewBinding
 	private var currentButton: Utils.NavbarButton = Utils.NavbarButton.FIRST
 		set(newButton) {
-			resetColors()
-			setColor(newButton, R.color.accent)
+			setActive(newButton)
 
 			field = newButton
 		}
@@ -33,17 +33,46 @@ class NavbarView @JvmOverloads constructor(
 		clipChildren = false
 		clipToPadding = false
 
-		binding = NavbarViewBinding.inflate(
-			LayoutInflater.from(context),
-			this,
-			true
-		)
+		binding = NavbarViewBinding.inflate(LayoutInflater.from(context), this, true)
 
 		attrs?.let {
 			applyAttributes(it)
 		}
 
 		currentButton = Utils.NavbarButton.FIRST
+	}
+
+	fun getButtonByEnum(button: Utils.NavbarButton): ViewGroup {
+		return when (button) {
+			Utils.NavbarButton.FIRST -> binding.firstElement
+			Utils.NavbarButton.SECOND -> binding.secondElement
+			Utils.NavbarButton.MAIN -> binding.mainButton
+			Utils.NavbarButton.FOURTH -> binding.fourthElement
+			Utils.NavbarButton.FIFTH -> binding.fifthElement
+		}
+	}
+
+	fun setActive(who: Utils.NavbarButton) {
+		resetStyle()
+
+		if (who == Utils.NavbarButton.MAIN) {
+			val color = ContextCompat.getColor(context, R.color.black20)
+			getButtonByEnum(who).background.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+			return
+		} else {
+			setColor(who, R.color.accent)
+		}
+	}
+
+	fun resetStyle() {
+		getButtonByEnum(Utils.NavbarButton.MAIN).background.clearColorFilter()
+		Utils.NavbarButton.entries.forEach { button ->
+			if (button !== Utils.NavbarButton.MAIN) {
+				setColor(button, R.color.textLight)
+			} else {
+				setColor(button, R.color.textDark)
+			}
+		}
 	}
 
 	private fun applyAttributes(attrs: AttributeSet) {
@@ -76,16 +105,6 @@ class NavbarView @JvmOverloads constructor(
 		}
 	}
 
-	private fun getButtonByEnum(button: Utils.NavbarButton): ViewGroup {
-		return when (button) {
-			Utils.NavbarButton.FIRST -> binding.firstElement
-			Utils.NavbarButton.SECOND -> binding.secondElement
-			Utils.NavbarButton.MAIN -> binding.mainButton
-			Utils.NavbarButton.FOURTH -> binding.fourthElement
-			Utils.NavbarButton.FIFTH -> binding.fifthElement
-		}
-	}
-
 	private fun getButtonIconByEnum(button: Utils.NavbarButton): ImageView {
 		return when (button) {
 			Utils.NavbarButton.FIRST -> binding.firstElementIcon
@@ -107,22 +126,12 @@ class NavbarView @JvmOverloads constructor(
 	}
 
 	private fun setColor(who: Utils.NavbarButton, color: Int) {
-		val variable = ContextCompat.getColor(context, color)
+		val color = ContextCompat.getColor(context, color)
 
-		getButtonIconByEnum(who).imageTintList = ColorStateList.valueOf(variable)
+		getButtonIconByEnum(who).imageTintList = ColorStateList.valueOf(color)
 
 		if (who != Utils.NavbarButton.MAIN) {
-			getButtonTextByEnum(who)!!.setTextColor(variable)
-		}
-	}
-
-	private fun resetColors() {
-		Utils.NavbarButton.entries.forEach { button ->
-			if (button !== Utils.NavbarButton.MAIN) {
-				setColor(button, R.color.textLight)
-			} else {
-				setColor(button, R.color.textDark)
-			}
+			getButtonTextByEnum(who)!!.setTextColor(color)
 		}
 	}
 

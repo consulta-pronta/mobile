@@ -1,15 +1,21 @@
 package com.unnebulous.consultapronta
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import com.unnebulous.consultapronta.database.AuthManager
+import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentMaisBinding
-import com.unnebulous.consultapronta.showSnackbar
 import com.unnebulous.consultapronta.views.OptionItemView
+import kotlinx.coroutines.launch
 
 class Mais : Fragment() {
 	
@@ -37,9 +43,30 @@ class Mais : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
+		setNavbarEntryActive(Utils.NavbarButton.FIFTH)
 
-		// TODO: deve fazer verificação do tipo de usuário
-		setPatientOptions()
+		lifecycleScope.launch {
+			try {
+				val userData = AuthManager.getUserData()
+
+				when (userData?.user_type) {
+					Utils.UserType.PACIENTE -> setPatientOptions()
+					Utils.UserType.PROFISSIONAL -> setProfessionalOptions()
+					null -> {
+						throw Exception("User has no type associeted")
+					}
+				}
+
+				binding.apply {
+					userName.text = userData.name
+					userEmail.text = userData.email
+					userPhoneNumber.text = Utils.applyMask(Utils.PHONE_MASK, userData.phone)
+				}
+			}
+			catch (e: Exception) {
+				Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
+			}
+		}
 
 		binding.apply {
 			cleanCacheButton.setOnClickListener {
@@ -47,6 +74,8 @@ class Mais : Fragment() {
 				showSnackbar(getString(R.string.succesfully_cache_deleted), Utils.SnackBarType.SUCCESS,
 					Snackbar.LENGTH_SHORT)
 			}
+
+			exitAccountButton.setOnClickListener { onExitClicked()	}
 		}
 	}
 
@@ -57,20 +86,16 @@ class Mais : Fragment() {
 			// opção de informações de saúde
 			// opção de permissões médicas
 			MenuOption(R.drawable.ic_reports, R.string.reports_text) {
-				// TODO: INSTANCIAR TELA DE RELATÓRIOS
-				Home()
+				RelatoriosListagem()
 			},
 			MenuOption(R.drawable.ic_exams, R.string.my_exams_text) {
-				// TODO: INSTANCIAR TELA DE MEUS EXAMES
-				Home()
+				Exam()
 			},
 			MenuOption(R.drawable.ic_pill, R.string.my_medicines_text) {
-				// TODO: INSTANCIAR TELA DE MEUS MEDICAMENTOS
-				Home()
+				MedicamentosListagem()
 			},
 			MenuOption(R.drawable.ic_appointment, R.string.appointments_text) {
-				// TODO: INSTANCIAR TELA DE CONSULTAS
-				Home()
+				TODO()
 			},
 		)
 
@@ -115,6 +140,46 @@ class Mais : Fragment() {
 			}
 
 			binding.userConfigList.addView(option)
+		}
+	}
+
+	private fun onExitClicked() {
+		val parentActivitiy = requireActivity()
+
+		configBottomSheet { dialogBinding, _ ->
+			dialogBinding.apply {
+				icon.setImageResource(R.drawable.ic_logout)
+				icon.visibility = View.GONE
+				title.text = getString(R.string.exit_account)
+				body.apply {
+					val subtitle = TextView(parentActivitiy).apply {
+						text = getString(R.string.exit_account_subtitle)
+					}
+					val description = TextView(parentActivitiy).apply {
+						text = getString(R.string.exit_account_description)
+						textSize = 14f
+					}
+
+					listOf(subtitle, description).forEach {
+						it.textAlignment = View.TEXT_ALIGNMENT_CENTER
+						it.setTextColor(ContextCompat.getColor(context, R.color.textDark))
+					}
+
+					addView(subtitle)
+					addView(description)
+				}
+
+				positiveButton.text = title.text
+				positiveButton.setOnClickListener {
+					AuthManager.auth.signOut()
+
+					parentActivitiy.startActivity(Intent(
+						parentActivitiy,
+						AuthActivity::class.java)
+					)
+					parentActivitiy.finish()
+				}
+			}
 		}
 	}
 

@@ -1,12 +1,17 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.FragmentMedicamentosListagemBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.MedicationAdapter
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MedicamentosListagem : Fragment() {
 
@@ -31,10 +36,21 @@ class MedicamentosListagem : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		val adapter = MedicationAdapter()
-
 		binding.recyclerview.adapter = adapter
+
+		lifecycleScope.launch {
+			try {
+				val docs = Medication.collection.get().await()
+
+				adapter.submitList(docs.map { Medication.fromDocument(it) })
+				Log.i(Medication.COLLECTION_NAME, "getMedications:success")
+			} catch (e: Exception) {
+				Log.e(Medication.COLLECTION_NAME, "getMedications:failure", e)
+			}
+		}
 
 		binding.addNewMedication.setOnClickListener {
 			changeFragmentWithBackStack(AdicionarMedicamento())
