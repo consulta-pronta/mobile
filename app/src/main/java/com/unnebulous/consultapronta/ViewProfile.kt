@@ -14,6 +14,7 @@ import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.bumptech.glide.util.Util
 import com.google.firebase.Firebase
@@ -22,7 +23,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.DatabaseManager
+import com.unnebulous.consultapronta.database.User
+import kotlinx.coroutines.launch
 
 class ViewProfile : Fragment() {
 
@@ -32,19 +36,12 @@ class ViewProfile : Fragment() {
 	private var isPersonalDataMinimized = false
 	private var isAditionalDataMinimized = false
 
-	private lateinit var auth: FirebaseAuth
-	private lateinit var db: FirebaseFirestore
-
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
 		_binding = FragmentViewProfileBinding.inflate(inflater, container, false)
-
-		auth = Firebase.auth
-		db = Firebase.firestore
-
 		return binding.root
 	}
 
@@ -56,8 +53,7 @@ class ViewProfile : Fragment() {
 				popBackStack()
 			}
 		}
-
-		setAditionalDataLayoutTitle(Utils.UserType.PACIENTE)
+		resetNavbarEntryActive()
 
 		binding.minimizePersonalDataLayoutButton.setOnClickListener {
 			isPersonalDataMinimized = !isPersonalDataMinimized
@@ -69,24 +65,26 @@ class ViewProfile : Fragment() {
 			minimizeSection(binding.aditionalDataCard, it, isAditionalDataMinimized)
 		}
 
-		DatabaseManager.userCollection
-			.document(auth.uid!!)
-			.addSnapshotListener { snapshot, exception ->
-				if (exception != null) {
-					Log.e("firestore:getUser", "Error getting document: ", exception)
-					return@addSnapshotListener
+		lifecycleScope.launch {
+			try {
+				val userData = AuthManager.getUserData()
+
+				if (userData?.user_type == null) {
+					throw Exception("User has no type associated")
 				}
 
-				if (snapshot != null) {
-					val data = snapshot.data!!
-
-					binding.userName.text = data["name"] as String
-					binding.userEmail.setText(auth.currentUser?.email)
-					binding.userCpf.text = data["cpf"] as String
-					binding.userPhoneNumber.setText(data["phone"] as String)
-					setAditionalDataLayoutTitle(snapshot.getEnum<Utils.UserType>("user_type")!!)
+				binding.apply {
+					userName.text = userData.name
+					userEmail.setText(userData.email)
+					userCpf.text = userData.cpf
+					userPhoneNumber.setText(Utils.applyMask(Utils.PHONE_MASK, userData.phone))
+					setAditionalDataLayoutTitle(userData.user_type)
 				}
 			}
+			catch (e: Exception) {
+				Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
+			}
+		}
 	}
 
 	private fun addAditionalData(key: String, value: String) {

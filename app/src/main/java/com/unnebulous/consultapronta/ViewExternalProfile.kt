@@ -38,6 +38,7 @@ class ViewExternalProfile : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		configUserType(Utils.UserType.PROFISSIONAL)
 

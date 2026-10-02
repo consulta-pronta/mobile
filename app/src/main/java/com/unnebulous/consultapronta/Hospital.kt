@@ -88,6 +88,7 @@ class Hospital : Fragment() {
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
+		setNavbarEntryActive(Utils.NavbarButton.FOURTH)
 
 		(requireActivity() as MainActivity).setFragmentPadding(0)
 
