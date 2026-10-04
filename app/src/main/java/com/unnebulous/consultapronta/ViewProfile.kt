@@ -57,8 +57,8 @@ class ViewProfile : Fragment() {
 
 			val button = ImageButton(requireContext()).apply {
 				layoutParams = ViewGroup.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.MATCH_PARENT
 				)
 
 				setImageResource(R.drawable.ic_edit_square)
