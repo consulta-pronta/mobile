@@ -42,6 +42,14 @@ android {
 	}
 }
 
+configurations {
+	all {
+		exclude(group = "net.sf.kxml", module = "kxml2")
+		exclude(group = "xmlpull", module = "xmlpull")
+		exclude(group = "org.jetbrains", module = "annotations-java5")
+	}
+}
+
 dependencies {
 	implementation(libs.androidx.activity.ktx)
 	implementation(libs.androidx.core.ktx)
@@ -54,6 +62,9 @@ dependencies {
 	implementation(libs.firebase.auth)
 	implementation(libs.firebase.firestore)
 	implementation(libs.chart)
+	implementation(libs.map.view)
+	implementation(libs.play.services.location)
+	implementation(libs.overpass)
 	coreLibraryDesugaring(libs.desugar)
 
 	testImplementation(libs.junit)

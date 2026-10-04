@@ -26,9 +26,7 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	private val dateFormatter: DateTimeFormatter by lazy {
-		DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
-	}
+	private val dateFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 
 	private var periodStartDate = Timestamp.now()
 	private var periodEndDate = Timestamp.now()
@@ -56,9 +54,10 @@ class GerarRelatorio : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		binding.selectDateStart.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, defaultDate = periodStartDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -73,7 +72,7 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.selectDateEnd.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, defaultDate = periodEndDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {

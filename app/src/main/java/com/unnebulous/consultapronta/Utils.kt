@@ -8,13 +8,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 object Utils {
 	const val CPF_MASK = "###.###.###-##"
@@ -103,14 +106,25 @@ object Utils {
 		}
 	}
 
+	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
+		val validator = if (isDateValidatorPointBackward) {
+			DateValidatorPointBackward.now()
+		} else {
+			DateValidatorPointForward.now()
+		}
 
-	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
 		val constraintBuilder = CalendarConstraints.Builder()
-			.setValidator(DateValidatorPointBackward.now())
+			.setValidator(validator)
+
+		var dateAsLong = MaterialDatePicker.todayInUtcMilliseconds()
+
+		if (!defaultDate.isEqual(LocalDate.now())) {
+			dateAsLong = defaultDate.toEpochMilli()
+		}
 
 		val datePicker = MaterialDatePicker.Builder.datePicker()
 			.setTitleText(fragment.getString(R.string.date_picker_title))
-			.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+			.setSelection(dateAsLong)
 			.setCalendarConstraints(constraintBuilder.build())
 			.build()
 

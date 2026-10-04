@@ -39,6 +39,7 @@ class AdicionarMedicamento : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		binding.apply {
 			val routes = Utils.MedicationRoute.entries.map { it.display }.toTypedArray()
@@ -51,7 +52,7 @@ class AdicionarMedicamento : Fragment() {
 				.map { it.display }
 				.toTypedArray()
 			setupSelect(medicationFrequencyUnit, frequencyUnits, resetOnClick = true)
-			
+
 			registerMedicationButton.setOnClickListener {
 				val route = Utils.MedicationRoute.fromDisplay(
 					medicationRouteSelect.text.toString()
