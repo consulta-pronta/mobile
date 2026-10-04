@@ -14,21 +14,6 @@
 		android:layout_height="wrap_content"
 		android:paddingBottom="@dimen/default_padding_bottom" >
 
-		<Button
-			style="?attr/materialIconButtonStyle"
-
-			android:id="@+id/edit_profile_button"
-
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:padding="10dp"
-
-			app:icon="@drawable/ic_edit_square"
-			app:iconSize="34dp"
-			app:iconTint="@color/textLight"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
-
 		<com.unnebulous.consultapronta.views.ProfilePictureView
 			android:id="@+id/profile_picture"
 

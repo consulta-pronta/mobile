@@ -1,7 +1,9 @@
 package com.unnebulous.consultapronta.recyclerview.adapter
 
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,11 +11,14 @@ import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.databinding.CardReportBinding
 import com.unnebulous.consultapronta.diffDays
+import com.unnebulous.consultapronta.showSnackbar
 import com.unnebulous.consultapronta.toBrazilianLocale
 
 class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHolder>(ReportComparator()) {
 
 	lateinit var onClick: (Report) -> Unit
+	lateinit var renameReport: (Report) -> Unit
+	lateinit var deleteReport: (Report) -> Unit
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportListViewHolder {
 		val binding = CardReportBinding.inflate(
@@ -24,7 +29,7 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 	}
 
 	override fun onBindViewHolder(holder: ReportListViewHolder, position: Int) {
-		holder.bind(getItem(position), onClick)
+		holder.bind(getItem(position), onClick, renameReport, deleteReport)
 	}
 
 	class ReportComparator : DiffUtil.ItemCallback<Report>() {
@@ -34,7 +39,7 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 	}
 
 	class ReportListViewHolder(private val binding: CardReportBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(report: Report, onClick: (Report) -> Unit) {
+		fun bind(report: Report, onClick: (Report) -> Unit, renameReport: (Report) -> Unit, deleteReport: (Report) -> Unit) {
 			binding.apply {
 				val period = report.period_start!!.diffDays(report.period_end!!)
 
@@ -46,6 +51,32 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 				reportCardDate.text = report.created_at!!.toBrazilianLocale()
 
 				root.setOnClickListener { onClick(report) }
+
+				optionsButton.setOnClickListener {
+					val contextThemeWrapper = ContextThemeWrapper(binding.root.context, R.style.PopupMenuTheme)
+
+					PopupMenu(contextThemeWrapper, optionsButton).apply {
+						menuInflater.inflate(R.menu.menu_reports, this.menu)
+
+						setOnMenuItemClickListener { menuItem ->
+							when (menuItem.itemId) {
+								R.id.menu_allowed_professionals -> {}
+
+								R.id.menu_rename_report -> {
+									renameReport(report)
+								}
+
+								R.id.menu_delete_report -> {
+									deleteReport(report)
+								}
+							}
+
+							true
+						}
+
+						show()
+					}
+				}
 			}
 		}
 	}

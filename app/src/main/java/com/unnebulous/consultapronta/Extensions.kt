@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta
 
 import android.content.Context
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -183,3 +184,5 @@ fun List<Symptom>.getAreaMap() = groupBy { it.place }
 
 fun List<Symptom>.getMostAffectArea() =
 	getAreaMap().maxByOrNull { it.value.size }?.key
+
+fun String.toEditable() = SpannableStringBuilder(this)
