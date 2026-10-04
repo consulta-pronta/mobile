@@ -1,5 +1,6 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.bumptech.glide.util.Util
@@ -52,6 +54,24 @@ class ViewProfile : Fragment() {
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
+
+			val button = ImageButton(requireContext()).apply {
+				layoutParams = ViewGroup.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT
+				)
+
+				setImageResource(R.drawable.ic_edit_square)
+				imageTintList = ContextCompat.getColorStateList(context, R.color.textLight)
+				setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+				setPadding(10, 10, 10, 10)
+
+				setOnClickListener {
+					// changeFragmentWithBackStack(EditProfile())
+				}
+			}
+
+			addAside(button)
 		}
 		resetNavbarEntryActive()
 
