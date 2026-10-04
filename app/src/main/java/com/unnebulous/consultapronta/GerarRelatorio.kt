@@ -34,6 +34,8 @@ class GerarRelatorio : Fragment() {
 	private var periodEndDate = Timestamp.now()
 	private var professionalList = ArrayList<String>()
 	private var symptomList = emptyList<Symptom>()
+	private var originalSymptomList = emptyList<Symptom>()
+	private var removedSymptomsList = mutableListOf<String>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -123,7 +125,7 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.negativeButton.text = getString(R.string.close)
 
 				dialogBinding.body.apply {
-					for (symptom in symptomList) {
+					for (symptom in originalSymptomList) {
 						val item = SelectOptionItemView(requireContext(), type = Utils.SelectOptionItemType.COMPLETE).apply {
 							setTitle(symptom.title)
 							setSubtitle(symptom.created_at?.toBrazilianLocale() ?: "")
@@ -131,10 +133,17 @@ class GerarRelatorio : Fragment() {
 
 							val checkbox = CheckBox(requireContext()).apply {
 								buttonTintList = ContextCompat.getColorStateList(context, R.color.light_checkbox_color)
+								isChecked = !removedSymptomsList.contains(symptom.id)
 							}
 
-							checkbox.setOnCheckedChangeListener { button, isChecked ->
+							checkbox.setOnCheckedChangeListener { _, isChecked ->
+								if (isChecked) {
+									removedSymptomsList.remove(symptom.id)
+								} else {
+									removedSymptomsList.add(symptom.id)
+								}
 
+								updateSummary()
 							}
 
 							addAside(checkbox)
@@ -151,6 +160,7 @@ class GerarRelatorio : Fragment() {
 			val reportData = Report.Companion.FormData(
 				binding.reportTitleInput.text.toString(),
 				professionalList,
+				removedSymptomsList,
 				periodStartDate,
 				periodEndDate,
 			).toMap()
@@ -191,7 +201,10 @@ class GerarRelatorio : Fragment() {
 		binding.apply {
 			lifecycleScope.launch {
 				try {
-					symptomList = Symptom.getBetweenDates(periodStartDate, periodEndDate)
+					originalSymptomList = Symptom.getBetweenDates(periodStartDate, periodEndDate)
+					symptomList = originalSymptomList.filter {
+						!removedSymptomsList.contains(it.id)
+					}
 
 					numberSymptomsRegisters.text = symptomList.size.toString()
 					intensityAverage.text = symptomList.getIntensityAverage().toString()
