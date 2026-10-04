@@ -1,5 +1,6 @@
 package com.unnebulous.consultapronta.database
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
@@ -51,8 +52,8 @@ data class Symptom(
 			deep: Boolean = false
 		): List<Symptom> {
 			val queryResult = collection
-				.whereGreaterThanOrEqualTo("created_at", start)
-				.whereLessThanOrEqualTo("created_at", end)
+				.whereGreaterThanOrEqualTo("date_time", start)
+				.whereLessThanOrEqualTo("date_time", end)
 				.get()
 				.await()
 

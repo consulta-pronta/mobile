@@ -88,6 +88,14 @@ class SelectOptionItemView @JvmOverloads constructor(
 		}
 	}
 
+	fun setIcon(imgResId: Int) {
+		if (type != Utils.SelectOptionItemType.COMPLETE) {
+			return
+		}
+
+		binding.icon.setImageResource(imgResId)
+	}
+
 	private fun configType() {
 		when (type) {
 			Utils.SelectOptionItemType.RADIO -> {

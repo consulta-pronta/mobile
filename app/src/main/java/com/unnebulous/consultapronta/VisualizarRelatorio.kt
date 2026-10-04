@@ -205,11 +205,7 @@ class VisualizarRelatorio : Fragment() {
 					)
 				}
 
-				val symptoms = Symptom.getBetweenDates(
-					report.period_start,
-					report.period_end,
-					deep = true
-				)
+				val symptoms = report.getSymptomsList()
 
 				adapter.submitList(symptoms)
 
