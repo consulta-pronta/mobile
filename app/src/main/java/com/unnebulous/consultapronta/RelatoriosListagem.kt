@@ -109,6 +109,16 @@ class RelatoriosListagem : Fragment() {
 					}
 				}
 			}
+
+			deleteReport = { report ->
+				lifecycleScope.launch {
+					try {
+						Report.collection.document(report.id).delete()
+					} catch (e: Exception) {
+						Log.e("report", "deleteReport:failure", e)
+					}
+				}
+			}
 		}
 
 		binding.apply {

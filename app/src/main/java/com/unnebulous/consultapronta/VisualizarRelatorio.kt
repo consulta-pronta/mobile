@@ -96,7 +96,16 @@ class VisualizarRelatorio : Fragment() {
 								renameReport()
 							}
 
-							R.id.menu_delete_report -> {}
+							R.id.menu_delete_report -> {
+								lifecycleScope.launch {
+									try {
+										Report.collection.document(reportId).delete()
+										popBackStack()
+									} catch (e: Exception) {
+										Log.e("report", "deleteReport:failure", e)
+									}
+								}
+							}
 						}
 
 						true
