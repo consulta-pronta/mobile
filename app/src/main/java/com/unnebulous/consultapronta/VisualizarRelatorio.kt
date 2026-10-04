@@ -2,16 +2,19 @@ package com.unnebulous.consultapronta
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -24,12 +27,14 @@ import com.unnebulous.consultapronta.databinding.FragmentVisualizarRelatorioBind
 import com.unnebulous.consultapronta.recyclerview.adapter.ChronologyAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlin.sequences.forEach
 
 class VisualizarRelatorio : Fragment() {
 	private var _binding: FragmentVisualizarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
 	private lateinit var reportId: String
+	private lateinit var renameReport: () -> Unit
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -87,7 +92,9 @@ class VisualizarRelatorio : Fragment() {
 						when (menuItem.itemId) {
 							R.id.menu_allowed_professionals -> {}
 
-							R.id.menu_rename_report -> {}
+							R.id.menu_rename_report -> {
+								renameReport()
+							}
 
 							R.id.menu_delete_report -> {}
 						}
@@ -115,6 +122,63 @@ class VisualizarRelatorio : Fragment() {
 				if (report == null || report.period_start == null || report.period_end == null) {
 					popBackStack()
 					return@launch
+				}
+
+				renameReport = {
+					configBottomSheet { dialogBinding, dialog ->
+						dialogBinding.icon.visibility = View.GONE
+						dialogBinding.title.text = getString(R.string.rename_report)
+
+						val input = EditText(context).apply {
+							layoutParams = ViewGroup.LayoutParams(
+								ViewGroup.LayoutParams.MATCH_PARENT,
+								ViewGroup.LayoutParams.WRAP_CONTENT
+							)
+
+							inputType = InputType.TYPE_CLASS_TEXT
+							background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+							setCompoundDrawablesRelativeWithIntrinsicBounds(
+								ContextCompat.getDrawable(context, R.drawable.ic_document),
+								null,
+								null,
+								null
+							)
+							compoundDrawablePadding = 20
+							hint = getString(R.string.type_new_name)
+							text = report.title.toEditable()
+							setTextColor(ContextCompat.getColor(context, R.color.textLight))
+							setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+							compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+						}
+
+						dialogBinding.body.addView(input)
+
+						dialogBinding.positiveButton.apply {
+							text = getString(R.string.save)
+							setOnClickListener {
+								dialogBinding.body.children.forEach { view ->
+									val input = view as EditText
+									val newTitle = input.text.toString().trim()
+
+									newTitle.ifBlank {
+										showSnackbar(getString(R.string.type_valid_name), Utils.SnackBarType.WARNING)
+										return@setOnClickListener
+									}
+
+									lifecycleScope.launch {
+										try {
+											Report.collection.document(report.id).update("title", newTitle)
+											updateHeader { setScreenTitle(newTitle) }
+										} catch (e: Exception) {
+											Log.e(Report.COLLECTION_NAME, "renameReport:failure", e)
+										}
+									}
+								}
+
+								dialog.dismiss()
+							}
+						}
+					}
 				}
 
 				updateHeader { setScreenTitle(report.title) }

@@ -196,4 +196,6 @@
 	<string name="medication_card_use_time">%1$d %2$s a cada %3$d %4$s</string>
 	<string name="medication_card_type_usage">Consumo %1$s</string>
 	<string name="medication_card_last_checked">Última vez: %1$s</string>
+	<string name="type_new_name">Digite o novo nome</string>
+	<string name="type_valid_name">Digite um nome válido</string>
 </resources>

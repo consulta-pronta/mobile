@@ -17,6 +17,7 @@ import com.unnebulous.consultapronta.toBrazilianLocale
 class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHolder>(ReportComparator()) {
 
 	lateinit var onClick: (Report) -> Unit
+	lateinit var renameReport: (Report) -> Unit
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportListViewHolder {
 		val binding = CardReportBinding.inflate(
@@ -27,7 +28,7 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 	}
 
 	override fun onBindViewHolder(holder: ReportListViewHolder, position: Int) {
-		holder.bind(getItem(position), onClick)
+		holder.bind(getItem(position), onClick, renameReport)
 	}
 
 	class ReportComparator : DiffUtil.ItemCallback<Report>() {
@@ -37,7 +38,7 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 	}
 
 	class ReportListViewHolder(private val binding: CardReportBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(report: Report, onClick: (Report) -> Unit) {
+		fun bind(report: Report, onClick: (Report) -> Unit, renameReport: (Report) -> Unit) {
 			binding.apply {
 				val period = report.period_start!!.diffDays(report.period_end!!)
 
@@ -60,7 +61,9 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 							when (menuItem.itemId) {
 								R.id.menu_allowed_professionals -> {}
 
-								R.id.menu_rename_report -> {}
+								R.id.menu_rename_report -> {
+									renameReport(report)
+								}
 
 								R.id.menu_delete_report -> {}
 							}
