@@ -117,6 +117,7 @@ class VisualizarRelatorio : Fragment() {
 
 			addAside(button)
 		}
+		resetNavbarEntryActive()
 
 		configChart()
 
