@@ -21,8 +21,10 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.database.Symptom
+import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentVisualizarRelatorioBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.ChronologyAdapter
 import kotlinx.coroutines.launch
@@ -34,6 +36,7 @@ class VisualizarRelatorio : Fragment() {
 	private val binding get() = _binding!!
 
 	private lateinit var reportId: String
+	private lateinit var patientId: String
 	private lateinit var renameReport: () -> Unit
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +44,7 @@ class VisualizarRelatorio : Fragment() {
 
 		arguments?.let {
 			reportId = it.getString(ARG_REPORT_ID, "ERROR")
+			patientId = it.getString(ARG_PATIENT_ID, "")
 		}
 	}
 
@@ -126,6 +130,22 @@ class VisualizarRelatorio : Fragment() {
 		binding.recyclerview.adapter = adapter
 
 		lifecycleScope.launch {
+			try {
+				val userData = AuthManager.getUserData()
+
+				if (userData?.user_type == null) {
+					throw Exception("User has no type associated")
+				}
+
+				if (userData.user_type == Utils.UserType.PROFISSIONAL) {
+					binding.patientProfileLayout.visibility = View.VISIBLE
+					getPatientUserData()
+				}
+			}
+			catch (e: Exception) {
+				Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
+			}
+
 			try {
 				val doc = Report.collection.document(reportId).get().await()
 				val report = Report.fromDocument(doc)
@@ -225,6 +245,8 @@ class VisualizarRelatorio : Fragment() {
 					mostAffectedAreaIntensity.chipBackgroundColor = ColorStateList.valueOf(
 						Utils.intensityToColor(requireContext(), intensity)
 					)
+
+
 				}
 
 				populateChart(symptoms)
@@ -317,6 +339,10 @@ class VisualizarRelatorio : Fragment() {
 		}
 	}
 
+	private fun getPatientUserData() {
+		// TODO: precisa de permissões médicas
+	}
+
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
@@ -324,12 +350,14 @@ class VisualizarRelatorio : Fragment() {
 
 	companion object {
 		private const val ARG_REPORT_ID = "report_id"
+		private const val ARG_PATIENT_ID = "patient_id"
 
 		@JvmStatic
-		fun newInstance(id: String) =
+		fun newInstance(id: String, patientId: String? = null) =
 			VisualizarRelatorio().apply {
 				arguments = Bundle().apply {
 					putString(ARG_REPORT_ID, id)
+					putString(ARG_PATIENT_ID, patientId)
 				}
 			}
 	}
