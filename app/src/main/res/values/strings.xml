@@ -230,4 +230,6 @@
 	<string name="not_possible_get_hospital">Não foi possível consultar hospitais.</string>
 	<string name="user_marker_title">Sua posição</string>
 	<string name="user_marker_snippet">Você está aqui</string>
+	<string name="search_report_professional">Buscar por nome, ID ou paciente</string>
+	<string name="report_card_period_placeholder_professional">%1$s a %2$s</string>
 </resources>

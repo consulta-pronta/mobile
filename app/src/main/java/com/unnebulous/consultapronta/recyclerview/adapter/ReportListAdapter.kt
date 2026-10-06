@@ -14,22 +14,51 @@ import com.unnebulous.consultapronta.diffDays
 import com.unnebulous.consultapronta.showSnackbar
 import com.unnebulous.consultapronta.toBrazilianLocale
 
-class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHolder>(ReportComparator()) {
+class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComparator()) {
+
+	private enum class ViewType { PATIENT, PROFESSIONAL }
 
 	lateinit var onClick: (Report) -> Unit
 	lateinit var renameReport: (Report) -> Unit
 	lateinit var deleteReport: (Report) -> Unit
+	var userIsProfessional = false
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportListViewHolder {
+	override fun getItemViewType(position: Int): Int {
+		return if (userIsProfessional) {
+			ViewType.PROFESSIONAL.ordinal
+		} else {
+			ViewType.PATIENT.ordinal
+		}
+	}
+
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 		val binding = CardReportBinding.inflate(
 			LayoutInflater.from(parent.context), parent, false
 		)
 
-		return ReportListViewHolder(binding)
+		return when (viewType) {
+			ViewType.PATIENT.ordinal -> {
+				val binding = CardReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+				ReportPatientViewHolder(binding)
+			}
+
+			ViewType.PROFESSIONAL.ordinal -> {
+				val binding = CardReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+				ReportProfessionalViewHolder(binding)
+			}
+
+			else -> {
+				val binding = CardReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+				ReportPatientViewHolder(binding)
+			}
+		}
 	}
 
-	override fun onBindViewHolder(holder: ReportListViewHolder, position: Int) {
-		holder.bind(getItem(position), onClick, renameReport, deleteReport)
+	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+		when (holder) {
+			is ReportPatientViewHolder -> holder.bind(getItem(position), onClick, renameReport, deleteReport)
+			is ReportProfessionalViewHolder -> holder.bind(getItem(position), onClick)
+		}
 	}
 
 	class ReportComparator : DiffUtil.ItemCallback<Report>() {
@@ -38,7 +67,7 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 		override fun areContentsTheSame(old: Report, new: Report) =  old == new
 	}
 
-	class ReportListViewHolder(private val binding: CardReportBinding): RecyclerView.ViewHolder(binding.root) {
+	class ReportPatientViewHolder(private val binding: CardReportBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(report: Report, onClick: (Report) -> Unit, renameReport: (Report) -> Unit, deleteReport: (Report) -> Unit) {
 			binding.apply {
 				val period = report.period_start!!.diffDays(report.period_end!!)
@@ -78,6 +107,61 @@ class ReportListAdapter: ListAdapter<Report, ReportListAdapter.ReportListViewHol
 					}
 				}
 			}
+		}
+	}
+
+	class ReportProfessionalViewHolder(private val binding: CardReportBinding): RecyclerView.ViewHolder(binding.root) {
+
+		/*
+
+		<com.unnebulous.consultapronta.views.ProfilePictureView
+				android:id="@+id/patient_profile_picture"
+
+				android:layout_width="60dp"
+				android:layout_height="60dp"
+
+				app:isInput="false"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintStart_toStartOf="parent" />
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:layout_marginStart="@dimen/default_inner_elements_spacing"
+
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintStart_toEndOf="@id/patient_profile_picture">
+				<TextView
+					android:id="@+id/patient_name"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+
+					tools:text="@tools:sample/full_names" />
+
+				<TextView
+					android:id="@+id/patient_email"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+
+					tools:text="@tools:sample/lorem[1]" />
+
+				<TextView
+					android:id="@+id/patient_phone_number"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+
+					tools:text="@tools:sample/us_phones" />
+			</LinearLayout>
+		 */
+		fun bind(report: Report, onClick: (Report) -> Unit) {
+
 		}
 	}
 }
