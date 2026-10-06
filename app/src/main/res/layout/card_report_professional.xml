@@ -60,50 +60,12 @@
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
-		android:layout_width="wrap_content"
+	<LinearLayout
+		android:id="@+id/reports"
+
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/default_inner_elements_spacing">
-
-		<androidx.appcompat.widget.AppCompatImageView
-			android:id="@+id/icon"
-
-			android:layout_width="35dp"
-			android:layout_height="35dp"
-			android:src="@drawable/ic_reports"
-			android:tint="@color/primaryDark"
-			android:background="@drawable/shape_circle_accent"
-			android:backgroundTint="@color/surface"
-			android:padding="6dp"
-
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintBottom_toBottomOf="parent"/>
-
-		<TextView
-			android:id="@+id/report_card_title"
-
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="20sp"
-			android:textStyle="bold"
-			android:layout_marginStart="@dimen/default_inner_elements_spacing"
-
-			app:layout_constraintStart_toEndOf="@id/icon"
-			app:layout_constraintTop_toTopOf="parent"
-
-			tools:text="@string/placeholder" />
-
-		<TextView
-			android:id="@+id/report_card_period"
-
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-
-			app:layout_constraintTop_toBottomOf="@id/report_card_title"
-			app:layout_constraintStart_toStartOf="@id/report_card_title"
-
-			tools:text="@string/report_card_period_placeholder_professional" />
-
-	</androidx.constraintlayout.widget.ConstraintLayout>
+		android:orientation="vertical"
+		android:divider="@drawable/divider_list_vertical"
+		android:showDividers="middle"/>
 </LinearLayout>

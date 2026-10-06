@@ -1,15 +1,24 @@
 package com.unnebulous.consultapronta.recyclerview.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.databinding.CardReportBinding
+import com.unnebulous.consultapronta.databinding.CardReportProfessionalBinding
 import com.unnebulous.consultapronta.diffDays
 import com.unnebulous.consultapronta.showSnackbar
 import com.unnebulous.consultapronta.toBrazilianLocale
@@ -32,10 +41,6 @@ class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComp
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-		val binding = CardReportBinding.inflate(
-			LayoutInflater.from(parent.context), parent, false
-		)
-
 		return when (viewType) {
 			ViewType.PATIENT.ordinal -> {
 				val binding = CardReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,7 +48,7 @@ class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComp
 			}
 
 			ViewType.PROFESSIONAL.ordinal -> {
-				val binding = CardReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+				val binding = CardReportProfessionalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 				ReportProfessionalViewHolder(binding)
 			}
 
@@ -110,58 +115,60 @@ class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComp
 		}
 	}
 
-	class ReportProfessionalViewHolder(private val binding: CardReportBinding): RecyclerView.ViewHolder(binding.root) {
-
-		/*
-
-		<com.unnebulous.consultapronta.views.ProfilePictureView
-				android:id="@+id/patient_profile_picture"
-
-				android:layout_width="60dp"
-				android:layout_height="60dp"
-
-				app:isInput="false"
-				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintStart_toStartOf="parent" />
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:layout_marginStart="@dimen/default_inner_elements_spacing"
-
-				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintStart_toEndOf="@id/patient_profile_picture">
-				<TextView
-					android:id="@+id/patient_name"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textStyle="bold"
-
-					tools:text="@tools:sample/full_names" />
-
-				<TextView
-					android:id="@+id/patient_email"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-
-					tools:text="@tools:sample/lorem[1]" />
-
-				<TextView
-					android:id="@+id/patient_phone_number"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-
-					tools:text="@tools:sample/us_phones" />
-			</LinearLayout>
-		 */
+	class ReportProfessionalViewHolder(private val binding: CardReportProfessionalBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(report: Report, onClick: (Report) -> Unit) {
 
+			/*
+			binding.reports.addView(
+				addNewReport("TITULO", "PERIODO FORMATADO (R.string.report_card_period_placeholder_professional)") {
+					// on click
+				}
+			)
+			 */
+
+		}
+
+		private fun addNewReport(title: String, period: String, onClick: () -> Unit): View {
+			val context = binding.root.context
+
+			val icon = AppCompatImageView(context).apply {
+				layoutParams = ViewGroup.MarginLayoutParams(
+					35,
+					35
+				).apply {
+					marginEnd = R.dimen.default_inner_elements_spacing
+				}
+
+				setImageResource(R.drawable.ic_reports)
+				imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primaryDark))
+				background = ContextCompat.getDrawable(context, R.drawable.shape_circle_accent)
+				backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.surface))
+				setPadding(6, 6, 6, 6)
+			}
+
+			val titleView = TextView(context).apply {
+				textSize = 20f
+				setTypeface(null, Typeface.BOLD)
+				text = title
+			}
+
+			val periodView = TextView(context).apply {
+				text = period
+			}
+
+			val infoLayout = LinearLayout(context).apply {
+				orientation = LinearLayout.VERTICAL
+
+				addView(titleView)
+				addView(periodView)
+			}
+
+			return LinearLayout(context).apply {
+				orientation = LinearLayout.HORIZONTAL
+
+				addView(icon)
+				addView(infoLayout)
+			}
 		}
 	}
 }
