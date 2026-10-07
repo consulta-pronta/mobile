@@ -106,6 +106,16 @@ object Utils {
 		}
 	}
 
+	enum class UF {
+		AC, AL, AP, AM,
+		BA,	CE, DF, ES,
+		GO, MA,	MT,	MS,
+		MG,	PA,	PB, PR,
+		PE,	PI,	RJ,	RN,
+		RS,	RO,	RR,	SC,
+		SP,	SE,	TO
+	}
+
 	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
 		val validator = if (isDateValidatorPointBackward) {
 			DateValidatorPointBackward.now()

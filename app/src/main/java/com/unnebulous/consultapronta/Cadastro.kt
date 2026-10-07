@@ -8,12 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthResult
 import com.unnebulous.consultapronta.database.AuthManager
@@ -28,6 +30,16 @@ class Cadastro : Fragment() {
 	private var _binding: FragmentCadastroBinding? = null
 	private val binding get() = _binding!!
 
+	var userType = Utils.UserType.PACIENTE
+	lateinit var name: String
+	lateinit var cpf: String
+	lateinit var email: String
+	lateinit var phoneNumber: String
+	lateinit var password: String
+	lateinit var crm: String
+	lateinit var uf: String
+	lateinit var placeAction: String
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
@@ -41,12 +53,24 @@ class Cadastro : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		var validPassword = false
-		var userType: Utils.UserType
+
+		val ufs = Utils.UF.entries.map { it.name }.toTypedArray()
+		setupSelect(ufs)
 
 		binding.userTypeSwitch.setOnClickListener {
 			userType = binding.userTypeSwitch.changeUser()
 
-			binding.sendCrmButton.visibility = if (userType == Utils.UserType.PACIENTE) View.GONE else View.VISIBLE
+			if (userType == Utils.UserType.PACIENTE) {
+				binding.apply {
+					professionalCrmInputs.visibility = View.VISIBLE
+					placeActionInput.visibility = View.VISIBLE
+				}
+			} else {
+				binding.apply {
+					professionalCrmInputs.visibility = View.GONE
+					placeActionInput.visibility = View.GONE
+				}
+			}
 		}
 
 		binding.signInButton.setOnClickListener {
@@ -54,14 +78,20 @@ class Cadastro : Fragment() {
 		}
 
 		binding.createAccountButton.setOnClickListener {
-			val name = binding.nameInput.text.toString()
+			name = binding.nameInput.text.toString()
 			userType = binding.userTypeSwitch.userType
-			val cpf = binding.cpfInput.text.toString()
-			val email = binding.emailInput.text.toString()
-			val phoneNumber = binding.phoneNumberInput.text.toString()
-			val password = binding.passwordInput.text.toString()
-			// TODO: pegar número de CRM/E-CRM
-			// var crm = ""
+			cpf = binding.cpfInput.text.toString()
+			email = binding.emailInput.text.toString()
+			phoneNumber = binding.phoneNumberInput.text.toString()
+			password = binding.passwordInput.text.toString()
+
+			if (userType == Utils.UserType.PACIENTE) {
+
+			} else {
+				crm = binding.crmInput.text.toString()
+				uf = binding.crmUfInput.text.toString()
+				placeAction = binding.placeActionInput.text.toString()
+			}
 
 			val passwordIsTheSame = password == binding.confirmPasswordInput.text.toString()
 
@@ -168,13 +198,23 @@ class Cadastro : Fragment() {
 			}
 		}
 
-		binding.sendCrmButton.setOnClickListener {
-			changeFragmentWithBackStack(EnviarCrm())
-		}
-
 		binding.cpfInput.addTextChangedListener(Utils.buildCpfMask())
 		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
 	}
+
+	private fun setupSelect(array: Array<String>) {
+		binding.crmUfInput.apply {
+			setAdapter(createAdapter(array))
+			setOnClickListener {
+				showDropDown()
+			}
+		}
+	}
+
+	private fun createAdapter(array: Array<String>) =
+		ArrayAdapter(requireContext(), R.layout.item_spinner, array).apply {
+			setDropDownViewResource(R.layout.item_spinner)
+		}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
@@ -192,11 +232,11 @@ class Cadastro : Fragment() {
 		val creationTime = user.metadata?.creationTimestamp!!
 
 		val userFormData = User.Companion.FormData(
-			name = binding.nameInput.text.toString(),
+			name = name,
 			email = user.email!!,
-			phone = binding.phoneNumberInput.text.toString(),
-			cpf = binding.cpfInput.text.toString(),
-			user_type = binding.userTypeSwitch.userType,
+			phone = phoneNumber,
+			cpf = cpf,
+			user_type = userType,
 			created_at = Timestamp(Date(creationTime))
 		)
 
@@ -207,6 +247,29 @@ class Cadastro : Fragment() {
 					.await()
 
 				Log.i("auth", "setUserDocument:success")
+
+				val userData = mutableMapOf<String, String>().apply {
+					if (userType == Utils.UserType.PACIENTE) {
+
+					} else {
+						this["crm"] = crm
+						this["local_atuacao"] = placeAction
+						this["uf"] = uf
+					}
+				}
+
+				if (userType == Utils.UserType.PROFISSIONAL) {
+					DatabaseManager.db.collection("signupRequests")
+						.document(user.uid)
+						.set(userData)
+						.await()
+
+					Log.i("auth", "setProfessionalData:success")
+				} else {
+					AuthManager.getUserDataByType(userType).add(userData)
+
+					Log.i("auth", "setPatientData:success")
+				}
 
 				val activity = requireActivity()
 				startActivity(Intent(activity, MainActivity::class.java))

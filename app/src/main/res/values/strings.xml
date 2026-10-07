@@ -232,4 +232,7 @@
 	<string name="user_marker_snippet">Você está aqui</string>
 	<string name="search_report_professional">Buscar por nome, ID ou paciente</string>
 	<string name="report_card_period_placeholder_professional">%1$s a %2$s</string>
+	<string name="uf">UF</string>
+	<string name="crm">CRM</string>
+	<string name="place_action">Local de atuação</string>
 </resources>
