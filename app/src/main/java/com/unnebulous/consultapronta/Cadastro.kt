@@ -102,7 +102,7 @@ class Cadastro : Fragment() {
 			if (userType == Utils.UserType.PACIENTE) {
 				weight = binding.weightInput.text.toString().toFloat()
 				height = binding.heightInput.text.toString().toFloat()
-				bloodType = binding.bloodtypeInput.toString()
+				bloodType = binding.bloodtypeInput.text.toString()
 			} else {
 				crm = binding.crmInput.text.toString()
 				uf = binding.crmUfInput.text.toString()
@@ -282,11 +282,13 @@ class Cadastro : Fragment() {
 						.set(userData)
 						.await()
 
-					Log.i("auth", "setProfessionalData:success")
+					Log.i("auth", "requestProfessional:success")
 				} else {
-					AuthManager.getUserDataByType(userType).add(userData)
+					DatabaseManager.userDocument
+						.update(DatabaseManager.PATIENT_USER_DATA, userData)
+						.await()
 
-					Log.i("auth", "setPatientData:success")
+					Log.i("auth", "updatePatientData:success")
 				}
 
 				val activity = requireActivity()
