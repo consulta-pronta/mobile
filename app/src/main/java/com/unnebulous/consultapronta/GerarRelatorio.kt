@@ -1,5 +1,6 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -156,6 +157,14 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.generateReportButton.setOnClickListener {
+			if (binding.reportTitleInput.text.isBlank()) {
+				showSnackbar(getString(R.string.error_report_without_title), Utils.SnackBarType.WARNING)
+				return@setOnClickListener
+			}else if (binding.selectDateStart.text == getString(R.string.select___)) {
+				showSnackbar(getString(R.string.error_report_without_date), Utils.SnackBarType.WARNING)
+				return@setOnClickListener
+			}
+
 			val reportData = Report.Companion.FormData(
 				binding.reportTitleInput.text.toString(),
 				professionalList,
@@ -205,8 +214,11 @@ class GerarRelatorio : Fragment() {
 						!removedSymptomsList.contains(it.id)
 					}
 
+					val average = symptomList.getIntensityAverage()
+					intensityIcon.imageTintList = ColorStateList.valueOf(Utils.intensityToColor(requireContext(), average))
+
 					numberSymptomsRegisters.text = symptomList.size.toString()
-					intensityAverage.text = symptomList.getIntensityAverage().toString()
+					intensityAverage.text = getString(R.string.intensity_report, average).replace('.', ',')
 					mostAffectedArea.text = symptomList.getMostAffectArea() ?: "Nenhuma registrada"
 				} catch (e: Exception) {
 					Log.e("report", "getSymptomsByDate:failure", e)

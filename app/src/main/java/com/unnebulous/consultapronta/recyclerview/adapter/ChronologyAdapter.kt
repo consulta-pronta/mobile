@@ -3,6 +3,7 @@ package com.unnebulous.consultapronta.recyclerview.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,7 @@ import com.unnebulous.consultapronta.toBrazilianLocale
 class ChronologyAdapter: ListAdapter<BaseDocument, RecyclerView.ViewHolder>(WeAreCompartor()) {
 	class WeAreCompartor: DiffUtil.ItemCallback<BaseDocument>() {
 		override fun areItemsTheSame(old: BaseDocument, new: BaseDocument) = old.id == new.id
-		override fun areContentsTheSame(old: BaseDocument, new: BaseDocument) =old == new
+		override fun areContentsTheSame(old: BaseDocument, new: BaseDocument) = old == new
 	}
 
 	enum class ItemType { SYMPTOM }
@@ -49,7 +50,9 @@ class ChronologyAdapter: ListAdapter<BaseDocument, RecyclerView.ViewHolder>(WeAr
 			binding.apply {
 				title.text = item.title
 				date.text = item.date_time?.toBrazilianLocale() ?: "Data desconhecida"
-				description.text = item.description
+				description.text = ContextCompat
+					.getString(binding.root.context, R.string.template_chronology_symptom_description)
+					.format(item.intensity, item.description)
 				icon.setImageResource(R.drawable.ic_graphic)
 
 				if (isLast) {

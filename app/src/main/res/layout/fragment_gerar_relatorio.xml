@@ -258,7 +258,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="@string/not_available"
-						android:textSize="25sp" />
+						android:textSize="20sp" />
 
 				</LinearLayout>
 
@@ -331,21 +331,6 @@
 			app:iconSize="24dp"
 			app:backgroundTint="@color/accent"
 			app:cornerRadius="@dimen/big_button_corner_radius" />
-
-		<Button
-			style="@style/Widget.Material3.Button.TextButton"
-
-			android:id="@+id/create_download_report_button"
-
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/create_download_report"
-			android:textColor="@color/accent"
-
-			app:icon="@drawable/ic_download"
-			app:iconGravity="textStart"
-			app:iconSize="30dp"
-			app:iconTint="@color/accent" />
 
 	</LinearLayout>
 
