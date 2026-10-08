@@ -241,4 +241,6 @@
 	<string name="centimeters">cm</string>
 	<string name="bloodtype">Tipo sanguíneo</string>
 	<string name="intensity_report">%1$.1f/10</string>
+	<string name="error_report_without_title">O título está vazio!</string>
+	<string name="error_report_without_date">Selecione uma data!</string>
 </resources>
