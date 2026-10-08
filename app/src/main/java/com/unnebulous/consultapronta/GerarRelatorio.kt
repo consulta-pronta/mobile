@@ -1,5 +1,6 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -205,8 +206,11 @@ class GerarRelatorio : Fragment() {
 						!removedSymptomsList.contains(it.id)
 					}
 
+					val average = symptomList.getIntensityAverage()
+					intensityIcon.imageTintList = ColorStateList.valueOf(Utils.intensityToColor(requireContext(), average))
+
 					numberSymptomsRegisters.text = symptomList.size.toString()
-					intensityAverage.text = symptomList.getIntensityAverage().toString()
+					intensityAverage.text = getString(R.string.intensity_report, average).replace('.', ',')
 					mostAffectedArea.text = symptomList.getMostAffectArea() ?: "Nenhuma registrada"
 				} catch (e: Exception) {
 					Log.e("report", "getSymptomsByDate:failure", e)
