@@ -204,24 +204,174 @@
 				android:textColor="@color/textLight"
 				android:textColorHint="@color/textLight60" />
 
-
-			<Button
-				style="@style/Widget.Material3.Button.TextButton"
-
-				android:id="@+id/send_crm_button"
+			<!-- ==== START PATIENT-ONLY INPUTS ==== -->
+			<LinearLayout
+				android:id="@+id/patient_data_inputs"
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/send_crm"
-				android:textColor="@color/accent"
+				android:orientation="horizontal">
+				<EditText
+					android:id="@+id/weight_input"
+
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_weight"
+					android:drawablePadding="10dp"
+					android:drawableTint="@color/textLight"
+					android:hint="@string/weight"
+					android:inputType="numberDecimal"
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60"
+					android:layout_weight="1" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/kilograms"
+					android:layout_marginHorizontal="@dimen/list_items_spacing"/>
+
+				<EditText
+					android:id="@+id/height_input"
+
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_height"
+					android:drawablePadding="10dp"
+					android:drawableTint="@color/textLight"
+					android:hint="@string/height"
+					android:inputType="number"
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60"
+					android:layout_weight="1" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/centimeters"
+					android:layout_marginStart="@dimen/list_items_spacing"/>
+			</LinearLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+				android:id="@+id/bloodtype_inputlayout"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColorHint="@color/textLight"
+
+				app:boxBackgroundColor="@color/primary"
+				app:boxCornerRadiusBottomEnd="12dp"
+				app:boxCornerRadiusBottomStart="12dp"
+				app:boxCornerRadiusTopEnd="12dp"
+				app:boxCornerRadiusTopStart="12dp"
+				app:counterOverflowTextColor="@color/textLight"
+				app:counterTextColor="@color/textLight"
+				app:endIconDrawable="@drawable/ic_arrow_down"
+				app:endIconMode="custom"
+				app:endIconTint="@color/primaryLight"
+				app:startIconDrawable="@drawable/ic_bloodtype"
+				app:startIconTint="@color/textLight"
+				app:hintEnabled="false">
+
+				<com.google.android.material.textfield.MaterialAutoCompleteTextView
+					android:id="@+id/bloodtype_input"
+
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:hint="@string/bloodtype"
+					android:inputType="none"
+					android:padding="@dimen/default_card_padding"
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+			<!-- ==== END PATIENT-ONLY INPUTS ==== -->
+
+			<!-- ==== START PROFESSIONAL-ONLY INPUTS ==== -->
+			<LinearLayout
+				android:id="@+id/professional_crm_inputs"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:divider="@drawable/divider_list"
+				android:showDividers="middle"
 				android:visibility="gone"
 
-				app:icon="@drawable/ic_document"
-				app:iconGravity="textStart"
-				app:iconSize="30dp"
-				app:iconTint="@color/accent"
+				tools:visibility="visible">
+				<EditText
+					android:id="@+id/crm_input"
 
-				tools:visibility="visible" />
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_crm"
+					android:drawablePadding="10dp"
+					android:drawableTint="@color/textLight"
+					android:hint="@string/crm"
+					android:inputType="number"
+					android:layout_weight="2.5"
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60" />
+
+				<com.google.android.material.textfield.TextInputLayout
+					style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+					android:id="@+id/crm_uf_inputlayout"
+
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:textColorHint="@color/textLight"
+					android:layout_weight="1"
+
+					app:boxBackgroundColor="@color/primary"
+					app:boxCornerRadiusBottomEnd="12dp"
+					app:boxCornerRadiusBottomStart="12dp"
+					app:boxCornerRadiusTopEnd="12dp"
+					app:boxCornerRadiusTopStart="12dp"
+					app:counterOverflowTextColor="@color/textLight"
+					app:counterTextColor="@color/textLight"
+					app:endIconDrawable="@drawable/ic_arrow_down"
+					app:endIconMode="custom"
+					app:endIconTint="@color/primaryLight"
+					app:hintEnabled="false">
+
+					<com.google.android.material.textfield.MaterialAutoCompleteTextView
+						android:id="@+id/crm_uf_input"
+
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:hint="@string/uf"
+						android:inputType="none"
+						android:padding="@dimen/default_card_padding"
+						android:textColor="@color/textLight"
+						android:textColorHint="@color/textLight60" />
+
+				</com.google.android.material.textfield.TextInputLayout>
+			</LinearLayout>
+
+			<EditText
+				android:id="@+id/place_action_input"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:autofillHints="postalAddress"
+				android:background="@drawable/shape_input"
+				android:drawableStart="@drawable/ic_local_hospital"
+				android:drawablePadding="10dp"
+				android:drawableTint="@color/textLight"
+				android:hint="@string/place_action"
+				android:inputType="text"
+				android:textColor="@color/textLight"
+				android:textColorHint="@color/textLight60"
+				android:visibility="gone"
+
+				tools:visibility="visible"/>
+			<!-- ==== END PROFESSIONAL-ONLY INPUTS ==== -->
 
 			<Button
 				android:id="@+id/create_account_button"
