@@ -158,7 +158,7 @@ class GerarRelatorio : Fragment() {
 
 		binding.generateReportButton.setOnClickListener {
 			if (binding.reportTitleInput.text.isBlank()) {
-				showSnackbar(getString(R.string.error_report_without_title), Utils.SnackBarType.WARNING)
+				showSnackbar(getString(R.string.error_without_title), Utils.SnackBarType.WARNING)
 				return@setOnClickListener
 			}else if (binding.selectDateStart.text == getString(R.string.select___)) {
 				showSnackbar(getString(R.string.error_report_without_date), Utils.SnackBarType.WARNING)
