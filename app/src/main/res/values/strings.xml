@@ -243,4 +243,5 @@
 	<string name="intensity_report">%1$.1f/10</string>
 	<string name="error_report_without_title">O título está vazio!</string>
 	<string name="error_report_without_date">Selecione uma data!</string>
+	<string name="template_chronology_symptom_description">Intensidade: %1$d\n%2$s</string>
 </resources>
