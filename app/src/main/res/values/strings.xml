@@ -235,4 +235,9 @@
 	<string name="uf">UF</string>
 	<string name="crm">CRM</string>
 	<string name="place_action">Local de atuação</string>
+	<string name="weight">Peso</string>
+	<string name="kilograms">kg</string>
+	<string name="height">Altura</string>
+	<string name="centimeters">cm</string>
+	<string name="bloodtype">Tipo sanguíneo</string>
 </resources>

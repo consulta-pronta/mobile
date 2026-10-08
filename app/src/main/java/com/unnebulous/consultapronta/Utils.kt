@@ -116,6 +116,23 @@ object Utils {
 		SP,	SE,	TO
 	}
 
+	enum class BLOODTYPE {
+		A_P, B_P, AB_P, O_P,
+		A_M, B_M, AB_M, O_M;
+
+		val display get() = run {
+			val thisAsString = this.toString()
+			val indexOfLastNameCharacter = thisAsString.indexOf('_') - 1
+			val name = thisAsString.substring(0..indexOfLastNameCharacter)
+
+			if (thisAsString[thisAsString.lastIndex] == 'M') {
+				"$name-"
+			} else {
+				"$name+"
+			}
+		}
+	}
+
 	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
 		val validator = if (isDateValidatorPointBackward) {
 			DateValidatorPointBackward.now()

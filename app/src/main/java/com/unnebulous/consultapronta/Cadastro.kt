@@ -25,6 +25,8 @@ import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Date
+import kotlin.properties.Delegates
+
 class Cadastro : Fragment() {
 
 	private var _binding: FragmentCadastroBinding? = null
@@ -36,6 +38,9 @@ class Cadastro : Fragment() {
 	lateinit var email: String
 	lateinit var phoneNumber: String
 	lateinit var password: String
+	var weight by Delegates.notNull<Float>()
+	var height by Delegates.notNull<Float>()
+	lateinit var bloodType: String
 	lateinit var crm: String
 	lateinit var uf: String
 	lateinit var placeAction: String
@@ -55,20 +60,29 @@ class Cadastro : Fragment() {
 		var validPassword = false
 
 		val ufs = Utils.UF.entries.map { it.name }.toTypedArray()
-		setupSelect(ufs)
+		setupSelect(binding.crmUfInput, ufs)
+
+		val bloodTypes = Utils.BLOODTYPE.entries.map { it.display }.toTypedArray()
+		setupSelect(binding.bloodtypeInput, bloodTypes)
 
 		binding.userTypeSwitch.setOnClickListener {
 			userType = binding.userTypeSwitch.changeUser()
 
 			if (userType == Utils.UserType.PACIENTE) {
 				binding.apply {
-					professionalCrmInputs.visibility = View.VISIBLE
-					placeActionInput.visibility = View.VISIBLE
+					professionalCrmInputs.visibility = View.GONE
+					placeActionInput.visibility = View.GONE
+
+					patientDataInputs.visibility = View.VISIBLE
+					bloodtypeInputlayout.visibility = View.VISIBLE
 				}
 			} else {
 				binding.apply {
-					professionalCrmInputs.visibility = View.GONE
-					placeActionInput.visibility = View.GONE
+					professionalCrmInputs.visibility = View.VISIBLE
+					placeActionInput.visibility = View.VISIBLE
+
+					patientDataInputs.visibility = View.GONE
+					bloodtypeInputlayout.visibility = View.GONE
 				}
 			}
 		}
@@ -86,7 +100,9 @@ class Cadastro : Fragment() {
 			password = binding.passwordInput.text.toString()
 
 			if (userType == Utils.UserType.PACIENTE) {
-
+				weight = binding.weightInput.text.toString().toFloat()
+				height = binding.heightInput.text.toString().toFloat()
+				bloodType = binding.bloodtypeInput.toString()
 			} else {
 				crm = binding.crmInput.text.toString()
 				uf = binding.crmUfInput.text.toString()
@@ -202,8 +218,8 @@ class Cadastro : Fragment() {
 		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
 	}
 
-	private fun setupSelect(array: Array<String>) {
-		binding.crmUfInput.apply {
+	private fun setupSelect(select: MaterialAutoCompleteTextView, array: Array<String>) {
+		select.apply {
 			setAdapter(createAdapter(array))
 			setOnClickListener {
 				showDropDown()
@@ -248,9 +264,11 @@ class Cadastro : Fragment() {
 
 				Log.i("auth", "setUserDocument:success")
 
-				val userData = mutableMapOf<String, String>().apply {
+				val userData = mutableMapOf<String, Any>().apply {
 					if (userType == Utils.UserType.PACIENTE) {
-
+						this["peso"] = weight
+						this["altura"] = height
+						this["tipo_sanguineo"] = bloodType
 					} else {
 						this["crm"] = crm
 						this["local_atuacao"] = placeAction

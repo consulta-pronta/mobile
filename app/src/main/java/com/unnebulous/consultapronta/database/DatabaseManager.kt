@@ -7,7 +7,7 @@ object DatabaseManager {
 
 	val db get() = FirebaseFirestore.getInstance()
 
-	val userCollection get() = db.collection("users")
+	val userCollection get() = db.collection(User.COLLECTION_NAME)
 	val userDocument get() = userCollection.document(uid)
 
 	fun userCollection(collection: String) = userDocument.collection(collection)
