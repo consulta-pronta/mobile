@@ -38,8 +38,8 @@ class Cadastro : Fragment() {
 	lateinit var email: String
 	lateinit var phoneNumber: String
 	lateinit var password: String
-	var weight by Delegates.notNull<Float>()
-	var height by Delegates.notNull<Float>()
+	var weight: Float? = null
+	var height: Float? = null
 	lateinit var bloodType: String
 	lateinit var crm: String
 	lateinit var uf: String
@@ -100,8 +100,8 @@ class Cadastro : Fragment() {
 			password = binding.passwordInput.text.toString()
 
 			if (userType == Utils.UserType.PACIENTE) {
-				weight = binding.weightInput.text.toString().toFloat()
-				height = binding.heightInput.text.toString().toFloat()
+				weight = binding.weightInput.text.toString().toFloatOrNull()
+				height = binding.heightInput.text.toString().toFloatOrNull()
 				bloodType = binding.bloodtypeInput.text.toString()
 			} else {
 				crm = binding.crmInput.text.toString()
@@ -112,14 +112,29 @@ class Cadastro : Fragment() {
 			val passwordIsTheSame = password == binding.confirmPasswordInput.text.toString()
 
 			var oneOrMoreInputBlank = false
-			for (item in listOf(name, cpf, email, phoneNumber, password)) {
+
+			val inputs = mutableListOf(name, cpf, email, phoneNumber, password)
+			val userInputs = if (userType == Utils.UserType.PACIENTE){
+				listOf(bloodType)
+			} else {
+				listOf(crm, uf, placeAction)
+			}
+
+			inputs.addAll(userInputs)
+			for (item in inputs) {
 				if (item.trim().isBlank()) {
 					oneOrMoreInputBlank = true
 					break
 				}
 			}
 
-			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank) {
+			val userInputVerification = if (userType == Utils.UserType.PACIENTE) {
+				weight != null && height != null
+			} else {
+				true
+			}
+
+			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank && userInputVerification) {
 //				(activity as AuthActivity).userTemp.apply {
 //					this.name = name
 //					this.userType = userType
@@ -134,7 +149,7 @@ class Cadastro : Fragment() {
 				AuthManager.auth.createUserWithEmailAndPassword(email, password)
 					.addOnCompleteListener { task -> handlePostSignUp(task) }
 			} else {
-				val error = if (oneOrMoreInputBlank) {
+				val error = if (oneOrMoreInputBlank || !userInputVerification) {
 					getString(R.string.error_blank_input)
 				} else if (!validPassword) {
 					getString(R.string.error_password_not_valid)
@@ -142,7 +157,7 @@ class Cadastro : Fragment() {
 					getString(R.string.error_password_not_the_same)
 				}
 
-				showSnackbar(error, Utils.SnackBarType.DANGER)
+				showSnackbar(error, Utils.SnackBarType.WARNING)
 			}
 		}
 
@@ -266,8 +281,8 @@ class Cadastro : Fragment() {
 
 				val userData = mutableMapOf<String, Any>().apply {
 					if (userType == Utils.UserType.PACIENTE) {
-						this["peso"] = weight
-						this["altura"] = height
+						this["peso"] = weight!!
+						this["altura"] = height!!
 						this["tipo_sanguineo"] = bloodType
 					} else {
 						this["crm"] = crm
