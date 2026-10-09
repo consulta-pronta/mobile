@@ -16,9 +16,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import kotlin.sequences.forEach
 
-/*
-* NÃO SERÁ ADICIONADO VALIDAÇÃO POR ENQUANTO POIS NEM Pronto© ESTÁ
-* */
 class SolicitarConsulta : Fragment() {
 
 	private var _binding: FragmentSolicitarConsultaBinding? = null

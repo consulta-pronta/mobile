@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.FragmentAdicionarMedicamentoBinding
-import com.unnebulous.consultapronta.showSnackbar
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.String
@@ -55,48 +54,40 @@ class AdicionarMedicamento : Fragment() {
 			setupSelect(medicationFrequencyUnit, frequencyUnits, resetOnClick = true)
 
 			registerMedicationButton.setOnClickListener {
-				val name = binding.medicationNameInput.text.toString()
-
-				val route = Utils.MedicationRoute.fromDisplay( // tipo de consumo
+				val route = Utils.MedicationRoute.fromDisplay(
 					medicationRouteSelect.text.toString()
 				)
-
-				val dose = binding.medicationDoseValue.text.toString().toDoubleOrNull()
 				val doseUnit = Utils.MedicationDoseUnit.fromDisplay(
 					medicationDoseUnit.text.toString()
 				)
-
-				val frequency = medicationFrequencyValue.text.toString().toDoubleOrNull()
 				val frequencyUnit = Utils.MedicationFrequencyUnit.fromDisplay(
 					medicationFrequencyUnit.text.toString()
 				)
 
-				val duration = medicationDuration.text.toString().toIntOrNull()
-				val customInstructions = medicationCustomInstructions.text.toString()
-				val notes = medicationNotes.text.toString()
-
-				if (
-					name.isBlank()          ||
-					route == null           ||
-					dose == null            ||
-					doseUnit == null        ||
-					frequency == null       ||
-					frequencyUnit == null
-					) {
-					showSnackbar(getString(R.string.error_blank_input), Utils.SnackBarType.WARNING)
+				if (route == null || doseUnit == null || frequencyUnit == null) {
+					Toast
+						.makeText(context, "Preencha os inputs corretamente", Toast.LENGTH_SHORT)
+						.show()
 					return@setOnClickListener
 				}
 
 				lifecycleScope.launch {
 					try {
 						Medication.collection.add(Medication.Companion.FormData(
-							name = name,
+							name = medicationNameInput.text.toString(),
+
 							route = route,
-							dose = Pair(dose, doseUnit),
-							frequency = Pair(frequency, frequencyUnit),
-							duration_days = duration ?: 0,
-							custom_instructions = customInstructions,
-							notes = notes,
+							dose = Pair(
+								medicationDoseValue.text.toString().toDouble(),
+								doseUnit
+							),
+							frequency = Pair(
+								medicationFrequencyValue.text.toString().toDouble(),
+								frequencyUnit),
+							duration_days = medicationDuration.text.toString().toInt(),
+
+							custom_instructions = medicationCustomInstructions.text.toString(),
+							notes = medicationNotes.text.toString(),
 						).toMap()).await()
 
 						Log.i(Medication.COLLECTION_NAME, "addMedication:success")

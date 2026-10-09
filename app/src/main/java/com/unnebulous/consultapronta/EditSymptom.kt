@@ -88,6 +88,7 @@ class EditSymptom : Fragment() {
 			"Nádegas",
 			"Vagina",
 			"Pênis"
+
 		)
 
 		val adapter = ArrayAdapter(
@@ -141,11 +142,6 @@ class EditSymptom : Fragment() {
 		}
 
 		binding.buttonSubmit.setOnClickListener {
-			if (binding.detailSymptomArea.text.toString().isBlank()) {
-				showSnackbar(getString(R.string.error_without_title), Utils.SnackBarType.WARNING)
-				return@setOnClickListener
-			}
-
 			lifecycleScope.launch {
 				try {
 					createHistoric()

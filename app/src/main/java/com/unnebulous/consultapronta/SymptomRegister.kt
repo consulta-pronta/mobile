@@ -130,30 +130,20 @@ class SymptomRegister : Fragment() {
 		}
 
 		binding.symptomRegister.setOnClickListener {
-			val title = binding.questionSymptomArea.text.toString()
-			val description = binding.detailSymptomArea.text.toString()
-			val place = binding.bodyPartSpinner.text.toString()
-			val intensity = binding.intensitySlider.value.toInt()
-
-			if (
-				title.isBlank()         ||
-				description.isBlank()   ||
-				place.isBlank()         ||
-				localTime == null       ||
-				localDate == null
-				) {
-				showSnackbar(getString(R.string.error_blank_input), Utils.SnackBarType.WARNING)
-				return@setOnClickListener
+			if (localTime == null || localDate == null) {
+				TODO()
 			}
 
-			val symptomDoc = Symptom.Companion.FormData(
-					title = title,
-					description = description,
+			val symptomDoc = binding.run {
+				Symptom.Companion.FormData(
+					title = questionSymptomArea.text.toString(),
+					description = detailSymptomArea.text.toString(),
 					date_time = LocalDateTime.of(localDate, localTime)
 						.toFirestoreTimestamp(),
-					place = place,
-					intensity = intensity
+					place = bodyPartSpinner.text.toString(),
+					intensity = intensitySlider.value.toInt(),
 				)
+			}
 
 			lifecycleScope.launch {
 				try {

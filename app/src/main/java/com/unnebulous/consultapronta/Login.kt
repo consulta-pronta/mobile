@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.FragmentLoginBinding
 
@@ -42,11 +41,6 @@ class Login : Fragment() {
 			val email = binding.emailInput.text.toString()
 			val password = binding.passwordInput.text.toString()
 
-			if (email.isBlank() || password.isBlank()) {
-				showSnackbar(getString(R.string.error_blank_input), Utils.SnackBarType.WARNING)
-				return@setOnClickListener
-			}
-
 			AuthManager.auth.signInWithEmailAndPassword(email, password)
 				.addOnCompleteListener { task ->
 					handlePostSignIn(task)
@@ -67,9 +61,6 @@ class Login : Fragment() {
 			}
 		} else {
 			Log.w("auth", "signInWithEmail:failure", task.exception)
-			if (task.exception is FirebaseAuthInvalidCredentialsException) {
-				showSnackbar(getString(R.string.error_invalid_input_data), Utils.SnackBarType.WARNING)
-			}
 		}
 
 	}

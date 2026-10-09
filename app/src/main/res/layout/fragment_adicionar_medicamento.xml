@@ -22,10 +22,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/medication_name"
-			android:textSize="20sp"
-
-			app:drawableStartCompat="@drawable/ic_asterisk"
-			app:drawableTint="@color/error" />
+			android:textSize="20sp" />
 
 		<EditText
 			android:id="@+id/medication_name_input"
@@ -44,10 +41,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/type_consumption"
-			android:textSize="20sp"
-
-			app:drawableStartCompat="@drawable/ic_asterisk"
-			app:drawableTint="@color/error" />
+			android:textSize="20sp" />
 
 		<com.google.android.material.textfield.TextInputLayout
 			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -92,10 +86,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/medication_dose_unit_title"
 				android:textSize="20sp"
-				android:layout_weight="1"
-
-				app:drawableStartCompat="@drawable/ic_asterisk"
-				app:drawableTint="@color/error" />
+				android:layout_weight="1" />
 
 			<TextView
 				android:layout_width="wrap_content"
@@ -171,10 +162,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/medication_frequency_unit_title"
 				android:textSize="20sp"
-				android:layout_weight="1"
-
-				app:drawableStartCompat="@drawable/ic_asterisk"
-				app:drawableTint="@color/error" />
+				android:layout_weight="1" />
 
 			<TextView
 				android:layout_width="wrap_content"
