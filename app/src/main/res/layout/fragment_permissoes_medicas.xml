@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:showDividers="middle"
+	android:divider="@drawable/divider_default"
+
+	tools:context=".PermissoesMedicas">
+
+	<EditText
+		android:id="@+id/search"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/"
+		android:textColorHint="@color/textDark60"
+		android:background="@drawable/shape_search_background"
+		android:drawableStart="@drawable/ic_search"
+		android:drawableTint="@color/textDark"
+		android:drawablePadding="10dp"
+		android:padding="15dp"
+		android:autofillHints="name"
+		android:textColor="@color/textDark"
+		android:inputType="text"
+
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:background="@drawable/shape_rounded_stroke"
+		android:padding="20dp"
+
+		app:layout_constraintTop_toBottomOf="@id/search"
+		app:layout_constraintStart_toStartOf="parent">
+
+		<ImageView
+			android:layout_width="35dp"
+			android:layout_height="35dp"
+			android:src="@drawable/ic_shield"
+
+			app:tint="@color/textLight"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="14sp"
+			android:layout_marginStart="@dimen/default_inner_elements_spacing"
+			android:text="@string/" />
+
+	</LinearLayout>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/"
+		android:textStyle="bold"
+		android:textSize="20sp"/>
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/recyclerview"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+</LinearLayout>

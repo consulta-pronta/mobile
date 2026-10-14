@@ -244,4 +244,8 @@
 	<string name="error_report_without_title">O título está vazio!</string>
 	<string name="error_report_without_date">Selecione uma data!</string>
 	<string name="template_chronology_symptom_description">Intensidade: %1$d\n%2$s</string>
+	<string name="search_professionals">Pesquisar profissionais</string>
+	<string name="professionals">Professionais</string>
+	<string name="medical_permissions_screen_text">Controle quais profissionais de saúde podem acessar seu histórico</string>
+	<string name="medical_permissions_title">Permissões médicas</string>
 </resources>
