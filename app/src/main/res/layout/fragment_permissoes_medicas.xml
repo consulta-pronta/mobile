@@ -17,7 +17,7 @@
 
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/"
+		android:hint="@string/search_professionals"
 		android:textColorHint="@color/textDark60"
 		android:background="@drawable/shape_search_background"
 		android:drawableStart="@drawable/ic_search"
@@ -56,14 +56,14 @@
 			android:layout_height="wrap_content"
 			android:textSize="14sp"
 			android:layout_marginStart="@dimen/default_inner_elements_spacing"
-			android:text="@string/" />
+			android:text="@string/medical_permissions_screen_text" />
 
 	</LinearLayout>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="@string/"
+		android:text="@string/professionals"
 		android:textStyle="bold"
 		android:textSize="20sp"/>
 
