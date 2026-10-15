@@ -252,4 +252,8 @@
 	<string name="medical_permissions_card_email">Email: %1$s</string>
 	<string name="medical_permissions_card_place_action">Local de atuação: %1$s</string>
 	<string name="manage_permissions">Gerenciar permissões</string>
+	<string name="permissions_label">Permissões</string>
+	<string name="permission_prescribe_medications">Prescrever medicamentos</string>
+	<string name="permission_request_exams">Solicitar exames</string>
+	<string name="permission_request_consultations">Solicitar consultas</string>
 </resources>

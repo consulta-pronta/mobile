@@ -5,6 +5,6 @@ data class Professional(
 	val name: String = "",
 	val crm : String = "",
 	val email: String = "",
-	val phoneNumber: String,
-	val placeAction: String
+	val phoneNumber: String = "",
+	val placeAction: String = ""
 )

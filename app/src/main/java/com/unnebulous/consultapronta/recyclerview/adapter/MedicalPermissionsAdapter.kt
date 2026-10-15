@@ -9,6 +9,9 @@ import com.unnebulous.consultapronta.database.Professional
 import com.unnebulous.consultapronta.databinding.CardProfessionalMedicalPermissionsBinding
 
 class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAdapter.MedicalPermissionsViewHolder>(MedicalPermissionComparator()) {
+
+	lateinit var onPermissionChangeClick: () -> Unit
+
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicalPermissionsViewHolder {
 		val binding = CardProfessionalMedicalPermissionsBinding.inflate(
 			LayoutInflater.from(parent.context),
@@ -20,7 +23,7 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 	}
 
 	override fun onBindViewHolder(holder: MedicalPermissionsViewHolder, position: Int) {
-		holder.bind()
+		holder.bind(getItem(position), onPermissionChangeClick)
 	}
 
 	class MedicalPermissionComparator : DiffUtil.ItemCallback<Professional>() {
@@ -30,8 +33,11 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 	}
 
 	class MedicalPermissionsViewHolder(private val binding: CardProfessionalMedicalPermissionsBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind() {
+		fun bind(professional: Professional, onPermissionChangeClick: () -> Unit) {
+			binding.apply {
+				professionalName.text = professional.name
 
+			}
 		}
 	}
 }
