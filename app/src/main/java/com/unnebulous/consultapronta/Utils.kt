@@ -133,6 +133,8 @@ object Utils {
 		}
 	}
 
+	enum class MedicalAccessStatus { ACTIVE, REVOKED }
+
 	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
 		val validator = if (isDateValidatorPointBackward) {
 			DateValidatorPointBackward.now()

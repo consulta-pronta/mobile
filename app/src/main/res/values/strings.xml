@@ -248,4 +248,8 @@
 	<string name="professionals">Professionais</string>
 	<string name="medical_permissions_screen_text">Controle quais profissionais de saúde podem acessar seu histórico</string>
 	<string name="medical_permissions_title">Permissões médicas</string>
+	<string name="medical_permissions_card_phone">Telefone: %1$s</string>
+	<string name="medical_permissions_card_email">Email: %1$s</string>
+	<string name="medical_permissions_card_place_action">Local de atuação: %1$s</string>
+	<string name="manage_permissions">Gerenciar permissões</string>
 </resources>
