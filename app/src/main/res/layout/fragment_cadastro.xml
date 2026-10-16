@@ -65,268 +65,250 @@
 
 				app:isInput="true" />
 
-			<EditText
-				android:id="@+id/name_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:autofillHints="name"
-				android:background="@drawable/shape_input"
-				android:drawableStart="@drawable/ic_person"
-				android:drawablePadding="10dp"
-				android:hint="@string/input_name"
-				android:inputType="text"
-
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60" />
-
-			<!-- Verificar autofillhint de CPF -->
-			<EditText
-				android:id="@+id/cpf_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:autofillHints=""
-				android:background="@drawable/shape_input"
-				android:drawableStart="@drawable/ic_document"
-				android:drawablePadding="10dp"
-				android:hint="@string/input_cpf"
-				android:inputType="number"
-				android:maxLength="14"
-
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60" />
-
-			<EditText
-				android:id="@+id/email_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:autofillHints="emailAddress"
-				android:background="@drawable/shape_input"
-				android:drawableStart="@drawable/ic_email"
-				android:drawablePadding="10dp"
-				android:hint="@string/input_email"
-				android:inputType="textEmailAddress"
-
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60" />
-
-			<EditText
-				android:id="@+id/phone_number_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:autofillHints="phone"
-				android:background="@drawable/shape_input"
-				android:drawableStart="@drawable/ic_telephone"
-				android:drawablePadding="10dp"
-				android:hint="@string/input_phone_number"
-				android:inputType="phone"
-				android:maxLength="15"
-
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60" />
-
 			<LinearLayout
-				android:id="@+id/password_errors_layout"
+				android:id="@+id/first_part"
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:visibility="gone"
-
-				tools:visibility="visible" >
-				<TextView
-					android:id="@+id/password_error_length"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textColor="@color/error"
-					android:text="@string/password_length_error"
-					android:drawablePadding="@dimen/default_drawable_icon_padding"
-
-					app:drawableStartCompat="@drawable/ic_error_circle"
-					app:drawableTint="@color/error" />
-
-				<TextView
-					android:id="@+id/password_error_caps"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textColor="@color/error"
-					android:text="@string/password_caps_error"
-					android:drawablePadding="@dimen/default_drawable_icon_padding"
-
-					app:drawableStartCompat="@drawable/ic_error_circle"
-					app:drawableTint="@color/error" />
-
-				<TextView
-					android:id="@+id/password_error_numbers"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textColor="@color/error"
-					android:text="@string/password_numbers_error"
-					android:drawablePadding="@dimen/default_drawable_icon_padding"
-
-					app:drawableStartCompat="@drawable/ic_error_circle"
-					app:drawableTint="@color/error" />
-			</LinearLayout>
-
-			<EditText
-				android:id="@+id/password_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:autofillHints="password"
-				android:background="@drawable/shape_input"
-				android:drawableStart="@drawable/ic_password_lock"
-				android:maxLength="4096"
-				android:drawablePadding="10dp"
-				android:hint="@string/input_password"
-				android:inputType="textPassword"
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60" />
-
-			<EditText
-				android:id="@+id/confirm_password_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:autofillHints="password"
-				android:background="@drawable/shape_input"
-				android:drawableStart="@drawable/ic_password_lock"
-				android:drawablePadding="10dp"
-				android:hint="@string/input_password_confirm"
-				android:inputType="textPassword"
-
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60" />
-
-			<!-- ==== START PATIENT-ONLY INPUTS ==== -->
-			<LinearLayout
-				android:id="@+id/patient_data_inputs"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal">
+				android:showDividers="middle"
+				android:divider="@drawable/divider_default">
 				<EditText
-					android:id="@+id/weight_input"
-
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:background="@drawable/shape_input"
-					android:drawableStart="@drawable/ic_weight"
-					android:drawablePadding="10dp"
-					android:drawableTint="@color/textLight"
-					android:hint="@string/weight"
-					android:inputType="numberDecimal"
-					android:textColor="@color/textLight"
-					android:textColorHint="@color/textLight60"
-					android:layout_weight="1" />
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/kilograms"
-					android:layout_marginHorizontal="@dimen/list_items_spacing"/>
-
-				<EditText
-					android:id="@+id/height_input"
-
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:background="@drawable/shape_input"
-					android:drawableStart="@drawable/ic_height"
-					android:drawablePadding="10dp"
-					android:drawableTint="@color/textLight"
-					android:hint="@string/height"
-					android:inputType="number"
-					android:textColor="@color/textLight"
-					android:textColorHint="@color/textLight60"
-					android:layout_weight="1" />
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/centimeters"
-					android:layout_marginStart="@dimen/list_items_spacing"/>
-			</LinearLayout>
-
-			<com.google.android.material.textfield.TextInputLayout
-				style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-
-				android:id="@+id/bloodtype_inputlayout"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:textColorHint="@color/textLight"
-
-				app:boxBackgroundColor="@color/primary"
-				app:boxCornerRadiusBottomEnd="12dp"
-				app:boxCornerRadiusBottomStart="12dp"
-				app:boxCornerRadiusTopEnd="12dp"
-				app:boxCornerRadiusTopStart="12dp"
-				app:counterOverflowTextColor="@color/textLight"
-				app:counterTextColor="@color/textLight"
-				app:endIconDrawable="@drawable/ic_arrow_down"
-				app:endIconMode="custom"
-				app:endIconTint="@color/primaryLight"
-				app:startIconDrawable="@drawable/ic_bloodtype"
-				app:startIconTint="@color/textLight"
-				app:hintEnabled="false">
-
-				<com.google.android.material.textfield.MaterialAutoCompleteTextView
-					android:id="@+id/bloodtype_input"
+					android:id="@+id/name_input"
 
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:hint="@string/bloodtype"
-					android:inputType="none"
-					android:padding="@dimen/default_card_padding"
+					android:layout_height="wrap_content"
+					android:autofillHints="name"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_person"
+					android:drawablePadding="10dp"
+					android:hint="@string/input_name"
+					android:inputType="text"
+
 					android:textColor="@color/textLight"
 					android:textColorHint="@color/textLight60" />
 
-			</com.google.android.material.textfield.TextInputLayout>
-			<!-- ==== END PATIENT-ONLY INPUTS ==== -->
+				<!-- Verificar autofillhint de CPF -->
+				<EditText
+					android:id="@+id/cpf_input"
 
-			<!-- ==== START PROFESSIONAL-ONLY INPUTS ==== -->
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:autofillHints=""
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_document"
+					android:drawablePadding="10dp"
+					android:hint="@string/input_cpf"
+					android:inputType="number"
+					android:maxLength="14"
+
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60" />
+
+				<EditText
+					android:id="@+id/email_input"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:autofillHints="emailAddress"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_email"
+					android:drawablePadding="10dp"
+					android:hint="@string/input_email"
+					android:inputType="textEmailAddress"
+
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60" />
+
+				<EditText
+					android:id="@+id/phone_number_input"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:autofillHints="phone"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_telephone"
+					android:drawablePadding="10dp"
+					android:hint="@string/input_phone_number"
+					android:inputType="phone"
+					android:maxLength="15"
+
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60" />
+
+				<LinearLayout
+					android:id="@+id/password_errors_layout"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:visibility="gone"
+
+					tools:visibility="visible" >
+					<TextView
+						android:id="@+id/password_error_length"
+
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/error"
+						android:text="@string/password_length_error"
+						android:drawablePadding="@dimen/default_drawable_icon_padding"
+
+						app:drawableStartCompat="@drawable/ic_error_circle"
+						app:drawableTint="@color/error" />
+
+					<TextView
+						android:id="@+id/password_error_caps"
+
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/error"
+						android:text="@string/password_caps_error"
+						android:drawablePadding="@dimen/default_drawable_icon_padding"
+
+						app:drawableStartCompat="@drawable/ic_error_circle"
+						app:drawableTint="@color/error" />
+
+					<TextView
+						android:id="@+id/password_error_numbers"
+
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/error"
+						android:text="@string/password_numbers_error"
+						android:drawablePadding="@dimen/default_drawable_icon_padding"
+
+						app:drawableStartCompat="@drawable/ic_error_circle"
+						app:drawableTint="@color/error" />
+				</LinearLayout>
+
+				<EditText
+					android:id="@+id/password_input"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:autofillHints="password"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_password_lock"
+					android:maxLength="4096"
+					android:drawablePadding="10dp"
+					android:hint="@string/input_password"
+					android:inputType="textPassword"
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60" />
+
+				<EditText
+					android:id="@+id/confirm_password_input"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:autofillHints="password"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_password_lock"
+					android:drawablePadding="10dp"
+					android:hint="@string/input_password_confirm"
+					android:inputType="textPassword"
+
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60" />
+			</LinearLayout>
+
 			<LinearLayout
-				android:id="@+id/professional_crm_inputs"
+				android:id="@+id/second_part"
 
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:divider="@drawable/divider_list"
+				android:orientation="vertical"
 				android:showDividers="middle"
-				android:visibility="gone"
+				android:divider="@drawable/divider_default">
 
-				tools:visibility="visible">
 				<EditText
-					android:id="@+id/crm_input"
+					android:id="@+id/location_input"
 
-					android:layout_width="0dp"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					android:autofillHints="postalAddress"
 					android:background="@drawable/shape_input"
-					android:drawableStart="@drawable/ic_crm"
+					android:drawableStart="@drawable/ic_location"
 					android:drawablePadding="10dp"
 					android:drawableTint="@color/textLight"
-					android:hint="@string/crm"
-					android:inputType="number"
-					android:layout_weight="2.5"
+					android:hint="@string/location_input"
+					android:inputType="text"
 					android:textColor="@color/textLight"
-					android:textColorHint="@color/textLight60" />
+					android:textColorHint="@color/textLight60"
+					android:visibility="gone"
+
+					tools:visibility="visible"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/third_part"
+
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_default">
+
+				<!-- ==== START PATIENT-ONLY INPUTS ==== -->
+				<LinearLayout
+					android:id="@+id/patient_data_inputs"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+					<EditText
+						android:id="@+id/weight_input"
+
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:background="@drawable/shape_input"
+						android:drawableStart="@drawable/ic_weight"
+						android:drawablePadding="10dp"
+						android:drawableTint="@color/textLight"
+						android:hint="@string/weight"
+						android:inputType="numberDecimal"
+						android:textColor="@color/textLight"
+						android:textColorHint="@color/textLight60"
+						android:layout_weight="1" />
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/kilograms"
+						android:layout_marginHorizontal="@dimen/list_items_spacing"/>
+
+					<EditText
+						android:id="@+id/height_input"
+
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:background="@drawable/shape_input"
+						android:drawableStart="@drawable/ic_height"
+						android:drawablePadding="10dp"
+						android:drawableTint="@color/textLight"
+						android:hint="@string/height"
+						android:inputType="number"
+						android:textColor="@color/textLight"
+						android:textColorHint="@color/textLight60"
+						android:layout_weight="1" />
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/centimeters"
+						android:layout_marginStart="@dimen/list_items_spacing"/>
+				</LinearLayout>
 
 				<com.google.android.material.textfield.TextInputLayout
 					style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 
-					android:id="@+id/crm_uf_inputlayout"
+					android:id="@+id/bloodtype_inputlayout"
 
-					android:layout_width="0dp"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:textColorHint="@color/textLight"
-					android:layout_weight="1"
 
 					app:boxBackgroundColor="@color/primary"
 					app:boxCornerRadiusBottomEnd="12dp"
@@ -338,40 +320,107 @@
 					app:endIconDrawable="@drawable/ic_arrow_down"
 					app:endIconMode="custom"
 					app:endIconTint="@color/primaryLight"
+					app:startIconDrawable="@drawable/ic_bloodtype"
+					app:startIconTint="@color/textLight"
 					app:hintEnabled="false">
 
 					<com.google.android.material.textfield.MaterialAutoCompleteTextView
-						android:id="@+id/crm_uf_input"
+						android:id="@+id/bloodtype_input"
 
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
-						android:hint="@string/uf"
+						android:hint="@string/bloodtype"
 						android:inputType="none"
 						android:padding="@dimen/default_card_padding"
 						android:textColor="@color/textLight"
 						android:textColorHint="@color/textLight60" />
 
 				</com.google.android.material.textfield.TextInputLayout>
+				<!-- ==== END PATIENT-ONLY INPUTS ==== -->
+
+				<!-- ==== START PROFESSIONAL-ONLY INPUTS ==== -->
+				<LinearLayout
+					android:id="@+id/professional_crm_inputs"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:divider="@drawable/divider_list"
+					android:showDividers="middle"
+					android:visibility="gone"
+
+					tools:visibility="visible">
+					<EditText
+						android:id="@+id/crm_input"
+
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:background="@drawable/shape_input"
+						android:drawableStart="@drawable/ic_crm"
+						android:drawablePadding="10dp"
+						android:drawableTint="@color/textLight"
+						android:hint="@string/crm"
+						android:inputType="number"
+						android:layout_weight="2.5"
+						android:textColor="@color/textLight"
+						android:textColorHint="@color/textLight60" />
+
+					<com.google.android.material.textfield.TextInputLayout
+						style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+						android:id="@+id/crm_uf_inputlayout"
+
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:textColorHint="@color/textLight"
+						android:layout_weight="1"
+
+						app:boxBackgroundColor="@color/primary"
+						app:boxCornerRadiusBottomEnd="12dp"
+						app:boxCornerRadiusBottomStart="12dp"
+						app:boxCornerRadiusTopEnd="12dp"
+						app:boxCornerRadiusTopStart="12dp"
+						app:counterOverflowTextColor="@color/textLight"
+						app:counterTextColor="@color/textLight"
+						app:endIconDrawable="@drawable/ic_arrow_down"
+						app:endIconMode="custom"
+						app:endIconTint="@color/primaryLight"
+						app:hintEnabled="false">
+
+						<com.google.android.material.textfield.MaterialAutoCompleteTextView
+							android:id="@+id/crm_uf_input"
+
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:hint="@string/uf"
+							android:inputType="none"
+							android:padding="@dimen/default_card_padding"
+							android:textColor="@color/textLight"
+							android:textColorHint="@color/textLight60" />
+
+					</com.google.android.material.textfield.TextInputLayout>
+				</LinearLayout>
+
+				<EditText
+					android:id="@+id/place_action_input"
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:autofillHints="postalAddress"
+					android:background="@drawable/shape_input"
+					android:drawableStart="@drawable/ic_local_hospital"
+					android:drawablePadding="10dp"
+					android:drawableTint="@color/textLight"
+					android:hint="@string/place_action"
+					android:inputType="text"
+					android:textColor="@color/textLight"
+					android:textColorHint="@color/textLight60"
+					android:visibility="gone"
+
+					tools:visibility="visible"/>
+				<!-- ==== END PROFESSIONAL-ONLY INPUTS ==== -->
+
 			</LinearLayout>
-
-			<EditText
-				android:id="@+id/place_action_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:autofillHints="postalAddress"
-				android:background="@drawable/shape_input"
-				android:drawableStart="@drawable/ic_local_hospital"
-				android:drawablePadding="10dp"
-				android:drawableTint="@color/textLight"
-				android:hint="@string/place_action"
-				android:inputType="text"
-				android:textColor="@color/textLight"
-				android:textColorHint="@color/textLight60"
-				android:visibility="gone"
-
-				tools:visibility="visible"/>
-			<!-- ==== END PROFESSIONAL-ONLY INPUTS ==== -->
 
 			<Button
 				android:id="@+id/create_account_button"
