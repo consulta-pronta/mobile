@@ -1,17 +1,21 @@
 package com.unnebulous.consultapronta
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import com.unnebulous.consultapronta.database.Professional
+import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentPermissoesMedicasBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.MedicalPermissionsAdapter
 import com.unnebulous.consultapronta.views.SelectOptionItemView
+import kotlin.sequences.forEach
 
 class PermissoesMedicas : Fragment() {
 
@@ -38,28 +42,36 @@ class PermissoesMedicas : Fragment() {
 		}
 		resetNavbarEntryActive()
 
+		val permissionsGranted = mutableMapOf(
+			"read_records" to false,
+			"prescribe_medications" to false,
+			"request_exam" to false,
+			"request_appointments" to false
+		)
+
 		val adapter = MedicalPermissionsAdapter().apply {
 			onPermissionChangeClick = {
 				configBottomSheet { dialogBinding, dialog ->
+					dialogBinding.icon.setImageResource(R.drawable.ic_shield_switch)
+					dialogBinding.title.visibility = View.GONE
+
 					dialogBinding.body.apply {
 						val permissionsLabel = TextView(requireContext()).apply {
 							text = getString(R.string.permissions_label)
 							textSize = 16f
 							setTypeface(null, android.graphics.Typeface.BOLD)
-							setTextColor(ContextCompat.getColor(requireContext(), R.color.textLight))
+							setTextColor(ContextCompat.getColor(requireContext(), R.color.textDark))
 							layoutParams = LinearLayout.LayoutParams(
 								LinearLayout.LayoutParams.WRAP_CONTENT,
 								LinearLayout.LayoutParams.WRAP_CONTENT
-							).apply {
-								bottomMargin = 12
-							}
+							)
 						}
 						addView(permissionsLabel)
 
-						val permissions = listOf(
-							"prescrever_medicamentos" to getString(R.string.permission_prescribe_medications),
-							"solicitar_exames" to getString(R.string.permission_request_exams),
-							"solicitar_consultas" to getString(R.string.permission_request_consultations)
+						val permissions = mapOf(
+							"prescribe_medications" to getString(R.string.permission_prescribe_medications),
+							"request_exam" to getString(R.string.permission_request_exams),
+							"request_appointments" to getString(R.string.permission_request_consultations)
 						)
 
 						for ((key, title) in permissions) {
@@ -67,37 +79,55 @@ class PermissoesMedicas : Fragment() {
 								requireContext(),
 								type = Utils.SelectOptionItemType.CHECKBOX
 							).apply {
-								setTitle(title)
 								itemId = key
-								background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_input)
-								backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.surface)
-								layoutParams = LinearLayout.LayoutParams(
-									LinearLayout.LayoutParams.MATCH_PARENT,
-									LinearLayout.LayoutParams.WRAP_CONTENT
-								).apply {
-									topMargin = 8
-									bottomMargin = 8
-								}
+								setTitle(title)
 							}
 							addView(option)
+						}
+					}
+
+					dialogBinding.positiveButton.apply {
+						text = getString(R.string.confirm_changes)
+						setOnClickListener {
+							for ((optionId, isChecked) in catchOptionsSelected(dialogBinding)) {
+								permissionsGranted[optionId] = isChecked
+								Log.i("HellYeahPronto", "$optionId : $isChecked")
+							}
+
+							dialog.dismiss()
 						}
 					}
 				}
 			}
 		}
 
+		binding.recyclerview.adapter = adapter
+
 		adapter.submitList(
 			listOf(
 				Professional(
-					"I love ConsultaPronta (CP)",
-					"",
-					"",
-					"",
-					"",
-					""
+					"I love ConsultaPronta",
+					"Robert",
+					"1234",
+					"AC",
+					"email@email.email",
+					"(00) 00000-0000",
+					"Marista"
 				)
 			)
 		)
+	}
+
+	private fun catchOptionsSelected(dialog: BottomSheetBinding): Map<String, Boolean> {
+		val values = mutableMapOf<String, Boolean>()
+
+		dialog.body.children.forEach { view ->
+			if (view is SelectOptionItemView) {
+				values[view.itemId] = view.getChecked()
+			}
+		}
+
+		return values
 	}
 
 	override fun onDestroyView() {

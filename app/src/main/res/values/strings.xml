@@ -256,4 +256,5 @@
 	<string name="permission_prescribe_medications">Prescrever medicamentos</string>
 	<string name="permission_request_exams">Solicitar exames</string>
 	<string name="permission_request_consultations">Solicitar consultas</string>
+	<string name="confirm_changes">Confirmar alterações</string>
 </resources>

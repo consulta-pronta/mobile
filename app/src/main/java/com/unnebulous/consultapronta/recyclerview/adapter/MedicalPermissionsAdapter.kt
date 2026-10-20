@@ -36,7 +36,15 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 		fun bind(professional: Professional, onPermissionChangeClick: () -> Unit) {
 			binding.apply {
 				professionalName.text = professional.name
+				val crm = "${professional.crm}/${professional.uf}"
+				professionalCrm.text = crm
+				professionalEmail.text = professional.email
+				professionalPhoneNumber.text = professional.phoneNumber
+				professionalPlaceAction.text = professional.placeAction
 
+				changePermissionsButton.setOnClickListener {
+					onPermissionChangeClick()
+				}
 			}
 		}
 	}
