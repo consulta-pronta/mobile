@@ -38,9 +38,10 @@ import java.net.SocketTimeoutException
 import kotlin.concurrent.thread
 import com.unnebulous.consultapronta.database.Hospital as HospitalModel
 
-//const val ENDPOINT = "https://overpass.private.coffee/api/interpreter"
-const val ENDPOINT = "https://overpass-api.de/api/interpreter"
-const val QUERY_RADIUS = 7000
+const val ENDPOINT = "https://overpass.private.coffee/api/interpreter"
+//const val ENDPOINT = "https://overpass-api.de/api/interpreter"
+const val QUERY_RADIUS = 5000
+const val TIMEOUT = 100
 
 class Hospital : Fragment() {
 
@@ -91,6 +92,8 @@ class Hospital : Fragment() {
 		setNavbarEntryActive(Utils.NavbarButton.FOURTH)
 
 		(requireActivity() as MainActivity).setFragmentPadding(0)
+
+		viewLifecycleOwner.lifecycle.addObserver(binding.mapView)
 
 		val adapter = HospitalAdapter().apply {
 			onClick = { hospital ->
@@ -255,7 +258,7 @@ class Hospital : Fragment() {
 	}
 
 	private fun getQuery(latitude: Double, longitude: Double): String = """
-			[out:csv(::lat, ::lon, name, "addr:street", "addr:housenumber", "addr:suburb"; false; "|")][timeout:25];
+			[out:csv(::lat, ::lon, name, "addr:street", "addr:housenumber", "addr:suburb"; false; "|")][timeout:$TIMEOUT];
 			nwr["amenity"="hospital"](around:$QUERY_RADIUS, $latitude, $longitude);
 			out center;
 		""".trimIndent()
@@ -291,7 +294,7 @@ class Hospital : Fragment() {
 			}
 		} catch (e: Exception) {
 			showSnackbar(getString(R.string.not_possible_get_hospital), Utils.SnackBarType.DANGER)
-			e.printStackTrace()
+			Log.wtf("ErroPronto", getString(R.string.not_possible_get_hospital), e)
 		}
 
 
