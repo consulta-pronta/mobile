@@ -54,7 +54,7 @@
 		<attr name="codeLength" format="integer" />
 	</declare-styleable>
 
-	<declare-styleable name="UserTypeSelectorView">
+	<declare-styleable name="DualToggleSelectorView">
 		<attr name="firstOptionText" format="string" />
 		<attr name="secondOptionText" format="string" />
 	</declare-styleable>

@@ -10,23 +10,28 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.transition.TransitionManager
 import com.unnebulous.consultapronta.R
-import com.unnebulous.consultapronta.Utils
-import com.unnebulous.consultapronta.databinding.UserTypeSelectorViewBinding
-import kotlin.reflect.KClass
+import com.unnebulous.consultapronta.databinding.ViewDualToggleSelectorBinding
 
-class UserTypeSelectorView<T: Enum<T>> @JvmOverloads constructor(
+class DualToggleSelectorView @JvmOverloads constructor(
 	context: Context,
 	attrs: AttributeSet? = null,
 	defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-	private val binding: UserTypeSelectorViewBinding
+	private val binding: ViewDualToggleSelectorBinding
 
 	var optionSelected = 0
-	lateinit var option: T
+	private var enumConstants: Array<out Enum<*>>? = null
+
+	var option: Enum<*>
+		get() = enumConstants?.get(optionSelected) ?: throw IllegalStateException()
+		set(value) {
+			enumConstants = value.javaClass.enumConstants
+			optionSelected = enumConstants?.indexOf(value) ?: 0
+		}
 
 	init {
-		binding = UserTypeSelectorViewBinding.inflate(
+		binding = ViewDualToggleSelectorBinding.inflate(
 			LayoutInflater.from(context),
 			this,
 			true
@@ -106,7 +111,7 @@ class UserTypeSelectorView<T: Enum<T>> @JvmOverloads constructor(
 
 	}
 
-	fun changeUser(): T {
+	fun <T : Enum<T>> switch(): T {
 		optionSelected = if (optionSelected == 1) 0 else 1
 
 		val params = binding.selectorToggle.layoutParams as LayoutParams
@@ -125,11 +130,8 @@ class UserTypeSelectorView<T: Enum<T>> @JvmOverloads constructor(
 		binding.secondText.isClickable = isFirstOptiontSelected
 		binding.secondText.isFocusable = isFirstOptiontSelected
 
-		return option
-	}
-
-	fun setDefaultOptionReturned(option: T) {
-		this.option = option
+		@Suppress("UNCHECKED_CAST")
+		return option as T
 	}
 
 	fun setFirstOptionText(text: String) {
@@ -141,9 +143,9 @@ class UserTypeSelectorView<T: Enum<T>> @JvmOverloads constructor(
 	}
 
 	fun applyAttributes(attrs: AttributeSet) {
-		context.withStyledAttributes(attrs, R.styleable.UserTypeSelectorView) {
-			val firstOptionText = getString(R.styleable.UserTypeSelectorView_firstOptionText) ?: ContextCompat.getString(context, R.string.not_available)
-			val secondOptionText = getString(R.styleable.UserTypeSelectorView_secondOptionText) ?: ContextCompat.getString(context, R.string.not_available)
+		context.withStyledAttributes(attrs, R.styleable.DualToggleSelectorView) {
+			val firstOptionText = getString(R.styleable.DualToggleSelectorView_firstOptionText) ?: ContextCompat.getString(context, R.string.not_available)
+			val secondOptionText = getString(R.styleable.DualToggleSelectorView_secondOptionText) ?: ContextCompat.getString(context, R.string.not_available)
 
 			setFirstOptionText(firstOptionText)
 			setSecondOptionText(secondOptionText)
