@@ -7,12 +7,14 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import androidx.transition.TransitionManager
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.UserTypeSelectorViewBinding
+import kotlin.reflect.KClass
 
-class   UserTypeSelectorView @JvmOverloads constructor(
+class UserTypeSelectorView<T: Enum<T>> @JvmOverloads constructor(
 	context: Context,
 	attrs: AttributeSet? = null,
 	defStyleAttr: Int = 0
@@ -20,7 +22,8 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 
 	private val binding: UserTypeSelectorViewBinding
 
-	var userType = Utils.UserType.PACIENTE
+	var optionSelected = 0
+	lateinit var option: T
 
 	init {
 		binding = UserTypeSelectorViewBinding.inflate(
@@ -29,18 +32,22 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 			true
 		)
 
+		attrs?.let {
+			applyAttributes(it)
+		}
+
 		post {
 			var spacing =
-				(binding.selectorToggle.width / 2) - ((binding.patientText.width + binding.patientText.paddingStart) / 2)
-			var params = binding.patientText.layoutParams as MarginLayoutParams
+				(binding.selectorToggle.width / 2) - ((binding.firstText.width + binding.firstText.paddingStart) / 2)
+			var params = binding.firstText.layoutParams as MarginLayoutParams
 			params.marginStart = spacing
-			binding.patientText.layoutParams = params
+			binding.firstText.layoutParams = params
 
 			spacing =
-				(binding.selectorToggle.width / 2) - ((binding.professionalText.width + binding.professionalText.paddingStart) / 2)
-			params = binding.professionalText.layoutParams as MarginLayoutParams
+				(binding.selectorToggle.width / 2) - ((binding.secondText.width + binding.secondText.paddingStart) / 2)
+			params = binding.secondText.layoutParams as MarginLayoutParams
 			params.marginEnd = spacing
-			binding.professionalText.layoutParams = params
+			binding.secondText.layoutParams = params
 		}
 	}
 
@@ -49,9 +56,9 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 		val primaryDarkColor = ContextCompat.getColor(context, R.color.primaryDark)
 		val animationDuration = 300L
 
-		if (userType == Utils.UserType.PACIENTE) {
+		if (optionSelected == 0) {
 			ObjectAnimator.ofObject(
-				binding.patientText,
+				binding.firstText,
 				"textColor",
 				ArgbEvaluator(),
 				accentColor,
@@ -62,7 +69,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 			}
 
 			ObjectAnimator.ofObject(
-				binding.professionalText,
+				binding.secondText,
 				"textColor",
 				ArgbEvaluator(),
 				primaryDarkColor,
@@ -75,7 +82,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 
 		} else {
 			ObjectAnimator.ofObject(
-				binding.patientText,
+				binding.firstText,
 				"textColor",
 				ArgbEvaluator(),
 				primaryDarkColor,
@@ -86,7 +93,7 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 			}
 
 			ObjectAnimator.ofObject(
-				binding.professionalText,
+				binding.secondText,
 				"textColor",
 				ArgbEvaluator(),
 				accentColor,
@@ -99,30 +106,52 @@ class   UserTypeSelectorView @JvmOverloads constructor(
 
 	}
 
-	fun changeUser(): Utils.UserType {
-		userType = if (userType == Utils.UserType.PROFISSIONAL) Utils.UserType.PACIENTE else Utils.UserType.PROFISSIONAL
+	fun changeUser(): T {
+		optionSelected = if (optionSelected == 1) 0 else 1
 
 		val params = binding.selectorToggle.layoutParams as LayoutParams
 
-		params.horizontalBias = 1f * userType.ordinal
+		params.horizontalBias = 1f * optionSelected
 
 		TransitionManager.beginDelayedTransition(this)
 		updateTextColors()
 		binding.selectorToggle.layoutParams = params
 
-		val isPatientSelected = userType == Utils.UserType.PACIENTE
+		val isFirstOptiontSelected = optionSelected == 0
 
-		binding.patientText.isClickable = !isPatientSelected
-		binding.patientText.isFocusable = !isPatientSelected
+		binding.firstText.isClickable = !isFirstOptiontSelected
+		binding.firstText.isFocusable = !isFirstOptiontSelected
 
-		binding.professionalText.isClickable = isPatientSelected
-		binding.professionalText.isFocusable = isPatientSelected
+		binding.secondText.isClickable = isFirstOptiontSelected
+		binding.secondText.isFocusable = isFirstOptiontSelected
 
-		return userType
+		return option
+	}
+
+	fun setDefaultOptionReturned(option: T) {
+		this.option = option
+	}
+
+	fun setFirstOptionText(text: String) {
+		binding.firstText.text = text
+	}
+
+	fun setSecondOptionText(text: String) {
+		binding.secondText.text = text
+	}
+
+	fun applyAttributes(attrs: AttributeSet) {
+		context.withStyledAttributes(attrs, R.styleable.UserTypeSelectorView) {
+			val firstOptionText = getString(R.styleable.UserTypeSelectorView_firstOptionText) ?: ContextCompat.getString(context, R.string.not_available)
+			val secondOptionText = getString(R.styleable.UserTypeSelectorView_secondOptionText) ?: ContextCompat.getString(context, R.string.not_available)
+
+			setFirstOptionText(firstOptionText)
+			setSecondOptionText(secondOptionText)
+		}
 	}
 
 	override fun setOnClickListener(l: OnClickListener?) {
-		binding.patientText.setOnClickListener(l)
-		binding.professionalText.setOnClickListener(l)
+		binding.firstText.setOnClickListener(l)
+		binding.secondText.setOnClickListener(l)
 	}
 }

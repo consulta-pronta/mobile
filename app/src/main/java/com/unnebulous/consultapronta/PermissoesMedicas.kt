@@ -56,7 +56,19 @@ class PermissoesMedicas : Fragment() {
 					dialogBinding.title.visibility = View.GONE
 
 					dialogBinding.body.apply {
-						val permissionsLabel = TextView(requireContext()).apply {
+
+						addView(TextView(requireContext()).apply {
+							text = getString(R.string.access_status)
+							textSize = 16f
+							setTypeface(null, android.graphics.Typeface.BOLD)
+							setTextColor(ContextCompat.getColor(requireContext(), R.color.textDark))
+							layoutParams = LinearLayout.LayoutParams(
+								LinearLayout.LayoutParams.WRAP_CONTENT,
+								LinearLayout.LayoutParams.WRAP_CONTENT
+							)
+						})
+
+						addView(TextView(requireContext()).apply {
 							text = getString(R.string.permissions_label)
 							textSize = 16f
 							setTypeface(null, android.graphics.Typeface.BOLD)
@@ -65,8 +77,7 @@ class PermissoesMedicas : Fragment() {
 								LinearLayout.LayoutParams.WRAP_CONTENT,
 								LinearLayout.LayoutParams.WRAP_CONTENT
 							)
-						}
-						addView(permissionsLabel)
+						})
 
 						val permissions = mapOf(
 							"prescribe_medications" to getString(R.string.permission_prescribe_medications),

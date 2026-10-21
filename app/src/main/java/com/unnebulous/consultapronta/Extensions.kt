@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.Utils.stringToEnum
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.SnackbarBinding
@@ -25,7 +26,6 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Locale
 import java.util.Locale.getDefault
-import kotlin.enums.enumEntries
 import kotlin.math.abs
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
@@ -147,8 +147,7 @@ fun Timestamp.toLocalDateTime(): LocalDateTime =
 	toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
 
 inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
-	val value = get(field).toString()
-	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+	return stringToEnum<T>(get(field).toString())
 }
 
 fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
