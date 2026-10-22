@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import com.unnebulous.consultapronta.database.Professional
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentPermissoesMedicasBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.MedicalPermissionsAdapter
+import com.unnebulous.consultapronta.views.DualToggleSelectorView
 import com.unnebulous.consultapronta.views.SelectOptionItemView
 import kotlin.sequences.forEach
 
@@ -42,6 +45,8 @@ class PermissoesMedicas : Fragment() {
 		}
 		resetNavbarEntryActive()
 
+		var medicalAccessStatus: Utils.MedicalAccessStatus
+
 		val permissionsGranted = mutableMapOf(
 			"read_records" to false,
 			"prescribe_medications" to false,
@@ -66,6 +71,25 @@ class PermissoesMedicas : Fragment() {
 								LinearLayout.LayoutParams.WRAP_CONTENT,
 								LinearLayout.LayoutParams.WRAP_CONTENT
 							)
+						})
+
+						addView(DualToggleSelectorView(requireContext()).apply {
+							option = Utils.MedicalAccessStatus.REVOKED
+
+							layoutParams = LinearLayout.LayoutParams(
+								LinearLayout.LayoutParams.WRAP_CONTENT,
+								LinearLayout.LayoutParams.WRAP_CONTENT
+							).apply {
+								setHorizontalGravity(Gravity.CENTER_HORIZONTAL)
+							}
+
+							setFirstOptionText(getString(R.string.access_status_active))
+							setSecondOptionText(getString(R.string.access_status_revoked))
+							recalcUi()
+							setOnClickListener {
+								medicalAccessStatus = switch()
+								Log.i("TestePronto", medicalAccessStatus.toString())
+							}
 						})
 
 						addView(TextView(requireContext()).apply {

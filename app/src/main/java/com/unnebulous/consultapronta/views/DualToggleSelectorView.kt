@@ -20,7 +20,7 @@ class DualToggleSelectorView @JvmOverloads constructor(
 
 	private val binding: ViewDualToggleSelectorBinding
 
-	var optionSelected = 0
+	var optionSelected: Int = 0
 	private var enumConstants: Array<out Enum<*>>? = null
 
 	var option: Enum<*>
@@ -28,6 +28,7 @@ class DualToggleSelectorView @JvmOverloads constructor(
 		set(value) {
 			enumConstants = value.javaClass.enumConstants
 			optionSelected = enumConstants?.indexOf(value) ?: 0
+			switch(optionSelected)
 		}
 
 	init {
@@ -42,18 +43,22 @@ class DualToggleSelectorView @JvmOverloads constructor(
 		}
 
 		post {
-			var spacing =
-				(binding.selectorToggle.width / 2) - ((binding.firstText.width + binding.firstText.paddingStart) / 2)
-			var params = binding.firstText.layoutParams as MarginLayoutParams
-			params.marginStart = spacing
-			binding.firstText.layoutParams = params
-
-			spacing =
-				(binding.selectorToggle.width / 2) - ((binding.secondText.width + binding.secondText.paddingStart) / 2)
-			params = binding.secondText.layoutParams as MarginLayoutParams
-			params.marginEnd = spacing
-			binding.secondText.layoutParams = params
+			recalcUi()
 		}
+	}
+
+	fun recalcUi() {
+		var spacing =
+			(binding.selectorToggle.width / 2) - ((binding.firstText.width + binding.firstText.paddingStart) / 2)
+		var params = binding.firstText.layoutParams as MarginLayoutParams
+		params.marginStart = spacing
+		binding.firstText.layoutParams = params
+
+		spacing =
+			(binding.selectorToggle.width / 2) - ((binding.secondText.width + binding.secondText.paddingStart) / 2)
+		params = binding.secondText.layoutParams as MarginLayoutParams
+		params.marginEnd = spacing
+		binding.secondText.layoutParams = params
 	}
 
 	private fun updateTextColors() {
@@ -111,9 +116,7 @@ class DualToggleSelectorView @JvmOverloads constructor(
 
 	}
 
-	fun <T : Enum<T>> switch(): T {
-		optionSelected = if (optionSelected == 1) 0 else 1
-
+	private fun <T : Enum<T>> switch(optionSelected: Int): T {
 		val params = binding.selectorToggle.layoutParams as LayoutParams
 
 		params.horizontalBias = 1f * optionSelected
@@ -132,6 +135,11 @@ class DualToggleSelectorView @JvmOverloads constructor(
 
 		@Suppress("UNCHECKED_CAST")
 		return option as T
+	}
+
+	fun <T : Enum<T>> switch(): T {
+		optionSelected = if (optionSelected == 1) 0 else 1
+		return switch(optionSelected)
 	}
 
 	fun setFirstOptionText(text: String) {

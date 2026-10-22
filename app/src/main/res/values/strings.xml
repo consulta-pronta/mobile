@@ -258,4 +258,6 @@
 	<string name="permission_request_consultations">Solicitar consultas</string>
 	<string name="confirm_changes">Confirmar alterações</string>
 	<string name="access_status">Status de acesso</string>
+	<string name="access_status_active">Ativo</string>
+	<string name="access_status_revoked">Revogado</string>
 </resources>
