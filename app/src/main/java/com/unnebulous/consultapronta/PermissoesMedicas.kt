@@ -10,20 +10,33 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.unnebulous.consultapronta.database.DatabaseManager
+import com.unnebulous.consultapronta.database.MedicalPermission
 import com.unnebulous.consultapronta.database.Professional
+import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentPermissoesMedicasBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.MedicalPermissionsAdapter
 import com.unnebulous.consultapronta.views.DualToggleSelectorView
 import com.unnebulous.consultapronta.views.SelectOptionItemView
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlin.sequences.forEach
 
+
+const val PERMISSION_MEDICATIONS = "prescribe_medications"
+const val PERMISSION_EXAMS = "request_exam"
+const val PERMISSION_APPOINTMENTS = "request_appointments"
 class PermissoesMedicas : Fragment() {
 
 	private var _binding: FragmentPermissoesMedicasBinding? = null
 	private val binding get() = _binding!!
+
+	private val professionalMedicalPermissions = mutableMapOf<String, Map<String, Boolean>>()
+	private val professionalMedicalAccessStatus = mutableMapOf<String, Utils.MedicalAccessStatus>()
+	private val medicalPermissions = mutableMapOf<String, MedicalPermission>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -45,17 +58,8 @@ class PermissoesMedicas : Fragment() {
 		}
 		resetNavbarEntryActive()
 
-		var medicalAccessStatus: Utils.MedicalAccessStatus
-
-		val permissionsGranted = mutableMapOf(
-			"read_records" to false,
-			"prescribe_medications" to false,
-			"request_exam" to false,
-			"request_appointments" to false
-		)
-
 		val adapter = MedicalPermissionsAdapter().apply {
-			onPermissionChangeClick = {
+			onPermissionChangeClick = { professionalId ->
 				configBottomSheet { dialogBinding, dialog ->
 					dialogBinding.icon.setImageResource(R.drawable.ic_shield_switch)
 					dialogBinding.title.visibility = View.GONE
@@ -74,7 +78,7 @@ class PermissoesMedicas : Fragment() {
 						})
 
 						addView(DualToggleSelectorView(requireContext()).apply {
-							option = Utils.MedicalAccessStatus.REVOKED
+							option = professionalMedicalAccessStatus[professionalId] ?: Utils.MedicalAccessStatus.REVOKED
 
 							layoutParams = LinearLayout.LayoutParams(
 								LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -87,8 +91,7 @@ class PermissoesMedicas : Fragment() {
 							setSecondOptionText(getString(R.string.access_status_revoked))
 							recalcUi()
 							setOnClickListener {
-								medicalAccessStatus = switch()
-								Log.i("TestePronto", medicalAccessStatus.toString())
+								professionalMedicalAccessStatus[professionalId] = switch()
 							}
 						})
 
@@ -104,9 +107,9 @@ class PermissoesMedicas : Fragment() {
 						})
 
 						val permissions = mapOf(
-							"prescribe_medications" to getString(R.string.permission_prescribe_medications),
-							"request_exam" to getString(R.string.permission_request_exams),
-							"request_appointments" to getString(R.string.permission_request_consultations)
+							PERMISSION_MEDICATIONS to getString(R.string.permission_prescribe_medications),
+							PERMISSION_EXAMS to getString(R.string.permission_request_exams),
+							PERMISSION_APPOINTMENTS to getString(R.string.permission_request_consultations)
 						)
 
 						for ((key, title) in permissions) {
@@ -116,17 +119,42 @@ class PermissoesMedicas : Fragment() {
 							).apply {
 								itemId = key
 								setTitle(title)
+								checked = professionalMedicalPermissions[professionalId]?.get(key) ?: false
 							}
 							addView(option)
 						}
 					}
 
 					dialogBinding.positiveButton.apply {
+						val permissionsGranted = mutableMapOf(
+							PERMISSION_MEDICATIONS to false,
+							PERMISSION_EXAMS to false,
+							PERMISSION_APPOINTMENTS to false
+						)
+
 						text = getString(R.string.confirm_changes)
 						setOnClickListener {
 							for ((optionId, isChecked) in catchOptionsSelected(dialogBinding)) {
 								permissionsGranted[optionId] = isChecked
-								Log.i("HellYeahPronto", "$optionId : $isChecked")
+								Log.i("HellYeahPronto", "$professionalId = $optionId : $isChecked")
+							}
+
+							lifecycleScope.launch {
+								dialogBinding.positiveButton.isEnabled = false
+
+								try {
+									val medicalPermission = medicalPermissions[professionalId]!!
+									val updatedMedicalPermission =
+										MedicalPermission.Companion.FormData(
+											medicalPermission.status,
+											permissionsGranted,
+											medicalPermission.professional_id,
+									).apply {
+										// TODO: verificação se foi revogado ou não
+									}
+								} catch (e: Exception) {
+									Log.e(MedicalPermission.COLLECTION_NAME, "submitMedicalPermission:failure")
+								}
 							}
 
 							dialog.dismiss()
@@ -138,19 +166,9 @@ class PermissoesMedicas : Fragment() {
 
 		binding.recyclerview.adapter = adapter
 
-		adapter.submitList(
-			listOf(
-				Professional(
-					"I love ConsultaPronta",
-					"Robert",
-					"1234",
-					"AC",
-					"email@email.email",
-					"(00) 00000-0000",
-					"Marista"
-				)
-			)
-		)
+		lifecycleScope.launch {
+			adapter.submitList(getProfessionals())
+		}
 	}
 
 	private fun catchOptionsSelected(dialog: BottomSheetBinding): Map<String, Boolean> {
@@ -158,11 +176,52 @@ class PermissoesMedicas : Fragment() {
 
 		dialog.body.children.forEach { view ->
 			if (view is SelectOptionItemView) {
-				values[view.itemId] = view.getChecked()
+				values[view.itemId] = view.checked
 			}
 		}
 
 		return values
+	}
+
+	private suspend fun getProfessionals(): List<Professional> {
+		val professionals = mutableListOf<Professional>()
+
+		val medicalPermissionCollection = MedicalPermission
+			.collection
+			.get()
+			.await()
+
+		medicalPermissionCollection.forEach { doc ->
+			val professional = DatabaseManager
+				.db
+				.collection(User.COLLECTION_NAME)
+				.document(doc.getString("professional_id")!!)
+				.get()
+				.await()
+
+			professionalMedicalPermissions[professional.id] = mapOf(
+				PERMISSION_MEDICATIONS to (doc.getBoolean("permissions.$PERMISSION_MEDICATIONS") ?: false),
+				PERMISSION_EXAMS to (doc.getBoolean("permissions.$PERMISSION_EXAMS") ?: false),
+				PERMISSION_APPOINTMENTS to (doc.getBoolean("permissions.$PERMISSION_APPOINTMENTS") ?: false)
+			)
+
+			professionalMedicalAccessStatus[professional.id] = doc.getEnum<Utils.MedicalAccessStatus>("status")!!
+			medicalPermissions[professional.id] = MedicalPermission.fromDocument(doc)
+
+			professionals.add(
+				Professional(
+					doc.id,
+					professional.getString("name"),
+					professional.getString("professional_data.crm"),
+					professional.getString("professional_data.uf"),
+					professional.getString("email"),
+					professional.getString("phone"),
+					professional.getString("professional_data.local_atuacao"),
+				)
+			)
+		}
+
+		return professionals
 	}
 
 	override fun onDestroyView() {

@@ -23,6 +23,19 @@ class SelectOptionItemView @JvmOverloads constructor(
 	private var isInflating = true
 
 	var itemId: String = ""
+	var checked: Boolean
+		get() = when (type) {
+			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.isChecked
+			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.isChecked
+			else -> false
+		}
+		set(value) {
+			when (type) {
+				Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.isChecked = value
+				Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.isChecked = value
+				else -> {}
+			}
+		}
 
 	init {
 		binding = SelectOptionItemViewBinding.inflate(
@@ -80,11 +93,11 @@ class SelectOptionItemView @JvmOverloads constructor(
 		binding.aside.removeAllViews()
 	}
 
-	fun getChecked(getInAside: ((SelectOptionItemViewBinding) -> Boolean)? = null): Boolean {
-		return when (type) {
-			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.isChecked
-			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.isChecked
-			Utils.SelectOptionItemType.COMPLETE -> getInAside?.invoke(binding) ?: false
+	fun getCheckedInAside(getInAside: (SelectOptionItemViewBinding) -> Boolean): Boolean {
+		return if (type == Utils.SelectOptionItemType.COMPLETE) {
+			getInAside(binding)
+		} else {
+			false
 		}
 	}
 

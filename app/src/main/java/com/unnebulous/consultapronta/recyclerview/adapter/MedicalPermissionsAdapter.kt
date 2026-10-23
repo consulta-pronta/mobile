@@ -10,7 +10,7 @@ import com.unnebulous.consultapronta.databinding.CardProfessionalMedicalPermissi
 
 class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAdapter.MedicalPermissionsViewHolder>(MedicalPermissionComparator()) {
 
-	lateinit var onPermissionChangeClick: () -> Unit
+	lateinit var onPermissionChangeClick: (String) -> Unit
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicalPermissionsViewHolder {
 		val binding = CardProfessionalMedicalPermissionsBinding.inflate(
@@ -23,7 +23,7 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 	}
 
 	override fun onBindViewHolder(holder: MedicalPermissionsViewHolder, position: Int) {
-		holder.bind(getItem(position), onPermissionChangeClick)
+		holder.bind(getItem(position))
 	}
 
 	class MedicalPermissionComparator : DiffUtil.ItemCallback<Professional>() {
@@ -32,8 +32,8 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 		override fun areContentsTheSame(old: Professional, new: Professional): Boolean = old == new
 	}
 
-	class MedicalPermissionsViewHolder(private val binding: CardProfessionalMedicalPermissionsBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(professional: Professional, onPermissionChangeClick: () -> Unit) {
+	inner class MedicalPermissionsViewHolder(private val binding: CardProfessionalMedicalPermissionsBinding): RecyclerView.ViewHolder(binding.root) {
+		fun bind(professional: Professional) {
 			binding.apply {
 				professionalName.text = professional.name
 				val crm = "${professional.crm}/${professional.uf}"
@@ -43,7 +43,7 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 				professionalPlaceAction.text = professional.placeAction
 
 				changePermissionsButton.setOnClickListener {
-					onPermissionChangeClick()
+					onPermissionChangeClick(professional.id)
 				}
 			}
 		}
