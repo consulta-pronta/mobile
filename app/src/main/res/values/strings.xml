@@ -260,4 +260,6 @@
 	<string name="access_status">Status de acesso</string>
 	<string name="access_status_active">Ativo</string>
 	<string name="access_status_revoked">Revogado</string>
+	<string name="error_not_updating_medical_permissions">Não foi possível alterar as permissões médicas. Tente novamente mais tarde</string>
+	<string name="success_updating_medical_permissions">Permissões médicas atualizadas com sucesso!</string>
 </resources>

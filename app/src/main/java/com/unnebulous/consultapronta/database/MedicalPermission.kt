@@ -21,8 +21,7 @@ data class MedicalPermission(
 		status = status,
 		permissions = permissions,
 		professional_id = professional_id,
-		granted_at = granted_at,
-		revoked_at = revoked_at
+		created_at = created_at
 	)
 	companion object {
 		const val COLLECTION_NAME = "medicalPermissions"
@@ -32,14 +31,15 @@ data class MedicalPermission(
 			val status: Utils.MedicalAccessStatus?,
 			val permissions: Map<String, Boolean>?,
 			val professional_id: String?,
-			var granted_at: Timestamp? = null,
-			var revoked_at: Timestamp? = null
+			val created_at: Timestamp?,
+			var granted_at: Any? = null,
+			var revoked_at: Any? = null
 		) {
 			fun toMap(): Map<String, Any?> = mapOf(
 				"status" to status.toString().lowercase(),
 				"permissions" to permissions,
 				"professional_id" to professional_id,
-				"created_at" to FieldValue.serverTimestamp(),
+				"created_at" to created_at,
 				"granted_at" to granted_at,
 				"revoked_at" to revoked_at
 			)

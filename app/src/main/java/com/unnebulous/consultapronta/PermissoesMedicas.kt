@@ -12,13 +12,18 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QuerySnapshot
 import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.MedicalPermission
 import com.unnebulous.consultapronta.database.Professional
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.FragmentPermissoesMedicasBinding
+import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.recyclerview.adapter.MedicalPermissionsAdapter
+import com.unnebulous.consultapronta.showSnackbar
 import com.unnebulous.consultapronta.views.DualToggleSelectorView
 import com.unnebulous.consultapronta.views.SelectOptionItemView
 import kotlinx.coroutines.launch
@@ -35,8 +40,9 @@ class PermissoesMedicas : Fragment() {
 	private val binding get() = _binding!!
 
 	private val professionalMedicalPermissions = mutableMapOf<String, Map<String, Boolean>>()
-	private val professionalMedicalAccessStatus = mutableMapOf<String, Utils.MedicalAccessStatus>()
+	private val professionalMedicalAccessStatus = mutableMapOf<String, Utils.MedicalAccessStatus?>()
 	private val medicalPermissions = mutableMapOf<String, MedicalPermission>()
+	private lateinit var medicalPermissionsListener: ListenerRegistration
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -91,7 +97,7 @@ class PermissoesMedicas : Fragment() {
 							setSecondOptionText(getString(R.string.access_status_revoked))
 							recalcUi()
 							setOnClickListener {
-								professionalMedicalAccessStatus[professionalId] = switch()
+								professionalMedicalAccessStatus[professionalId] = switch<Utils.MedicalAccessStatus>()
 							}
 						})
 
@@ -146,18 +152,50 @@ class PermissoesMedicas : Fragment() {
 									val medicalPermission = medicalPermissions[professionalId]!!
 									val updatedMedicalPermission =
 										MedicalPermission.Companion.FormData(
-											medicalPermission.status,
+											professionalMedicalAccessStatus[professionalId],
 											permissionsGranted,
 											medicalPermission.professional_id,
+											medicalPermission.created_at
 									).apply {
-										// TODO: verificação se foi revogado ou não
-									}
-								} catch (e: Exception) {
-									Log.e(MedicalPermission.COLLECTION_NAME, "submitMedicalPermission:failure")
-								}
-							}
+										val actualMedicalAccessStatus = this.status
+										if (actualMedicalAccessStatus != medicalPermission.status) {
+											when (actualMedicalAccessStatus) {
+												Utils.MedicalAccessStatus.ACTIVE -> {
+													this.granted_at = FieldValue.serverTimestamp()
+													this.revoked_at = null
+													Log.i("InfoPronto", "$professionalId: ATIVO")
+												}
 
-							dialog.dismiss()
+												Utils.MedicalAccessStatus.REVOKED -> {
+													this.granted_at = null
+													this.revoked_at = FieldValue.serverTimestamp()
+												}
+
+												else -> {
+													this.granted_at = null
+													this.revoked_at = null
+												}
+											}
+										} else {
+											this.granted_at = medicalPermission.granted_at
+											this.revoked_at = medicalPermission.revoked_at
+										}
+									}
+
+									MedicalPermission
+										.collection
+										.document(medicalPermission.id)
+										.set(updatedMedicalPermission.toMap())
+
+									dialog.dismiss()
+									showSnackbar(getString(R.string.success_updating_medical_permissions), Utils.SnackBarType.SUCCESS)
+								} catch (e: Exception) {
+									Log.e(MedicalPermission.COLLECTION_NAME, "submitMedicalPermission:failure", e)
+									showSnackbar(getString(R.string.error_not_updating_medical_permissions), Utils.SnackBarType.DANGER)
+								}
+
+								dialogBinding.positiveButton.isEnabled = true
+							}
 						}
 					}
 				}
@@ -166,9 +204,21 @@ class PermissoesMedicas : Fragment() {
 
 		binding.recyclerview.adapter = adapter
 
-		lifecycleScope.launch {
-			adapter.submitList(getProfessionals())
-		}
+		medicalPermissionsListener = MedicalPermission
+			.collection
+			.addSnapshotListener { snapshots, exception ->
+				if (exception != null) {
+					Log.e(MedicalPermission.COLLECTION_NAME, "getMedicalPermissionsListener:failure", exception)
+					return@addSnapshotListener
+				}
+				if (snapshots == null) {
+					return@addSnapshotListener
+				}
+
+				lifecycleScope.launch {
+					adapter.submitList(getProfessionals(snapshots))
+				}
+			}
 	}
 
 	private fun catchOptionsSelected(dialog: BottomSheetBinding): Map<String, Boolean> {
@@ -183,13 +233,8 @@ class PermissoesMedicas : Fragment() {
 		return values
 	}
 
-	private suspend fun getProfessionals(): List<Professional> {
+	private suspend fun getProfessionals(medicalPermissionCollection: QuerySnapshot): List<Professional> {
 		val professionals = mutableListOf<Professional>()
-
-		val medicalPermissionCollection = MedicalPermission
-			.collection
-			.get()
-			.await()
 
 		medicalPermissionCollection.forEach { doc ->
 			val professional = DatabaseManager
@@ -205,7 +250,7 @@ class PermissoesMedicas : Fragment() {
 				PERMISSION_APPOINTMENTS to (doc.getBoolean("permissions.$PERMISSION_APPOINTMENTS") ?: false)
 			)
 
-			professionalMedicalAccessStatus[professional.id] = doc.getEnum<Utils.MedicalAccessStatus>("status")!!
+			professionalMedicalAccessStatus[professional.id] = doc.getEnum<Utils.MedicalAccessStatus>("status")
 			medicalPermissions[professional.id] = MedicalPermission.fromDocument(doc)
 
 			professionals.add(
@@ -227,5 +272,6 @@ class PermissoesMedicas : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+		medicalPermissionsListener.remove()
 	}
 }
