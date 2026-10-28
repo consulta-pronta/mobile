@@ -71,6 +71,7 @@ class PermissoesMedicas : Fragment() {
 					dialogBinding.title.visibility = View.GONE
 
 					dialogBinding.body.apply {
+						var isPending = false;
 
 						addView(TextView(requireContext()).apply {
 							text = getString(R.string.access_status)
@@ -93,28 +94,31 @@ class PermissoesMedicas : Fragment() {
 								setHorizontalGravity(Gravity.CENTER_HORIZONTAL)
 							}
 
-							if (professionalMedicalAccessStatus[professionalId] == null) {
-								blockOption(1)
-								// trocar para variavel e adicionar fora daqui
-								dialogBinding.body.addView(TextView(requireContext()).apply {
-									text = getString(R.string.pending_status_message)
-									textSize = 16f
-									setTypeface(null, android.graphics.Typeface.BOLD)
-									setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
-									layoutParams = LinearLayout.LayoutParams(
-										LinearLayout.LayoutParams.WRAP_CONTENT,
-										LinearLayout.LayoutParams.WRAP_CONTENT
-									)
-								})
-							}
-
 							setFirstOptionText(getString(R.string.access_status_active))
 							setSecondOptionText(getString(R.string.access_status_revoked))
 							recalcUi()
 							setOnClickListener {
 								professionalMedicalAccessStatus[professionalId] = switch<Utils.MedicalAccessStatus>()
 							}
+
+							if (professionalMedicalAccessStatus[professionalId] == null) {
+								blockClick()
+								isPending = true
+							}
 						})
+
+						if (isPending) {
+							addView(TextView(requireContext()).apply {
+								text = getString(R.string.pending_status_message)
+								textSize = 16f
+								setTypeface(null, android.graphics.Typeface.BOLD)
+								setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+								layoutParams = LinearLayout.LayoutParams(
+									LinearLayout.LayoutParams.WRAP_CONTENT,
+									LinearLayout.LayoutParams.WRAP_CONTENT
+								)
+							})
+						}
 
 						addView(TextView(requireContext()).apply {
 							text = getString(R.string.permissions_label)
@@ -157,7 +161,6 @@ class PermissoesMedicas : Fragment() {
 						setOnClickListener {
 							for ((optionId, isChecked) in catchOptionsSelected(dialogBinding)) {
 								permissionsGranted[optionId] = isChecked
-								Log.i("HellYeahPronto", "$professionalId = $optionId : $isChecked")
 							}
 
 							lifecycleScope.launch {
@@ -178,7 +181,6 @@ class PermissoesMedicas : Fragment() {
 												Utils.MedicalAccessStatus.ACTIVE -> {
 													this.granted_at = FieldValue.serverTimestamp()
 													this.revoked_at = null
-													Log.i("InfoPronto", "$professionalId: ATIVO")
 												}
 
 												Utils.MedicalAccessStatus.REVOKED -> {
@@ -215,9 +217,24 @@ class PermissoesMedicas : Fragment() {
 					}
 				}
 			}
+
+			getPermissionCount = { professionalId ->
+				professionalMedicalPermissions[professionalId]?.filter {
+					it.value
+				}?.count() ?: 0
+			}
+
+			checkStatus = { professionalId ->
+				when (professionalMedicalAccessStatus[professionalId]) {
+					Utils.MedicalAccessStatus.ACTIVE -> true
+					Utils.MedicalAccessStatus.REVOKED -> false
+					null -> null
+				}
+			}
 		}
 
 		binding.recyclerview.adapter = adapter
+		binding.recyclerview.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
 
 		medicalPermissionsListener = MedicalPermission
 			.collection

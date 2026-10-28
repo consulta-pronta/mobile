@@ -113,6 +113,10 @@ fun Fragment.resetNavbarEntryActive() {
 	(activity as? MainActivity)?.resetNavbarEntryActive()
 }
 
+val Fragment.recyclerviewSpacing get() = resources.getDimensionPixelSize(
+	R.dimen.default_inner_elements_spacing
+)
+
 fun Context.clearCache() {
 	try {
 		cacheDir.deleteRecursively()

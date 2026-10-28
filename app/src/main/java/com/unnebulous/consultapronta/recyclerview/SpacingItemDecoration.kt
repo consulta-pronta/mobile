@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
 
 class SpacingItemDecoration(
-	private val space: Int = R.dimen.default_inner_elements_spacing
+	private val space: Int
 ) : RecyclerView.ItemDecoration() {
 
 	override fun getItemOffsets(

@@ -150,19 +150,11 @@ class DualToggleSelectorView @JvmOverloads constructor(
 		binding.secondText.text = text
 	}
 
-	fun blockOption(optionNumber: Int) {
+	fun blockClick() {
 		binding.apply {
-			when (optionNumber) {
-				1 -> {
-					firstText.alpha = 0.8f
-					firstText.isClickable = false
-				}
-
-				2 -> {
-					secondText.alpha = 0.8f
-					secondText.isClickable = false
-				}
-			}
+			(if (optionSelected == 0) secondText else firstText).alpha = 0.8f
+			firstText.isClickable = false
+			secondText.isClickable = false
 		}
 	}
 

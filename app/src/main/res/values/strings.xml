@@ -262,5 +262,9 @@
 	<string name="access_status_revoked">Revogado</string>
 	<string name="error_not_updating_medical_permissions">Não foi possível alterar as permissões médicas. Tente novamente mais tarde</string>
 	<string name="success_updating_medical_permissions">Permissões médicas atualizadas com sucesso!</string>
+	<string name="number_active_permissions">%1$d permissão(ões) ativa(s)</string>
 	<string name="pending_status_message">Status pendente, não há como mudar o acesso</string>
+	<string name="enabled_permissions">Permissões ativas</string>
+	<string name="disabled_permissions">Permissões desativadas</string>
+	<string name="pending_solicitation">Solicitação pendente</string>
 </resources>
