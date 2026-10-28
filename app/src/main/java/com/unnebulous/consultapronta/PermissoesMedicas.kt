@@ -93,6 +93,21 @@ class PermissoesMedicas : Fragment() {
 								setHorizontalGravity(Gravity.CENTER_HORIZONTAL)
 							}
 
+							if (professionalMedicalAccessStatus[professionalId] == null) {
+								blockOption(1)
+								// trocar para variavel e adicionar fora daqui
+								dialogBinding.body.addView(TextView(requireContext()).apply {
+									text = getString(R.string.pending_status_message)
+									textSize = 16f
+									setTypeface(null, android.graphics.Typeface.BOLD)
+									setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+									layoutParams = LinearLayout.LayoutParams(
+										LinearLayout.LayoutParams.WRAP_CONTENT,
+										LinearLayout.LayoutParams.WRAP_CONTENT
+									)
+								})
+							}
+
 							setFirstOptionText(getString(R.string.access_status_active))
 							setSecondOptionText(getString(R.string.access_status_revoked))
 							recalcUi()

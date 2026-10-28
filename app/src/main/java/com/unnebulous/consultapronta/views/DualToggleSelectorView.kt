@@ -150,7 +150,33 @@ class DualToggleSelectorView @JvmOverloads constructor(
 		binding.secondText.text = text
 	}
 
-	fun applyAttributes(attrs: AttributeSet) {
+	fun blockOption(optionNumber: Int) {
+		binding.apply {
+			when (optionNumber) {
+				1 -> {
+					firstText.alpha = 0.8f
+					firstText.isClickable = false
+				}
+
+				2 -> {
+					secondText.alpha = 0.8f
+					secondText.isClickable = false
+				}
+			}
+		}
+	}
+
+	fun removeAllOptionBlocks() {
+		binding.apply {
+			firstText.alpha = 1f
+			firstText.isClickable = true
+
+			secondText.alpha = 1f
+			secondText.isClickable = true
+		}
+	}
+
+	private fun applyAttributes(attrs: AttributeSet) {
 		context.withStyledAttributes(attrs, R.styleable.DualToggleSelectorView) {
 			val firstOptionText = getString(R.styleable.DualToggleSelectorView_firstOptionText) ?: ContextCompat.getString(context, R.string.not_available)
 			val secondOptionText = getString(R.styleable.DualToggleSelectorView_secondOptionText) ?: ContextCompat.getString(context, R.string.not_available)
