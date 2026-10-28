@@ -67,13 +67,7 @@ class Exam : Fragment() {
 				adapter.submitList(exams)
 			}
 
-		val spacing = resources.getDimensionPixelSize(
-			R.dimen.default_card_padding
-		)
-
-		binding.examCards.addItemDecoration(
-			SpacingItemDecoration(spacing)
-		)
+		binding.examCards.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
 	}
 
 	override fun onDestroyView() {

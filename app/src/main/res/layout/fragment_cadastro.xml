@@ -49,12 +49,15 @@
 				android:text="@string/input_your_data" />
 
 
-			<com.unnebulous.consultapronta.views.UserTypeSelectorView
+			<com.unnebulous.consultapronta.views.DualToggleSelectorView
 				android:id="@+id/user_type_switch"
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_gravity="center_horizontal" />
+				android:layout_gravity="center_horizontal"
+
+				app:firstOptionText="@string/patient_select_option"
+				app:secondOptionText="@string/professional_select_option"/>
 
 			<com.unnebulous.consultapronta.views.ProfilePictureView
 				android:id="@+id/profile_picture_input"

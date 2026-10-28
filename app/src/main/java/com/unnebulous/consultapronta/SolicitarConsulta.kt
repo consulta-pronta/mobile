@@ -131,7 +131,7 @@ class SolicitarConsulta : Fragment() {
 
 		dialog.body.children.forEach { view ->
 			val option = view as SelectOptionItemView
-			if (option.getChecked()) {
+			if (option.checked) {
 				values.add(option.itemId)
 			}
 		}

@@ -57,6 +57,8 @@ class Cadastro : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		binding.userTypeSwitch.option = Utils.UserType.PACIENTE
+
 		var validPassword = false
 
 		val ufs = Utils.UF.entries.map { it.name }.toTypedArray()
@@ -66,7 +68,7 @@ class Cadastro : Fragment() {
 		setupSelect(binding.bloodtypeInput, bloodTypes)
 
 		binding.userTypeSwitch.setOnClickListener {
-			userType = binding.userTypeSwitch.changeUser()
+			userType = binding.userTypeSwitch.switch()
 
 			if (userType == Utils.UserType.PACIENTE) {
 				binding.apply {
@@ -93,7 +95,7 @@ class Cadastro : Fragment() {
 
 		binding.createAccountButton.setOnClickListener {
 			name = binding.nameInput.text.toString()
-			userType = binding.userTypeSwitch.userType
+			userType = binding.userTypeSwitch.option as Utils.UserType
 			cpf = binding.cpfInput.text.toString()
 			email = binding.emailInput.text.toString()
 			phoneNumber = binding.phoneNumberInput.text.toString()

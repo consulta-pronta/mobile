@@ -18,6 +18,7 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import kotlin.enums.enumEntries
 
 object Utils {
 	const val CPF_MASK = "###.###.###-##"
@@ -133,6 +134,8 @@ object Utils {
 		}
 	}
 
+	enum class MedicalAccessStatus { ACTIVE, REVOKED }
+
 	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
 		val validator = if (isDateValidatorPointBackward) {
 			DateValidatorPointBackward.now()
@@ -244,4 +247,8 @@ object Utils {
 			intensity <= 7 -> R.color.warning
 			else -> R.color.error
 		})
+
+	inline fun <reified T: Enum<T>> stringToEnum(value: String): T? {
+		return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+	}
 }
