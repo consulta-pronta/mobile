@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.SelectOptionItemViewBinding
 import androidx.core.view.isNotEmpty
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 
 class SelectOptionItemView @JvmOverloads constructor(
 	context: Context,
@@ -48,6 +50,8 @@ class SelectOptionItemView @JvmOverloads constructor(
 			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.text = value
 			Utils.SelectOptionItemType.COMPLETE -> binding.title.text = value
 		}
+
+	var onRadioChangeListener: ((String) -> Unit)? = null
 
 	init {
 		binding = SelectOptionItemViewBinding.inflate(
@@ -117,6 +121,11 @@ class SelectOptionItemView @JvmOverloads constructor(
 		when (type) {
 			Utils.SelectOptionItemType.RADIO -> {
 				binding.itemRadioButton.visibility = VISIBLE
+				binding.itemRadioButton.setOnCheckedChangeListener { _, isChecked ->
+					if (isChecked) {
+						onRadioChangeListener?.invoke(itemId)
+					}
+				}
 			}
 
 			Utils.SelectOptionItemType.CHECKBOX -> {
