@@ -37,6 +37,18 @@ class SelectOptionItemView @JvmOverloads constructor(
 			}
 		}
 
+	var title: String
+		get() = when (type) {
+			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.text.toString()
+			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.text.toString()
+			Utils.SelectOptionItemType.COMPLETE -> binding.title.text.toString()
+		}
+		set(value) = when (type) {
+			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.text = value
+			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.text = value
+			Utils.SelectOptionItemType.COMPLETE -> binding.title.text = value
+		}
+
 	init {
 		binding = SelectOptionItemViewBinding.inflate(
 			LayoutInflater.from(context),
@@ -58,14 +70,6 @@ class SelectOptionItemView @JvmOverloads constructor(
 			super.addView(child, index, params)
 		} else {
 			addAside(child)
-		}
-	}
-
-	fun setTitle(title: String) {
-		when (type) {
-			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.text = title
-			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.text = title
-			Utils.SelectOptionItemType.COMPLETE -> binding.title.text = title
 		}
 	}
 
