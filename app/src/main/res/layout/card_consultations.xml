@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/shape_rounded_background"
+	android:backgroundTint="@color/surface"
+	android:padding="@dimen/default_card_padding"
+	android:showDividers="middle"
+	android:divider="@drawable/divider_list_vertical">
+
+	<TextView
+		android:id="@+id/professional_name"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textStyle="bold"
+		android:textColor="@color/textDark"
+		android:textSize="20sp"
+
+		tools:text="@tools:sample/full_names" />
+
+	<TextView
+		android:id="@+id/professional_crm"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/textDark"
+		android:textSize="16sp"
+
+		tools:text="@tools:sample/us_phones" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/textDark"
+
+		tools:text="@tools:sample/cities" />
+
+	<TextView
+		android:id="@+id/datetime"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/textDark"
+		android:drawablePadding="@dimen/date_drawable_padding"
+
+		app:drawableTint="@color/textDark"
+		app:drawableStartCompat="@drawable/ic_clock"
+
+		tools:text="@tools:sample/date/ddmmyy" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="end"
+		android:divider="@drawable/divider_default_vertical"
+		android:showDividers="middle">
+		<Button
+			android:id="@+id/positive_button"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
+			android:textColor="@color/textDark"
+			android:text="@string/accept"
+
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			app:backgroundTint="@color/accent" />
+
+		<Button
+			android:id="@+id/negative_button"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
+			android:text="@string/deny"
+			android:textColor="@color/textLight"
+
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			app:backgroundTint="@color/primary" />
+	</LinearLayout>
+
+</LinearLayout>

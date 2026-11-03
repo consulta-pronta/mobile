@@ -272,4 +272,6 @@
 	<string name="consultations_scheduled">Marcadas</string>
 	<string name="consultations_requested">Solicitadas por mim</string>
 	<string name="my_consultations">Minhas consultas</string>
+	<string name="deny">Negar</string>
+	<string name="accept">Aceitar</string>
 </resources>
