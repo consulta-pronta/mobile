@@ -177,10 +177,10 @@ class SolicitarConsulta : Fragment() {
 				try {
 					Consultation.collection.add(consultationDoc)
 
-					Log.e(Symptom.COLLECTION_NAME, "requestConsultation:failure")
+					Log.e(Consultation.COLLECTION_NAME, "requestConsultation:failure")
 					popBackStack()
 				} catch (e: Exception) {
-					Log.e(Symptom.COLLECTION_NAME, "requestConsultation:failure", e)
+					Log.e(Consultation.COLLECTION_NAME, "requestConsultation:failure", e)
 				}
 			}
 		}

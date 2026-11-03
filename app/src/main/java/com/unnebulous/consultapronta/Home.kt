@@ -53,7 +53,7 @@ class Home : Fragment() {
 				changeFragmentWithBackStack(MedicamentosListagem())
 			}
 			fourthButton.setOnClickListener {
-				changeFragmentWithBackStack(SolicitarConsulta()) // TODO: ALTERAR PARA VISUALIZAR CONSULTA
+				changeFragmentWithBackStack(ListagemConsulta())
 			}
 			seeAllButton.setOnClickListener {
 				changeFragmentWithBackStack(HistoricoSintoma())

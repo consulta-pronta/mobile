@@ -17,6 +17,8 @@
 		android:showDividers="middle">
 
 		<Button
+			android:id="@+id/request_consultation"
+
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/request_consultation"
@@ -24,8 +26,7 @@
 			android:insetBottom="0dp"
 
 			app:backgroundTint="@color/primary"
-			app:cornerRadius="@dimen/big_button_corner_radius"
-			/>
+			app:cornerRadius="@dimen/big_button_corner_radius" />
 
 		<TextView
 			android:layout_width="wrap_content"
