@@ -209,7 +209,7 @@
 	<string name="date">Data</string>
 	<string name="time">Hora</string>
 	<string name="question_what_hospital">Em qual hospital?</string>
-	<string name="select_hospital">Selecione o hospital</string>
+	<string name="type_hospital_name">Digite o nome do hospital</string>
 	<string name="request_consultation">Solicitar consulta</string>
 	<string name="date_not_selected">dd/mm/yyyy</string>
 	<string name="linked_apps">Aplicativos conectados</string>
@@ -268,4 +268,10 @@
 	<string name="disabled_permissions">Permissões desativadas</string>
 	<string name="pending_solicitation">Solicitação pendente</string>
 	<string name="error_invalid_input_data">Os dados inseridos são inválidos</string>
+	<string name="consultations_proposed_professional">Propostas pelo profissional</string>
+	<string name="consultations_scheduled">Marcadas</string>
+	<string name="consultations_requested">Solicitadas por mim</string>
+	<string name="my_consultations">Minhas consultas</string>
+	<string name="deny">Negar</string>
+	<string name="accept">Aceitar</string>
 </resources>

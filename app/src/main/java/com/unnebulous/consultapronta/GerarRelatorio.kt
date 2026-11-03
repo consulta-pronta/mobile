@@ -101,7 +101,7 @@ class GerarRelatorio : Fragment() {
 							requireContext(),
 							type = Utils.SelectOptionItemType.CHECKBOX
 						)
-						option.setTitle(professional.value)
+						option.title = professional.value
 						option.itemId = professional.key
 						addView(option)
 					}
@@ -127,7 +127,7 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.body.apply {
 					for (symptom in originalSymptomList) {
 						val item = SelectOptionItemView(requireContext(), type = Utils.SelectOptionItemType.COMPLETE).apply {
-							setTitle(symptom.title)
+							title = symptom.title
 							setSubtitle(symptom.created_at?.toBrazilianLocale() ?: "")
 							setIcon(R.drawable.ic_document)
 

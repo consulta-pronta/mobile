@@ -142,9 +142,9 @@ class PermissoesMedicas : Fragment() {
 								requireContext(),
 								type = Utils.SelectOptionItemType.CHECKBOX
 							).apply {
-								itemId = key
-								setTitle(title)
-								checked = professionalMedicalPermissions[professionalId]?.get(key) ?: false
+								this.itemId = key
+								this.title = title
+								this.checked = professionalMedicalPermissions[professionalId]?.get(key) ?: false
 							}
 							addView(option)
 						}
