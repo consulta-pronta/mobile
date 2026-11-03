@@ -49,23 +49,6 @@
 		app:iconTint="@color/primaryDark"
 		app:iconSize="30dp"/>
 
-	<Button
-		android:id="@+id/export_list"
-
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/add_report"
-		android:textColor="@color/textLight"
-		android:insetBottom="0dp"
-		android:insetTop="0dp"
-
-		app:backgroundTint="@color/primary"
-		app:cornerRadius="@dimen/big_button_corner_radius"
-		app:icon="@drawable/ic_download"
-		app:iconGravity="textStart"
-		app:iconTint="@color/textLight"
-		app:iconSize="30dp"/>
-
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/recyclerview"
 

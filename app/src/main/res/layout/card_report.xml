@@ -106,9 +106,8 @@
 		android:paddingTop="0dp"
 		android:paddingRight="0dp"
 		android:paddingBottom="0dp"
-		android:rotation="90"
 
-		app:icon="@drawable/ic_more_three_dots"
+		app:icon="@drawable/ic_more_three_dots_vertical"
 		app:iconSize="45dp"
 		app:iconTint="@color/accent"
 		app:layout_constraintStart_toStartOf="parent"

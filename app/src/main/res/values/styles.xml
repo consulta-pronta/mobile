@@ -12,4 +12,13 @@
 	<style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
 		<item name="bottomSheetStyle">@style/bottomSheetDialogWrapper</item>
 	</style>
+
+	<style name="popupMenuTextStyle">
+		<item name="android:textColor">@color/textDark</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+	<style name="PopupMenuTheme" parent="Theme.Material3.DayNight.NoActionBar">
+		<item name="android:itemTextAppearance">@style/popupMenuTextStyle</item>
+	</style>
 </resources>

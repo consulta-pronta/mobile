@@ -9,6 +9,15 @@
 
 	tools:context=".Hospital">
 
+	<de.afarber.openmapview.OpenMapView
+		android:id="@+id/map_view"
+
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone"
+
+		tools:visibility="visible"/>
+
 	<EditText
 		android:id="@+id/search"
 
@@ -24,6 +33,8 @@
 		android:autofillHints="name"
 		android:textColor="@color/textDark"
 		android:inputType="text"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +49,13 @@
 		android:text="@string/map_view"
 		android:insetBottom="0dp"
 		android:insetTop="0dp"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:icon="@drawable/ic_map"
 		app:iconGravity="textStart"
 		app:iconSize="30dp"
-		app:iconTint="@color/surface"
+		app:iconTint="@color/textLight"
 		app:cornerRadius="@dimen/big_button_corner_radius"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -54,22 +67,24 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:layout_constraintTop_toBottomOf="@+id/button_map_view"
 		app:layout_constraintStart_toStartOf="parent"
 		app:isOrderByFilter="true" />
 
 	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/hospital_card_list"
+		android:id="@+id/recyclerview"
 
 		android:layout_width="0dp"
-		android:layout_height="0dp"
+		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/default_inner_elements_spacing"
+		android:layout_marginStart="@dimen/default_screen_padding"
+		android:layout_marginEnd="@dimen/default_screen_padding"
 
 		app:layout_constraintTop_toBottomOf="@+id/order"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

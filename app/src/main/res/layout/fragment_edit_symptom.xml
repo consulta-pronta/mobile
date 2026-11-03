@@ -59,10 +59,10 @@
 			android:id="@+id/explain_area"
 
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="200dp"
 			android:background="@drawable/shape_search_background"
 			android:gravity="start"
-			android:inputType="text"
+			android:inputType="textMultiLine"
 			android:hint="@string/detailed_explanation_hint"
 			android:layout_marginTop="@dimen/default_inner_elements_spacing"
 
@@ -101,15 +101,17 @@
 			android:id="@+id/date_select"
 
 			android:layout_width="175dp"
-			android:layout_height="45dp"
-			android:autofillHints="date"
-			android:background="@drawable/shape_search_background"
-			android:drawableEnd="@drawable/ic_calendar"
-			android:drawablePadding="15dp"
-			android:drawableTint="@color/primary"
-			android:hint="@string/date_hint"
+			android:layout_height="wrap_content"
+			android:text="@string/date_hint"
+			android:textColor="@color/textDark60"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
 
 			app:backgroundTint="@color/white"
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			app:icon="@drawable/ic_calendar"
+			app:iconGravity="end"
+			app:iconTint="@color/textDark"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/date" />
 
@@ -131,14 +133,17 @@
 			android:id="@+id/time_select"
 
 			android:layout_width="175dp"
-			android:layout_height="45dp"
-			android:background="@drawable/shape_search_background"
-			android:hint="@string/hour_hint"
-			android:drawableEnd="@drawable/ic_clock"
-			android:drawablePadding="15dp"
-			android:drawableTint="@color/primary"
+			android:layout_height="wrap_content"
+			android:text="@string/time_not_selected"
+			android:textColor="@color/textDark60"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
 
 			app:backgroundTint="@color/white"
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			app:icon="@drawable/ic_clock"
+			app:iconGravity="end"
+			app:iconTint="@color/textDark"
 			app:layout_constraintTop_toBottomOf="@id/time"
 			app:layout_constraintEnd_toEndOf="parent"
 			/>
@@ -213,55 +218,25 @@
 			app:layout_constraintStart_toStartOf="parent"
 			/>
 
-		<FrameLayout
-			android:id="@+id/frame"
+		<com.google.android.material.slider.Slider
+			android:id="@+id/intensity_slider"
 
-			android:layout_width="0dp"
-			android:layout_height="40dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:valueFrom="1"
+			android:valueTo="10"
+			android:stepSize="1.0"
 			android:layout_marginTop="8dp"
 
+			app:labelBehavior="gone"
+			app:thumbColor="@color/success"
+			app:trackColorActive="@color/success"
+			app:tickColorActive="@color/primaryDark"
+			app:trackColorInactive="@color/primary"
+			app:tickColorInactive="@color/primaryLight"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/symptom_intensity">
+			app:layout_constraintTop_toBottomOf="@id/symptom_intensity" />
 
-			<TextView
-				android:id="@+id/intensity_value"
-
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/placeholder_number"
-				android:textSize="14sp"
-				android:textColor="@color/warning"
-				android:layout_gravity="top|start"
-				/>
-
-			<View
-				android:id="@+id/gradient_view"
-
-				android:layout_width="match_parent"
-				android:layout_height="10dp"
-				android:layout_gravity="center"
-				android:background="@drawable/intensity_gradient"
-				android:layout_marginTop="4dp"
-				/>
-
-			<com.google.android.material.slider.Slider
-				android:id="@+id/intensity_slider"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:value="5"
-				android:valueFrom="0"
-				android:valueTo="10"
-
-				app:thumbColor="@color/primary"
-				app:thumbHeight="12dp"
-				app:thumbWidth="12dp"
-				app:trackColorActive="@android:color/transparent"
-				app:trackColorInactive="@android:color/transparent"
-				app:trackHeight="10dp"
-				app:labelBehavior="gone"/>
-		</FrameLayout>
 
 		<LinearLayout
 			android:id="@+id/intensity_labels"
@@ -269,9 +244,8 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			android:weightSum="3"
 
-			app:layout_constraintTop_toBottomOf="@id/frame"
+			app:layout_constraintTop_toBottomOf="@id/intensity_slider"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent">
 
@@ -318,6 +292,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/default_card_padding"
 			android:text="@string/picture"
+			android:visibility="gone"
 
 			app:layout_constraintTop_toBottomOf="@+id/intensity_labels"
 			app:layout_constraintStart_toStartOf="parent"
@@ -335,6 +310,7 @@
 			android:gravity="center"
 			android:orientation="vertical"
 			android:padding="8dp"
+			android:visibility="gone"
 
 			app:layout_constraintTop_toBottomOf="@id/image"
 			app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta
 
 import android.content.Context
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.Utils.stringToEnum
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.SnackbarBinding
@@ -20,10 +22,11 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.Month
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Locale
 import java.util.Locale.getDefault
-import kotlin.enums.enumEntries
 import kotlin.math.abs
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
@@ -103,6 +106,18 @@ fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.Snac
 	snackbar.show()
 }
 
+fun Fragment.setNavbarEntryActive(entry: Utils.NavbarButton) {
+	(activity as? MainActivity)?.setNavbarEntryActive(entry)
+}
+
+fun Fragment.resetNavbarEntryActive() {
+	(activity as? MainActivity)?.resetNavbarEntryActive()
+}
+
+val Fragment.recyclerviewSpacing get() = resources.getDimensionPixelSize(
+	R.dimen.default_inner_elements_spacing
+)
+
 fun Context.clearCache() {
 	try {
 		cacheDir.deleteRecursively()
@@ -115,10 +130,35 @@ fun Context.clearCache() {
 fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
 	ostart + (this - istart) * (ostop - ostart) / (istop - istart)
 
+fun LocalDateTime.toBrazillianFullDateAndTime(): String {
+	val month = when (this.month) {
+		Month.JANUARY -> "jan."
+		Month.FEBRUARY -> "fev."
+		Month.MARCH -> "mar."
+		Month.APRIL -> "abr."
+		Month.MAY -> "maio"
+		Month.JUNE -> "jun."
+		Month.JULY -> "jul."
+		Month.AUGUST -> "ago."
+		Month.SEPTEMBER -> "set."
+		Month.OCTOBER -> "out."
+		Month.NOVEMBER -> "nov."
+		Month.DECEMBER -> "dez."
+	}
+
+	return "$dayOfMonth de $month de $year, $hour:$minute"
+}
+
 fun LocalDateTime.toFirestoreTimestamp() =
 	Timestamp(atZone(ZoneId.systemDefault()).toInstant())
 
 fun LocalDate.toLocalDateTime(): LocalDateTime = LocalDateTime.of(this, LocalTime.MIDNIGHT)
+
+fun LocalDate.toEpochMilli(): Long =
+	ZonedDateTime
+		.of(this.toLocalDateTime(), ZoneId.systemDefault())
+		.toInstant()
+		.toEpochMilli()
 
 fun Timestamp.toBrazilianLocale(): String {
 	val date = toDate()
@@ -127,9 +167,11 @@ fun Timestamp.toBrazilianLocale(): String {
 	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
 }
 
+fun Timestamp.toLocalDateTime(): LocalDateTime =
+	toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+
 inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
-	val value = get(field).toString()
-	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+	return stringToEnum<T>(get(field).toString())
 }
 
 fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
@@ -165,3 +207,5 @@ fun List<Symptom>.getAreaMap() = groupBy { it.place }
 
 fun List<Symptom>.getMostAffectArea() =
 	getAreaMap().maxByOrNull { it.value.size }?.key
+
+fun String.toEditable() = SpannableStringBuilder(this)

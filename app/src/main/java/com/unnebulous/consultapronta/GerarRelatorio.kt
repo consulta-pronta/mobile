@@ -1,11 +1,14 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Timestamp
@@ -24,14 +27,14 @@ class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
-	private val dateFormatter: DateTimeFormatter by lazy {
-		DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
-	}
+	private val dateFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 
 	private var periodStartDate = Timestamp.now()
 	private var periodEndDate = Timestamp.now()
 	private var professionalList = ArrayList<String>()
 	private var symptomList = emptyList<Symptom>()
+	private var originalSymptomList = emptyList<Symptom>()
+	private var removedSymptomsList = mutableListOf<String>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -52,9 +55,10 @@ class GerarRelatorio : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		binding.selectDateStart.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, defaultDate = periodStartDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -69,7 +73,7 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.selectDateEnd.setOnClickListener {
-			Utils.showDatePicker(this) { date ->
+			Utils.showDatePicker(this, defaultDate = periodEndDate.toLocalDateTime().toLocalDate()) { date ->
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -97,7 +101,7 @@ class GerarRelatorio : Fragment() {
 							requireContext(),
 							type = Utils.SelectOptionItemType.CHECKBOX
 						)
-						option.setTitle(professional.value)
+						option.title = professional.value
 						option.itemId = professional.key
 						addView(option)
 					}
@@ -114,17 +118,36 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.viewSymptomsIncluded.setOnClickListener {
-			configBottomSheet { dialogBinding, dialog ->
+			configBottomSheet { dialogBinding, _ ->
 				dialogBinding.icon.setImageResource(R.drawable.ic_history)
 				dialogBinding.title.text = getString(R.string.symptoms_included)
 				dialogBinding.positiveButton.visibility = View.INVISIBLE
-				dialogBinding.negativeButton.text = "Fechar"
+				dialogBinding.negativeButton.text = getString(R.string.close)
 
 				dialogBinding.body.apply {
-					for (symptom in symptomList) {
-						val item = OptionItemView(requireContext())
-						item.setText(symptom.title)
-						item.setArrowVisibilityTo(false)
+					for (symptom in originalSymptomList) {
+						val item = SelectOptionItemView(requireContext(), type = Utils.SelectOptionItemType.COMPLETE).apply {
+							title = symptom.title
+							setSubtitle(symptom.created_at?.toBrazilianLocale() ?: "")
+							setIcon(R.drawable.ic_document)
+
+							val checkbox = CheckBox(requireContext()).apply {
+								buttonTintList = ContextCompat.getColorStateList(context, R.color.light_checkbox_color)
+								isChecked = !removedSymptomsList.contains(symptom.id)
+							}
+
+							checkbox.setOnCheckedChangeListener { _, isChecked ->
+								if (isChecked) {
+									removedSymptomsList.remove(symptom.id)
+								} else {
+									removedSymptomsList.add(symptom.id)
+								}
+
+								updateSummary()
+							}
+
+							addAside(checkbox)
+						}
 
 						addView(item)
 					}
@@ -134,9 +157,18 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.generateReportButton.setOnClickListener {
+			if (binding.reportTitleInput.text.isBlank()) {
+				showSnackbar(getString(R.string.error_without_title), Utils.SnackBarType.WARNING)
+				return@setOnClickListener
+			}else if (binding.selectDateStart.text == getString(R.string.select___)) {
+				showSnackbar(getString(R.string.error_report_without_date), Utils.SnackBarType.WARNING)
+				return@setOnClickListener
+			}
+
 			val reportData = Report.Companion.FormData(
 				binding.reportTitleInput.text.toString(),
 				professionalList,
+				removedSymptomsList,
 				periodStartDate,
 				periodEndDate,
 			).toMap()
@@ -160,7 +192,7 @@ class GerarRelatorio : Fragment() {
 
 		dialog.body.children.forEach { view ->
 			val option = view as SelectOptionItemView
-			if (option.getChecked()) {
+			if (option.checked) {
 				values.add(option.itemId)
 			}
 		}
@@ -177,10 +209,16 @@ class GerarRelatorio : Fragment() {
 		binding.apply {
 			lifecycleScope.launch {
 				try {
-					symptomList = Symptom.getBetweenDates(periodStartDate, periodEndDate)
+					originalSymptomList = Symptom.getBetweenDates(periodStartDate, periodEndDate)
+					symptomList = originalSymptomList.filter {
+						!removedSymptomsList.contains(it.id)
+					}
+
+					val average = symptomList.getIntensityAverage()
+					intensityIcon.imageTintList = ColorStateList.valueOf(Utils.intensityToColor(requireContext(), average))
 
 					numberSymptomsRegisters.text = symptomList.size.toString()
-					intensityAverage.text = symptomList.getIntensityAverage().toString()
+					intensityAverage.text = getString(R.string.intensity_report, average).replace('.', ',')
 					mostAffectedArea.text = symptomList.getMostAffectArea() ?: "Nenhuma registrada"
 				} catch (e: Exception) {
 					Log.e("report", "getSymptomsByDate:failure", e)

@@ -2,36 +2,49 @@ package com.unnebulous.consultapronta
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.database.Symptom
+import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentVisualizarRelatorioBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.ChronologyAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlin.sequences.forEach
 
 class VisualizarRelatorio : Fragment() {
 	private var _binding: FragmentVisualizarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
 	private lateinit var reportId: String
+	private lateinit var patientId: String
+	private lateinit var renameReport: () -> Unit
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		arguments?.let {
 			reportId = it.getString(ARG_REPORT_ID, "ERROR")
+			patientId = it.getString(ARG_PATIENT_ID, "")
 		}
 	}
 
@@ -53,7 +66,62 @@ class VisualizarRelatorio : Fragment() {
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
+
+			val button = ImageButton(requireContext()).apply {
+				layoutParams = ViewGroup.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.MATCH_PARENT
+				)
+
+				setImageResource(R.drawable.ic_more_three_dots_vertical)
+				imageTintList = ContextCompat.getColorStateList(context, R.color.textLight)
+				setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+				setPadding(
+					5,
+					5,
+					5,
+					5,
+				)
+			}
+
+			button.setOnClickListener {
+				val contextThemeWrapper = ContextThemeWrapper(requireContext(), R.style.PopupMenuTheme)
+
+				PopupMenu(contextThemeWrapper, button).apply {
+					menuInflater.inflate(R.menu.menu_reports, this.menu)
+
+					setOnMenuItemClickListener { menuItem ->
+						showSnackbar(menuItem.title.toString())
+
+						when (menuItem.itemId) {
+							R.id.menu_allowed_professionals -> {}
+
+							R.id.menu_rename_report -> {
+								renameReport()
+							}
+
+							R.id.menu_delete_report -> {
+								lifecycleScope.launch {
+									try {
+										Report.collection.document(reportId).delete()
+										popBackStack()
+									} catch (e: Exception) {
+										Log.e("report", "deleteReport:failure", e)
+									}
+								}
+							}
+						}
+
+						true
+					}
+
+					show()
+				}
+			}
+
+			addAside(button)
 		}
+		resetNavbarEntryActive()
 
 		configChart()
 
@@ -63,11 +131,84 @@ class VisualizarRelatorio : Fragment() {
 
 		lifecycleScope.launch {
 			try {
+				val userData = AuthManager.getUserData()
+
+				if (userData?.user_type == null) {
+					throw Exception("User has no type associated")
+				}
+
+				if (userData.user_type == Utils.UserType.PROFISSIONAL) {
+					binding.patientProfileLayout.visibility = View.VISIBLE
+					getPatientUserData()
+				}
+			}
+			catch (e: Exception) {
+				Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
+			}
+
+			try {
 				val doc = Report.collection.document(reportId).get().await()
 				val report = Report.fromDocument(doc)
 				if (report == null || report.period_start == null || report.period_end == null) {
 					popBackStack()
 					return@launch
+				}
+
+				renameReport = {
+					configBottomSheet { dialogBinding, dialog ->
+						dialogBinding.icon.visibility = View.GONE
+						dialogBinding.title.text = getString(R.string.rename_report)
+
+						val input = EditText(context).apply {
+							layoutParams = ViewGroup.LayoutParams(
+								ViewGroup.LayoutParams.MATCH_PARENT,
+								ViewGroup.LayoutParams.WRAP_CONTENT
+							)
+
+							inputType = InputType.TYPE_CLASS_TEXT
+							background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+							setCompoundDrawablesRelativeWithIntrinsicBounds(
+								ContextCompat.getDrawable(context, R.drawable.ic_document),
+								null,
+								null,
+								null
+							)
+							compoundDrawablePadding = 20
+							hint = getString(R.string.type_new_name)
+							text = report.title.toEditable()
+							setTextColor(ContextCompat.getColor(context, R.color.textLight))
+							setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+							compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+						}
+
+						dialogBinding.body.addView(input)
+
+						dialogBinding.positiveButton.apply {
+							text = getString(R.string.save)
+							setOnClickListener {
+								dialogBinding.body.children.forEach { view ->
+									val input = view as EditText
+									val newTitle = input.text.toString().trim()
+
+									newTitle.ifBlank {
+										showSnackbar(getString(R.string.type_valid_name), Utils.SnackBarType.WARNING)
+										return@setOnClickListener
+									}
+
+									lifecycleScope.launch {
+										try {
+											Report.collection.document(report.id).update("title", newTitle)
+											updateHeader { setScreenTitle(newTitle) }
+										} catch (e: Exception) {
+											Log.e(Report.COLLECTION_NAME, "renameReport:failure", e)
+										}
+									}
+								}
+
+								dialog.dismiss()
+							}
+						}
+					}
 				}
 
 				updateHeader { setScreenTitle(report.title) }
@@ -84,11 +225,7 @@ class VisualizarRelatorio : Fragment() {
 					)
 				}
 
-				val symptoms = Symptom.getBetweenDates(
-					report.period_start,
-					report.period_end,
-					deep = true
-				)
+				val symptoms = report.getSymptomsList()
 
 				adapter.submitList(symptoms)
 
@@ -108,6 +245,8 @@ class VisualizarRelatorio : Fragment() {
 					mostAffectedAreaIntensity.chipBackgroundColor = ColorStateList.valueOf(
 						Utils.intensityToColor(requireContext(), intensity)
 					)
+
+
 				}
 
 				populateChart(symptoms)
@@ -200,6 +339,10 @@ class VisualizarRelatorio : Fragment() {
 		}
 	}
 
+	private fun getPatientUserData() {
+		// TODO: precisa de permissões médicas
+	}
+
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
@@ -207,12 +350,14 @@ class VisualizarRelatorio : Fragment() {
 
 	companion object {
 		private const val ARG_REPORT_ID = "report_id"
+		private const val ARG_PATIENT_ID = "patient_id"
 
 		@JvmStatic
-		fun newInstance(id: String) =
+		fun newInstance(id: String, patientId: String? = null) =
 			VisualizarRelatorio().apply {
 				arguments = Bundle().apply {
 					putString(ARG_REPORT_ID, id)
+					putString(ARG_PATIENT_ID, patientId)
 				}
 			}
 	}

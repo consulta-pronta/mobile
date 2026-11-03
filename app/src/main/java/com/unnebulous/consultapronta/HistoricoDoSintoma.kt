@@ -47,6 +47,7 @@ class HistoricoDoSintoma : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		val adapter = SymptomHistoryAdapter()
 

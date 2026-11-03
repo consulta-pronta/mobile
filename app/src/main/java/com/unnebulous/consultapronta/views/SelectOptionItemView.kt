@@ -2,6 +2,7 @@ package com.unnebulous.consultapronta.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.SelectOptionItemViewBinding
 import androidx.core.view.isNotEmpty
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 
 class SelectOptionItemView @JvmOverloads constructor(
 	context: Context,
@@ -23,6 +25,33 @@ class SelectOptionItemView @JvmOverloads constructor(
 	private var isInflating = true
 
 	var itemId: String = ""
+	var checked: Boolean
+		get() = when (type) {
+			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.isChecked
+			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.isChecked
+			else -> false
+		}
+		set(value) {
+			when (type) {
+				Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.isChecked = value
+				Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.isChecked = value
+				else -> {}
+			}
+		}
+
+	var title: String
+		get() = when (type) {
+			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.text.toString()
+			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.text.toString()
+			Utils.SelectOptionItemType.COMPLETE -> binding.title.text.toString()
+		}
+		set(value) = when (type) {
+			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.text = value
+			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.text = value
+			Utils.SelectOptionItemType.COMPLETE -> binding.title.text = value
+		}
+
+	var onRadioChangeListener: ((String) -> Unit)? = null
 
 	init {
 		binding = SelectOptionItemViewBinding.inflate(
@@ -45,14 +74,6 @@ class SelectOptionItemView @JvmOverloads constructor(
 			super.addView(child, index, params)
 		} else {
 			addAside(child)
-		}
-	}
-
-	fun setTitle(title: String) {
-		when (type) {
-			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.text = title
-			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.text = title
-			Utils.SelectOptionItemType.COMPLETE -> binding.title.text = title
 		}
 	}
 
@@ -80,18 +101,31 @@ class SelectOptionItemView @JvmOverloads constructor(
 		binding.aside.removeAllViews()
 	}
 
-	fun getChecked(getInAside: ((SelectOptionItemViewBinding) -> Boolean)? = null): Boolean {
-		return when (type) {
-			Utils.SelectOptionItemType.RADIO -> binding.itemRadioButton.isChecked
-			Utils.SelectOptionItemType.CHECKBOX -> binding.itemCheckboxButton.isChecked
-			Utils.SelectOptionItemType.COMPLETE -> getInAside?.invoke(binding) ?: false
+	fun getCheckedInAside(getInAside: (SelectOptionItemViewBinding) -> Boolean): Boolean {
+		return if (type == Utils.SelectOptionItemType.COMPLETE) {
+			getInAside(binding)
+		} else {
+			false
 		}
+	}
+
+	fun setIcon(imgResId: Int) {
+		if (type != Utils.SelectOptionItemType.COMPLETE) {
+			return
+		}
+
+		binding.icon.setImageResource(imgResId)
 	}
 
 	private fun configType() {
 		when (type) {
 			Utils.SelectOptionItemType.RADIO -> {
 				binding.itemRadioButton.visibility = VISIBLE
+				binding.itemRadioButton.setOnCheckedChangeListener { _, isChecked ->
+					if (isChecked) {
+						onRadioChangeListener?.invoke(itemId)
+					}
+				}
 			}
 
 			Utils.SelectOptionItemType.CHECKBOX -> {

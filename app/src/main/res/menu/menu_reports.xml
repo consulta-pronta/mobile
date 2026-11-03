@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/menu_allowed_professionals"
+		android:title="@string/allowed_professionals"
+		android:icon="@drawable/ic_shield_switch" />
+
+	<item
+		android:id="@+id/menu_rename_report"
+		android:title="@string/rename_report"
+		android:icon="@drawable/ic_edit_square" />
+
+	<item
+		android:id="@+id/menu_delete_report"
+		android:title="@string/delete_report"
+		android:icon="@drawable/ic_bin" />
+</menu>

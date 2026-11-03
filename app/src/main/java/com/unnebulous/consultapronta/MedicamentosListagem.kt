@@ -36,6 +36,7 @@ class MedicamentosListagem : Fragment() {
 				popBackStack()
 			}
 		}
+		resetNavbarEntryActive()
 
 		val adapter = MedicationAdapter()
 		binding.recyclerview.adapter = adapter

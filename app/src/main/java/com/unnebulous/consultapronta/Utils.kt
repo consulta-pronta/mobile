@@ -1,27 +1,30 @@
 package com.unnebulous.consultapronta
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.content.Context
 import android.text.format.DateFormat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.unnebulous.consultapronta.Utils.MedicationRoute.INALATORIO
-import com.unnebulous.consultapronta.Utils.MedicationRoute.INJETAVEL
-import com.unnebulous.consultapronta.Utils.MedicationRoute.OFTALMICO
-import com.unnebulous.consultapronta.Utils.MedicationRoute.OFTOLOGICO
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import kotlin.enums.enumEntries
 
 object Utils {
-	enum class UserType { PATIENT, PROFESSIONAL }
+	const val CPF_MASK = "###.###.###-##"
+	const val PHONE_MASK = "(##) #####-####"
+
+	enum class UserType { PACIENTE, PROFISSIONAL }
 
 	enum class NavbarButton(val id: String) {
 		FIRST("first_element"),
@@ -104,14 +107,54 @@ object Utils {
 		}
 	}
 
+	enum class UF {
+		AC, AL, AP, AM,
+		BA,	CE, DF, ES,
+		GO, MA,	MT,	MS,
+		MG,	PA,	PB, PR,
+		PE,	PI,	RJ,	RN,
+		RS,	RO,	RR,	SC,
+		SP,	SE,	TO
+	}
 
-	fun showDatePicker(fragment: Fragment, onDateSelected: (LocalDate) -> Unit) {
+	enum class BLOODTYPE {
+		A_P, B_P, AB_P, O_P,
+		A_M, B_M, AB_M, O_M;
+
+		val display get() = run {
+			val thisAsString = this.toString()
+			val indexOfLastNameCharacter = thisAsString.indexOf('_') - 1
+			val name = thisAsString.substring(0..indexOfLastNameCharacter)
+
+			if (thisAsString[thisAsString.lastIndex] == 'M') {
+				"$name-"
+			} else {
+				"$name+"
+			}
+		}
+	}
+
+	enum class MedicalAccessStatus { ACTIVE, REVOKED }
+
+	fun showDatePicker(fragment: Fragment, isDateValidatorPointBackward: Boolean = true, defaultDate: LocalDate = LocalDate.now(), onDateSelected: (LocalDate) -> Unit) {
+		val validator = if (isDateValidatorPointBackward) {
+			DateValidatorPointBackward.now()
+		} else {
+			DateValidatorPointForward.now()
+		}
+
 		val constraintBuilder = CalendarConstraints.Builder()
-			.setValidator(DateValidatorPointBackward.now())
+			.setValidator(validator)
+
+		var dateAsLong = MaterialDatePicker.todayInUtcMilliseconds()
+
+		if (!defaultDate.isEqual(LocalDate.now())) {
+			dateAsLong = defaultDate.toEpochMilli()
+		}
 
 		val datePicker = MaterialDatePicker.Builder.datePicker()
 			.setTitleText(fragment.getString(R.string.date_picker_title))
-			.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+			.setSelection(dateAsLong)
 			.setCalendarConstraints(constraintBuilder.build())
 			.build()
 
@@ -149,8 +192,8 @@ object Utils {
 		timePicker.show(fragment.parentFragmentManager, "time_picker")
 	}
 
-	fun buildCpfMask(): MaskWatcher = MaskWatcher("###.###.###-##")
-	fun buildPhoneMask(): MaskWatcher = MaskWatcher("(##) #####-####")
+	fun buildCpfMask(): MaskWatcher = MaskWatcher(CPF_MASK)
+	fun buildPhoneMask(): MaskWatcher = MaskWatcher(PHONE_MASK)
 
 	class MaskWatcher(private val mask: String) : TextWatcher {
 		private var isUpdating: Boolean = false
@@ -193,10 +236,19 @@ object Utils {
 		}
 	}
 
+	fun applyMask(mask: String, value: String, placeholder: Regex = "#".toRegex()) = run {
+		var i = 0
+		mask.replace(placeholder) { value.getOrNull(i++)?.toString() ?: ""}
+	}
+
 	fun intensityToColor(context: Context, intensity: Double) =
 		ContextCompat.getColor(context, when {
 			intensity <= 4 -> R.color.success
 			intensity <= 7 -> R.color.warning
 			else -> R.color.error
 		})
+
+	inline fun <reified T: Enum<T>> stringToEnum(value: String): T? {
+		return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+	}
 }
