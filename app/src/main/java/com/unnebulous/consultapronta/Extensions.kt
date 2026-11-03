@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.Month
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Locale
@@ -128,6 +129,25 @@ fun Context.clearCache() {
 
 fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
 	ostart + (this - istart) * (ostop - ostart) / (istop - istart)
+
+fun LocalDateTime.toBrazillianFullDateAndTime(): String {
+	val month = when (this.month) {
+		Month.JANUARY -> "jan."
+		Month.FEBRUARY -> "fev."
+		Month.MARCH -> "mar."
+		Month.APRIL -> "abr."
+		Month.MAY -> "maio"
+		Month.JUNE -> "jun."
+		Month.JULY -> "jul."
+		Month.AUGUST -> "ago."
+		Month.SEPTEMBER -> "set."
+		Month.OCTOBER -> "out."
+		Month.NOVEMBER -> "nov."
+		Month.DECEMBER -> "dez."
+	}
+
+	return "$dayOfMonth de $month de $year, $hour:$minute"
+}
 
 fun LocalDateTime.toFirestoreTimestamp() =
 	Timestamp(atZone(ZoneId.systemDefault()).toInstant())

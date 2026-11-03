@@ -1,25 +1,44 @@
 package com.unnebulous.consultapronta.recyclerview.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.Consultation
 import com.unnebulous.consultapronta.databinding.CardConsultationsBinding
+import com.unnebulous.consultapronta.toBrazillianFullDateAndTime
 import com.unnebulous.consultapronta.toLocalDateTime
 
-class ConsultationAdapter: ListAdapter<Consultation, ConsultationAdapter.ConsultationViewHolder>(ConsultationComparator()) {
-
-	lateinit var getProfessionalInfo: (String) -> Map<String, String>
+class ConsultationAdapter: ListAdapter<Pair<Consultation, Map<String, String>>, ConsultationAdapter.ConsultationViewHolder>(ConsultationComparator()) {
 	lateinit var acceptRequest: (String) -> Unit
 	lateinit var denyRequest: (String) -> Unit
 
-	override fun getItemViewType(position: Int): Int {
-		return super.getItemViewType(position)
-		// TODO: possivelmente útil para colocar o card de aceitar ou negar consultas propostas pelo profissional
+	private enum class ViewType { VIEW, ACCEPT }
+
+	private fun checkUserCompatibility(status: Consultation.Companion.ConsultationStatus): Boolean {
+		if (
+			status == Consultation.Companion.ConsultationStatus.MARCADA ||
+			status == Consultation.Companion.ConsultationStatus.NEGADA
+		) {
+			return false
+		}
+
+		val statusString = status.toString()
+		val userTypeInStatus = statusString.substring(statusString.indexOf('_') + 1).lowercase()
+		return userTypeInStatus != AuthManager.userInFirestore.user_type.toString().lowercase()
 	}
+
+	override fun getItemViewType(position: Int): Int =
+		if (checkUserCompatibility(getItem(position).first.status)) {
+			ViewType.ACCEPT.ordinal
+		} else {
+			ViewType.VIEW.ordinal
+		}
 
 	override fun onCreateViewHolder(
 		parent: ViewGroup,
@@ -31,7 +50,7 @@ class ConsultationAdapter: ListAdapter<Consultation, ConsultationAdapter.Consult
 			false
 		)
 
-		return ConsultationViewHolder(binding)
+		return ConsultationViewHolder(binding, viewType)
 	}
 
 	override fun onBindViewHolder(holder: ConsultationViewHolder, position: Int) {
@@ -39,21 +58,23 @@ class ConsultationAdapter: ListAdapter<Consultation, ConsultationAdapter.Consult
 	}
 
 	inner class ConsultationViewHolder(
-		private val binding: CardConsultationsBinding
+		private val binding: CardConsultationsBinding,
+		val viewType: Int
 	) : RecyclerView.ViewHolder(binding.root) {
-		fun bind(consultation: Consultation) {
+		fun bind(pair: Pair<Consultation, Map<String, String>>) {
 			binding.apply {
-				val professional = getProfessionalInfo(consultation.id)
+				val consultation = pair.first
+				val professional = pair.second
 
 				professionalName.text = professional["name"]
 				professionalCrm.text = professional["crm"]
 
 				hospital.text = consultation.hospital
 
-				datetime.text = consultation.date_time?.toLocalDateTime()?.format(TODO("Formatação"))
-				// exemplo de data formatada: 12 de jun. de 2026, 09:30
+				datetime.text = consultation.date_time?.toLocalDateTime()?.toBrazillianFullDateAndTime()
 
-				// buttonsLayout.visibility = View.GONE
+				buttonsLayout.isVisible = viewType == ViewType.ACCEPT.ordinal
+
 				positiveButton.setOnClickListener {
 					acceptRequest(consultation.id)
 				}
@@ -65,8 +86,8 @@ class ConsultationAdapter: ListAdapter<Consultation, ConsultationAdapter.Consult
 		}
 	}
 
-	class ConsultationComparator : DiffUtil.ItemCallback<Consultation>() {
-		override fun areItemsTheSame(old: Consultation, new: Consultation) = old.id == new.id
-		override fun areContentsTheSame(old: Consultation, new: Consultation) = old == new
+	class ConsultationComparator : DiffUtil.ItemCallback<Pair<Consultation, Map<String, String>>>() {
+		override fun areItemsTheSame(old: Pair<Consultation, Map<String, String>>, new: Pair<Consultation, Map<String, String>>) = old.first == new.first && old.second == new.second
+		override fun areContentsTheSame(old: Pair<Consultation, Map<String, String>>, new: Pair<Consultation, Map<String, String>>) = old == new
 	}
 }

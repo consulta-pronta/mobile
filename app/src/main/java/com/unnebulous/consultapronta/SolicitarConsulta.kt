@@ -88,6 +88,7 @@ class SolicitarConsulta : Fragment() {
 
 		binding.consultationTimeInput.setOnClickListener {
 			Utils.showTimePicker(this, consultationTime ?: LocalTime.now()) { time ->
+				consultationTime = time
 				val buttonText = time.format(timeFormatter)
 
 				binding.consultationTimeInput.text = buttonText
@@ -96,6 +97,7 @@ class SolicitarConsulta : Fragment() {
 
 		binding.consultationDateInput.setOnClickListener {
 			Utils.showDatePicker(this, false, consultationDate ?: LocalDate.now()) { date ->
+				consultationDate = date
 				val buttonText = if (LocalDate.now().isEqual(date)) {
 					getString(R.string.today)
 				} else {
@@ -170,12 +172,13 @@ class SolicitarConsulta : Fragment() {
 				motivation = motivation,
 				details = details,
 				date_time = LocalDateTime.of(consultationDate, consultationTime).toFirestoreTimestamp(),
-				hospital = hospital
+				hospital = hospital,
+				status = Consultation.Companion.ConsultationStatus.SOLICITADO_PACIENTE
 			)
 
 			lifecycleScope.launch {
 				try {
-					Consultation.collection.add(consultationDoc)
+					Consultation.collection.add(consultationDoc.toMap())
 
 					Log.e(Consultation.COLLECTION_NAME, "requestConsultation:failure")
 					popBackStack()

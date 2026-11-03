@@ -2,7 +2,7 @@ package com.unnebulous.consultapronta.database
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
-import kotlin.String
+import com.unnebulous.consultapronta.getEnum
 
 data class Consultation(
 	override val id: String = "",
@@ -11,7 +11,8 @@ data class Consultation(
 	val motivation: String = "",
 	val details: String? = "",
 	val date_time: Timestamp? = null,
-	val hospital: String
+	val hospital: String,
+	val status: ConsultationStatus = ConsultationStatus.SOLICITADO_PACIENTE
 ): BaseDocument {
 
 	fun toFormData() = FormData(
@@ -20,12 +21,17 @@ data class Consultation(
 		motivation = motivation,
 		details = details,
 		date_time = date_time,
-		hospital = hospital
+		hospital = hospital,
+		status = status
 	)
 
 	companion object {
 		const val COLLECTION_NAME = "consultation"
 		val collection get() = DatabaseManager.userCollection(COLLECTION_NAME)
+
+		enum class ConsultationStatus {
+			SOLICITADO_PACIENTE, SOLICITADO_PROFISSIONAL, MARCADA, NEGADA
+		}
 
 		fun fromDocument(doc: DocumentSnapshot) = Consultation(
 			id = doc.id,
@@ -34,7 +40,8 @@ data class Consultation(
 			motivation = doc["motivation"].toString(),
 			details = doc["details"].toString(),
 			date_time = doc.getTimestamp("date_time"),
-			hospital = doc["hospital"].toString()
+			hospital = doc["hospital"].toString(),
+			status = doc.getEnum<ConsultationStatus>("status")!!
 		)
 
 		data class FormData(
@@ -43,7 +50,8 @@ data class Consultation(
 			val motivation: String,
 			val details: String?,
 			val date_time: Timestamp?,
-			val hospital: String
+			val hospital: String,
+			val status: ConsultationStatus
 		) {
 			fun toMap(): Map<String, Any?> = mapOf(
 				"professional_id" to professional_id,
@@ -51,7 +59,8 @@ data class Consultation(
 				"motivation" to motivation,
 				"details" to details,
 				"date_time" to date_time,
-				"hospital" to hospital
+				"hospital" to hospital,
+				"status" to status.toString().lowercase()
 			)
 		}
 	}
