@@ -274,4 +274,6 @@
 	<string name="my_consultations">Minhas consultas</string>
 	<string name="deny">Negar</string>
 	<string name="accept">Aceitar</string>
+	<string name="crm_profile">CRM:</string>
+	<string name="local_atuacao_profile">Local:</string>
 </resources>

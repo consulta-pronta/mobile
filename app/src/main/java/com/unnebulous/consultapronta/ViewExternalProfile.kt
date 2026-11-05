@@ -3,6 +3,7 @@ package com.unnebulous.consultapronta
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +11,15 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.unnebulous.consultapronta.database.DatabaseManager
+import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentViewExternalProfileBinding
 import com.unnebulous.consultapronta.views.OptionItemView
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class ViewExternalProfile : Fragment() {
 
@@ -20,6 +27,15 @@ class ViewExternalProfile : Fragment() {
 	private val binding get() = _binding!!
 
 	private var isExternalDataMinimized = false
+	private lateinit var userId: String
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		arguments?.let {
+			userId = it.getString(ARG_USER_ID, "ERROR")
+		}
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -41,6 +57,34 @@ class ViewExternalProfile : Fragment() {
 		resetNavbarEntryActive()
 
 		configUserType(Utils.UserType.PROFISSIONAL)
+
+		lifecycleScope.launch {
+			try {
+				// TODO: card de consulta e permissões médicas como forma de acesso
+
+				val user = DatabaseManager
+					.db
+					.collection(User.COLLECTION_NAME)
+					.document(userId)
+					.get()
+					.await()
+
+				val userType = user.getEnum<Utils.UserType>("user_type")
+					?: throw FirebaseAuthInvalidCredentialsException("Invalid user")
+
+				configUserType(userType)
+
+				if (userType == Utils.UserType.PACIENTE) {
+
+				} else {
+					addExternalData(getString(R.string.crm_profile), "CRM ${user["professional_data.crm"].toString()}/${user["professional_data.uf"].toString()}")
+					addExternalData(getString(R.string.local_atuacao_profile), user["professional_data.local_atuacao"].toString())
+				}
+			} catch (e: Exception) {
+
+			}
+
+		}
 
 		binding.minimizeExternalUserDataLayoutButton.setOnClickListener {
 			minimizeExternalUserDataLayout()
@@ -136,5 +180,17 @@ class ViewExternalProfile : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	companion object {
+		private const val ARG_USER_ID = "user_id"
+
+		@JvmStatic
+		fun newInstance(userId: String) =
+			ViewExternalProfile().apply {
+				arguments = Bundle().apply {
+					putString(ARG_USER_ID, userId)
+				}
+			}
 	}
 }

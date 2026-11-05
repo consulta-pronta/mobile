@@ -21,7 +21,7 @@ data class User(
 		fun fromDocument(doc: DocumentSnapshot): User? {
 			if (!doc.exists()) { return null }
 
-			val obj = User(
+			return User(
 				id = doc.id,
 				email = doc["email"].toString(),
 				name = doc["name"].toString(),
@@ -30,9 +30,6 @@ data class User(
 				user_type = doc.getEnum<Utils.UserType>("user_type"),
 				created_at = doc.getTimestamp("created_at"),
 			)
-			Log.i("das", obj.toString())
-
-			return obj
 		}
 
 		data class FormData(
