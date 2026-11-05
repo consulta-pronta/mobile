@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/shape_rounded_background"
+	android:backgroundTint="@color/surface"
+	android:padding="@dimen/default_card_padding" >
+
+	<TextView
+		android:id="@+id/notification_subject"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textStyle="bold"
+		android:textColor="@color/textDark"
+		android:textSize="20sp"
+
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+
+		tools:text="@tools:sample/lorem"/>
+
+	<CheckBox
+		android:id="@+id/checkbox"
+
+		android:layout_width="30dp"
+		android:layout_height="30dp"
+
+		app:buttonTint="@color/textDark"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+		android:id="@+id/notification_content"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/primary"
+		android:paddingTop="@dimen/default_inner_elements_spacing"
+
+		app:layout_constraintTop_toBottomOf="@id/notification_subject"
+		app:layout_constraintStart_toStartOf="parent"
+
+		tools:text="@string/medication_card_use_time" />
+
+	<LinearLayout
+		android:id="@+id/medication_main"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingTop="@dimen/default_inner_elements_spacing"
+
+		app:layout_constraintTop_toBottomOf="@id/notification_content"
+		app:layout_constraintStart_toStartOf="parent">
+
+		<TextView
+			android:id="@+id/notification_date_text"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primary"
+			android:drawablePadding="@dimen/date_drawable_padding"
+
+			app:drawableStartCompat="@drawable/ic_calendar"
+			app:drawableTint="@color/textDark"
+
+			tools:text="@string/placeholder_date"/>
+
+		<TextView
+			android:id="@+id/datetime"
+
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primary"
+			android:drawablePadding="@dimen/date_drawable_padding"
+			android:layout_marginStart="10dp"
+
+			app:drawableTint="@color/textDark"
+			app:drawableStartCompat="@drawable/ic_clock"
+
+			tools:text="@tools:sample/lorem" />
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
