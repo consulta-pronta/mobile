@@ -6,8 +6,11 @@ import android.view.MotionEvent
 import android.view.TouchDelegate
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
+import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
 import com.unnebulous.consultapronta.views.NavbarView
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +40,10 @@ class MainActivity : AppCompatActivity() {
 			setOnClickListener(Utils.NavbarButton.FIFTH) {
 				changeFragment(Mais(), fragmentId)
 			}
+		}
+
+		lifecycleScope.launch {
+			AuthManager.userInFirestore = AuthManager.getUserData()!!
 		}
 	}
 

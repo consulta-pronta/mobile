@@ -194,24 +194,18 @@
 			app:drawableStartCompat="@drawable/ic_asterisk"
 			app:drawableTint="@color/error" />
 
-		<Button
-			android:id="@+id/select_hospital"
+		<EditText
+			android:id="@+id/hospital"
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/select_hospital"
-			android:textAlignment="viewStart"
-			android:textColor="@color/textDark60"
-			android:padding="@dimen/default_card_padding"
-			android:insetTop="0dp"
-			android:insetBottom="0dp"
-
-			app:icon="@drawable/ic_arrow_down"
-			app:iconSize="30dp"
-			app:iconGravity="end"
-			app:iconTint="@color/primaryDark"
-			app:backgroundTint="@color/surface"
-			app:cornerRadius="@dimen/big_button_corner_radius" />
+			android:background="@drawable/shape_input"
+			android:backgroundTint="@color/surface"
+			android:hint="@string/type_hospital_name"
+			android:inputType="text"
+			android:autofillHints="name"
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60" />
 
 		<Button
 			android:id="@+id/request_consultation_button"

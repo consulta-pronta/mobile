@@ -8,6 +8,8 @@ object AuthManager {
 
 	val user get() = auth.currentUser
 
+	lateinit var userInFirestore: User
+
 	val uid get() = user?.uid
 
 	suspend fun getUserData(): User? {
