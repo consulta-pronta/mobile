@@ -33,6 +33,9 @@ class Home : Fragment() {
 
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
+			setNotificationButtonOnClickListener {
+				changeFragmentWithBackStack(Notifications())
+			}
 		}
 		setNavbarEntryActive(Utils.NavbarButton.FIRST)
 

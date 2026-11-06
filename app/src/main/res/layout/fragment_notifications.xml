@@ -43,8 +43,16 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			/>
 
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/card_list"
 
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="@dimen/default_inner_elements_spacing"
 
+			app:layout_constraintTop_toBottomOf="@id/reload"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
 
 
 	</androidx.constraintlayout.widget.ConstraintLayout>

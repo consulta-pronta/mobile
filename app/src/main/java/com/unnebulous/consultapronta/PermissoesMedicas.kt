@@ -234,7 +234,7 @@ class PermissoesMedicas : Fragment() {
 		}
 
 		binding.recyclerview.adapter = adapter
-		binding.recyclerview.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+		binding.recyclerview.addItemDecoration(recyclerviewSpacing)
 
 		medicalPermissionsListener = MedicalPermission
 			.collection

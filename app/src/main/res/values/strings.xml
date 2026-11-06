@@ -275,5 +275,6 @@
 	<string name="deny">Negar</string>
 	<string name="accept">Aceitar</string>
 	<string name="reload_text">Recarregar</string>
+	<string name="title_notifications_page">Notificações</string>
 	<string name="as_read_text">Marcar todos como lidos</string>
 </resources>
