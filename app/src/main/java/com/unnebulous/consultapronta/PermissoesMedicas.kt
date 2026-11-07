@@ -231,6 +231,10 @@ class PermissoesMedicas : Fragment() {
 					null -> null
 				}
 			}
+
+			onCardClick = { userId ->
+				changeFragmentWithBackStack(ViewExternalProfile.newInstance(userId))
+			}
 		}
 
 		binding.recyclerview.adapter = adapter
