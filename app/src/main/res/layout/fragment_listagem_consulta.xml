@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+
+	tools:context=".ListagemConsulta">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:divider="@drawable/divider_default"
+		android:showDividers="middle">
+
+		<Button
+			android:id="@+id/request_consultation"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/request_consultation"
+			android:textColor="@color/textLight"
+			android:insetBottom="0dp"
+
+			app:backgroundTint="@color/primary"
+			app:cornerRadius="@dimen/big_button_corner_radius" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/consultations_proposed_professional"
+			android:textStyle="bold"
+			android:textSize="20sp"/>
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recyclerview_proposed"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:nestedScrollingEnabled="false"
+
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/consultations_scheduled"
+			android:textStyle="bold"
+			android:textSize="20sp"/>
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recyclerview_scheduled"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:nestedScrollingEnabled="false"
+
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/consultations_requested"
+			android:textStyle="bold"
+			android:textSize="20sp"/>
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recyclerview_requested"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:nestedScrollingEnabled="false"
+
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+	</LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -88,7 +88,9 @@ class Mais : Fragment() {
 		// AVISO: DEVE ESTAR NA ORDEM QUE APARECE NO FIGMA
 		val options = listOf(
 			// opção de informações de saúde
-			// opção de permissões médicas
+			MenuOption(R.drawable.ic_shield_switch, R.string.medical_permissions_title){
+				PermissoesMedicas()
+			},
 			MenuOption(R.drawable.ic_reports, R.string.reports_text) {
 				RelatoriosListagem()
 			},
@@ -99,7 +101,7 @@ class Mais : Fragment() {
 				MedicamentosListagem()
 			},
 			MenuOption(R.drawable.ic_appointment, R.string.appointments_text) {
-				TODO()
+				ListagemConsulta()
 			},
 		)
 

@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.unnebulous.consultapronta.Utils.stringToEnum
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.SnackbarBinding
@@ -21,11 +22,11 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.Month
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Locale
 import java.util.Locale.getDefault
-import kotlin.enums.enumEntries
 import kotlin.math.abs
 
 fun AppCompatActivity.changeFragment(fragment: Fragment, containerId: Int) {
@@ -113,6 +114,10 @@ fun Fragment.resetNavbarEntryActive() {
 	(activity as? MainActivity)?.resetNavbarEntryActive()
 }
 
+val Fragment.recyclerviewSpacing get() = resources.getDimensionPixelSize(
+	R.dimen.default_inner_elements_spacing
+)
+
 fun Context.clearCache() {
 	try {
 		cacheDir.deleteRecursively()
@@ -124,6 +129,37 @@ fun Context.clearCache() {
 
 fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
 	ostart + (this - istart) * (ostop - ostart) / (istop - istart)
+
+fun LocalDateTime.toBrazillianFullDateAndTime(): String {
+	val month = when (this.month) {
+		Month.JANUARY -> "jan."
+		Month.FEBRUARY -> "fev."
+		Month.MARCH -> "mar."
+		Month.APRIL -> "abr."
+		Month.MAY -> "maio"
+		Month.JUNE -> "jun."
+		Month.JULY -> "jul."
+		Month.AUGUST -> "ago."
+		Month.SEPTEMBER -> "set."
+		Month.OCTOBER -> "out."
+		Month.NOVEMBER -> "nov."
+		Month.DECEMBER -> "dez."
+	}
+
+	val hour = if (hour >= 10) {
+		hour.toString()
+	} else {
+		"0$hour"
+	}
+
+	val minute = if (minute >= 10) {
+		minute.toString()
+	} else {
+		"0$minute"
+	}
+
+	return "$dayOfMonth de $month de $year, $hour:$minute"
+}
 
 fun LocalDateTime.toFirestoreTimestamp() =
 	Timestamp(atZone(ZoneId.systemDefault()).toInstant())
@@ -147,8 +183,7 @@ fun Timestamp.toLocalDateTime(): LocalDateTime =
 	toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
 
 inline fun <reified T: Enum<T>> DocumentSnapshot.getEnum(field: String): T? {
-	val value = get(field).toString()
-	return enumEntries<T>().find { it.name.equals(value, ignoreCase = true) }
+	return stringToEnum<T>(get(field).toString())
 }
 
 fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
