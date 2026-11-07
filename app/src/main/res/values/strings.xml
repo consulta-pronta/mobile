@@ -275,5 +275,8 @@
 	<string name="deny">Negar</string>
 	<string name="accept">Aceitar</string>
 	<string name="crm_profile">CRM:</string>
-	<string name="local_atuacao_profile">Local:</string>
+	<string name="operation_area_profile">Local:</string>
+	<string name="error_not_fetching_external_user">Não foi possível pegar o usuário</string>
+	<string name="speciality_profile">Especialidade:</string>
+	<string name="easter_fetching_patient">Como que tá pegando paciente???</string>
 </resources>
