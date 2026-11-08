@@ -9,8 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -29,8 +31,38 @@ import kotlin.properties.Delegates
 
 class Cadastro : Fragment() {
 
+	/* TODO
+	* - Verificação de inputs a cada parte
+	* - Dados de gênero e nome social (consultar web)
+	* - Especialidade do profissional
+	* - Botão "Próximo" alterar texto para "Cadastrar" na última parte
+	* - local_atuacao para operation_area
+	* */
+
 	private var _binding: FragmentCadastroBinding? = null
 	private val binding get() = _binding!!
+
+	private var part by Delegates.observable(1) { _, old, new ->
+		binding.apply {
+			when (old) {
+				1 -> firstPart.isVisible = false
+				2 -> secondPart.isVisible = false
+				3 -> thirdPart.isVisible = false
+			}
+
+			when (new) {
+				1 -> {
+					firstPart.isVisible = true
+					previousButton.isVisible = false
+				}
+				2 -> {
+					secondPart.isVisible = true
+					previousButton.isVisible = true
+				}
+				3 -> thirdPart.isVisible = true
+			}
+		}
+	}
 
 	var userType = Utils.UserType.PACIENTE
 	lateinit var name: String
@@ -94,73 +126,15 @@ class Cadastro : Fragment() {
 		}
 
 		binding.createAccountButton.setOnClickListener {
-			name = binding.nameInput.text.toString()
-			userType = binding.userTypeSwitch.option as Utils.UserType
-			cpf = binding.cpfInput.text.toString()
-			email = binding.emailInput.text.toString()
-			phoneNumber = binding.phoneNumberInput.text.toString()
-			password = binding.passwordInput.text.toString()
-
-			if (userType == Utils.UserType.PACIENTE) {
-				weight = binding.weightInput.text.toString().toFloatOrNull()
-				height = binding.heightInput.text.toString().toFloatOrNull()
-				bloodType = binding.bloodtypeInput.text.toString()
+			if (part == 3) {
+				signUp(validPassword)
 			} else {
-				crm = binding.crmInput.text.toString()
-				uf = binding.crmUfInput.text.toString()
-				placeAction = binding.placeActionInput.text.toString()
+				part++
 			}
+		}
 
-			val passwordIsTheSame = password == binding.confirmPasswordInput.text.toString()
-
-			var oneOrMoreInputBlank = false
-
-			val inputs = mutableListOf(name, cpf, email, phoneNumber, password)
-			val userInputs = if (userType == Utils.UserType.PACIENTE){
-				listOf(bloodType)
-			} else {
-				listOf(crm, uf, placeAction)
-			}
-
-			inputs.addAll(userInputs)
-			for (item in inputs) {
-				if (item.trim().isBlank()) {
-					oneOrMoreInputBlank = true
-					break
-				}
-			}
-
-			val userInputVerification = if (userType == Utils.UserType.PACIENTE) {
-				weight != null && height != null
-			} else {
-				true
-			}
-
-			if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank && userInputVerification) {
-//				(activity as AuthActivity).userTemp.apply {
-//					this.name = name
-//					this.userType = userType
-//					this.cpf = cpf
-//					this.email = email
-//					this.phoneNumber = phoneNumber
-//					this.password = password
-//
-//					this.contactForms["email"] = this.email
-//					this.contactForms["sms"] = this.phoneNumber
-//				}
-				AuthManager.auth.createUserWithEmailAndPassword(email, password)
-					.addOnCompleteListener { task -> handlePostSignUp(task) }
-			} else {
-				val error = if (oneOrMoreInputBlank || !userInputVerification) {
-					getString(R.string.error_blank_input)
-				} else if (!validPassword) {
-					getString(R.string.error_password_not_valid)
-				} else {
-					getString(R.string.error_password_not_the_same)
-				}
-
-				showSnackbar(error, Utils.SnackBarType.WARNING)
-			}
+		binding.previousButton.setOnClickListener {
+			part--
 		}
 
 		binding.passwordInput.setOnFocusChangeListener { _, hasFocus ->
@@ -233,6 +207,76 @@ class Cadastro : Fragment() {
 
 		binding.cpfInput.addTextChangedListener(Utils.buildCpfMask())
 		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
+	}
+
+	private fun signUp(validPassword: Boolean) {
+		name = binding.nameInput.text.toString()
+		userType = binding.userTypeSwitch.option as Utils.UserType
+		cpf = binding.cpfInput.text.toString()
+		email = binding.emailInput.text.toString()
+		phoneNumber = binding.phoneNumberInput.text.toString()
+		password = binding.passwordInput.text.toString()
+
+		if (userType == Utils.UserType.PACIENTE) {
+			weight = binding.weightInput.text.toString().toFloatOrNull()
+			height = binding.heightInput.text.toString().toFloatOrNull()
+			bloodType = binding.bloodtypeInput.text.toString()
+		} else {
+			crm = binding.crmInput.text.toString()
+			uf = binding.crmUfInput.text.toString()
+			placeAction = binding.placeActionInput.text.toString()
+		}
+
+		val passwordIsTheSame = password == binding.confirmPasswordInput.text.toString()
+
+		var oneOrMoreInputBlank = false
+
+		val inputs = mutableListOf(name, cpf, email, phoneNumber, password)
+		val userInputs = if (userType == Utils.UserType.PACIENTE){
+			listOf(bloodType)
+		} else {
+			listOf(crm, uf, placeAction)
+		}
+
+		inputs.addAll(userInputs)
+		for (item in inputs) {
+			if (item.trim().isBlank()) {
+				oneOrMoreInputBlank = true
+				break
+			}
+		}
+
+		val userInputVerification = if (userType == Utils.UserType.PACIENTE) {
+			weight != null && height != null
+		} else {
+			true
+		}
+
+		if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank && userInputVerification) {
+//				(activity as AuthActivity).userTemp.apply {
+//					this.name = name
+//					this.userType = userType
+//					this.cpf = cpf
+//					this.email = email
+//					this.phoneNumber = phoneNumber
+//					this.password = password
+//
+//					this.contactForms["email"] = this.email
+//					this.contactForms["sms"] = this.phoneNumber
+//				}
+			AuthManager.auth.createUserWithEmailAndPassword(email, password)
+				.addOnCompleteListener { task -> handlePostSignUp(task) }
+		} else {
+			val error = if (oneOrMoreInputBlank || !userInputVerification) {
+				getString(R.string.error_blank_input)
+			} else if (!validPassword) {
+				getString(R.string.error_password_not_valid)
+			} else {
+				getString(R.string.error_password_not_the_same)
+			}
+
+			showSnackbar(error, Utils.SnackBarType.WARNING)
+		}
 	}
 
 	private fun setupSelect(select: MaterialAutoCompleteTextView, array: Array<String>) {

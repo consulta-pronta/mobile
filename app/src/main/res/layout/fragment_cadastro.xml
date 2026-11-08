@@ -223,7 +223,10 @@
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
 				android:showDividers="middle"
-				android:divider="@drawable/divider_default">
+				android:divider="@drawable/divider_default"
+				android:visibility="gone"
+
+				tools:visibility="visible">
 
 				<EditText
 					android:id="@+id/location_input"
@@ -238,10 +241,7 @@
 					android:hint="@string/location_input"
 					android:inputType="text"
 					android:textColor="@color/textLight"
-					android:textColorHint="@color/textLight60"
-					android:visibility="gone"
-
-					tools:visibility="visible"/>
+					android:textColorHint="@color/textLight60" />
 
 			</LinearLayout>
 
@@ -425,17 +425,41 @@
 
 			</LinearLayout>
 
-			<Button
-				android:id="@+id/create_account_button"
-
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/create_account"
-				android:textColor="@color/primaryDark"
-				android:insetBottom="0dp"
+				android:orientation="horizontal"
+				android:showDividers="middle"
+				android:divider="@drawable/divider_list">
+				<Button
+					android:id="@+id/previous_button"
 
-				app:backgroundTint="@color/accent"
-				app:cornerRadius="@dimen/big_button_corner_radius" />
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:text="@string/previous_label"
+					android:textColor="@color/textLight"
+					android:insetBottom="0dp"
+					android:layout_weight="1"
+					android:visibility="gone"
+
+					app:backgroundTint="@color/primary"
+					app:cornerRadius="@dimen/big_button_corner_radius"
+
+					tools:visibility="visible"/>
+
+				<Button
+					android:id="@+id/create_account_button"
+
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:text="@string/next_label"
+					android:textColor="@color/primaryDark"
+					android:insetBottom="0dp"
+					android:layout_weight="1"
+
+					app:backgroundTint="@color/accent"
+					app:cornerRadius="@dimen/big_button_corner_radius" />
+			</LinearLayout>
 
 			<!-- NOT AVAILABLE BY NOW -->
 			<Button

@@ -280,4 +280,6 @@
 	<string name="error_not_fetching_external_user">Não foi possível pegar o usuário</string>
 	<string name="speciality_profile">Especialidade:</string>
 	<string name="easter_fetching_patient">Como que tá pegando paciente???</string>
+	<string name="previous_label">Voltar</string>
+	<string name="next_label">Próximo</string>
 </resources>
