@@ -12,6 +12,7 @@ data class User(
 	val name: String = "",
 	val phone: String = "",
 	val cpf: String = "",
+	val address: String = "",
 	val user_type: Utils.UserType? = Utils.UserType.PACIENTE,
 	val created_at: Timestamp? = null,
 ): BaseDocument {
@@ -27,6 +28,7 @@ data class User(
 				name = doc["name"].toString(),
 				phone = doc["phone"].toString(),
 				cpf = doc["cpf"].toString(),
+				address = doc["address"].toString(),
 				user_type = doc.getEnum<Utils.UserType>("user_type"),
 				created_at = doc.getTimestamp("created_at"),
 			)
@@ -37,6 +39,7 @@ data class User(
 			var name: String,
 			var phone: String,
 			var cpf: String,
+			var address: String,
 			var user_type: Utils.UserType,
 			var created_at: Timestamp,
 		) {
@@ -45,6 +48,7 @@ data class User(
 				"name" to name,
 				"phone" to phone,
 				"cpf" to cpf,
+				"address" to address,
 				"user_type" to user_type.toString().lowercase(),
 				"created_at" to created_at
 			)

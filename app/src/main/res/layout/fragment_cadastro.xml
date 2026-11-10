@@ -115,6 +115,8 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:visibility="gone"
+					android:divider="@drawable/divider_list"
+					android:showDividers="middle"
 
 					tools:visibility="visible" >
 					<TextView
@@ -148,6 +150,18 @@
 						android:layout_height="wrap_content"
 						android:textColor="@color/error"
 						android:text="@string/password_numbers_error"
+						android:drawablePadding="@dimen/default_drawable_icon_padding"
+
+						app:drawableStartCompat="@drawable/ic_error_circle"
+						app:drawableTint="@color/error" />
+
+					<TextView
+						android:id="@+id/password_error_equals"
+
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/error"
+						android:text="@string/password_equals_error"
 						android:drawablePadding="@dimen/default_drawable_icon_padding"
 
 						app:drawableStartCompat="@drawable/ic_error_circle"
@@ -228,7 +242,7 @@
 					android:textColorHint="@color/textLight60" />
 
 				<EditText
-					android:id="@+id/location_input"
+					android:id="@+id/address_input"
 
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"

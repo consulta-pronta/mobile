@@ -282,4 +282,5 @@
 	<string name="easter_fetching_patient">Como que tá pegando paciente???</string>
 	<string name="previous_label">Voltar</string>
 	<string name="next_label">Próximo</string>
+	<string name="password_equals_error">As senhas são iguais</string>
 </resources>

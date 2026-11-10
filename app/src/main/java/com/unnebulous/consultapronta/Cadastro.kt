@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -32,7 +33,6 @@ import kotlin.properties.Delegates
 class Cadastro : Fragment() {
 
 	/* TODO
-	* - Verificação de inputs a cada parte
 	* - Dados de gênero e nome social (consultar web)
 	* - Especialidade do profissional
 	* */
@@ -67,17 +67,21 @@ class Cadastro : Fragment() {
 	}
 
 	var userType = Utils.UserType.PACIENTE
-	lateinit var name: String
-	lateinit var cpf: String
-	lateinit var email: String
-	lateinit var phoneNumber: String
-	lateinit var password: String
+	var email = ""
+	var phoneNumber = ""
+	var password = ""
+	var confirmPassword = ""
+	var isPasswordValid = false
+	var isPasswordCorrect = false
+	var name = ""
+	var cpf = ""
+	var address = ""
 	var weight: Float? = null
 	var height: Float? = null
-	lateinit var bloodType: String
-	lateinit var crm: String
-	lateinit var uf: String
-	lateinit var operationArea: String
+	var bloodType = ""
+	var crm = ""
+	var uf = ""
+	var operationArea = ""
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -92,8 +96,6 @@ class Cadastro : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		binding.userTypeSwitch.option = Utils.UserType.PACIENTE
-
-		var validPassword = false
 
 		val ufs = Utils.UF.entries.map { it.name }.toTypedArray()
 		setupSelect(binding.crmUfInput, ufs)
@@ -129,8 +131,23 @@ class Cadastro : Fragment() {
 
 		binding.createAccountButton.setOnClickListener {
 			if (part == 3) {
-				signUp(validPassword)
-			} else {
+				if (verifyInputs()) {
+//				    (activity as AuthActivity).userTemp.apply {
+//				    	this.name = name
+//					    this.userType = userType
+//					    this.cpf = cpf
+//					    this.email = email
+//					    this.phoneNumber = phoneNumber
+//					    this.password = password
+//
+//					    this.contactForms["email"] = this.email
+//					    this.contactForms["sms"] = this.phoneNumber
+//				    }
+
+					AuthManager.auth.createUserWithEmailAndPassword(email, password)
+						.addOnCompleteListener { task -> handlePostSignUp(task) }
+				}
+			} else if (verifyInputs()) {
 				part++
 			}
 		}
@@ -139,146 +156,10 @@ class Cadastro : Fragment() {
 			part--
 		}
 
-		binding.passwordInput.setOnFocusChangeListener { _, hasFocus ->
-			if (hasFocus) {
-				binding.passwordErrorsLayout.visibility = View.VISIBLE
-			} else {
-				binding.passwordErrorsLayout.visibility = View.GONE
-			}
-		}
-		
-		binding.passwordInput.doOnTextChanged { text, _, _, _ ->
-			text?.let {
-				val drawables = Array(3) {0}
-				val colors = Array(3) {0}
-
-				val successColor = ContextCompat.getColor(requireContext(), R.color.success)
-				val errorColor = ContextCompat.getColor(requireContext(), R.color.error)
-
-				// para os leigos, isso é uma função lambda
-				val changeTextViewDrawableColors: (TextView, Int) -> Unit = { view, color ->
-					// loop for para acessar todos os drawables (top, bottom, start, end)
-					for (drawable in view.compoundDrawables) {
-						drawable?.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
-						/*
-						* Isso aplica um filtro de cor do tipo "PorterDuff"
-						* (Segundo pesquisas, PorterDuff se refere a dois bros da informática: Thomas Porter e Tom Duff, criadores dessa
-						* técnica de composição de imagens)
-						* O modo SRC_IN dita que só será aplicado o filtro aonde tem pixel. Se for transparente, não será aplicado
-						* */
-					}
-				}
-
-				var haveLowercase = false
-				var haveUppercase = false
-				var haveNumber = false
-
-				it.forEach { char ->
-					haveLowercase = (char.isLowerCase() || haveLowercase)
-					haveUppercase = (char.isUpperCase() || haveUppercase)
-					haveNumber = (char.isDigit() || haveNumber)
-				}
-
-				val isGreaterOrEqualThan8 = it.length >= 8
-				val haveLowerAndUppercase = haveLowercase && haveUppercase
-
-				colors[0] = if (isGreaterOrEqualThan8) successColor else errorColor
-				drawables[0] = if (isGreaterOrEqualThan8) R.drawable.ic_check_circle else R.drawable.ic_error_circle
-
-				colors[1] = if (haveLowerAndUppercase) successColor else errorColor
-				drawables[1] = if (haveLowerAndUppercase) R.drawable.ic_check_circle else R.drawable.ic_error_circle
-
-				colors[2] = if (haveNumber) successColor else errorColor
-				drawables[2] = if (haveNumber) R.drawable.ic_check_circle else R.drawable.ic_error_circle
-
-				binding.passwordErrorLength.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], 0, 0, 0)
-				changeTextViewDrawableColors(binding.passwordErrorLength, colors[0])
-				binding.passwordErrorLength.setTextColor(colors[0])
-
-				binding.passwordErrorCaps.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[1], 0, 0, 0)
-				changeTextViewDrawableColors(binding.passwordErrorCaps, colors[1])
-				binding.passwordErrorCaps.setTextColor(colors[1])
-
-				binding.passwordErrorNumbers.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[2], 0, 0, 0)
-				changeTextViewDrawableColors(binding.passwordErrorNumbers, colors[2])
-				binding.passwordErrorNumbers.setTextColor(colors[2])
-
-				validPassword = isGreaterOrEqualThan8 && haveLowerAndUppercase && haveNumber
-			}
-		}
+		configPasswordInputs()
 
 		binding.cpfInput.addTextChangedListener(Utils.buildCpfMask())
 		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
-	}
-
-	private fun signUp(validPassword: Boolean) {
-		name = binding.nameInput.text.toString()
-		userType = binding.userTypeSwitch.option as Utils.UserType
-		cpf = binding.cpfInput.text.toString()
-		email = binding.emailInput.text.toString()
-		phoneNumber = binding.phoneNumberInput.text.toString()
-		password = binding.passwordInput.text.toString()
-
-		if (userType == Utils.UserType.PACIENTE) {
-			weight = binding.weightInput.text.toString().toFloatOrNull()
-			height = binding.heightInput.text.toString().toFloatOrNull()
-			bloodType = binding.bloodtypeInput.text.toString()
-		} else {
-			crm = binding.crmInput.text.toString()
-			uf = binding.crmUfInput.text.toString()
-			operationArea = binding.operationAreaInput.text.toString()
-		}
-
-		val passwordIsTheSame = password == binding.confirmPasswordInput.text.toString()
-
-		var oneOrMoreInputBlank = false
-
-		val inputs = mutableListOf(name, cpf, email, phoneNumber, password)
-		val userInputs = if (userType == Utils.UserType.PACIENTE){
-			listOf(bloodType)
-		} else {
-			listOf(crm, uf, operationArea)
-		}
-
-		inputs.addAll(userInputs)
-		for (item in inputs) {
-			if (item.trim().isBlank()) {
-				oneOrMoreInputBlank = true
-				break
-			}
-		}
-
-		val userInputVerification = if (userType == Utils.UserType.PACIENTE) {
-			weight != null && height != null
-		} else {
-			true
-		}
-
-		if (passwordIsTheSame && validPassword && !oneOrMoreInputBlank && userInputVerification) {
-//				(activity as AuthActivity).userTemp.apply {
-//					this.name = name
-//					this.userType = userType
-//					this.cpf = cpf
-//					this.email = email
-//					this.phoneNumber = phoneNumber
-//					this.password = password
-//
-//					this.contactForms["email"] = this.email
-//					this.contactForms["sms"] = this.phoneNumber
-//				}
-			AuthManager.auth.createUserWithEmailAndPassword(email, password)
-				.addOnCompleteListener { task -> handlePostSignUp(task) }
-		} else {
-			val error = if (oneOrMoreInputBlank || !userInputVerification) {
-				getString(R.string.error_blank_input)
-			} else if (!validPassword) {
-				getString(R.string.error_password_not_valid)
-			} else {
-				getString(R.string.error_password_not_the_same)
-			}
-
-			showSnackbar(error, Utils.SnackBarType.WARNING)
-		}
 	}
 
 	private fun setupSelect(select: MaterialAutoCompleteTextView, array: Array<String>) {
@@ -296,22 +177,73 @@ class Cadastro : Fragment() {
 		}
 
 	private fun verifyInputs(): Boolean {
-		val isValid = true
+		var isValid = true
+		var oneOrMoreInputBlank = false
+
+		val verifyInputsList: (List<String>) -> Unit = { inputs ->
+			oneOrMoreInputBlank = false
+			for (item in inputs) {
+				if (item.trim().isBlank()) {
+					oneOrMoreInputBlank = true
+					break
+				}
+			}
+
+		}
 
 		binding.apply {
 			when (part) {
 				1 -> {
+					email = emailInput.text.toString().trim()
+					phoneNumber = phoneNumberInput.text.toString().trim()
 
+					verifyInputsList(listOf(email, phoneNumber))
+
+					isValid = !oneOrMoreInputBlank && isPasswordCorrect
 				}
 
 				2 -> {
+					name = nameInput.text.toString().trim()
+					cpf = cpfInput.text.toString().trim()
+					address = addressInput.toString().trim()
 
+					verifyInputsList(listOf(name, cpf, address))
+
+					isValid = !oneOrMoreInputBlank
 				}
 
 				3 -> {
+					isValid = if (userType == Utils.UserType.PACIENTE) {
+						weight = binding.weightInput.text.toString().trim().toFloatOrNull()
+						height = binding.heightInput.text.toString().trim().toFloatOrNull()
+						bloodType = binding.bloodtypeInput.text.toString().trim()
 
+						verifyInputsList(listOf(bloodType))
+
+						!oneOrMoreInputBlank && weight != null && height != null
+					} else {
+						crm = binding.crmInput.text.toString().trim()
+						uf = binding.crmUfInput.text.toString().trim()
+						operationArea = binding.operationAreaInput.text.toString().trim()
+
+						verifyInputsList(listOf(crm, uf, operationArea))
+
+						!oneOrMoreInputBlank
+					}
 				}
 			}
+		}
+
+		if (!isValid) {
+			val error = if (oneOrMoreInputBlank || weight == null || height == null) {
+				getString(R.string.error_blank_input)
+			} else if (!isPasswordValid) {
+				getString(R.string.error_password_not_valid)
+			} else {
+				getString(R.string.error_password_not_the_same)
+			}
+
+			showSnackbar(error, Utils.SnackBarType.WARNING)
 		}
 
 		return isValid
@@ -320,6 +252,115 @@ class Cadastro : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	private fun configPasswordInputs() {
+		val drawables = Array(4) {0}
+		val colors = Array(4) {0}
+
+		val successColor = ContextCompat.getColor(requireContext(), R.color.success)
+		val errorColor = ContextCompat.getColor(requireContext(), R.color.error)
+
+		val successDrawable = R.drawable.ic_check_circle
+		val errorDrawable = R.drawable.ic_error_circle
+
+		// para os leigos, isso é uma função lambda
+		val changeTextViewDrawableColors: (TextView, Int) -> Unit = { view, color ->
+			// loop for para acessar todos os drawables (top, bottom, start, end)
+			for (drawable in view.compoundDrawables) {
+				drawable?.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+				/*
+				* Isso aplica um filtro de cor do tipo "PorterDuff"
+				* (Segundo pesquisas, PorterDuff se refere a dois bros da informática: Thomas Porter e Tom Duff, criadores dessa
+				* técnica de composição de imagens)
+				* O modo SRC_IN dita que só será aplicado o filtro aonde tem pixel. Se for transparente, não será aplicado
+				* */
+			}
+		}
+
+		binding.passwordInput.doOnTextChanged { text, _, _, _ ->
+			text?.let {
+				password = text.toString()
+
+				var haveLowercase = false
+				var haveUppercase = false
+				var haveNumber = false
+
+				it.forEach { char ->
+					haveLowercase = (char.isLowerCase() || haveLowercase)
+					haveUppercase = (char.isUpperCase() || haveUppercase)
+					haveNumber = (char.isDigit() || haveNumber)
+				}
+
+				val isGreaterOrEqualThan8 = it.length >= 8
+				val haveLowerAndUppercase = haveLowercase && haveUppercase
+				val isEqualConfirmPassword = password.isNotBlank() && confirmPassword.isNotBlank() && password == confirmPassword
+
+				colors[0] = if (isGreaterOrEqualThan8) successColor else errorColor
+				drawables[0] = if (isGreaterOrEqualThan8) successDrawable else errorDrawable
+
+				colors[1] = if (haveLowerAndUppercase) successColor else errorColor
+				drawables[1] = if (haveLowerAndUppercase) successDrawable else errorDrawable
+
+				colors[2] = if (haveNumber) successColor else errorColor
+				drawables[2] = if (haveNumber) successDrawable else errorDrawable
+
+				colors[3] = if (isEqualConfirmPassword) successColor else errorColor
+				drawables[3] = if (isEqualConfirmPassword) successDrawable else errorDrawable
+
+				binding.passwordErrorLength.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorLength, colors[0])
+				binding.passwordErrorLength.setTextColor(colors[0])
+
+				binding.passwordErrorCaps.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[1], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorCaps, colors[1])
+				binding.passwordErrorCaps.setTextColor(colors[1])
+
+				binding.passwordErrorNumbers.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[2], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorNumbers, colors[2])
+				binding.passwordErrorNumbers.setTextColor(colors[2])
+
+				binding.passwordErrorEquals.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[3], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorEquals, colors[3])
+				binding.passwordErrorEquals.setTextColor(colors[3])
+
+				isPasswordValid = isGreaterOrEqualThan8 && haveLowerAndUppercase && haveNumber
+				isPasswordCorrect = isPasswordValid && isEqualConfirmPassword
+			}
+		}
+
+		binding.confirmPasswordInput.doOnTextChanged { text, _, _, _ ->
+			text?.let {
+				confirmPassword = text.toString()
+
+				val isEqualConfirmPassword = password.isNotBlank() && confirmPassword.isNotBlank() && password == confirmPassword
+
+				colors[3] = if (isEqualConfirmPassword) successColor else errorColor
+				drawables[3] = if (isEqualConfirmPassword) successDrawable else errorDrawable
+
+				binding.passwordErrorEquals.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[3], 0, 0, 0)
+				changeTextViewDrawableColors(binding.passwordErrorEquals, colors[3])
+				binding.passwordErrorEquals.setTextColor(colors[3])
+
+				isPasswordCorrect = isPasswordValid && isEqualConfirmPassword
+			}
+		}
+
+		binding.passwordInput.setOnFocusChangeListener { _, hasFocus ->
+			if (hasFocus) {
+				binding.passwordErrorsLayout.visibility = View.VISIBLE
+			} else {
+				binding.passwordErrorsLayout.visibility = View.GONE
+			}
+		}
+
+		binding.confirmPasswordInput.setOnFocusChangeListener { _, hasFocus ->
+			if (hasFocus) {
+				binding.passwordErrorsLayout.visibility = View.VISIBLE
+			} else {
+				binding.passwordErrorsLayout.visibility = View.GONE
+			}
+		}
 	}
 
 	private fun handlePostSignUp(task: Task<AuthResult>) {
@@ -337,6 +378,7 @@ class Cadastro : Fragment() {
 			email = user.email!!,
 			phone = phoneNumber,
 			cpf = cpf,
+			address = address,
 			user_type = userType,
 			created_at = Timestamp(Date(creationTime))
 		)
