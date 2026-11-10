@@ -7,5 +7,5 @@ data class Professional(
 	val uf: String? = "",
 	val email: String? = "",
 	val phoneNumber: String? = "",
-	val placeAction: String? = ""
+	val operationArea: String? = ""
 )

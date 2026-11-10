@@ -35,8 +35,6 @@ class Cadastro : Fragment() {
 	* - Verificação de inputs a cada parte
 	* - Dados de gênero e nome social (consultar web)
 	* - Especialidade do profissional
-	* - Botão "Próximo" alterar texto para "Cadastrar" na última parte
-	* - local_atuacao para operation_area
 	* */
 
 	private var _binding: FragmentCadastroBinding? = null
@@ -58,8 +56,12 @@ class Cadastro : Fragment() {
 				2 -> {
 					secondPart.isVisible = true
 					previousButton.isVisible = true
+					createAccountButton.text = getString(R.string.next_label)
 				}
-				3 -> thirdPart.isVisible = true
+				3 -> {
+					thirdPart.isVisible = true
+					createAccountButton.text = getString(R.string.create_account)
+				}
 			}
 		}
 	}
@@ -75,7 +77,7 @@ class Cadastro : Fragment() {
 	lateinit var bloodType: String
 	lateinit var crm: String
 	lateinit var uf: String
-	lateinit var placeAction: String
+	lateinit var operationArea: String
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -105,7 +107,7 @@ class Cadastro : Fragment() {
 			if (userType == Utils.UserType.PACIENTE) {
 				binding.apply {
 					professionalCrmInputs.visibility = View.GONE
-					placeActionInput.visibility = View.GONE
+					operationAreaInput.visibility = View.GONE
 
 					patientDataInputs.visibility = View.VISIBLE
 					bloodtypeInputlayout.visibility = View.VISIBLE
@@ -113,7 +115,7 @@ class Cadastro : Fragment() {
 			} else {
 				binding.apply {
 					professionalCrmInputs.visibility = View.VISIBLE
-					placeActionInput.visibility = View.VISIBLE
+					operationAreaInput.visibility = View.VISIBLE
 
 					patientDataInputs.visibility = View.GONE
 					bloodtypeInputlayout.visibility = View.GONE
@@ -224,7 +226,7 @@ class Cadastro : Fragment() {
 		} else {
 			crm = binding.crmInput.text.toString()
 			uf = binding.crmUfInput.text.toString()
-			placeAction = binding.placeActionInput.text.toString()
+			operationArea = binding.operationAreaInput.text.toString()
 		}
 
 		val passwordIsTheSame = password == binding.confirmPasswordInput.text.toString()
@@ -235,7 +237,7 @@ class Cadastro : Fragment() {
 		val userInputs = if (userType == Utils.UserType.PACIENTE){
 			listOf(bloodType)
 		} else {
-			listOf(crm, uf, placeAction)
+			listOf(crm, uf, operationArea)
 		}
 
 		inputs.addAll(userInputs)
@@ -293,6 +295,28 @@ class Cadastro : Fragment() {
 			setDropDownViewResource(R.layout.item_spinner)
 		}
 
+	private fun verifyInputs(): Boolean {
+		val isValid = true
+
+		binding.apply {
+			when (part) {
+				1 -> {
+
+				}
+
+				2 -> {
+
+				}
+
+				3 -> {
+
+				}
+			}
+		}
+
+		return isValid
+	}
+
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
@@ -327,12 +351,12 @@ class Cadastro : Fragment() {
 
 				val userData = mutableMapOf<String, Any>().apply {
 					if (userType == Utils.UserType.PACIENTE) {
-						this["peso"] = weight!!
-						this["altura"] = height!!
-						this["tipo_sanguineo"] = bloodType
+						this["weight"] = weight!!
+						this["height"] = height!!
+						this["blood_type"] = bloodType
 					} else {
 						this["crm"] = crm
-						this["local_atuacao"] = placeAction
+						this["operation_area"] = operationArea
 						this["uf"] = uf
 					}
 				}
