@@ -283,4 +283,6 @@
 	<string name="previous_label">Voltar</string>
 	<string name="next_label">Próximo</string>
 	<string name="password_equals_error">As senhas são iguais</string>
+	<string name="biological_sex_label">Sexo biológico</string>
+	<string name="gender_identity_label">Identidade de gênero</string>
 </resources>

@@ -27,18 +27,22 @@ import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentCadastroBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import kotlin.properties.Delegates
 
 class Cadastro : Fragment() {
 
 	/* TODO
-	* - Dados de gênero e nome social (consultar web)
 	* - Especialidade do profissional
+	* - Remover profile view
 	* */
 
 	private var _binding: FragmentCadastroBinding? = null
 	private val binding get() = _binding!!
+
+	private val dateFormatter by lazy { DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)) }
 
 	private var part by Delegates.observable(1) { _, old, new ->
 		binding.apply {
@@ -76,6 +80,9 @@ class Cadastro : Fragment() {
 	var name = ""
 	var cpf = ""
 	var address = ""
+	var birthDate: LocalDate? = null
+	var biologicalSex = ""
+	var genderIdentity = ""
 	var weight: Float? = null
 	var height: Float? = null
 	var bloodType = ""
@@ -97,11 +104,7 @@ class Cadastro : Fragment() {
 
 		binding.userTypeSwitch.option = Utils.UserType.PACIENTE
 
-		val ufs = Utils.UF.entries.map { it.name }.toTypedArray()
-		setupSelect(binding.crmUfInput, ufs)
-
-		val bloodTypes = Utils.BLOODTYPE.entries.map { it.display }.toTypedArray()
-		setupSelect(binding.bloodtypeInput, bloodTypes)
+		configSelects()
 
 		binding.userTypeSwitch.setOnClickListener {
 			userType = binding.userTypeSwitch.switch()
@@ -154,6 +157,15 @@ class Cadastro : Fragment() {
 
 		binding.previousButton.setOnClickListener {
 			part--
+		}
+
+		binding.birthDateInput.setOnClickListener {
+			Utils.showDatePicker(this, defaultDate = birthDate ?: LocalDate.now()) { date ->
+				birthDate = date
+
+				binding.birthDateInput.text = date.format(dateFormatter)
+				binding.birthDateInput.setTextColor(ContextCompat.getColor(requireContext(), R.color.textLight))
+			}
 		}
 
 		configPasswordInputs()
@@ -209,33 +221,40 @@ class Cadastro : Fragment() {
 
 					verifyInputsList(listOf(name, cpf, address))
 
-					isValid = !oneOrMoreInputBlank
+					isValid = !oneOrMoreInputBlank && birthDate != null
 				}
 
 				3 -> {
-					isValid = if (userType == Utils.UserType.PACIENTE) {
-						weight = binding.weightInput.text.toString().trim().toFloatOrNull()
-						height = binding.heightInput.text.toString().trim().toFloatOrNull()
-						bloodType = binding.bloodtypeInput.text.toString().trim()
+					biologicalSex = biologicalSexInput.text.toString()
+					genderIdentity = genderIdentityInput.text.toString()
+
+					val isUserSpecificInputValid = if (userType == Utils.UserType.PACIENTE) {
+						weight = weightInput.text.toString().trim().toFloatOrNull()
+						height = heightInput.text.toString().trim().toFloatOrNull()
+						bloodType = bloodtypeInput.text.toString().trim()
 
 						verifyInputsList(listOf(bloodType))
 
 						!oneOrMoreInputBlank && weight != null && height != null
 					} else {
-						crm = binding.crmInput.text.toString().trim()
-						uf = binding.crmUfInput.text.toString().trim()
-						operationArea = binding.operationAreaInput.text.toString().trim()
+						crm = crmInput.text.toString().trim()
+						uf = crmUfInput.text.toString().trim()
+						operationArea = operationAreaInput.text.toString().trim()
 
 						verifyInputsList(listOf(crm, uf, operationArea))
 
 						!oneOrMoreInputBlank
 					}
+
+					verifyInputsList(listOf(biologicalSex, genderIdentity))
+
+					isValid = isUserSpecificInputValid && !oneOrMoreInputBlank
 				}
 			}
 		}
 
 		if (!isValid) {
-			val error = if (oneOrMoreInputBlank || weight == null || height == null) {
+			val error = if (oneOrMoreInputBlank || weight == null || height == null || birthDate == null) {
 				getString(R.string.error_blank_input)
 			} else if (!isPasswordValid) {
 				getString(R.string.error_password_not_valid)
@@ -363,6 +382,32 @@ class Cadastro : Fragment() {
 		}
 	}
 
+	private fun configSelects() {
+		val ufs = Utils.UF.entries.map { it.name }.toTypedArray()
+		setupSelect(binding.crmUfInput, ufs)
+
+		val bloodTypes = Utils.BLOODTYPE.entries.map { it.display }.toTypedArray()
+		setupSelect(binding.bloodtypeInput, bloodTypes)
+
+		val biologicalSexes = arrayOf(
+			"Masculino",
+			"Feminino",
+			"Intersexo",
+			"Prefiro não informar"
+		)
+		setupSelect(binding.biologicalSexInput, biologicalSexes)
+
+		val genderIdentityArray = arrayOf(
+			"Homem cisgênero",
+			"Mulher cisgênero",
+			"Homem transexual",
+			"Mulher transexual",
+			"Pessoa não binária",
+			"Prefiro não informar"
+		)
+		setupSelect(binding.genderIdentityInput, genderIdentityArray)
+	}
+
 	private fun handlePostSignUp(task: Task<AuthResult>) {
 		if (!task.isSuccessful) {
 			Log.w("auth", "signUpWithEmail:failure", task.exception)
@@ -379,7 +424,10 @@ class Cadastro : Fragment() {
 			phone = phoneNumber,
 			cpf = cpf,
 			address = address,
+			biological_sex = biologicalSex,
+			gender = genderIdentity,
 			user_type = userType,
+			birth_date = birthDate?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))!!,
 			created_at = Timestamp(Date(creationTime))
 		)
 
