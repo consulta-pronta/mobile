@@ -35,7 +35,6 @@ import kotlin.properties.Delegates
 class Cadastro : Fragment() {
 
 	/* TODO
-	* - Especialidade do profissional
 	* - Remover profile view
 	* */
 
@@ -88,6 +87,7 @@ class Cadastro : Fragment() {
 	var bloodType = ""
 	var crm = ""
 	var uf = ""
+	var speciality = ""
 	var operationArea = ""
 
 	override fun onCreateView(
@@ -112,6 +112,7 @@ class Cadastro : Fragment() {
 			if (userType == Utils.UserType.PACIENTE) {
 				binding.apply {
 					professionalCrmInputs.visibility = View.GONE
+					specialityInput.visibility = View.GONE
 					operationAreaInput.visibility = View.GONE
 
 					patientDataInputs.visibility = View.VISIBLE
@@ -120,6 +121,7 @@ class Cadastro : Fragment() {
 			} else {
 				binding.apply {
 					professionalCrmInputs.visibility = View.VISIBLE
+					specialityInput.visibility = View.VISIBLE
 					operationAreaInput.visibility = View.VISIBLE
 
 					patientDataInputs.visibility = View.GONE
@@ -239,9 +241,10 @@ class Cadastro : Fragment() {
 					} else {
 						crm = crmInput.text.toString().trim()
 						uf = crmUfInput.text.toString().trim()
+						speciality = specialityInput.text.toString().trim()
 						operationArea = operationAreaInput.text.toString().trim()
 
-						verifyInputsList(listOf(crm, uf, operationArea))
+						verifyInputsList(listOf(crm, uf, speciality, operationArea))
 
 						!oneOrMoreInputBlank
 					}
@@ -447,6 +450,7 @@ class Cadastro : Fragment() {
 					} else {
 						this["crm"] = crm
 						this["operation_area"] = operationArea
+						this["speciality"] = speciality
 						this["uf"] = uf
 					}
 				}
