@@ -58,15 +58,6 @@
 				app:firstOptionText="@string/patient_select_option"
 				app:secondOptionText="@string/professional_select_option"/>
 
-			<com.unnebulous.consultapronta.views.ProfilePictureView
-				android:id="@+id/profile_picture_input"
-
-				android:layout_width="90dp"
-				android:layout_height="90dp"
-				android:layout_gravity="center_horizontal"
-
-				app:isInput="true" />
-
 			<LinearLayout
 				android:id="@+id/first_part"
 

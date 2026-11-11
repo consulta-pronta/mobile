@@ -14,17 +14,6 @@
 		android:layout_height="wrap_content"
 		android:paddingBottom="@dimen/default_padding_bottom" >
 
-		<com.unnebulous.consultapronta.views.ProfilePictureView
-			android:id="@+id/profile_picture"
-
-			android:layout_width="120dp"
-			android:layout_height="120dp"
-
-			app:isInput="false"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
-
 		<TextView
 			android:id="@+id/user_name"
 
@@ -33,7 +22,7 @@
 			android:textSize="24sp"
 			android:textStyle="bold"
 
-			app:layout_constraintTop_toBottomOf="@id/profile_picture"
+			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 

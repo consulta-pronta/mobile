@@ -33,11 +33,6 @@ import java.util.Date
 import kotlin.properties.Delegates
 
 class Cadastro : Fragment() {
-
-	/* TODO
-	* - Remover profile view
-	* */
-
 	private var _binding: FragmentCadastroBinding? = null
 	private val binding get() = _binding!!
 
