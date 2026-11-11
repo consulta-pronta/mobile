@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.unnebulous.consultapronta.database.Notification
 import com.unnebulous.consultapronta.databinding.FragmentNotificationsBinding
 import com.unnebulous.consultapronta.recyclerview.adapter.NotificationsAdapter
+import java.time.LocalDateTime
 
 class Notifications : Fragment() {
 
@@ -48,18 +49,40 @@ class Notifications : Fragment() {
         binding.cardList.addItemDecoration(recyclerviewSpacing)
 
         adapter.submitList(listOf(
-            Notification("Puta"),
-            Notification("Putas"),
-            Notification("Putao"),
-            Notification("Putaaa"),
-            Notification("Putaa"),
-            Notification("Putin")
+            Notification(
+                "Puta",
+                "Maria",
+                "Lindoma",
+                LocalDateTime.now().toFirestoreTimestamp(),
+                false,
+                Utils.NotificationType.ALTERACAO,
+                Utils.NotificationScope.MEDICAMENTO,
+            ),
+            Notification(
+                "Puto",
+                "Mario",
+                "Lindomo",
+                LocalDateTime.now().toFirestoreTimestamp(),
+                true,
+                Utils.NotificationType.ALTERACAO,
+                Utils.NotificationScope.MEDICAMENTO,
+            ),
+            Notification(
+                "Putin",
+                "Marin",
+                "Lindomin",
+                LocalDateTime.now().toFirestoreTimestamp(),
+                false,
+                Utils.NotificationType.ALTERACAO,
+                Utils.NotificationScope.MEDICAMENTO,
+            ),
+
         ))
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }
