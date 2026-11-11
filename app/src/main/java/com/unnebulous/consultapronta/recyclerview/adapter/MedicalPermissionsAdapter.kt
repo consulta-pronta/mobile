@@ -46,7 +46,7 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 				professionalCrm.text = crm
 				professionalEmail.text = professional.email
 				professionalPhoneNumber.text = professional.phoneNumber
-				professionalPlaceAction.text = professional.placeAction
+				professionalOperationArea.text = professional.operationArea
 
 				root.setOnClickListener {
 					onCardClick(professional.id)
