@@ -286,4 +286,9 @@
 	<string name="biological_sex_label">Sexo biológico</string>
 	<string name="gender_identity_label">Identidade de gênero</string>
 	<string name="speciality_hint">Especialidade</string>
+	<string name="type_email_password_recovery">Digite o seu e-mail</string>
+	<string name="open_email_password_recovery">Abra o e-mail enviado para prosseguir com a recuperação de senha</string>
+	<string name="go_to_login_password_recovery">Após isso, volte para a página de login para entrar em sua conta</string>
+	<string name="error_email_not_sent">Não foi possível enviar o e-mail, tente novamente</string>
+	<string name="send">Enviar</string>
 </resources>
