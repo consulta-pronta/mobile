@@ -77,14 +77,6 @@ class HeaderView @JvmOverloads constructor(
 		bindingAlt.goBack.setOnClickListener(l)
 	}
 
-	fun setProfileViewOnClickListener(l: OnClickListener?) {
-		if (headerType == Utils.HeaderType.TITLED) {
-			return
-		}
-
-		binding.headerProfileView.setOnClickListener(l)
-	}
-
 	fun setNotificationButtonOnClickListener(l: OnClickListener?) {
 		if (headerType == Utils.HeaderType.TITLED) {
 			return

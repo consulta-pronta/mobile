@@ -147,6 +147,18 @@ fun LocalDateTime.toBrazillianFullDateAndTime(): String {
 		Month.DECEMBER -> "dez."
 	}
 
+	val hour = if (hour >= 10) {
+		hour.toString()
+	} else {
+		"0$hour"
+	}
+
+	val minute = if (minute >= 10) {
+		minute.toString()
+	} else {
+		"0$minute"
+	}
+
 	return "$dayOfMonth de $month de $year, $hour:$minute"
 }
 

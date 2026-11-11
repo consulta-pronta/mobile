@@ -57,7 +57,6 @@ dependencies {
 	implementation(libs.material)
 	implementation(libs.androidx.activity)
 	implementation(libs.androidx.constraintlayout)
-	implementation(libs.bumptech.glide)
 	implementation(platform(libs.firebase.bom))
 	implementation(libs.firebase.auth)
 	implementation(libs.firebase.firestore)

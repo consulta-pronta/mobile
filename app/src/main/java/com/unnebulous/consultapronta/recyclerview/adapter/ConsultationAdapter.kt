@@ -17,6 +17,7 @@ import com.unnebulous.consultapronta.toLocalDateTime
 class ConsultationAdapter: ListAdapter<Pair<Consultation, Map<String, String>>, ConsultationAdapter.ConsultationViewHolder>(ConsultationComparator()) {
 	lateinit var acceptRequest: (String) -> Unit
 	lateinit var denyRequest: (String) -> Unit
+	lateinit var onCardClick: (String) -> Unit
 
 	private enum class ViewType { VIEW, ACCEPT }
 
@@ -66,14 +67,18 @@ class ConsultationAdapter: ListAdapter<Pair<Consultation, Map<String, String>>, 
 				val consultation = pair.first
 				val professional = pair.second
 
-				professionalName.text = professional["name"]
-				professionalCrm.text = professional["crm"]
+				professionalName.text = professional["name"].toString()
+				professionalCrm.text = professional["crm"].toString()
 
 				hospital.text = consultation.hospital
 
 				datetime.text = consultation.date_time?.toLocalDateTime()?.toBrazillianFullDateAndTime()
 
 				buttonsLayout.isVisible = viewType == ViewType.ACCEPT.ordinal
+
+				root.setOnClickListener {
+					onCardClick(professional["id"].toString())
+				}
 
 				positiveButton.setOnClickListener {
 					acceptRequest(consultation.id)

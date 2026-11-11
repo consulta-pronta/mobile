@@ -68,7 +68,8 @@ class ListagemConsulta : Fragment() {
 				list.add(
 					Consultation.fromDocument(doc) to mapOf(
 						"name" to professional["name"].toString(),
-						"crm" to "CRM ${professional.get("professional_data.crm").toString()}/${professional.get("professional_data.uf").toString()}"
+						"crm" to "CRM ${professional.get("professional_data.crm").toString()}/${professional.get("professional_data.uf").toString()}",
+						"id" to professional.id
 					)
 				)
 
@@ -131,6 +132,10 @@ class ListagemConsulta : Fragment() {
 
 				consultationRef.set(consultationUpdated.toMap())
 			}
+		}
+
+		onCardClick = { userId ->
+			changeFragmentWithBackStack(ViewExternalProfile.newInstance(userId))
 		}
 	}
 

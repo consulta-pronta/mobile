@@ -268,6 +268,7 @@
 	<string name="disabled_permissions">Permissões desativadas</string>
 	<string name="pending_solicitation">Solicitação pendente</string>
 	<string name="error_invalid_input_data">Os dados inseridos são inválidos</string>
+	<string name="location_input">Seu endereço</string>
 	<string name="consultations_proposed_professional">Propostas pelo profissional</string>
 	<string name="consultations_scheduled">Marcadas</string>
 	<string name="consultations_requested">Solicitadas por mim</string>
@@ -277,4 +278,15 @@
 	<string name="reload_text">Recarregar</string>
 	<string name="title_notifications_page">Notificações</string>
 	<string name="as_read_text">Marcar todos como lidos</string>
+	<string name="crm_profile">CRM:</string>
+	<string name="operation_area_profile">Local:</string>
+	<string name="error_not_fetching_external_user">Não foi possível pegar o usuário</string>
+	<string name="speciality_profile">Especialidade:</string>
+	<string name="easter_fetching_patient">Como que tá pegando paciente???</string>
+	<string name="previous_label">Voltar</string>
+	<string name="next_label">Próximo</string>
+	<string name="password_equals_error">As senhas são iguais</string>
+	<string name="biological_sex_label">Sexo biológico</string>
+	<string name="gender_identity_label">Identidade de gênero</string>
+	<string name="speciality_hint">Especialidade</string>
 </resources>

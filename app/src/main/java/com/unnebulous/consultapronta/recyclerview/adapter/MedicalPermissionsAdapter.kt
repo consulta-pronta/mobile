@@ -16,6 +16,7 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 	lateinit var onPermissionChangeClick: (String) -> Unit
 	lateinit var checkStatus: (String) -> Boolean?
 	lateinit var getPermissionCount: (String) -> Int
+	lateinit var onCardClick: (String) -> Unit
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicalPermissionsViewHolder {
 		val binding = CardProfessionalMedicalPermissionsBinding.inflate(
@@ -45,7 +46,11 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 				professionalCrm.text = crm
 				professionalEmail.text = professional.email
 				professionalPhoneNumber.text = professional.phoneNumber
-				professionalPlaceAction.text = professional.placeAction
+				professionalOperationArea.text = professional.operationArea
+
+				root.setOnClickListener {
+					onCardClick(professional.id)
+				}
 
 				changePermissionsButton.setOnClickListener {
 					onPermissionChangeClick(professional.id)

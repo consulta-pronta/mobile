@@ -231,6 +231,10 @@ class PermissoesMedicas : Fragment() {
 					null -> null
 				}
 			}
+
+			onCardClick = { userId ->
+				changeFragmentWithBackStack(ViewExternalProfile.newInstance(userId))
+			}
 		}
 
 		binding.recyclerview.adapter = adapter
@@ -293,7 +297,7 @@ class PermissoesMedicas : Fragment() {
 					professional.getString("professional_data.uf"),
 					professional.getString("email"),
 					professional.getString("phone"),
-					professional.getString("professional_data.local_atuacao"),
+					professional.getString("professional_data.operation_area"),
 				)
 			)
 		}
