@@ -28,4 +28,8 @@ data class Notification(
 		accessed = doc["accessed"].toString().toBoolean(),
 		data = (doc["data"] as Map<String, String>),
 	)
+	companion object{
+		const val COLLECTION_NAME = "notifications"
+		val collection get() = DatabaseManager.userCollection(COLLECTION_NAME)
+	}
 }

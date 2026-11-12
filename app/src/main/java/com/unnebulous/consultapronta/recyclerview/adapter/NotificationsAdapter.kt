@@ -14,6 +14,10 @@ import com.unnebulous.consultapronta.toBrazillianFullDateAndTime
 import com.unnebulous.consultapronta.toLocalDateTime
 
 class NotificationsAdapter: ListAdapter<Notification, NotificationsAdapter.NotificationsViewHolder>(NotificationComparator()) {
+	lateinit var deleteNotification: (
+		String
+		) -> Unit
+
 	override fun onCreateViewHolder(
 		parent: ViewGroup,
 		viewType: Int
@@ -35,6 +39,8 @@ class NotificationsAdapter: ListAdapter<Notification, NotificationsAdapter.Notif
 	): RecyclerView.ViewHolder(binding.root){
 		fun bind(notification: Notification){
 			binding.apply {
+				deleteNotification.setOnClickListener {  }
+
 				val textColor = if (notification.accessed){
 					R.color.primaryLight
 				} else {
