@@ -1,18 +1,12 @@
 <resources>
+	<!-- Adicionar atributos repetidos globais (ex.: icon) -->
+
 	<declare-styleable name="ProfilePictureView">
 		<attr name="isInput" format="boolean" />
 	</declare-styleable>
 
 	<declare-styleable name="NavbarView">
 		<attr name="professional" format="boolean" />
-	</declare-styleable>
-
-	<declare-styleable name="HeaderView">
-		<attr name="headerType" format="enum">
-			<enum name="compact" value="0" />
-			<enum name="titled" value="1" />
-		</attr>
-		<attr name="isScreenTitled" format="boolean" />
 	</declare-styleable>
 
 	<declare-styleable name="FilterView">
@@ -57,5 +51,13 @@
 	<declare-styleable name="DualToggleSelectorView">
 		<attr name="firstOptionText" format="string" />
 		<attr name="secondOptionText" format="string" />
+	</declare-styleable>
+	
+	<declare-styleable name="MapListView">
+		<attr name="title" format="string"/>
+		<attr name="type" format="enum">
+			<enum name="key_value" value="0" />
+			<enum name="only_value" value="1" />
+		</attr>
 	</declare-styleable>
 </resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<TextView
+		android:id="@+id/title"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20sp"
+
+		tools:text="@tools:sample/lorem[1]" />
+
+	<LinearLayout
+		android:id="@+id/item_list"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:divider="@drawable/divider_list"
+		android:showDividers="middle"
+		android:paddingHorizontal="5dp"/>
+
+	<Button
+		style="@style/Widget.Material3.Button.TextButton"
+
+		android:id="@+id/add_item"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingLeft="5dp"
+		android:paddingTop="0dp"
+		android:paddingRight="5dp"
+		android:paddingBottom="0dp"
+		android:text="@string/add_item"
+		android:textColor="@color/accent"
+
+		app:icon="@drawable/ic_add"
+		app:iconTint="@color/accent" />
+
+</LinearLayout>
