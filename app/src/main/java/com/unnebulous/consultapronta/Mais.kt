@@ -83,12 +83,12 @@ class Mais : Fragment() {
 		}
 	}
 
-	// TODO: incompleto
 	private fun setPatientOptions() {
-		// AVISO: DEVE ESTAR NA ORDEM QUE APARECE NO FIGMA
 		val options = listOf(
-			// opção de informações de saúde
-			MenuOption(R.drawable.ic_shield_switch, R.string.medical_permissions_title){
+			MenuOption(R.drawable.ic_reports, R.string.health_information) {
+				Home()
+			},
+			MenuOption(R.drawable.ic_shield_switch, R.string.medical_permissions_title) {
 				PermissoesMedicas()
 			},
 			MenuOption(R.drawable.ic_reports, R.string.reports_text) {

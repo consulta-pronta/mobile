@@ -3,9 +3,14 @@ package com.unnebulous.consultapronta.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.view.menu.ListMenuItemView
 import androidx.core.content.withStyledAttributes
+import androidx.core.view.isVisible
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
+import com.unnebulous.consultapronta.databinding.ItemMapListViewBinding
 import com.unnebulous.consultapronta.databinding.ViewMapListBinding
 
 class MapListView @JvmOverloads constructor(
@@ -17,6 +22,7 @@ class MapListView @JvmOverloads constructor(
 	enum class ViewType { KEY_VALUE, ONLY_VALUE }
 
 	private val binding: ViewMapListBinding
+	private var type: ViewType
 
 	private var map = mutableMapOf<String, String>()
 		set(_) = update()
@@ -27,6 +33,7 @@ class MapListView @JvmOverloads constructor(
 			this,
 			true
 		)
+		this.type = type
 
 		attrs?.let {
 			applyAttibutes(it)
@@ -35,15 +42,25 @@ class MapListView @JvmOverloads constructor(
 
 	fun addItem(key: String, value: String) {
 		map[key] = value
+		update()
 	}
 
 	fun setFullMap(map: Map<String, String>) {
-
+		this.map = map.toMutableMap()
 	}
 
 	private fun update() {
-		map.forEach { key, value ->
-
+		val hasKeyFrame = type == ViewType.KEY_VALUE
+		map.forEach { (mapKey, mapValue) ->
+			binding.itemList.addView(ItemMapListViewBinding.inflate(
+				LayoutInflater.from(context),
+				binding.itemList,
+				false
+			).apply {
+				keyFrame.isVisible = hasKeyFrame
+				key.text = mapKey
+				value.text = mapValue
+			}.root)
 		}
 	}
 
@@ -52,7 +69,13 @@ class MapListView @JvmOverloads constructor(
 			val title = getString(R.styleable.MapListView_title)
 			val type = getInt(R.styleable.MapListView_type, 0)
 
+			binding.title.text = title
 
+			this@MapListView.type = when (type) {
+				0 -> ViewType.KEY_VALUE
+				1 -> ViewType.ONLY_VALUE
+				else -> ViewType.KEY_VALUE
+			}
 		}
 	}
 }
