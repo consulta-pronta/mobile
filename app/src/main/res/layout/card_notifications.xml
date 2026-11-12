@@ -8,7 +8,10 @@
 	android:layout_height="wrap_content"
 	android:background="@drawable/shape_rounded_background"
 	android:backgroundTint="@color/surface"
-	android:padding="@dimen/default_card_padding" >
+	android:padding="@dimen/default_card_padding"
+	android:clickable="true"
+	android:focusable="true"
+	>
 
 	<TextView
 		android:id="@+id/notification_subject"
@@ -23,16 +26,6 @@
 		app:layout_constraintStart_toStartOf="parent"
 
 		tools:text="@tools:sample/lorem"/>
-
-	<CheckBox
-		android:id="@+id/checkbox"
-
-		android:layout_width="30dp"
-		android:layout_height="30dp"
-
-		app:buttonTint="@color/textDark"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
 
 	<TextView
 		android:id="@+id/notification_content"
@@ -69,7 +62,20 @@
 			app:drawableTint="@color/textDark"
 
 			tools:text="@string/placeholder_date"/>
-
 	</LinearLayout>
+
+	<ImageButton
+		android:id="@+id/delete_notification"
+
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/ic_bin"
+		android:background="?attr/selectableItemBackgroundBorderless"
+
+		app:tint="@color/primaryDark"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+
+		/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

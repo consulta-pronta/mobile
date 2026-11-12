@@ -34,7 +34,7 @@
 			android:layout_height="wrap_content"
 			android:backgroundTint="@color/transparent"
 			android:textColor="@color/primaryLight"
-			android:text="@string/as_read_text"
+			android:text="@string/select_all"
 
 			app:icon="@drawable/ic_email"
 			app:iconGravity="start"

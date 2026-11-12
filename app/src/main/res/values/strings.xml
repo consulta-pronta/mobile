@@ -289,4 +289,5 @@
 	<string name="biological_sex_label">Sexo biológico</string>
 	<string name="gender_identity_label">Identidade de gênero</string>
 	<string name="speciality_hint">Especialidade</string>
+	<string name="select_all">Selecionar todos</string>
 </resources>
