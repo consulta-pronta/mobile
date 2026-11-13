@@ -292,4 +292,7 @@
 	<string name="error_email_not_sent">Não foi possível enviar o e-mail, tente novamente</string>
 	<string name="send">Enviar</string>
 	<string name="add_item">Adicionar item</string>
+	<string name="label_your_blood_type">Seu tipo sanguíneo</string>
+	<string name="label_allergies">Alergias</string>
+	<string name="label_family_history">Histórico familiar</string>
 </resources>

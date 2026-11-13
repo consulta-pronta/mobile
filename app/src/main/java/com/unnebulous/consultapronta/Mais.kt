@@ -86,7 +86,7 @@ class Mais : Fragment() {
 	private fun setPatientOptions() {
 		val options = listOf(
 			MenuOption(R.drawable.ic_reports, R.string.health_information) {
-				Home()
+				HealthInformation()
 			},
 			MenuOption(R.drawable.ic_shield_switch, R.string.medical_permissions_title) {
 				PermissoesMedicas()

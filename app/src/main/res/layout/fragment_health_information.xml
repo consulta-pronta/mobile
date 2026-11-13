@@ -1,14 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
+
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:divider="@drawable/divider_default"
+	android:showDividers="middle"
+
 	tools:context=".HealthInformation">
 
-	<!-- TODO: Update blank fragment layout -->
 	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:text="@string/hello_blank_fragment" />
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/label_your_blood_type"
+		android:textSize="20sp"/>
 
-</FrameLayout>
+	<com.google.android.material.textfield.TextInputLayout
+		style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+		android:id="@+id/bloodtype_inputlayout"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textColorHint="@color/textDark"
+
+		app:boxBackgroundColor="@color/surface"
+		app:boxCornerRadiusBottomEnd="12dp"
+		app:boxCornerRadiusBottomStart="12dp"
+		app:boxCornerRadiusTopEnd="12dp"
+		app:boxCornerRadiusTopStart="12dp"
+		app:counterOverflowTextColor="@color/textDark"
+		app:counterTextColor="@color/primaryDark"
+		app:endIconDrawable="@drawable/ic_arrow_down"
+		app:endIconMode="custom"
+		app:endIconTint="@color/primaryDark"
+		app:startIconDrawable="@drawable/ic_bloodtype"
+		app:startIconTint="@color/textDark"
+		app:hintEnabled="false">
+
+		<com.google.android.material.textfield.MaterialAutoCompleteTextView
+			android:id="@+id/bloodtype_input"
+
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:hint="@string/bloodtype"
+			android:inputType="none"
+			android:padding="@dimen/default_card_padding"
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60" />
+
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.unnebulous.consultapronta.views.MapListView
+		android:id="@+id/allergies_list"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		app:title="@string/label_allergies"
+		app:type="only_value"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/weight"
+		android:textSize="20sp" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<EditText
+			android:id="@+id/weight_input"
+
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_input"
+			android:drawableStart="@drawable/ic_weight"
+			android:drawablePadding="10dp"
+			android:autofillHints=""
+			android:drawableTint="@color/textLight"
+			android:hint="@string/weight"
+			android:inputType="numberDecimal"
+			android:textColor="@color/textLight"
+			android:textColorHint="@color/textLight60"
+			android:layout_weight="1" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/kilograms"
+			android:layout_marginHorizontal="@dimen/list_items_spacing"/>
+	</LinearLayout>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/height"
+		android:textSize="20sp" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<EditText
+			android:id="@+id/height_input"
+
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:background="@drawable/shape_input"
+			android:drawableStart="@drawable/ic_height"
+			android:drawablePadding="10dp"
+			android:drawableTint="@color/textLight"
+			android:hint="@string/height"
+			android:inputType="number"
+			android:textColor="@color/textLight"
+			android:textColorHint="@color/textLight60"
+			android:layout_weight="1" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/centimeters"
+			android:layout_marginStart="@dimen/list_items_spacing"/>
+	</LinearLayout>
+
+	<com.unnebulous.consultapronta.views.MapListView
+		android:id="@+id/family_history_list"
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		app:title="@string/label_family_history"/>
+
+</LinearLayout>

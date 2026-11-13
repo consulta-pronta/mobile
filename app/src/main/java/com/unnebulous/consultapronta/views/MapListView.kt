@@ -24,8 +24,12 @@ class MapListView @JvmOverloads constructor(
 	private val binding: ViewMapListBinding
 	private var type: ViewType
 
+	var onDeleteClick: (() -> Unit)? = null
+	lateinit var onAddClick: () -> Pair<String, String>
+
 	private var map = mutableMapOf<String, String>()
 		set(_) = update()
+	private val displayedItemsKey = mutableListOf<String>()
 
 	init {
 		binding = ViewMapListBinding.inflate(
@@ -35,32 +39,49 @@ class MapListView @JvmOverloads constructor(
 		)
 		this.type = type
 
+		binding.addItem.setOnClickListener {
+			addItem(onAddClick())
+		}
+
 		attrs?.let {
 			applyAttibutes(it)
 		}
 	}
 
+	fun addItem(item: Pair<String, String>) {
+		addItem(item.first, item.second)
+	}
+
 	fun addItem(key: String, value: String) {
 		map[key] = value
+		displayedItemsKey.add(key)
 		update()
 	}
 
 	fun setFullMap(map: Map<String, String>) {
+		displayedItemsKey.clear()
 		this.map = map.toMutableMap()
+		displayedItemsKey.addAll(map.keys)
 	}
 
 	private fun update() {
 		val hasKeyFrame = type == ViewType.KEY_VALUE
 		map.forEach { (mapKey, mapValue) ->
-			binding.itemList.addView(ItemMapListViewBinding.inflate(
-				LayoutInflater.from(context),
-				binding.itemList,
-				false
-			).apply {
-				keyFrame.isVisible = hasKeyFrame
-				key.text = mapKey
-				value.text = mapValue
-			}.root)
+			if (mapKey !in displayedItemsKey) {
+				binding.itemList.addView(ItemMapListViewBinding.inflate(
+					LayoutInflater.from(context),
+					binding.itemList,
+					false
+				).apply {
+					keyFrame.isVisible = hasKeyFrame
+					key.text = mapKey
+					value.text = mapValue
+
+					deleteButton.setOnClickListener {
+						onDeleteClick?.invoke()
+					}
+				}.root)
+			}
 		}
 	}
 
