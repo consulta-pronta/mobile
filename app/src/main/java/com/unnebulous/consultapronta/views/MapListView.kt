@@ -24,7 +24,7 @@ class MapListView @JvmOverloads constructor(
 	private val binding: ViewMapListBinding
 	private var type: ViewType
 
-	var onDeleteClick: (() -> Unit)? = null
+	lateinit var onDeleteClick: (Pair<String, String>) -> Unit
 	lateinit var onAddClick: () -> Pair<String, String>
 
 	private var map = mutableMapOf<String, String>()
@@ -78,7 +78,7 @@ class MapListView @JvmOverloads constructor(
 					value.text = mapValue
 
 					deleteButton.setOnClickListener {
-						onDeleteClick?.invoke()
+						onDeleteClick(mapKey to mapValue)
 					}
 				}.root)
 			}
