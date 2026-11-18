@@ -2,9 +2,11 @@ package com.unnebulous.consultapronta.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.view.menu.ListMenuItemView
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
@@ -25,7 +27,7 @@ class MapListView @JvmOverloads constructor(
 	private var type: ViewType
 
 	lateinit var onDeleteClick: (Pair<String, String>) -> Unit
-	lateinit var onAddClick: () -> Pair<String, String>
+	lateinit var onAddClick: () -> Unit
 
 	private var map = mutableMapOf<String, String>()
 		set(_) = update()
@@ -40,7 +42,7 @@ class MapListView @JvmOverloads constructor(
 		this.type = type
 
 		binding.addItem.setOnClickListener {
-			addItem(onAddClick())
+			onAddClick()
 		}
 
 		attrs?.let {
@@ -54,8 +56,8 @@ class MapListView @JvmOverloads constructor(
 
 	fun addItem(key: String, value: String) {
 		map[key] = value
-		displayedItemsKey.add(key)
 		update()
+		displayedItemsKey.add(key)
 	}
 
 	fun setFullMap(map: Map<String, String>) {
@@ -79,6 +81,8 @@ class MapListView @JvmOverloads constructor(
 
 					deleteButton.setOnClickListener {
 						onDeleteClick(mapKey to mapValue)
+						displayedItemsKey.remove(mapKey)
+						update()
 					}
 				}.root)
 			}

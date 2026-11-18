@@ -295,4 +295,5 @@
 	<string name="label_your_blood_type">Seu tipo sanguíneo</string>
 	<string name="label_allergies">Alergias</string>
 	<string name="label_family_history">Histórico familiar</string>
+	<string name="hint_allergy_input">Nome da alergia</string>
 </resources>

@@ -1,11 +1,17 @@
 package com.unnebulous.consultapronta
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FieldValue
 import com.unnebulous.consultapronta.database.DatabaseManager
@@ -56,15 +62,61 @@ class HealthInformation : Fragment() {
 
 			allergiesList.apply {
 				onAddClick = {
-					"LOGICA" to "AQUI"
+					configBottomSheet { dialogBinding, dialog ->
+						dialogBinding.apply {
+							body.apply {
+								val input = EditText(context).apply {
+									layoutParams = ViewGroup.LayoutParams(
+										ViewGroup.LayoutParams.MATCH_PARENT,
+										ViewGroup.LayoutParams.WRAP_CONTENT
+									)
+									inputType = InputType.TYPE_CLASS_TEXT
+									background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+									setCompoundDrawablesRelativeWithIntrinsicBounds(
+										ContextCompat.getDrawable(context, R.drawable.ic_allergy),
+										null,
+										null,
+										null
+									)
+									compoundDrawablePadding = 20
+									hint = getString(R.string.hint_allergy_input)
+									setTextColor(ContextCompat.getColor(context, R.color.textLight))
+									setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+									compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+								}
+
+								addView(input)
+							}
+
+							positiveButton.apply {
+								text = getString(R.string.save)
+								setOnClickListener {
+									var name: String? = null
+
+									body.forEach { view ->
+										if (view is EditText) {
+											name = view.text.toString()
+										}
+									}
+
+									if (name == null) return@setOnClickListener
+
+									DatabaseManager
+										.userDocument
+										.update("patient_data.allergies", FieldValue.arrayUnion(name))
+
+									allergiesList.addItem("${-allergiesKeyValue++}" to name)
+									dialog.dismiss()
+								}
+							}
+						}
+					}
 				}
 
 				onDeleteClick = { (_, value) ->
-					lifecycleScope.launch {
-						DatabaseManager
-							.userDocument
-							.update("patient_data.allergies", FieldValue.arrayRemove(value))
-					}
+					DatabaseManager
+						.userDocument
+						.update("patient_data.allergies", FieldValue.arrayRemove(value))
 				}
 			}
 
