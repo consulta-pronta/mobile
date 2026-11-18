@@ -5,11 +5,14 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.view.menu.ListMenuItemView
 import androidx.core.content.withStyledAttributes
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
+import com.google.api.Distribution
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.ItemMapListViewBinding
@@ -30,8 +33,12 @@ class MapListView @JvmOverloads constructor(
 	lateinit var onAddClick: () -> Unit
 
 	private var map = mutableMapOf<String, String>()
-		set(_) = update()
+		set(value) {
+			field = value
+			update()
+		}
 	private val displayedItemsKey = mutableListOf<String>()
+	private val displayedItemsId = mutableMapOf<String, Int>()
 
 	init {
 		binding = ViewMapListBinding.inflate(
@@ -66,6 +73,13 @@ class MapListView @JvmOverloads constructor(
 		displayedItemsKey.addAll(map.keys)
 	}
 
+	fun removeItem(itemKey: String) {
+		displayedItemsKey.remove(itemKey)
+		map.remove(itemKey)
+		binding.itemList.removeView(binding.itemList.findViewById<LinearLayout>(displayedItemsId[itemKey]!!))
+		displayedItemsId.remove(itemKey)
+	}
+
 	private fun update() {
 		val hasKeyFrame = type == ViewType.KEY_VALUE
 		map.forEach { (mapKey, mapValue) ->
@@ -75,9 +89,24 @@ class MapListView @JvmOverloads constructor(
 					binding.itemList,
 					false
 				).apply {
+					this.root.id = generateViewId()
+					displayedItemsId[mapKey] = this.root.id
 					keyFrame.isVisible = hasKeyFrame
 					key.text = mapKey
 					value.text = mapValue
+					this.root.layoutParams = MarginLayoutParams(
+						LayoutParams.MATCH_PARENT,
+						LayoutParams.WRAP_CONTENT
+					).apply {
+						setMargins(
+							0,
+							0,
+							0,
+							resources.getDimensionPixelSize(
+								R.dimen.list_items_spacing
+							)
+						)
+					}
 
 					deleteButton.setOnClickListener {
 						onDeleteClick(mapKey to mapValue)

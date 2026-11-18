@@ -118,10 +118,11 @@ class HealthInformation : Fragment() {
 					}
 				}
 
-				onDeleteClick = { (_, value) ->
+				onDeleteClick = { (key, value) ->
 					DatabaseManager
 						.userDocument
 						.update("patient_data.allergies", FieldValue.arrayRemove(value))
+					removeItem(key)
 				}
 			}
 
@@ -134,10 +135,19 @@ class HealthInformation : Fragment() {
 
 							body.apply {
 								val relativeInput = EditText(context).apply {
-									layoutParams = ViewGroup.LayoutParams(
+									layoutParams = ViewGroup.MarginLayoutParams(
 										ViewGroup.LayoutParams.MATCH_PARENT,
 										ViewGroup.LayoutParams.WRAP_CONTENT
-									)
+									).apply {
+										setMargins(
+											0,
+											0,
+											0,
+											resources.getDimensionPixelSize(
+												R.dimen.list_items_spacing
+											)
+										)
+									}
 									inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
 									background = ContextCompat.getDrawable(context, R.drawable.shape_input)
 									setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -212,6 +222,7 @@ class HealthInformation : Fragment() {
 						DatabaseManager
 							.userDocument
 							.update("patient_data.family_history.$key", FieldValue.delete())
+						removeItem(key)
 					}
 				}
 			}
