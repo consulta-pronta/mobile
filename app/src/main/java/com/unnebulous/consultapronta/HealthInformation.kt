@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FieldValue
 import com.unnebulous.consultapronta.database.DatabaseManager
@@ -64,6 +66,9 @@ class HealthInformation : Fragment() {
 				onAddClick = {
 					configBottomSheet { dialogBinding, dialog ->
 						dialogBinding.apply {
+							icon.isVisible = false
+							title.text = getString(R.string.add_new_allegy)
+
 							body.apply {
 								val input = EditText(context).apply {
 									layoutParams = ViewGroup.LayoutParams(
@@ -122,7 +127,84 @@ class HealthInformation : Fragment() {
 
 			familyHistoryList.apply {
 				onAddClick = {
-					"LOGICA" to "AQUI"
+					configBottomSheet { dialogBinding, dialog ->
+						dialogBinding.apply {
+							icon.isVisible = false
+							title.text = getString(R.string.add_new_family_history)
+
+							body.apply {
+								val relativeInput = EditText(context).apply {
+									layoutParams = ViewGroup.LayoutParams(
+										ViewGroup.LayoutParams.MATCH_PARENT,
+										ViewGroup.LayoutParams.WRAP_CONTENT
+									)
+									inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+									background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+									setCompoundDrawablesRelativeWithIntrinsicBounds(
+										ContextCompat.getDrawable(context, R.drawable.ic_person),
+										null,
+										null,
+										null
+									)
+									compoundDrawablePadding = 20
+									hint = getString(R.string.hint_relative_input)
+									setTextColor(ContextCompat.getColor(context, R.color.textLight))
+									setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+									compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+								}
+
+								val relativeProblemInput = EditText(context).apply {
+									layoutParams = ViewGroup.LayoutParams(
+										ViewGroup.LayoutParams.MATCH_PARENT,
+										ViewGroup.LayoutParams.WRAP_CONTENT
+									)
+									inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+									background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+									setCompoundDrawablesRelativeWithIntrinsicBounds(
+										ContextCompat.getDrawable(context, R.drawable.ic_reports),
+										null,
+										null,
+										null
+									)
+									compoundDrawablePadding = 20
+									hint = getString(R.string.hint_relative_problem_input)
+									setTextColor(ContextCompat.getColor(context, R.color.textLight))
+									setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+									compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+								}
+
+								addView(relativeInput)
+								addView(relativeProblemInput)
+							}
+
+							positiveButton.apply {
+								text = getString(R.string.save)
+								setOnClickListener {
+									var relative: String? = null
+									var relativeProblem: String? = null
+
+									body.forEach { view ->
+										if (view is EditText) {
+											if (relative == null) {
+												relative = view.text.toString()
+											} else {
+												relativeProblem = view.text.toString()
+											}
+										}
+									}
+
+									if (relative == null || relativeProblem == null) return@setOnClickListener
+
+									DatabaseManager
+										.userDocument
+										.update("patient_data.family_history.$relative", relativeProblem)
+
+									familyHistoryList.addItem(relative to relativeProblem)
+									dialog.dismiss()
+								}
+							}
+						}
+					}
 				}
 
 				onDeleteClick = { (key, _) ->
@@ -160,11 +242,7 @@ class HealthInformation : Fragment() {
 				val familyHistoryData = user.get("patient_data.family_history")
 
 				if (familyHistoryData != null) {
-					val familyHistory = familyHistoryData as Map<String, String>
-
-					familyHistory.forEach { (familyRelative, problem) ->
-						familyHistoryList.addItem(familyRelative to problem)
-					}
+					familyHistoryList.setFullMap(familyHistoryData as Map<String, String>)
 				}
 			}
 		}

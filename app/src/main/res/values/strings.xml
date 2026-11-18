@@ -296,4 +296,8 @@
 	<string name="label_allergies">Alergias</string>
 	<string name="label_family_history">Histórico familiar</string>
 	<string name="hint_allergy_input">Nome da alergia</string>
+	<string name="add_new_allegy">Adicionar nova alergia</string>
+	<string name="hint_relative_input">Grau de parentesco</string>
+	<string name="hint_relative_problem_input">Condição do familiar</string>
+	<string name="add_new_family_history">Adicionar histórico familiar</string>
 </resources>
