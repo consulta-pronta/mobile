@@ -86,9 +86,10 @@ class Notifications : Fragment() {
 
 				if (snapshots != null) {
 					val notificationList = snapshots.documents.mapNotNull { Notification.fromDocument(it) }
-					if (notificationList.isEmpty()){
-						return@addSnapshotListener
-					}
+					binding.emptyStateContainer.isVisible = notificationList.isEmpty()
+					binding.cardList.isVisible = notificationList.isNotEmpty()
+					adapter.submitList(notificationList)
+
 
 					binding.emptyStateContainer.isVisible = false
 					binding.cardList.isVisible = true
