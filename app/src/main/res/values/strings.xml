@@ -296,4 +296,5 @@
 	<string name="as_read">Marcar como lidos</string>
 	<string name="delete_all">Apagar todos</string>
 	<string name="concluded">Concluído com sucesso</string>
+	<string name="no_notifications">Sem notificações no momento</string>
 </resources>

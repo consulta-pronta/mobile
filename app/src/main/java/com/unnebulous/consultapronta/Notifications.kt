@@ -28,111 +28,125 @@ import java.time.LocalDateTime
 
 class Notifications : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
-    private val binding get() = _binding!!
+	private var _binding: FragmentNotificationsBinding? = null
+	private val binding get() = _binding!!
 
-    private lateinit var firestoreListener: ListenerRegistration
+	private lateinit var firestoreListener: ListenerRegistration
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNotificationsBinding.inflate(
-            inflater,
-            container,
-            false
-        )
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
+		_binding = FragmentNotificationsBinding.inflate(
+			inflater,
+			container,
+			false
+		)
 
-        return binding.root
-    }
+		return binding.root
+	}
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?
-    ) {
-        super.onViewCreated(view, savedInstanceState)
+	override fun onViewCreated(
+		view: View,
+		savedInstanceState: Bundle?
+	) {
+		super.onViewCreated(view, savedInstanceState)
 
-        updateHeader {
-            changeHeaderType(Utils.HeaderType.TITLED, true)
-            setScreenTitle(getString(R.string.title_notifications_page))
-            setGoBackButtonOnClickListener {
-                popBackStack()
-            }
-        }
-        resetNavbarEntryActive()
+		updateHeader {
+			changeHeaderType(Utils.HeaderType.TITLED, true)
+			setScreenTitle(getString(R.string.title_notifications_page))
+			setGoBackButtonOnClickListener {
+				popBackStack()
+			}
+		}
+		resetNavbarEntryActive()
 
-        binding.allAsRead.setOnClickListener { onReadAllClicked() }
-        binding.deleteAll.setOnClickListener { onDeleteAllClicked() }
+		binding.allAsRead.setOnClickListener { onReadAllClicked() }
+		binding.deleteAll.setOnClickListener { onDeleteAllClicked() }
 
-        val adapter = NotificationsAdapter().apply {
-            deleteNotification = { notificationid ->
-                showConfirmationDialog("Deseja deletar esta notificação?", "Ao confirmar, a notificação será apagada."){
-                    lifecycleScope.launch {
-                        Notification.collection
-                            .document(notificationid)
-                            .delete()
-                    }
-                }
-            }
-        }
+		val adapter = NotificationsAdapter().apply {
+			deleteNotification = { notificationid ->
+				showConfirmationDialog("Deseja deletar esta notificação?", "Ao confirmar, a notificação será apagada."){
+					lifecycleScope.launch {
+						Notification.collection
+							.document(notificationid)
+							.delete()
+					}
+				}
+			}
+		}
 
-        firestoreListener = Notification.collection
-            .addSnapshotListener { snapshots, exception ->
-                if (exception != null) {
-                    Log.e(Notification.COLLECTION_NAME, "getNotifications", exception)
-                    return@addSnapshotListener
-                }
+		firestoreListener = Notification.collection
+			.addSnapshotListener { snapshots, exception ->
+				if (exception != null) {
+					Log.e(Notification.COLLECTION_NAME, "getNotifications", exception)
+					return@addSnapshotListener
+				}
 
-                if (snapshots == null) {
-                    return@addSnapshotListener
-                }
+				if (snapshots != null) {
+					val notificationList = snapshots.documents.mapNotNull { Notification.fromDocument(it) }
+					if (notificationList.isEmpty()){
+						return@addSnapshotListener
+					}
 
-                adapter.submitList(snapshots.documents.mapNotNull { Notification.fromDocument(it) })
-            }
+					binding.emptyStateContainer.isVisible = false
+					binding.cardList.isVisible = true
 
-        binding.cardList.adapter = adapter
-        binding.cardList.addItemDecoration(recyclerviewSpacing)
-    }
+					adapter.submitList(notificationList)
+				} else {
+					binding.emptyStateContainer.isVisible = true
+					binding.cardList.isVisible = false
 
-    private fun onReadAllClicked() {
+					return@addSnapshotListener
+				}
 
-        showSnackbar(getString(R.string.concluded))
+			}
 
-        lifecycleScope.launch {
-            Notification.collection.get().await().documents.forEach { documentSnapshot ->
-                if (!(documentSnapshot.getBoolean("accessed") ?: true)) {
-                    documentSnapshot.reference.update("accessed", true)
-                }
-            }
-        }
-    }
+		binding.cardList.adapter = adapter
+		binding.cardList.addItemDecoration(recyclerviewSpacing)
+	}
 
-    private fun onDeleteAllClicked() {
-        showConfirmationDialog(
-            "Deseja mesmo deletar todas as notificações?",
-            "Ao clicar em confirmar, todas as notificações serão apagadas."
-        ) {
-            lifecycleScope.launch {
+	private fun onReadAllClicked() {
 
-            }
-        }
-    }
+		showSnackbar(getString(R.string.concluded))
 
-    private fun showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setNegativeButton(getString(R.string.cancel), null)
-            .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                onConfirm()
-                showSnackbar(getString(R.string.deletion_completed))
-            }.show()
-    }
+		lifecycleScope.launch {
+			Notification.collection.get().await().documents.forEach { documentSnapshot ->
+				if (!(documentSnapshot.getBoolean("accessed") ?: true)) {
+					documentSnapshot.reference.update("accessed", true)
+				}
+			}
+		}
+	}
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        firestoreListener.remove()
-    }
+	private fun onDeleteAllClicked() {
+		showConfirmationDialog(
+			"Deseja mesmo deletar todas as notificações?",
+			"Ao clicar em confirmar, todas as notificações serão apagadas."
+		) {
+			lifecycleScope.launch {
+				Notification.collection.get().await().documents.forEach { documentSnapshot ->
+					documentSnapshot.reference.delete()
+				}
+			}
+		}
+	}
+
+	private fun showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {
+		MaterialAlertDialogBuilder(requireContext())
+			.setTitle(title)
+			.setMessage(message)
+			.setNegativeButton(getString(R.string.cancel), null)
+			.setPositiveButton(getString(R.string.delete)) { _, _ ->
+				onConfirm()
+				showSnackbar(getString(R.string.deletion_completed))
+			}.show()
+	}
+
+	override fun onDestroyView() {
+		super.onDestroyView()
+		_binding = null
+		firestoreListener.remove()
+	}
 }
