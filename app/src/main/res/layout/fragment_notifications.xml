@@ -12,15 +12,15 @@
 		android:paddingBottom="30dp">
 
 		<Button
-			android:id="@+id/reload"
+			android:id="@+id/all_as_read"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:backgroundTint="@color/transparent"
 			android:textColor="@color/primaryLight"
-			android:text="@string/reload_text"
+			android:text="@string/as_read"
 
-			app:icon="@drawable/ic_refresh"
+			app:icon="@drawable/ic_email"
 			app:iconGravity="start"
 			app:iconTint="@color/primaryLight"
 			app:layout_constraintTop_toTopOf="parent"
@@ -28,15 +28,15 @@
 			/>
 
 		<Button
-			android:id="@+id/select_all"
+			android:id="@+id/delete_all"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:backgroundTint="@color/transparent"
 			android:textColor="@color/primaryLight"
-			android:text="@string/select_all"
+			android:text="@string/delete_all"
 
-			app:icon="@drawable/ic_email"
+			app:icon="@drawable/ic_bin"
 			app:iconGravity="start"
 			app:iconTint="@color/primaryLight"
 			app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +50,7 @@
 			android:layout_height="wrap_content"
 			android:paddingTop="@dimen/default_inner_elements_spacing"
 
-			app:layout_constraintTop_toBottomOf="@id/reload"
+			app:layout_constraintTop_toBottomOf="@id/all_as_read"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 			/>

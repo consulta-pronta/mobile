@@ -39,7 +39,9 @@ class NotificationsAdapter: ListAdapter<Notification, NotificationsAdapter.Notif
 	): RecyclerView.ViewHolder(binding.root){
 		fun bind(notification: Notification){
 			binding.apply {
-				deleteNotification.setOnClickListener {  }
+				deleteNotification.setOnClickListener {
+					deleteNotification(notification.id)
+				}
 
 				val textColor = if (notification.accessed){
 					R.color.primaryLight

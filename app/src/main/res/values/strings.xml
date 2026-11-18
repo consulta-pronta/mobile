@@ -293,4 +293,7 @@
 	<string name="delete">Deletar</string>
 	<string name="select_option">O que você deseja fazer?</string>
 	<string name="deletion_completed">Deletado com sucesso</string>
+	<string name="as_read">Marcar como lidos</string>
+	<string name="delete_all">Apagar todos</string>
+	<string name="concluded">Concluído com sucesso</string>
 </resources>
