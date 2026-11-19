@@ -235,6 +235,12 @@ class PermissoesMedicas : Fragment() {
 			onCardClick = { userId ->
 				changeFragmentWithBackStack(ViewExternalProfile.newInstance(userId))
 			}
+
+			submitList(listOf(
+				Professional(),
+				Professional(),
+				Professional()
+			))
 		}
 
 		binding.recyclerview.adapter = adapter

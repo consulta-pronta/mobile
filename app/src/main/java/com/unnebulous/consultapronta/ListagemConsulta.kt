@@ -13,6 +13,7 @@ import com.unnebulous.consultapronta.database.Consultation.Companion.Consultatio
 import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentListagemConsultaBinding
+import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.recyclerview.adapter.ConsultationAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -41,12 +42,25 @@ class ListagemConsulta : Fragment() {
 		}
 		resetNavbarEntryActive()
 
-		binding.recyclerviewProposed.adapter = setAdapter()
-		binding.recyclerviewRequested.adapter = setAdapter()
-		binding.recyclerviewScheduled.adapter = setAdapter()
+		binding.apply {
+			recyclerviewProposed.apply {
+				adapter = setAdapter()
+				addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+			}
 
-		binding.requestConsultation.setOnClickListener {
-			changeFragmentWithBackStack(SolicitarConsulta())
+			binding.recyclerviewRequested.apply {
+				adapter = setAdapter()
+				addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+			}
+
+			binding.recyclerviewScheduled.apply {
+				adapter = setAdapter()
+				addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+			}
+
+			requestConsultation.setOnClickListener {
+				changeFragmentWithBackStack(SolicitarConsulta())
+			}
 		}
 
 		lifecycleScope.launch {

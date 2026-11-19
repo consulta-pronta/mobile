@@ -42,6 +42,14 @@ class HistoricoSintoma : Fragment() {
 						symptom.id
 					))
 			}
+
+			submitList(
+				listOf(
+					Symptom(),
+					Symptom(),
+					Symptom()
+				)
+			)
 		}
 
 		binding.historicoSintomaRecyclerview.adapter = adapter

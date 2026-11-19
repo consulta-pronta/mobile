@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.database.BaseDocument
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.CardChronologyBinding
@@ -37,7 +39,7 @@ class ChronologyAdapter: ListAdapter<BaseDocument, RecyclerView.ViewHolder>(WeAr
 
 	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 		val item = getItem(position)
-		val isLast = position == currentList.size - 1
+		val isLast = position == itemCount - 1
 		when (holder) {
 			is ChronologyViewHolder -> holder.bind(item as Symptom, isLast)
 		}
@@ -47,6 +49,15 @@ class ChronologyAdapter: ListAdapter<BaseDocument, RecyclerView.ViewHolder>(WeAr
 		val binding: CardChronologyBinding
 	): RecyclerView.ViewHolder(binding.root) {
 		fun bind(item: Symptom, isLast: Boolean = false) {
+			if (item.id.isBlank()) {
+				binding.root.forEach { view ->
+					view.clipToOutline = true
+					view.foreground = ContextCompat.getDrawable(binding.root.context, R.drawable.skeleton_gradient)
+					view.alpha = Utils.SKELETON_OPACITY
+				}
+				return
+			}
+
 			binding.apply {
 				title.text = item.title
 				date.text = item.date_time?.toBrazilianLocale() ?: "Data desconhecida"
