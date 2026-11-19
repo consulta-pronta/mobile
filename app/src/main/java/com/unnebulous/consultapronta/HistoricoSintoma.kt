@@ -71,7 +71,7 @@ class HistoricoSintoma : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
-		symptomListener?.remove()
+		symptomListener.remove()
 	}
 
 }
