@@ -4,10 +4,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.Consultation
 import com.unnebulous.consultapronta.databinding.CardConsultationsBinding
