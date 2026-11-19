@@ -23,6 +23,7 @@ import kotlin.enums.enumEntries
 object Utils {
 	const val CPF_MASK = "###.###.###-##"
 	const val PHONE_MASK = "(##) #####-####"
+	const val SKELETON_OPACITY = 0.6f
 
 	enum class UserType { PACIENTE, PROFISSIONAL }
 

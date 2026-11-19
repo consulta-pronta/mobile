@@ -26,6 +26,7 @@ import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentVisualizarRelatorioBinding
+import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.recyclerview.adapter.ChronologyAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -62,7 +63,7 @@ class VisualizarRelatorio : Fragment() {
 
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
-			setScreenTitle("Titulo")
+			setScreenTitle(getString(R.string.loading))
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
@@ -127,7 +128,18 @@ class VisualizarRelatorio : Fragment() {
 
 		val adapter = ChronologyAdapter()
 
-		binding.recyclerview.adapter = adapter
+		binding.recyclerview.apply {
+			this.adapter = adapter
+			this.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+		}
+
+		adapter.submitList(
+			listOf(
+				Symptom(),
+				Symptom(),
+				Symptom()
+			)
+		)
 
 		lifecycleScope.launch {
 			try {
@@ -245,8 +257,6 @@ class VisualizarRelatorio : Fragment() {
 					mostAffectedAreaIntensity.chipBackgroundColor = ColorStateList.valueOf(
 						Utils.intensityToColor(requireContext(), intensity)
 					)
-
-
 				}
 
 				populateChart(symptoms)
