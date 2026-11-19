@@ -275,6 +275,9 @@
 	<string name="my_consultations">Minhas consultas</string>
 	<string name="deny">Negar</string>
 	<string name="accept">Aceitar</string>
+	<string name="reload_text">Recarregar</string>
+	<string name="title_notifications_page">Notificações</string>
+	<string name="as_read_text">Marcar todos como lidos</string>
 	<string name="crm_profile">CRM:</string>
 	<string name="operation_area_profile">Local:</string>
 	<string name="error_not_fetching_external_user">Não foi possível pegar o usuário</string>
@@ -286,6 +289,14 @@
 	<string name="biological_sex_label">Sexo biológico</string>
 	<string name="gender_identity_label">Identidade de gênero</string>
 	<string name="speciality_hint">Especialidade</string>
+	<string name="select_all">Selecionar todos</string>
+	<string name="delete">Deletar</string>
+	<string name="select_option">O que você deseja fazer?</string>
+	<string name="deletion_completed">Deletado com sucesso</string>
+	<string name="as_read">Marcar como lidos</string>
+	<string name="delete_all">Apagar todos</string>
+	<string name="concluded">Concluído com sucesso</string>
+	<string name="no_notifications">Sem notificações no momento</string>
 	<string name="type_email_password_recovery">Digite o seu e-mail</string>
 	<string name="open_email_password_recovery">Abra o e-mail enviado para prosseguir com a recuperação de senha</string>
 	<string name="go_to_login_password_recovery">Após isso, volte para a página de login para entrar em sua conta</string>

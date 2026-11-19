@@ -36,6 +36,9 @@ object Utils {
 
 	enum class HeaderType { COMPACT, TITLED }
 
+	enum class NotificationType { ACESSO, AVISO, ALTERACAO, SOLICITACAO }
+	enum class NotificationScope { CONSULTA, MEDICAMENTO, RELATORIO }
+
 	enum class SelectOptionItemType { RADIO, CHECKBOX, COMPLETE }
 
 	enum class SnackBarType { INFO, SUCCESS, WARNING, DANGER }

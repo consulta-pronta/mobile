@@ -67,7 +67,7 @@ class Exam : Fragment() {
 				adapter.submitList(exams)
 			}
 
-		binding.examCards.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+		binding.examCards.addItemDecoration(recyclerviewSpacing)
 	}
 
 	override fun onDestroyView() {

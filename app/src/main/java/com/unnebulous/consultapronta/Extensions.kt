@@ -17,6 +17,7 @@ import com.unnebulous.consultapronta.Utils.stringToEnum
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 import com.unnebulous.consultapronta.databinding.SnackbarBinding
+import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.views.HeaderView
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -114,9 +115,9 @@ fun Fragment.resetNavbarEntryActive() {
 	(activity as? MainActivity)?.resetNavbarEntryActive()
 }
 
-val Fragment.recyclerviewSpacing get() = resources.getDimensionPixelSize(
+val Fragment.recyclerviewSpacing get() = SpacingItemDecoration(resources.getDimensionPixelSize(
 	R.dimen.default_inner_elements_spacing
-)
+))
 
 fun Context.clearCache() {
 	try {
