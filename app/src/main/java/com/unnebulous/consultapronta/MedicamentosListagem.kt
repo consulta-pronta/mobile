@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.FragmentMedicamentosListagemBinding
+import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.recyclerview.adapter.MedicationAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -39,7 +40,18 @@ class MedicamentosListagem : Fragment() {
 		resetNavbarEntryActive()
 
 		val adapter = MedicationAdapter()
-		binding.recyclerview.adapter = adapter
+		binding.recyclerview.apply {
+			this.adapter = adapter
+			this.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+		}
+
+		adapter.submitList(
+			listOf(
+				Medication(),
+				Medication(),
+				Medication()
+			)
+		)
 
 		lifecycleScope.launch {
 			try {
