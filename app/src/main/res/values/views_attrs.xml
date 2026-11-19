@@ -63,5 +63,6 @@
 			<enum name="key_value" value="0" />
 			<enum name="only_value" value="1" />
 		</attr>
+		<attr name="darkMode" format="boolean" />
 	</declare-styleable>
 </resources>

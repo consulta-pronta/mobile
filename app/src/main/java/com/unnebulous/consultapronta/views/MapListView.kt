@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta.views
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.view.menu.ListMenuItemView
+import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -40,6 +42,35 @@ class MapListView @JvmOverloads constructor(
 	private val displayedItemsKey = mutableListOf<String>()
 	private val displayedItemsId = mutableMapOf<String, Int>()
 
+	private var itemColor: Map<String, Int>
+
+	var hasOptionToUpdate = true
+
+	var title: String?
+		get() = binding.title.text.toString()
+		set(value) {
+			binding.title.text = value
+		}
+
+	var darkMode: Boolean = false
+		set(value) {
+			field = value
+
+			var textColor: Int
+
+			if (field) {
+				textColor = ContextCompat.getColor(context, R.color.textDark)
+				itemColor = mapOf(
+					"text" to ContextCompat.getColor(context, R.color.textLight),
+					"background" to ContextCompat.getColor(context, R.color.primaryDark)
+				)
+			} else {
+				textColor = ContextCompat.getColor(context, R.color.textLight)
+			}
+
+			binding.title.setTextColor(textColor)
+		}
+
 	init {
 		binding = ViewMapListBinding.inflate(
 			LayoutInflater.from(context),
@@ -47,6 +78,11 @@ class MapListView @JvmOverloads constructor(
 			true
 		)
 		this.type = type
+
+		itemColor = mapOf(
+			"text" to ContextCompat.getColor(context, R.color.textDark),
+			"background" to ContextCompat.getColor(context, R.color.surface)
+		)
 
 		binding.addItem.setOnClickListener {
 			onAddClick()
@@ -108,10 +144,20 @@ class MapListView @JvmOverloads constructor(
 						)
 					}
 
-					deleteButton.setOnClickListener {
-						onDeleteClick(mapKey to mapValue)
-						displayedItemsKey.remove(mapKey)
-						update()
+					keyFrame.backgroundTintList = ColorStateList.valueOf(itemColor["background"]!!)
+					valueLayout.backgroundTintList = ColorStateList.valueOf(itemColor["background"]!!)
+					key.setTextColor(itemColor["text"]!!)
+					value.setTextColor(itemColor["text"]!!)
+
+					if (hasOptionToUpdate) {
+						deleteButton.setOnClickListener {
+							onDeleteClick(mapKey to mapValue)
+							displayedItemsKey.remove(mapKey)
+							update()
+						}
+					} else {
+						deleteButton.isVisible = false
+						binding.addItem.isVisible = false
 					}
 				}.root)
 			}
@@ -123,7 +169,7 @@ class MapListView @JvmOverloads constructor(
 			val title = getString(R.styleable.MapListView_title)
 			val type = getInt(R.styleable.MapListView_type, 0)
 
-			binding.title.text = title
+			this@MapListView.title = title
 
 			this@MapListView.type = when (type) {
 				0 -> ViewType.KEY_VALUE

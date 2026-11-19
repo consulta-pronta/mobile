@@ -64,58 +64,7 @@ class HealthInformation : Fragment() {
 
 			allergiesList.apply {
 				onAddClick = {
-					configBottomSheet { dialogBinding, dialog ->
-						dialogBinding.apply {
-							icon.isVisible = false
-							title.text = getString(R.string.add_new_allegy)
-
-							body.apply {
-								val input = EditText(context).apply {
-									layoutParams = ViewGroup.LayoutParams(
-										ViewGroup.LayoutParams.MATCH_PARENT,
-										ViewGroup.LayoutParams.WRAP_CONTENT
-									)
-									inputType = InputType.TYPE_CLASS_TEXT
-									background = ContextCompat.getDrawable(context, R.drawable.shape_input)
-									setCompoundDrawablesRelativeWithIntrinsicBounds(
-										ContextCompat.getDrawable(context, R.drawable.ic_allergy),
-										null,
-										null,
-										null
-									)
-									compoundDrawablePadding = 20
-									hint = getString(R.string.hint_allergy_input)
-									setTextColor(ContextCompat.getColor(context, R.color.textLight))
-									setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
-									compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
-								}
-
-								addView(input)
-							}
-
-							positiveButton.apply {
-								text = getString(R.string.save)
-								setOnClickListener {
-									var name: String? = null
-
-									body.forEach { view ->
-										if (view is EditText) {
-											name = view.text.toString()
-										}
-									}
-
-									if (name == null) return@setOnClickListener
-
-									DatabaseManager
-										.userDocument
-										.update("patient_data.allergies", FieldValue.arrayUnion(name))
-
-									allergiesList.addItem("${-allergiesKeyValue++}" to name)
-									dialog.dismiss()
-								}
-							}
-						}
-					}
+					onAllergiesClick()
 				}
 
 				onDeleteClick = { (key, value) ->
@@ -128,93 +77,7 @@ class HealthInformation : Fragment() {
 
 			familyHistoryList.apply {
 				onAddClick = {
-					configBottomSheet { dialogBinding, dialog ->
-						dialogBinding.apply {
-							icon.isVisible = false
-							title.text = getString(R.string.add_new_family_history)
-
-							body.apply {
-								val relativeInput = EditText(context).apply {
-									layoutParams = ViewGroup.MarginLayoutParams(
-										ViewGroup.LayoutParams.MATCH_PARENT,
-										ViewGroup.LayoutParams.WRAP_CONTENT
-									).apply {
-										setMargins(
-											0,
-											0,
-											0,
-											resources.getDimensionPixelSize(
-												R.dimen.list_items_spacing
-											)
-										)
-									}
-									inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-									background = ContextCompat.getDrawable(context, R.drawable.shape_input)
-									setCompoundDrawablesRelativeWithIntrinsicBounds(
-										ContextCompat.getDrawable(context, R.drawable.ic_person),
-										null,
-										null,
-										null
-									)
-									compoundDrawablePadding = 20
-									hint = getString(R.string.hint_relative_input)
-									setTextColor(ContextCompat.getColor(context, R.color.textLight))
-									setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
-									compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
-								}
-
-								val relativeProblemInput = EditText(context).apply {
-									layoutParams = ViewGroup.LayoutParams(
-										ViewGroup.LayoutParams.MATCH_PARENT,
-										ViewGroup.LayoutParams.WRAP_CONTENT
-									)
-									inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-									background = ContextCompat.getDrawable(context, R.drawable.shape_input)
-									setCompoundDrawablesRelativeWithIntrinsicBounds(
-										ContextCompat.getDrawable(context, R.drawable.ic_reports),
-										null,
-										null,
-										null
-									)
-									compoundDrawablePadding = 20
-									hint = getString(R.string.hint_relative_problem_input)
-									setTextColor(ContextCompat.getColor(context, R.color.textLight))
-									setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
-									compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
-								}
-
-								addView(relativeInput)
-								addView(relativeProblemInput)
-							}
-
-							positiveButton.apply {
-								text = getString(R.string.save)
-								setOnClickListener {
-									var relative: String? = null
-									var relativeProblem: String? = null
-
-									body.forEach { view ->
-										if (view is EditText) {
-											if (relative == null) {
-												relative = view.text.toString()
-											} else {
-												relativeProblem = view.text.toString()
-											}
-										}
-									}
-
-									if (relative == null || relativeProblem == null) return@setOnClickListener
-
-									DatabaseManager
-										.userDocument
-										.update("patient_data.family_history.$relative", relativeProblem)
-
-									familyHistoryList.addItem(relative to relativeProblem)
-									dialog.dismiss()
-								}
-							}
-						}
-					}
+					onFamilyHistoryClick()
 				}
 
 				onDeleteClick = { (key, _) ->
@@ -254,6 +117,151 @@ class HealthInformation : Fragment() {
 
 				if (familyHistoryData != null) {
 					familyHistoryList.setFullMap(familyHistoryData as Map<String, String>)
+				}
+			}
+		}
+	}
+
+	private fun onAllergiesClick() {
+		configBottomSheet { dialogBinding, dialog ->
+			dialogBinding.apply {
+				icon.isVisible = false
+				title.text = getString(R.string.add_new_allegy)
+
+				body.apply {
+					val input = EditText(context).apply {
+						layoutParams = ViewGroup.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT
+						)
+						inputType = InputType.TYPE_CLASS_TEXT
+						background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+						setCompoundDrawablesRelativeWithIntrinsicBounds(
+							ContextCompat.getDrawable(context, R.drawable.ic_allergy),
+							null,
+							null,
+							null
+						)
+						compoundDrawablePadding = 20
+						hint = getString(R.string.hint_allergy_input)
+						setTextColor(ContextCompat.getColor(context, R.color.textLight))
+						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+					}
+
+					addView(input)
+				}
+
+				positiveButton.apply {
+					text = getString(R.string.save)
+					setOnClickListener {
+						var name: String? = null
+
+						body.forEach { view ->
+							if (view is EditText) {
+								name = view.text.toString()
+							}
+						}
+
+						if (name == null) return@setOnClickListener
+
+						DatabaseManager
+							.userDocument
+							.update("patient_data.allergies", FieldValue.arrayUnion(name))
+
+						binding.allergiesList.addItem("${-allergiesKeyValue++}" to name)
+						dialog.dismiss()
+					}
+				}
+			}
+		}
+	}
+
+	private fun onFamilyHistoryClick() {
+		configBottomSheet { dialogBinding, dialog ->
+			dialogBinding.apply {
+				icon.isVisible = false
+				title.text = getString(R.string.add_new_family_history)
+
+				body.apply {
+					val relativeInput = EditText(context).apply {
+						layoutParams = ViewGroup.MarginLayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT
+						).apply {
+							setMargins(
+								0,
+								0,
+								0,
+								resources.getDimensionPixelSize(
+									R.dimen.list_items_spacing
+								)
+							)
+						}
+						inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+						background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+						setCompoundDrawablesRelativeWithIntrinsicBounds(
+							ContextCompat.getDrawable(context, R.drawable.ic_person),
+							null,
+							null,
+							null
+						)
+						compoundDrawablePadding = 20
+						hint = getString(R.string.hint_relative_input)
+						setTextColor(ContextCompat.getColor(context, R.color.textLight))
+						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+					}
+
+					val relativeProblemInput = EditText(context).apply {
+						layoutParams = ViewGroup.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT
+						)
+						inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+						background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+						setCompoundDrawablesRelativeWithIntrinsicBounds(
+							ContextCompat.getDrawable(context, R.drawable.ic_reports),
+							null,
+							null,
+							null
+						)
+						compoundDrawablePadding = 20
+						hint = getString(R.string.hint_relative_problem_input)
+						setTextColor(ContextCompat.getColor(context, R.color.textLight))
+						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
+						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+					}
+
+					addView(relativeInput)
+					addView(relativeProblemInput)
+				}
+
+				positiveButton.apply {
+					text = getString(R.string.save)
+					setOnClickListener {
+						var relative: String? = null
+						var relativeProblem: String? = null
+
+						body.forEach { view ->
+							if (view is EditText) {
+								if (relative == null) {
+									relative = view.text.toString()
+								} else {
+									relativeProblem = view.text.toString()
+								}
+							}
+						}
+
+						if (relative == null || relativeProblem == null) return@setOnClickListener
+
+						DatabaseManager
+							.userDocument
+							.update("patient_data.family_history.$relative", relativeProblem)
+
+						binding.familyHistoryList.addItem(relative to relativeProblem)
+						dialog.dismiss()
+					}
 				}
 			}
 		}
