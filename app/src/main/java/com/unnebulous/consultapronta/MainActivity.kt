@@ -1,24 +1,17 @@
 package com.unnebulous.consultapronta
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.TouchDelegate
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
-import com.unnebulous.consultapronta.views.NavbarView
 import kotlinx.coroutines.launch
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import com.google.firebase.messaging.FirebaseMessaging
-import com.unnebulous.consultapronta.database.DatabaseManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,49 +23,21 @@ class MainActivity : AppCompatActivity() {
 		) { isGranted ->
 
 			if (isGranted) {
-				Log.d("FCM", "Permissão concedida")
+				// todo: quando for permitido
 			} else {
-				Log.d("FCM", "Permissão negada")
+				// todo: quando for negado
 			}
 		}
 
 	private fun checkNotificationPermission() {
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
 			val permission = Manifest.permission.POST_NOTIFICATIONS
 
-			if (ContextCompat.checkSelfPermission(
-					this,
-					permission
-				) != PackageManager.PERMISSION_GRANTED
-			) {
-
+			if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
 				notificationPermissionLauncher.launch(permission)
 			}
 		}
-	}
-
-	private fun registerFCMToken() {
-
-		FirebaseMessaging.getInstance().token
-			.addOnSuccessListener { token ->
-
-				DatabaseManager.userCollection("fcmTokens")
-					.document(token)
-					.set(
-						mapOf("token" to token)
-					)
-					.addOnSuccessListener {
-						Log.d("FCM", "Token registrado com sucesso")
-					}
-					.addOnFailureListener { exception ->
-						Log.e("FCM", "Erro ao registrar token", exception)
-					}
-			}
-			.addOnFailureListener { exception ->
-				Log.e("FCM", "Erro ao obter token FCM", exception)
-			}
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,7 +74,6 @@ class MainActivity : AppCompatActivity() {
 
 		lifecycleScope.launch {
 			AuthManager.userInFirestore = AuthManager.getUserData()!!
-			registerFCMToken()
 		}
 	}
 

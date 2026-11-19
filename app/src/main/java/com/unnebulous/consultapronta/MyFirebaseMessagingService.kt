@@ -9,11 +9,11 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.DatabaseManager
 
+// PARA USO FUTURO/NO MOMENTO NÃO USADO
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 	override fun onMessageReceived(message: RemoteMessage) {

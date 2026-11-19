@@ -58,7 +58,6 @@ dependencies {
 	implementation(libs.androidx.activity)
 	implementation(libs.androidx.constraintlayout)
 	implementation(platform(libs.firebase.bom))
-	implementation(libs.firebase.messaging)
 	implementation(libs.firebase.auth)
 	implementation(libs.firebase.firestore)
 	implementation(libs.chart)
