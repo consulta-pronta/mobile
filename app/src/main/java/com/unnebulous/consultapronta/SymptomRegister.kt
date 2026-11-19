@@ -157,7 +157,7 @@ class SymptomRegister : Fragment() {
 
 			lifecycleScope.launch {
 				try {
-					Symptom.collection.add(symptomDoc)
+					Symptom.collection.add(symptomDoc.toMap())
 
 					Log.i(Symptom.COLLECTION_NAME, "addSymptom:success")
 					popBackStack()

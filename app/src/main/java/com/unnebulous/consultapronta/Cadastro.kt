@@ -459,7 +459,7 @@ class Cadastro : Fragment() {
 					Log.i("auth", "requestProfessional:success")
 				} else {
 					DatabaseManager.userDocument
-						.update(DatabaseManager.PATIENT_USER_DATA, userData)
+						.update("patient_data", userData)
 						.await()
 
 					Log.i("auth", "updatePatientData:success")

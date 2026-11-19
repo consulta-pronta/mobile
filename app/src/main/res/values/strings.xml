@@ -291,4 +291,14 @@
 	<string name="go_to_login_password_recovery">Após isso, volte para a página de login para entrar em sua conta</string>
 	<string name="error_email_not_sent">Não foi possível enviar o e-mail, tente novamente</string>
 	<string name="send">Enviar</string>
+	<string name="add_item">Adicionar item</string>
+	<string name="label_your_blood_type">Seu tipo sanguíneo</string>
+	<string name="label_allergies">Alergias</string>
+	<string name="label_family_history">Histórico familiar</string>
+	<string name="hint_allergy_input">Nome da alergia</string>
+	<string name="add_new_allegy">Adicionar nova alergia</string>
+	<string name="hint_relative_input">Grau de parentesco</string>
+	<string name="hint_relative_problem_input">Condição do familiar</string>
+	<string name="add_new_family_history">Adicionar histórico familiar</string>
+	<string name="user_age_label">%1$d anos</string>
 </resources>
