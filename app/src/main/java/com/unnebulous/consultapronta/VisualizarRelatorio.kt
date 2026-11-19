@@ -128,10 +128,7 @@ class VisualizarRelatorio : Fragment() {
 
 		val adapter = ChronologyAdapter()
 
-		binding.recyclerview.apply {
-			this.adapter = adapter
-			this.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
-		}
+		binding.recyclerview.adapter = adapter
 
 		adapter.submitList(
 			listOf(

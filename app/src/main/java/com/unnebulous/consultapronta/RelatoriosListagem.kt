@@ -16,6 +16,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.FragmentRelatoriosListagemBinding
+import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.recyclerview.adapter.ReportListAdapter
 import kotlinx.coroutines.launch
 import kotlin.sequences.forEach
@@ -124,6 +125,7 @@ class RelatoriosListagem : Fragment() {
 
 		binding.apply {
 			recyclerview.adapter = adapter
+			recyclerview.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
 
 			addNewReport.setOnClickListener {
 				changeFragmentWithBackStack(GerarRelatorio())

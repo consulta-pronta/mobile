@@ -40,6 +40,14 @@ class Home : Fragment() {
 			onClick = { symptom ->
 				changeFragmentWithBackStack(HistoricoDoSintoma.newInstance(symptom.id))
 			}
+
+			submitList(
+				listOf(
+					Symptom(),
+					Symptom(),
+					Symptom()
+				)
+			)
 		}
 
 		binding.apply {
