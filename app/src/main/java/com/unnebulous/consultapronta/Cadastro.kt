@@ -160,6 +160,7 @@ class Cadastro : Fragment() {
 					)
 
 					changeFragmentWithBackStack(CadastroFormaContato())
+					part = 1
 				}
 			} else if (verifyInputs()) {
 				part++
@@ -228,7 +229,7 @@ class Cadastro : Fragment() {
 				2 -> {
 					name = nameInput.text.toString().trim()
 					cpf = cpfInput.text.toString().trim()
-					address = addressInput.toString().trim()
+					address = addressInput.text.toString().trim()
 
 					verifyInputsList(listOf(name, cpf, address))
 
