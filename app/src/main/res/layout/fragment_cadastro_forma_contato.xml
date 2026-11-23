@@ -148,12 +148,12 @@
 			android:layout_weight="1" />
 
 		<Button
-			android:id="@+id/verify_button"
+			android:id="@+id/create_account_button"
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="32dp"
-			android:text="@string/verify"
+			android:text="@string/sign_up"
 			android:textColor="@color/primaryDark"
 			android:insetBottom="0dp"
 

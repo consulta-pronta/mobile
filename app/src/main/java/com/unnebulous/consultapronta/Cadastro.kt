@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
@@ -54,11 +55,9 @@ class Cadastro : Fragment() {
 				2 -> {
 					secondPart.isVisible = true
 					previousButton.isVisible = true
-					createAccountButton.text = getString(R.string.next_label)
 				}
 				3 -> {
 					thirdPart.isVisible = true
-					createAccountButton.text = getString(R.string.create_account)
 				}
 			}
 		}
@@ -129,7 +128,7 @@ class Cadastro : Fragment() {
 			changeFragmentWithBackStack(Login())
 		}
 
-		binding.createAccountButton.setOnClickListener {
+		binding.nextButton.setOnClickListener {
 			if (part == 3) {
 				if (verifyInputs()) {
 					val userData = mutableMapOf<String, Any>().apply {
@@ -296,25 +295,13 @@ class Cadastro : Fragment() {
 		val successDrawable = R.drawable.ic_check_circle
 		val errorDrawable = R.drawable.ic_error_circle
 
-		// para os leigos, isso é uma função lambda
 		val changeTextViewDrawableColors: (TextView, Int) -> Unit = { view, color ->
-			// loop for para acessar todos os drawables (top, bottom, start, end)
-			for (drawable in view.compoundDrawables) {
-				drawable?.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
-				/*
-				* Isso aplica um filtro de cor do tipo "PorterDuff"
-				* (Segundo pesquisas, PorterDuff se refere a dois bros da informática: Thomas Porter e Tom Duff, criadores dessa
-				* técnica de composição de imagens)
-				* O modo SRC_IN dita que só será aplicado o filtro aonde tem pixel. Se for transparente, não será aplicado
-				* */
-			}
+			view.compoundDrawableTintList = ColorStateList.valueOf(color)
 		}
 
 		binding.passwordInput.doOnTextChanged { text, _, _, _ ->
 			text?.let {
 				password = text.toString()
-
-				// TODO: ícones estão vermelhos ao voltar do formas de contato
 
 				var haveLowercase = false
 				var haveUppercase = false
@@ -421,5 +408,13 @@ class Cadastro : Fragment() {
 			"Prefiro não informar"
 		)
 		setupSelect(binding.genderIdentityInput, genderIdentityArray)
+	}
+
+	override fun onResume() {
+		super.onResume()
+		birthDate?.let {
+			binding.birthDateInput.text = it.format(dateFormatter)
+			binding.birthDateInput.setTextColor(ContextCompat.getColor(requireContext(), R.color.textLight))
+		}
 	}
 }

@@ -70,12 +70,12 @@ class CadastroFormaContato : Fragment() {
 			contact_forms["sms"] = phone
 		}
 
-		binding.verifyButton.setOnClickListener {
+		binding.createAccountButton.setOnClickListener {
 			if (userTemp.contact_forms.keys.isNotEmpty()) {
 				AuthManager.auth.createUserWithEmailAndPassword(userTemp.email, userTemp.password)
 					.addOnCompleteListener { task -> handlePostSignUp(task) }
 			} else {
-				// todo: no contact form defined
+				showSnackbar(getString(R.string.error_no_contact_form_defined), Utils.SnackBarType.WARNING)
 			}
 		}
 	}
@@ -198,7 +198,9 @@ class CadastroFormaContato : Fragment() {
 						setOnClickListener {
 							dialogBinding.body.children.forEach { view ->
 								val input = view as EditText
-								val text = input.text.toString()
+								val text = input.text.toString().trim()
+
+								if (text.isEmpty()) return@forEach
 
 								binding.emailOption.setSubtitle(text)
 								userTemp.contact_forms["email"] = text
@@ -267,7 +269,9 @@ class CadastroFormaContato : Fragment() {
 						setOnClickListener {
 							dialogBinding.body.children.forEach { view ->
 								val input = view as EditText
-								val text = input.text.toString()
+								val text = input.text.toString().trim()
+
+								if (text.isEmpty()) return@forEach
 
 								binding.smsOption.setSubtitle(text)
 								userTemp.contact_forms["sms"] = text
@@ -336,7 +340,9 @@ class CadastroFormaContato : Fragment() {
 						setOnClickListener {
 							dialogBinding.body.children.forEach { view ->
 								val input = view as EditText
-								val text = input.text.toString()
+								val text = input.text.toString().trim()
+
+								if (text.isEmpty()) return@forEach
 
 								binding.whatsappOption.setSubtitle(text)
 								userTemp.contact_forms["whatsapp"] = text
@@ -405,7 +411,9 @@ class CadastroFormaContato : Fragment() {
 						setOnClickListener {
 							dialogBinding.body.children.forEach { view ->
 								val input = view as EditText
-								val text = input.text.toString()
+								val text = input.text.toString().trim()
+
+								if (text.isEmpty()) return@forEach
 
 								binding.telegramOption.setSubtitle(text)
 								userTemp.contact_forms["telegram"] = text
