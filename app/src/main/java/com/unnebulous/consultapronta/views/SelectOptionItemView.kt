@@ -12,6 +12,7 @@ import androidx.core.content.withStyledAttributes
 import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.databinding.SelectOptionItemViewBinding
 import androidx.core.view.isNotEmpty
+import androidx.core.view.isVisible
 import com.unnebulous.consultapronta.R
 import com.unnebulous.consultapronta.databinding.BottomSheetBinding
 
@@ -174,8 +175,9 @@ class SelectOptionItemView @JvmOverloads constructor(
 
 				Utils.SelectOptionItemType.COMPLETE -> {
 					binding.apply {
-						binding.title.text = text
-						binding.subtitle.text = textSubtitle
+						title.text = text
+						subtitle.text = textSubtitle
+						subtitle.isVisible = !textSubtitle.isNullOrEmpty()
 						icon.setImageDrawable(optionIcon)
 						if (!showIconAsRaw) {
 							icon.setColorFilter(color)

@@ -52,10 +52,11 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
-			app:selectOptionType="complete"
-			app:textColor="@color/textLight"
 			app:completeLayoutIcon="@drawable/ic_email"
-			app:selectText="@string/input_email" >
+			app:selectOptionType="complete"
+			app:selectText="@string/input_email"
+			app:textColor="@color/textLight">
+
 			<androidx.appcompat.widget.SwitchCompat
 				android:id="@+id/switch_email"
 
@@ -63,9 +64,9 @@
 				android:layout_height="wrap_content"
 
 				app:switchMinWidth="60dp"
+				app:thumbTint="@color/textLight"
 				app:track="@drawable/shape_switch_background"
-				app:trackTint="@color/switch_color"
-				app:thumbTint="@color/textLight" />
+				app:trackTint="@color/switch_color" />
 		</com.unnebulous.consultapronta.views.SelectOptionItemView>
 
 		<com.unnebulous.consultapronta.views.SelectOptionItemView

@@ -274,4 +274,7 @@
 	<string name="my_consultations">Minhas consultas</string>
 	<string name="deny">Negar</string>
 	<string name="accept">Aceitar</string>
+	<string name="search">Pesquisar</string>
+	<string name="safety">Segurança</string>
+	<string name="acessibility">Acessibilidade</string>
 </resources>

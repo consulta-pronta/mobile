@@ -20,19 +20,19 @@
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/search_professionals"
-			android:textColorHint="@color/textDark60"
+			android:autofillHints="name"
 			android:background="@drawable/shape_search_background"
 			android:drawableStart="@drawable/ic_search"
-			android:drawableTint="@color/textDark"
 			android:drawablePadding="10dp"
-			android:padding="15dp"
-			android:autofillHints="name"
-			android:textColor="@color/textDark"
+			android:drawableTint="@color/textDark"
+			android:hint="@string/search_professionals"
 			android:inputType="text"
+			android:padding="15dp"
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60"
 
-			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent" />
 
 		<LinearLayout

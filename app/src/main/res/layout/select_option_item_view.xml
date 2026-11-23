@@ -22,7 +22,7 @@
 		app:buttonTint="@color/textDark"
 
 		tools:text="@string/placeholder"
-		tools:visibility="visible" />
+		tools:visibility="gone" />
 
 	<CheckBox
 		android:id="@+id/item_checkbox_button"
@@ -36,7 +36,7 @@
 		app:buttonIconTint="@color/dark_checkbox_color"
 
 		tools:text="@string/placeholder"
-		tools:visibility="visible" />
+		tools:visibility="gone" />
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:id="@+id/item_complete_layout"
@@ -60,33 +60,38 @@
 
 			tools:src="@drawable/ic_info"/>
 
-		<TextView
-			android:id="@+id/title"
-
-			android:layout_width="wrap_content"
+		<LinearLayout
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:textColor="@color/textDark"
+			android:orientation="vertical"
+			android:gravity="center_vertical"
 			android:layout_marginStart="@dimen/default_drawable_icon_padding"
+
 
 			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintStart_toEndOf="@id/icon"
+			app:layout_constraintEnd_toStartOf="@id/aside">
+			<TextView
+				android:id="@+id/title"
 
-			tools:text="@string/placeholder"/>
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/textDark"
 
-		<TextView
-			android:id="@+id/subtitle"
+				tools:text="@string/placeholder"/>
 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textColor="@color/textDark"
-			android:textSize="14sp"
-			android:layout_marginStart="@dimen/default_drawable_icon_padding"
-			android:alpha="0.6"
+			<TextView
+				android:id="@+id/subtitle"
 
-			app:layout_constraintTop_toBottomOf="@id/title"
-			app:layout_constraintStart_toEndOf="@id/icon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/textDark"
+				android:textSize="14sp"
+				android:alpha="0.6"
 
-			tools:text="@string/placeholder"/>
+				tools:text="@string/placeholder"/>
+		</LinearLayout>
 
 		<FrameLayout
 			android:id="@+id/aside"
