@@ -125,12 +125,6 @@
 	<string name="telegram_contact_form">Telegram</string>
 	<string name="type_contact_form">Digite a forma de contato</string>
 	<string name="register_contact_form">Registrar forma de contato</string>
-	<string name="auth_create_account_contact_forms_verification_subtitle">Iremos enviar um código para cada forma de contato selecionado</string>
-	<string name="type_code_send">Digite o código enviado por\ </string>
-	<string name="verify_code">Verificar código</string>
-	<string name="verify">Verificar</string>
-	<string name="code_delay_advice">Você pode levar alguns instantes para receber o código.</string>
-	<string name="click_to_resend">Clique aqui para enviar outro código</string>
 	<string name="medications_screen_title">Meus medicamentos</string>
 	<string name="search_medications_hint">Buscar medicamentos</string>
 	<string name="medications_check_advice">Marque diariamente a caixa após o uso de medicamento.</string>
@@ -314,4 +308,5 @@
 	<string name="user_age_label">%1$d anos</string>
 	<string name="loading">Carregando</string>
 	<string name="error_generic">Algo deu errado. Tente novamente mais tarde</string>
+	<string name="error_no_contact_form_defined">Nenhuma forma de contato definida</string>
 </resources>

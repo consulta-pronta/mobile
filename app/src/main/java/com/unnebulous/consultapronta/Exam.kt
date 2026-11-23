@@ -51,7 +51,7 @@ class Exam : Fragment() {
 
 		val adapter = ExamListAdapter()
 		binding.examCards.adapter = adapter
-		binding.examCards.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+		binding.examCards.addItemDecoration(recyclerviewSpacing)
 
 		adapter.submitList(
 			listOf(

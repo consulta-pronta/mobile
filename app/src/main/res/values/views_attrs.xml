@@ -46,6 +46,7 @@
 		<attr name="selectText" format="string" />
 		<attr name="selectSubtitleText" format="string" />
 		<attr name="showIconAsRaw" format="boolean" />
+		<attr name="isChecked" format="boolean" />
 	</declare-styleable>
 
 	<declare-styleable name="VerificationCodeView">

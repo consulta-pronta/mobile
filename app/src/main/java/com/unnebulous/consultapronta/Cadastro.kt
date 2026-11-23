@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
@@ -54,11 +55,9 @@ class Cadastro : Fragment() {
 				2 -> {
 					secondPart.isVisible = true
 					previousButton.isVisible = true
-					createAccountButton.text = getString(R.string.next_label)
 				}
 				3 -> {
 					thirdPart.isVisible = true
-					createAccountButton.text = getString(R.string.create_account)
 				}
 			}
 		}
@@ -129,23 +128,38 @@ class Cadastro : Fragment() {
 			changeFragmentWithBackStack(Login())
 		}
 
-		binding.createAccountButton.setOnClickListener {
+		binding.nextButton.setOnClickListener {
 			if (part == 3) {
 				if (verifyInputs()) {
-//				    (activity as AuthActivity).userTemp.apply {
-//				    	this.name = name
-//					    this.userType = userType
-//					    this.cpf = cpf
-//					    this.email = email
-//					    this.phoneNumber = phoneNumber
-//					    this.password = password
-//
-//					    this.contactForms["email"] = this.email
-//					    this.contactForms["sms"] = this.phoneNumber
-//				    }
+					val userData = mutableMapOf<String, Any>().apply {
+						if (userType == Utils.UserType.PACIENTE) {
+							this["weight"] = weight!!
+							this["height"] = height!!
+							this["blood_type"] = bloodType
+						} else {
+							this["crm"] = crm
+							this["operation_area"] = operationArea
+							this["speciality"] = speciality
+							this["uf"] = uf
+						}
+					}
 
-					AuthManager.auth.createUserWithEmailAndPassword(email, password)
-						.addOnCompleteListener { task -> handlePostSignUp(task) }
+					(activity as AuthActivity).userTemp = UserTemp(
+						name = name,
+						email = email,
+						phone = phoneNumber,
+						password = password,
+						cpf = cpf,
+						address = address,
+						biological_sex = biologicalSex,
+						gender = genderIdentity,
+						user_type = userType,
+						birth_date = birthDate?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))!!,
+						user_data = userData
+					)
+
+					changeFragmentWithBackStack(CadastroFormaContato())
+					part = 1
 				}
 			} else if (verifyInputs()) {
 				part++
@@ -214,7 +228,7 @@ class Cadastro : Fragment() {
 				2 -> {
 					name = nameInput.text.toString().trim()
 					cpf = cpfInput.text.toString().trim()
-					address = addressInput.toString().trim()
+					address = addressInput.text.toString().trim()
 
 					verifyInputsList(listOf(name, cpf, address))
 
@@ -281,18 +295,8 @@ class Cadastro : Fragment() {
 		val successDrawable = R.drawable.ic_check_circle
 		val errorDrawable = R.drawable.ic_error_circle
 
-		// para os leigos, isso é uma função lambda
 		val changeTextViewDrawableColors: (TextView, Int) -> Unit = { view, color ->
-			// loop for para acessar todos os drawables (top, bottom, start, end)
-			for (drawable in view.compoundDrawables) {
-				drawable?.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
-				/*
-				* Isso aplica um filtro de cor do tipo "PorterDuff"
-				* (Segundo pesquisas, PorterDuff se refere a dois bros da informática: Thomas Porter e Tom Duff, criadores dessa
-				* técnica de composição de imagens)
-				* O modo SRC_IN dita que só será aplicado o filtro aonde tem pixel. Se for transparente, não será aplicado
-				* */
-			}
+			view.compoundDrawableTintList = ColorStateList.valueOf(color)
 		}
 
 		binding.passwordInput.doOnTextChanged { text, _, _, _ ->
@@ -406,71 +410,11 @@ class Cadastro : Fragment() {
 		setupSelect(binding.genderIdentityInput, genderIdentityArray)
 	}
 
-	private fun handlePostSignUp(task: Task<AuthResult>) {
-		if (!task.isSuccessful) {
-			Log.w("auth", "signUpWithEmail:failure", task.exception)
-			return
-		}
-		Log.i("auth", "signUpWithEmail:success")
-
-		val user = task.result.user!!
-		val creationTime = user.metadata?.creationTimestamp!!
-
-		val userFormData = User.Companion.FormData(
-			name = name,
-			email = user.email!!,
-			phone = phoneNumber,
-			cpf = cpf,
-			address = address,
-			biological_sex = biologicalSex,
-			gender = genderIdentity,
-			user_type = userType,
-			birth_date = birthDate?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))!!,
-			created_at = Timestamp(Date(creationTime))
-		)
-
-		lifecycleScope.launch {
-			try {
-				DatabaseManager.userDocument
-					.set(userFormData.toMap())
-					.await()
-
-				Log.i("auth", "setUserDocument:success")
-
-				val userData = mutableMapOf<String, Any>().apply {
-					if (userType == Utils.UserType.PACIENTE) {
-						this["weight"] = weight!!
-						this["height"] = height!!
-						this["blood_type"] = bloodType
-					} else {
-						this["crm"] = crm
-						this["operation_area"] = operationArea
-						this["speciality"] = speciality
-						this["uf"] = uf
-					}
-				}
-
-				if (userType == Utils.UserType.PROFISSIONAL) {
-					DatabaseManager.db.collection("signupRequests")
-						.document(user.uid)
-						.set(userData)
-						.await()
-
-					Log.i("auth", "requestProfessional:success")
-				} else {
-					DatabaseManager.userDocument
-						.update("patient_data", userData)
-						.await()
-
-					Log.i("auth", "updatePatientData:success")
-				}
-
-				val activity = requireActivity()
-				startActivity(Intent(activity, MainActivity::class.java))
-				activity.finish()
-			} catch (e: Exception) {
-				Log.w("auth", "setUserDocument:failure", e)
-			}
+	override fun onResume() {
+		super.onResume()
+		birthDate?.let {
+			binding.birthDateInput.text = it.format(dateFormatter)
+			binding.birthDateInput.setTextColor(ContextCompat.getColor(requireContext(), R.color.textLight))
 		}
 	}
 }
