@@ -277,4 +277,6 @@
 	<string name="search">Pesquisar</string>
 	<string name="safety">Segurança</string>
 	<string name="acessibility">Acessibilidade</string>
+	<string name="notifications">Notificações</string>
+	<string name="reminders">Lembretes</string>
 </resources>
