@@ -125,7 +125,7 @@ class RelatoriosListagem : Fragment() {
 
 		binding.apply {
 			recyclerview.adapter = adapter
-			recyclerview.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+			recyclerview.addItemDecoration(recyclerviewSpacing)
 
 			addNewReport.setOnClickListener {
 				changeFragmentWithBackStack(GerarRelatorio())

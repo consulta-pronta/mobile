@@ -45,17 +45,17 @@ class ListagemConsulta : Fragment() {
 		binding.apply {
 			recyclerviewProposed.apply {
 				adapter = setAdapter()
-				addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+				addItemDecoration(recyclerviewSpacing)
 			}
 
 			binding.recyclerviewRequested.apply {
 				adapter = setAdapter()
-				addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+				addItemDecoration(recyclerviewSpacing)
 			}
 
 			binding.recyclerviewScheduled.apply {
 				adapter = setAdapter()
-				addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+				addItemDecoration(recyclerviewSpacing)
 			}
 
 			requestConsultation.setOnClickListener {

@@ -42,7 +42,7 @@ class MedicamentosListagem : Fragment() {
 		val adapter = MedicationAdapter()
 		binding.recyclerview.apply {
 			this.adapter = adapter
-			this.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
+			this.addItemDecoration(recyclerviewSpacing)
 		}
 
 		adapter.submitList(
