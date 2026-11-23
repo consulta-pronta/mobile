@@ -55,12 +55,14 @@
 			app:selectOptionType="complete"
 			app:textColor="@color/textLight"
 			app:completeLayoutIcon="@drawable/ic_email"
-			app:selectText="@string/input_email" >
+			app:selectText="@string/input_email"
+			app:isChecked="true" >
 			<androidx.appcompat.widget.SwitchCompat
 				android:id="@+id/switch_email"
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:checked="true"
 
 				app:switchMinWidth="60dp"
 				app:track="@drawable/shape_switch_background"
@@ -77,17 +79,19 @@
 			app:selectOptionType="complete"
 			app:textColor="@color/textLight"
 			app:completeLayoutIcon="@drawable/ic_sms"
-			app:selectText="@string/sms_contact_form" >
+			app:selectText="@string/sms_contact_form"
+			app:isChecked="true" >
 			<androidx.appcompat.widget.SwitchCompat
 				android:id="@+id/switch_sms"
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:checked="true"
 
 				app:switchMinWidth="60dp"
 				app:track="@drawable/shape_switch_background"
 				app:trackTint="@color/switch_color"
-				app:thumbTint="@color/textLight" />
+				app:thumbTint="@color/textLight"/>
 		</com.unnebulous.consultapronta.views.SelectOptionItemView>
 
 		<com.unnebulous.consultapronta.views.SelectOptionItemView

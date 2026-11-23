@@ -62,18 +62,20 @@ class CadastroFormaContato : Fragment() {
 
 		userTemp = (activity as AuthActivity).userTemp
 
-		binding.emailOption.setSubtitle(userTemp.email)
-		binding.switchEmail.isChecked = true
+		userTemp.apply {
+			binding.emailOption.setSubtitle(email)
+			contact_forms["email"] = email
 
-		binding.smsOption.setSubtitle(userTemp.phone)
-		binding.switchSms.isChecked = true
+			binding.smsOption.setSubtitle(phone)
+			contact_forms["sms"] = phone
+		}
 
 		binding.verifyButton.setOnClickListener {
-			if (verifyInputs()) {
+			if (userTemp.contact_forms.keys.isNotEmpty()) {
 				AuthManager.auth.createUserWithEmailAndPassword(userTemp.email, userTemp.password)
 					.addOnCompleteListener { task -> handlePostSignUp(task) }
 			} else {
-				// TODO: invalid input detected
+				// todo: no contact form defined
 			}
 		}
 	}
@@ -105,7 +107,6 @@ class CadastroFormaContato : Fragment() {
 				created_at = Timestamp(Date(creationTime))
 			)
 		}
-
 
 		lifecycleScope.launch {
 			try {
@@ -156,12 +157,6 @@ class CadastroFormaContato : Fragment() {
 		}
 	}
 
-	private fun verifyInputs(): Boolean {
-		var isValid = true
-
-		return isValid
-	}
-
 	private fun configEmailSwitch() {
 		binding.switchEmail.setOnCheckedChangeListener { button, isChecked ->
 			if (isChecked) {
@@ -189,6 +184,8 @@ class CadastroFormaContato : Fragment() {
 						)
 						compoundDrawablePadding = 20
 						hint = getString(R.string.type_contact_form)
+						text = userTemp.contact_forms["email"]?.toEditable()
+
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
 						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
@@ -223,7 +220,7 @@ class CadastroFormaContato : Fragment() {
 				}
 			} else {
 				binding.emailOption.setSubtitle("")
-				userTemp.contact_forms["email"] = ""
+				userTemp.contact_forms.remove("email")
 			}
 		}
 	}
@@ -255,6 +252,8 @@ class CadastroFormaContato : Fragment() {
 						)
 						compoundDrawablePadding = 20
 						hint = getString(R.string.type_contact_form)
+						text = userTemp.contact_forms["sms"]?.toEditable()
+
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
 						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
@@ -290,7 +289,7 @@ class CadastroFormaContato : Fragment() {
 				}
 			} else {
 				binding.smsOption.setSubtitle("")
-				userTemp.contact_forms["sms"] = ""
+				userTemp.contact_forms.remove("sms")
 			}
 		}
 	}
@@ -322,6 +321,8 @@ class CadastroFormaContato : Fragment() {
 						)
 						compoundDrawablePadding = 20
 						hint = getString(R.string.type_contact_form)
+						text = userTemp.contact_forms["whatsapp"]?.toEditable()
+
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
 						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
@@ -357,7 +358,7 @@ class CadastroFormaContato : Fragment() {
 				}
 			} else {
 				binding.whatsappOption.setSubtitle("")
-				userTemp.contact_forms["whatsapp"] = ""
+				userTemp.contact_forms.remove("whatsapp")
 			}
 		}
 	}
@@ -389,6 +390,8 @@ class CadastroFormaContato : Fragment() {
 						)
 						compoundDrawablePadding = 20
 						hint = getString(R.string.type_contact_form)
+						text = userTemp.contact_forms["telegram"]?.toEditable()
+
 						setTextColor(ContextCompat.getColor(context, R.color.textLight))
 						setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
 						compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
@@ -424,7 +427,7 @@ class CadastroFormaContato : Fragment() {
 				}
 			} else {
 				binding.telegramOption.setSubtitle("")
-				userTemp.contact_forms["telegram"] = ""
+				userTemp.contact_forms.remove("telegram")
 			}
 		}
 	}

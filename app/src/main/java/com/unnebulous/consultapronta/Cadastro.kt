@@ -314,6 +314,8 @@ class Cadastro : Fragment() {
 			text?.let {
 				password = text.toString()
 
+				// TODO: ícones estão vermelhos ao voltar do formas de contato
+
 				var haveLowercase = false
 				var haveUppercase = false
 				var haveNumber = false

@@ -147,6 +147,7 @@ class SelectOptionItemView @JvmOverloads constructor(
 			val text = getString(R.styleable.SelectOptionItemView_selectText)
 			val textSubtitle = getString(R.styleable.SelectOptionItemView_selectSubtitleText)
 			val showIconAsRaw = getBoolean(R.styleable.SelectOptionItemView_showIconAsRaw, false)
+			val isChecked = getBoolean(R.styleable.SelectOptionItemView_isChecked, false)
 
 			this@SelectOptionItemView.type = when (type) {
 				0 -> Utils.SelectOptionItemType.RADIO
@@ -188,6 +189,8 @@ class SelectOptionItemView @JvmOverloads constructor(
 					}
 				}
 			}
+
+			checked = isChecked
 		}
 	}
 }
