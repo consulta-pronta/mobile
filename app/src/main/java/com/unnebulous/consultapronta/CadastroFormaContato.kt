@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -22,9 +23,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.unnebulous.consultapronta.database.AuthManager
+import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentCadastroFormaContatoBinding
 import com.unnebulous.consultapronta.views.SelectOptionItemView
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 class CadastroFormaContato : Fragment() {
@@ -33,18 +39,6 @@ class CadastroFormaContato : Fragment() {
 	private val binding get() = _binding!!
 
 	private lateinit var userTemp: UserTemp
-
-	private var numberOfcontactFormsValidated = 0
-
-	private lateinit var auth: FirebaseAuth
-	private lateinit var db: FirebaseFirestore
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-		db = Firebase.firestore
-		auth = Firebase.auth
-	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -66,46 +60,20 @@ class CadastroFormaContato : Fragment() {
 		configWhatsappSwitch()
 		configTelegramSwitch()
 
-//		userTemp = (activity as AuthActivity).userTemp
+		userTemp = (activity as AuthActivity).userTemp
 
-		userTemp.contactForms.entries.forEach { entry ->
-			when (entry.key) {
-				"email" -> {
-					binding.emailOption.setSubtitle(entry.value)
-					binding.switchEmail.isChecked = true
-				}
+		binding.emailOption.setSubtitle(userTemp.email)
+		binding.switchEmail.isChecked = true
 
-				"sms" -> {
-					binding.smsOption.setSubtitle(entry.value)
-					binding.switchSms.isChecked = true
-				}
-			}
-		}
+		binding.smsOption.setSubtitle(userTemp.phone)
+		binding.switchSms.isChecked = true
 
 		binding.verifyButton.setOnClickListener {
-			val activity = requireActivity()
-			startActivity(Intent(activity, MainActivity::class.java))
-			activity.finish()
-
-			// TODO: após adicionar backend, remover
-			/*
-			binding.contentBody.visibility = View.GONE
-			binding.contentBodyVerification.visibility = View.VISIBLE
-			* */
-		}
-
-		binding.verifyCodeButton.setOnClickListener {
-			var isValid = false
-
-			verify()
-
-			if (numberOfcontactFormsValidated == userTemp.contactForms.size && isValid) {
-				auth.createUserWithEmailAndPassword(userTemp.email, userTemp.password)
+			if (verifyInputs()) {
+				AuthManager.auth.createUserWithEmailAndPassword(userTemp.email, userTemp.password)
 					.addOnCompleteListener { task -> handlePostSignUp(task) }
-			} else if(isValid) {
-				setupNextVerification("TODO: PEGAR O NOME DA FORMA DE CONTATO")
 			} else {
-				// TODO: deu ruim
+				// TODO: invalid input detected
 			}
 		}
 	}
@@ -118,56 +86,80 @@ class CadastroFormaContato : Fragment() {
 		Log.i("auth", "signUpWithEmail:success")
 
 		val user = task.result.user!!
-		val creationTime = user.metadata?.creationTimestamp
+		val creationTime = user.metadata?.creationTimestamp!!
 
-		val userDocument = User(
-			name = userTemp.name,
-			email = user.email!!,
-			phone = userTemp.phoneNumber,
-			cpf = userTemp.cpf,
-			user_type = userTemp.userType,
-			created_at = Timestamp(Date(creationTime!!))
-		)
+		var userFormData: User.Companion.FormData
 
-		db.collection("users")
-			.document(user.uid)
-			.set(userDocument)
-			.addOnSuccessListener {
+		userTemp.apply {
+			userFormData = User.Companion.FormData(
+				name = name,
+				email = user.email!!,
+				phone = phone,
+				cpf = cpf,
+				address = address,
+				biological_sex = biological_sex,
+				gender = gender,
+				user_type = user_type!!,
+				birth_date = birth_date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+				contact_forms = contact_forms,
+				created_at = Timestamp(Date(creationTime))
+			)
+		}
+
+
+		lifecycleScope.launch {
+			try {
+				DatabaseManager
+					.userDocument
+					.set(userFormData.toMap())
+					.await()
+
 				Log.i("auth", "setUserDocument:success")
+
+				val userData = mutableMapOf<String, Any>().apply {
+					if (userTemp.user_type == Utils.UserType.PACIENTE) {
+						this["weight"] = userTemp.user_data["weight"]!!
+						this["height"] = userTemp.user_data["height"]!!
+						this["blood_type"] = userTemp.user_data["blood_type"]!!
+					} else {
+						this["crm"] = userTemp.user_data["crm"]!!
+						this["operation_area"] = userTemp.user_data["operation_area"]!!
+						this["speciality"] = userTemp.user_data["speciality"]!!
+						this["uf"] = userTemp.user_data["uf"]!!
+					}
+				}
+
+				if (userTemp.user_type == Utils.UserType.PROFISSIONAL) {
+					DatabaseManager
+						.db
+						.collection("signupRequests")
+						.document(user.uid)
+						.set(userData)
+						.await()
+
+					Log.i("auth", "requestProfessional:success")
+				} else {
+					DatabaseManager
+						.userDocument
+						.update("patient_data", userData)
+						.await()
+
+					Log.i("auth", "updatePatientData:success")
+				}
 
 				val activity = requireActivity()
 				startActivity(Intent(activity, MainActivity::class.java))
 				activity.finish()
-			}
-			.addOnFailureListener { e ->
+			} catch (e: Exception) {
 				Log.w("auth", "setUserDocument:failure", e)
 			}
+		}
 	}
 
-	private fun verify() {
-		val codeTyped = binding.verificationCode.getCode()
+	private fun verifyInputs(): Boolean {
+		var isValid = true
 
-		// TODO: lógica de verificação...
-	}
-
-	private fun setupNextVerification(contactFormName: String) {
-		binding.codeTitlesLayout.children.forEach { title ->
-			title.alpha = 0.5f
-		}
-
-		numberOfcontactFormsValidated++
-
-		val newTitle = TextView(context).apply {
-			layoutParams = binding.codeTitle.layoutParams
-			textSize = binding.codeTitle.textSize
-
-			text = "$numberOfcontactFormsValidated. " + getString(R.string.type_code_send) + contactFormName
-
-			setTextColor(binding.codeTitle.textColors)
-		}
-
-		binding.codeTitlesLayout.addView(newTitle)
-		binding.verificationCode.clear()
+		return isValid
 	}
 
 	private fun configEmailSwitch() {
@@ -212,7 +204,7 @@ class CadastroFormaContato : Fragment() {
 								val text = input.text.toString()
 
 								binding.emailOption.setSubtitle(text)
-								userTemp.contactForms["email"] = text
+								userTemp.contact_forms["email"] = text
 							}
 
 							dialog.dismiss()
@@ -224,14 +216,14 @@ class CadastroFormaContato : Fragment() {
 					}
 
 					dialog.setOnDismissListener {
-						if (userTemp.contactForms["email"]?.isBlank() ?: true) {
+						if (userTemp.contact_forms["email"]?.isBlank() ?: true) {
 							button.isChecked = false
 						}
 					}
 				}
 			} else {
 				binding.emailOption.setSubtitle("")
-				userTemp.contactForms["email"] = ""
+				userTemp.contact_forms["email"] = ""
 			}
 		}
 	}
@@ -279,7 +271,7 @@ class CadastroFormaContato : Fragment() {
 								val text = input.text.toString()
 
 								binding.smsOption.setSubtitle(text)
-								userTemp.contactForms["sms"] = text
+								userTemp.contact_forms["sms"] = text
 							}
 
 							dialog.dismiss()
@@ -291,14 +283,14 @@ class CadastroFormaContato : Fragment() {
 					}
 
 					dialog.setOnDismissListener {
-						if (userTemp.contactForms["sms"]?.isBlank() ?: true) {
+						if (userTemp.contact_forms["sms"]?.isBlank() ?: true) {
 							button.isChecked = false
 						}
 					}
 				}
 			} else {
 				binding.smsOption.setSubtitle("")
-				userTemp.contactForms["sms"] = ""
+				userTemp.contact_forms["sms"] = ""
 			}
 		}
 	}
@@ -346,7 +338,7 @@ class CadastroFormaContato : Fragment() {
 								val text = input.text.toString()
 
 								binding.whatsappOption.setSubtitle(text)
-								userTemp.contactForms["whatsapp"] = text
+								userTemp.contact_forms["whatsapp"] = text
 							}
 
 							dialog.dismiss()
@@ -358,14 +350,14 @@ class CadastroFormaContato : Fragment() {
 					}
 
 					dialog.setOnDismissListener {
-						if (userTemp.contactForms["whatsapp"]?.isBlank() ?: true) {
+						if (userTemp.contact_forms["whatsapp"]?.isBlank() ?: true) {
 							button.isChecked = false
 						}
 					}
 				}
 			} else {
 				binding.whatsappOption.setSubtitle("")
-				userTemp.contactForms["whatsapp"] = ""
+				userTemp.contact_forms["whatsapp"] = ""
 			}
 		}
 	}
@@ -413,7 +405,7 @@ class CadastroFormaContato : Fragment() {
 								val text = input.text.toString()
 
 								binding.telegramOption.setSubtitle(text)
-								userTemp.contactForms["telegram"] = text
+								userTemp.contact_forms["telegram"] = text
 							}
 
 							dialog.dismiss()
@@ -425,14 +417,14 @@ class CadastroFormaContato : Fragment() {
 					}
 
 					dialog.setOnDismissListener {
-						if (userTemp.contactForms["telegram"]?.isBlank() ?: true) {
+						if (userTemp.contact_forms["telegram"]?.isBlank() ?: true) {
 							button.isChecked = false
 						}
 					}
 				}
 			} else {
 				binding.telegramOption.setSubtitle("")
-				userTemp.contactForms["telegram"] = ""
+				userTemp.contact_forms["telegram"] = ""
 			}
 		}
 	}

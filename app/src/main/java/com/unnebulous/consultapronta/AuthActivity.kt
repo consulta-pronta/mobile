@@ -10,6 +10,8 @@ class AuthActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityAuthBinding
 
+	lateinit var userTemp: UserTemp
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 

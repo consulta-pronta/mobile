@@ -132,20 +132,34 @@ class Cadastro : Fragment() {
 		binding.createAccountButton.setOnClickListener {
 			if (part == 3) {
 				if (verifyInputs()) {
-//				    (activity as AuthActivity).userTemp.apply {
-//				    	this.name = name
-//					    this.userType = userType
-//					    this.cpf = cpf
-//					    this.email = email
-//					    this.phoneNumber = phoneNumber
-//					    this.password = password
-//
-//					    this.contactForms["email"] = this.email
-//					    this.contactForms["sms"] = this.phoneNumber
-//				    }
+					val userData = mutableMapOf<String, Any>().apply {
+						if (userType == Utils.UserType.PACIENTE) {
+							this["weight"] = weight!!
+							this["height"] = height!!
+							this["blood_type"] = bloodType
+						} else {
+							this["crm"] = crm
+							this["operation_area"] = operationArea
+							this["speciality"] = speciality
+							this["uf"] = uf
+						}
+					}
 
-					AuthManager.auth.createUserWithEmailAndPassword(email, password)
-						.addOnCompleteListener { task -> handlePostSignUp(task) }
+					(activity as AuthActivity).userTemp = UserTemp(
+						name = name,
+						email = email,
+						phone = phoneNumber,
+						password = password,
+						cpf = cpf,
+						address = address,
+						biological_sex = biologicalSex,
+						gender = genderIdentity,
+						user_type = userType,
+						birth_date = birthDate?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))!!,
+						user_data = userData
+					)
+
+					changeFragmentWithBackStack(CadastroFormaContato())
 				}
 			} else if (verifyInputs()) {
 				part++
@@ -404,73 +418,5 @@ class Cadastro : Fragment() {
 			"Prefiro não informar"
 		)
 		setupSelect(binding.genderIdentityInput, genderIdentityArray)
-	}
-
-	private fun handlePostSignUp(task: Task<AuthResult>) {
-		if (!task.isSuccessful) {
-			Log.w("auth", "signUpWithEmail:failure", task.exception)
-			return
-		}
-		Log.i("auth", "signUpWithEmail:success")
-
-		val user = task.result.user!!
-		val creationTime = user.metadata?.creationTimestamp!!
-
-		val userFormData = User.Companion.FormData(
-			name = name,
-			email = user.email!!,
-			phone = phoneNumber,
-			cpf = cpf,
-			address = address,
-			biological_sex = biologicalSex,
-			gender = genderIdentity,
-			user_type = userType,
-			birth_date = birthDate?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))!!,
-			created_at = Timestamp(Date(creationTime))
-		)
-
-		lifecycleScope.launch {
-			try {
-				DatabaseManager.userDocument
-					.set(userFormData.toMap())
-					.await()
-
-				Log.i("auth", "setUserDocument:success")
-
-				val userData = mutableMapOf<String, Any>().apply {
-					if (userType == Utils.UserType.PACIENTE) {
-						this["weight"] = weight!!
-						this["height"] = height!!
-						this["blood_type"] = bloodType
-					} else {
-						this["crm"] = crm
-						this["operation_area"] = operationArea
-						this["speciality"] = speciality
-						this["uf"] = uf
-					}
-				}
-
-				if (userType == Utils.UserType.PROFISSIONAL) {
-					DatabaseManager.db.collection("signupRequests")
-						.document(user.uid)
-						.set(userData)
-						.await()
-
-					Log.i("auth", "requestProfessional:success")
-				} else {
-					DatabaseManager.userDocument
-						.update("patient_data", userData)
-						.await()
-
-					Log.i("auth", "updatePatientData:success")
-				}
-
-				val activity = requireActivity()
-				startActivity(Intent(activity, MainActivity::class.java))
-				activity.finish()
-			} catch (e: Exception) {
-				Log.w("auth", "setUserDocument:failure", e)
-			}
-		}
 	}
 }
