@@ -17,6 +17,7 @@ import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.recyclerview.adapter.ConsultationAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import com.unnebulous.consultapronta.database.AuthManager
 
 class ListagemConsulta : Fragment() {
 	private var _binding: FragmentListagemConsultaBinding? = null
@@ -33,128 +34,189 @@ class ListagemConsulta : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
 			setScreenTitle(getString(R.string.my_consultations))
+
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
 		}
+
 		resetNavbarEntryActive()
 
 		binding.apply {
-			recyclerviewProposed.apply {
-				adapter = setAdapter()
-				addItemDecoration(recyclerviewSpacing)
-			}
-
-			binding.recyclerviewRequested.apply {
-				adapter = setAdapter()
-				addItemDecoration(recyclerviewSpacing)
-			}
-
-			binding.recyclerviewScheduled.apply {
-				adapter = setAdapter()
-				addItemDecoration(recyclerviewSpacing)
-			}
-
 			requestConsultation.setOnClickListener {
 				changeFragmentWithBackStack(SolicitarConsulta())
 			}
 		}
 
-		lifecycleScope.launch {
-			val list = mutableListOf<Pair<Consultation, Map<String, String>>>()
+		// Verifica a autenticação antes de acessar o Firestore.
+		val uid = AuthManager.uid
 
-			val consultationRef = Consultation
-				.collection
-				.get()
-				.await()
+		if (uid == null) {
+			Log.e("AUTH_DEBUG", "Usuário não autenticado ao abrir ListagemConsulta")
+			return
+		}
 
-			consultationRef.forEach { doc ->
-				val professional = DatabaseManager
-					.db
-					.collection(User.COLLECTION_NAME)
-					.document(doc["professional_id"].toString())
+		binding.apply {
+			recyclerviewProposed.apply {
+				adapter = setAdapter(uid)
+				addItemDecoration(recyclerviewSpacing)
+			}
+
+			recyclerviewRequested.apply {
+				adapter = setAdapter(uid)
+				addItemDecoration(recyclerviewSpacing)
+			}
+
+			recyclerviewScheduled.apply {
+				adapter = setAdapter(uid)
+				addItemDecoration(recyclerviewSpacing)
+			}
+		}
+
+		viewLifecycleOwner.lifecycleScope.launch {
+			try {
+				val list = mutableListOf<Pair<Consultation, Map<String, String>>>()
+
+				val consultationRef = DatabaseManager
+					.userCollection(Consultation.COLLECTION_NAME, uid)
 					.get()
 					.await()
 
-				list.add(
-					Consultation.fromDocument(doc) to mapOf(
-						"name" to professional["name"].toString(),
-						"crm" to "CRM ${professional.get("professional_data.crm").toString()}/${professional.get("professional_data.uf").toString()}",
-						"id" to professional.id
-					)
-				)
+				consultationRef.forEach { doc ->
 
-				@Suppress("UNCHECKED_CAST")
-				binding.apply {
-					(recyclerviewProposed.adapter as ListAdapter<Pair<Consultation, Map<String, String>>, ConsultationAdapter.ConsultationViewHolder>).submitList(list.filter {
-						it.first.status == ConsultationStatus.SOLICITADO_PROFISSIONAL
-					})
-					(recyclerviewScheduled.adapter as ListAdapter<Pair<Consultation, Map<String, String>>, ConsultationAdapter.ConsultationViewHolder>).submitList(list.filter {
-						it.first.status == ConsultationStatus.MARCADA
-					})
-					(recyclerviewRequested.adapter as ListAdapter<Pair<Consultation, Map<String, String>>, ConsultationAdapter.ConsultationViewHolder>).submitList(list.filter {
-						it.first.status == ConsultationStatus.SOLICITADO_PACIENTE
-					})
+					val professionalId = doc.getString("professional_id")
+						?: return@forEach
+
+					val professional = DatabaseManager.db
+						.collection(User.COLLECTION_NAME)
+						.document(professionalId)
+						.get()
+						.await()
+
+					list.add(
+						Consultation.fromDocument(doc) to mapOf(
+							"name" to professional.getString("name").orEmpty(),
+							"crm" to "CRM ${
+								professional.get("professional_data.crm").toString()
+							}/${
+								professional.get("professional_data.uf").toString()
+							}",
+							"id" to professional.id
+						)
+					)
 				}
+
+				binding.apply {
+
+					@Suppress("UNCHECKED_CAST")
+					(recyclerviewProposed.adapter as ListAdapter<
+						Pair<Consultation, Map<String, String>>,
+						ConsultationAdapter.ConsultationViewHolder
+						>).submitList(
+						list.filter {
+							it.first.status == ConsultationStatus.SOLICITADO_PROFISSIONAL
+						}
+					)
+
+					@Suppress("UNCHECKED_CAST")
+					(recyclerviewScheduled.adapter as ListAdapter<
+						Pair<Consultation, Map<String, String>>,
+						ConsultationAdapter.ConsultationViewHolder
+						>).submitList(
+						list.filter {
+							it.first.status == ConsultationStatus.MARCADA
+						}
+					)
+
+					@Suppress("UNCHECKED_CAST")
+					(recyclerviewRequested.adapter as ListAdapter<
+						Pair<Consultation, Map<String, String>>,
+						ConsultationAdapter.ConsultationViewHolder
+						>).submitList(
+						list.filter {
+							it.first.status == ConsultationStatus.SOLICITADO_PACIENTE
+						}
+					)
+				}
+
+			} catch (e: Exception) {
+				Log.e("CONSULTATION_DEBUG", "Erro ao carregar consultas", e)
 			}
 		}
 	}
 
-	private fun setAdapter() = ConsultationAdapter().apply {
+	private fun setAdapter(uid: String) = ConsultationAdapter().apply {
+
+		val consultationCollection = DatabaseManager
+			.userCollection(Consultation.COLLECTION_NAME, uid)
+
 		acceptRequest = { consultationId ->
-			lifecycleScope.launch {
-				val consultationRef = Consultation
-					.collection
-					.document(consultationId)
 
-				val data = consultationRef.get().await()
+			viewLifecycleOwner.lifecycleScope.launch {
+				try {
+					val consultationRef = consultationCollection
+						.document(consultationId)
 
-				val consultationUpdated = Consultation.Companion.FormData(
-					professional_id = data["professional_id"].toString(),
-					patient_id = data["patient_id"].toString(),
-					motivation = data["motivation"].toString(),
-					details = data["details"].toString(),
-					date_time = data.getTimestamp("date_time"),
-					hospital = data["hospital"].toString(),
-					status = ConsultationStatus.MARCADA
-				)
+					val data = consultationRef.get().await()
 
-				consultationRef.set(consultationUpdated.toMap())
+					val consultationUpdated = Consultation.Companion.FormData(
+						professional_id = data["professional_id"].toString(),
+						patient_id = data["patient_id"].toString(),
+						motivation = data["motivation"].toString(),
+						details = data["details"]?.toString(),
+						date_time = data.getTimestamp("date_time"),
+						hospital = data["hospital"].toString(),
+						status = ConsultationStatus.MARCADA
+					)
+
+					consultationRef.set(consultationUpdated.toMap()).await()
+
+				} catch (e: Exception) {
+					Log.e("CONSULTATION_DEBUG", "Erro ao aceitar consulta", e)
+				}
 			}
 		}
 
 		denyRequest = { consultationId ->
-			lifecycleScope.launch {
-				val consultationRef = Consultation
-					.collection
-					.document(consultationId)
 
-				val data = consultationRef.get().await()
+			viewLifecycleOwner.lifecycleScope.launch {
+				try {
+					val consultationRef = consultationCollection
+						.document(consultationId)
 
-				val consultationUpdated = Consultation.Companion.FormData(
-					professional_id = data["professional_id"].toString(),
-					patient_id = data["patient_id"].toString(),
-					motivation = data["motivation"].toString(),
-					details = data["details"].toString(),
-					date_time = data.getTimestamp("date_time"),
-					hospital = data["hospital"].toString(),
-					status = ConsultationStatus.NEGADA
-				)
+					val data = consultationRef.get().await()
 
-				consultationRef.set(consultationUpdated.toMap())
+					val consultationUpdated = Consultation.Companion.FormData(
+						professional_id = data["professional_id"].toString(),
+						patient_id = data["patient_id"].toString(),
+						motivation = data["motivation"].toString(),
+						details = data["details"]?.toString(),
+						date_time = data.getTimestamp("date_time"),
+						hospital = data["hospital"].toString(),
+						status = ConsultationStatus.NEGADA
+					)
+
+					consultationRef.set(consultationUpdated.toMap()).await()
+
+				} catch (e: Exception) {
+					Log.e("CONSULTATION_DEBUG", "Erro ao negar consulta", e)
+				}
 			}
 		}
 
 		onCardClick = { userId ->
-			changeFragmentWithBackStack(ViewExternalProfile.newInstance(userId))
+			changeFragmentWithBackStack(
+				ViewExternalProfile.newInstance(userId)
+			)
 		}
 	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()
-		_binding
+		_binding = null
 	}
 }
