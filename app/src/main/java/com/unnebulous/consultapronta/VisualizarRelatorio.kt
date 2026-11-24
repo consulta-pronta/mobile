@@ -1,6 +1,9 @@
+
 package com.unnebulous.consultapronta
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.content.res.ColorStateList.*
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -12,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
@@ -21,18 +23,19 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.database.User
 import com.unnebulous.consultapronta.databinding.FragmentVisualizarRelatorioBinding
-import com.unnebulous.consultapronta.recyclerview.SpacingItemDecoration
 import com.unnebulous.consultapronta.recyclerview.adapter.ChronologyAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.sequences.forEach
 
 class VisualizarRelatorio : Fragment() {
+
 	private var _binding: FragmentVisualizarRelatorioBinding? = null
 	private val binding get() = _binding!!
 
@@ -54,16 +57,22 @@ class VisualizarRelatorio : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		_binding = FragmentVisualizarRelatorioBinding.inflate(inflater, container, false)
+		_binding = FragmentVisualizarRelatorioBinding.inflate(
+			inflater,
+			container,
+			false
+		)
 		return binding.root
 	}
 
+	@SuppressLint("UseCompatTextViewDrawableApis")
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.TITLED, true)
 			setScreenTitle(getString(R.string.loading))
+
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
@@ -75,26 +84,30 @@ class VisualizarRelatorio : Fragment() {
 				)
 
 				setImageResource(R.drawable.ic_more_three_dots_vertical)
-				imageTintList = ContextCompat.getColorStateList(context, R.color.textLight)
-				setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
-				setPadding(
-					5,
-					5,
-					5,
-					5,
+				imageTintList = ContextCompat.getColorStateList(
+					context,
+					R.color.textLight
 				)
+				setBackgroundColor(
+					ContextCompat.getColor(context, R.color.transparent)
+				)
+				setPadding(5, 5, 5, 5)
 			}
 
 			button.setOnClickListener {
-				val contextThemeWrapper = ContextThemeWrapper(requireContext(), R.style.PopupMenuTheme)
+				val contextThemeWrapper = ContextThemeWrapper(
+					requireContext(),
+					R.style.PopupMenuTheme
+				)
 
 				PopupMenu(contextThemeWrapper, button).apply {
-					menuInflater.inflate(R.menu.menu_reports, this.menu)
+
+					menuInflater.inflate(R.menu.menu_reports, menu)
 
 					setOnMenuItemClickListener { menuItem ->
-						showSnackbar(menuItem.title.toString())
 
 						when (menuItem.itemId) {
+
 							R.id.menu_allowed_professionals -> {}
 
 							R.id.menu_rename_report -> {
@@ -102,12 +115,17 @@ class VisualizarRelatorio : Fragment() {
 							}
 
 							R.id.menu_delete_report -> {
-								lifecycleScope.launch {
-									try {
-										Report.collection.document(reportId).delete()
-										popBackStack()
-									} catch (e: Exception) {
-										Log.e("report", "deleteReport:failure", e)
+								button.post {
+									if (!isAdded) return@post
+
+									showConfirmationDialog(
+										"Deseja deletar este relatório?",
+										"Ao confirmar, o relatório será apagado permanentemente."
+									) {
+										Report.collection
+											.document(reportId)
+											.delete()
+											.await()
 									}
 								}
 							}
@@ -122,6 +140,7 @@ class VisualizarRelatorio : Fragment() {
 
 			addAside(button)
 		}
+
 		resetNavbarEntryActive()
 
 		configChart()
@@ -139,6 +158,7 @@ class VisualizarRelatorio : Fragment() {
 		)
 
 		lifecycleScope.launch {
+
 			try {
 				val userData = AuthManager.getUserData()
 
@@ -150,66 +170,125 @@ class VisualizarRelatorio : Fragment() {
 					binding.patientProfileLayout.visibility = View.VISIBLE
 					getPatientUserData()
 				}
-			}
-			catch (e: Exception) {
+
+			} catch (e: Exception) {
 				Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
 			}
 
 			try {
-				val doc = Report.collection.document(reportId).get().await()
+				val doc = Report.collection
+					.document(reportId)
+					.get()
+					.await()
+
 				val report = Report.fromDocument(doc)
-				if (report == null || report.period_start == null || report.period_end == null) {
+
+				if (
+					report == null ||
+					report.period_start == null ||
+					report.period_end == null
+				) {
 					popBackStack()
 					return@launch
 				}
 
 				renameReport = {
 					configBottomSheet { dialogBinding, dialog ->
+
 						dialogBinding.icon.visibility = View.GONE
-						dialogBinding.title.text = getString(R.string.rename_report)
+						dialogBinding.title.text =
+							getString(R.string.rename_report)
 
 						val input = EditText(context).apply {
+
 							layoutParams = ViewGroup.LayoutParams(
 								ViewGroup.LayoutParams.MATCH_PARENT,
 								ViewGroup.LayoutParams.WRAP_CONTENT
 							)
 
 							inputType = InputType.TYPE_CLASS_TEXT
-							background = ContextCompat.getDrawable(context, R.drawable.shape_input)
+
+							background = ContextCompat.getDrawable(
+								context,
+								R.drawable.shape_input
+							)
+
 							setCompoundDrawablesRelativeWithIntrinsicBounds(
-								ContextCompat.getDrawable(context, R.drawable.ic_document),
+								ContextCompat.getDrawable(
+									context,
+									R.drawable.ic_document
+								),
 								null,
 								null,
 								null
 							)
+
 							compoundDrawablePadding = 20
+
 							hint = getString(R.string.type_new_name)
+
 							text = report.title.toEditable()
-							setTextColor(ContextCompat.getColor(context, R.color.textLight))
-							setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
-							compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
+
+							setTextColor(
+								ContextCompat.getColor(
+									context,
+									R.color.textLight
+								)
+							)
+
+							setHintTextColor(
+								ContextCompat.getColor(
+									context,
+									R.color.textLight60
+								)
+							)
+
+							this.compoundDrawableTintList = valueOf(
+								ContextCompat.getColor(
+									context,
+									R.color.textLight
+								)
+							)
 						}
 
 						dialogBinding.body.addView(input)
 
 						dialogBinding.positiveButton.apply {
+
 							text = getString(R.string.save)
+
 							setOnClickListener {
+
 								dialogBinding.body.children.forEach { view ->
+
 									val input = view as EditText
 									val newTitle = input.text.toString().trim()
 
 									newTitle.ifBlank {
-										showSnackbar(getString(R.string.type_valid_name), Utils.SnackBarType.WARNING)
+										showSnackbar(
+											getString(R.string.type_valid_name),
+											Utils.SnackBarType.WARNING
+										)
 										return@setOnClickListener
 									}
 
 									lifecycleScope.launch {
 										try {
-											Report.collection.document(report.id).update("title", newTitle)
-											updateHeader { setScreenTitle(newTitle) }
+											Report.collection
+												.document(report.id)
+												.update("title", newTitle)
+												.await()
+
+											updateHeader {
+												setScreenTitle(newTitle)
+											}
+
 										} catch (e: Exception) {
-											Log.e(Report.COLLECTION_NAME, "renameReport:failure", e)
+											Log.e(
+												Report.COLLECTION_NAME,
+												"renameReport:failure",
+												e
+											)
 										}
 									}
 								}
@@ -220,14 +299,23 @@ class VisualizarRelatorio : Fragment() {
 					}
 				}
 
-				updateHeader { setScreenTitle(report.title) }
+				updateHeader {
+					setScreenTitle(report.title)
+				}
+
 				binding.apply {
-					reportIdText.text = getString(R.string.report_id, report.id)
+
+					reportIdText.text = getString(
+						R.string.report_id,
+						report.id
+					)
+
 					reportPeriodText.text = getString(
 						R.string.view_report_period,
 						report.period_start.toBrazilianLocale(),
 						report.period_end.toBrazilianLocale()
 					)
+
 					reportDurationText.text = getString(
 						R.string.view_report_duration,
 						report.period_start.diffDays(report.period_end)
@@ -239,24 +327,35 @@ class VisualizarRelatorio : Fragment() {
 				adapter.submitList(symptoms)
 
 				binding.apply {
+
 					val area = symptoms.getMostAffectArea()
 					val areas = symptoms.getAreaMap()[area]!!
+
 					mostAffectedArea.text = area ?: "Nenhuma"
+
 					mostAffectedAreaNumRegister.text = getString(
 						R.string.most_affected_area_num_register,
 						areas.size
 					)
+
 					val intensity = areas.getIntensityAverage()
+
 					mostAffectedAreaIntensity.text = getString(
 						R.string.most_affected_area_intensity,
 						intensity
 					)
-					mostAffectedAreaIntensity.chipBackgroundColor = ColorStateList.valueOf(
-						Utils.intensityToColor(requireContext(), intensity)
-					)
+
+					mostAffectedAreaIntensity.chipBackgroundColor =
+						valueOf(
+							Utils.intensityToColor(
+								requireContext(),
+								intensity
+							)
+						)
 				}
 
 				populateChart(symptoms)
+
 			} catch (e: Exception) {
 				Log.e("report", "getReportAndSymptoms:failure", e)
 			}
@@ -264,65 +363,101 @@ class VisualizarRelatorio : Fragment() {
 	}
 
 	private fun populateChart(symptoms: List<Symptom>) {
-		val data = symptoms.map { it.date_time!! to it.intensity }.sortedBy { it.first }
 
-		val xAxisLabels = listOf(data.first(), data.last()).map { it.first.toSimpleDate() }
+		val data = symptoms
+			.map { it.date_time!! to it.intensity }
+			.sortedBy { it.first }
 
-//		// Jeito mais preciso, mas fica dificil de ver
-//		val maxDiff = data.first().first.diffSeconds(data.last().first).toDouble()
-//		val ratios = data.map {
-//			it.first
-//				.diffSeconds(data.first().first)
-//				.toDouble()
-//				.remap(0.0, maxDiff, 0.0, 1.0)
-//				.toFloat()
-//		}
+		val xAxisLabels = listOf(
+			data.first(),
+			data.last()
+		).map { it.first.toSimpleDate() }
+
 		val ratios = List(data.size) { index ->
-			index.toDouble().remap(0.0, data.size - 1.0, 0.0, 1.0).toFloat()
+			index.toDouble()
+				.remap(0.0, data.size - 1.0, 0.0, 1.0)
+				.toFloat()
 		}
 
 		val entries = ratios
 			.zip(data.map { it.second })
 			.map { Entry(it.first, it.second.toFloat()) }
+
 		Log.i("BRUH", entries.toString())
 
 		populateChartHelper(entries, xAxisLabels)
-
 	}
 
-	private fun populateChartHelper(entries: List<Entry>, xAxisLabels: List<String>) {
+	private fun populateChartHelper(
+		entries: List<Entry>,
+		xAxisLabels: List<String>
+	) {
+
 		val dataSet = LineDataSet(entries, "").apply {
+
 			lineWidth = 3f
-			color = ContextCompat.getColor(requireContext(), R.color.primaryDark)
+
+			color = ContextCompat.getColor(
+				requireContext(),
+				R.color.primaryDark
+			)
+
 			circleRadius = 4f
 			mode = LineDataSet.Mode.LINEAR
 
 			setDrawCircles(true)
-			setCircleColor(ContextCompat.getColor(requireContext(), R.color.primary))
-			setDrawCircleHole(false) // não remover
+
+			setCircleColor(
+				ContextCompat.getColor(
+					requireContext(),
+					R.color.primary
+				)
+			)
+
+			setDrawCircleHole(false)
 			setDrawValues(false)
 		}
 
-		binding.chart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabels)
+		binding.chart.xAxis.valueFormatter =
+			IndexAxisValueFormatter(xAxisLabels)
 
 		binding.chart.data = LineData(dataSet)
-		binding.chart.invalidate() // reinicia o gráfico
+		binding.chart.invalidate()
 	}
 
 	private fun configChart() {
+
 		binding.chart.apply {
+
 			description.isEnabled = false
 			legend.isEnabled = false
 
 			setDrawGridBackground(false)
 			setTouchEnabled(false)
-			setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.surface))
+
+			setBackgroundColor(
+				ContextCompat.getColor(
+					requireContext(),
+					R.color.surface
+				)
+			)
 
 			xAxis.apply {
+
 				position = XAxis.XAxisPosition.BOTTOM
-				axisLineColor = ContextCompat.getColor(requireContext(), R.color.primaryDark)
+
+				axisLineColor = ContextCompat.getColor(
+					requireContext(),
+					R.color.primaryDark
+				)
+
 				axisLineWidth = 2f
-				textColor = ContextCompat.getColor(requireContext(), R.color.primaryDark)
+
+				textColor = ContextCompat.getColor(
+					requireContext(),
+					R.color.primaryDark
+				)
+
 				textSize = 12f
 				granularity = 1f
 
@@ -331,11 +466,22 @@ class VisualizarRelatorio : Fragment() {
 			}
 
 			axisLeft.apply {
+
 				axisMinimum = 0f
 				axisMaximum = 10f
-				axisLineColor = ContextCompat.getColor(requireContext(), R.color.primaryDark)
+
+				axisLineColor = ContextCompat.getColor(
+					requireContext(),
+					R.color.primaryDark
+				)
+
 				axisLineWidth = 2f
-				textColor = ContextCompat.getColor(requireContext(), R.color.primaryDark)
+
+				textColor = ContextCompat.getColor(
+					requireContext(),
+					R.color.primaryDark
+				)
+
 				textSize = 12f
 
 				setDrawGridLines(false)
@@ -350,18 +496,53 @@ class VisualizarRelatorio : Fragment() {
 		// TODO: precisa de permissões médicas
 	}
 
+	private fun showConfirmationDialog(
+		title: String,
+		message: String,
+		onConfirm: suspend () -> Unit
+	) {
+		MaterialAlertDialogBuilder(requireContext())
+			.setTitle(title)
+			.setMessage(message)
+			.setNegativeButton(getString(R.string.cancel), null)
+			.setPositiveButton(getString(R.string.delete)) { _, _ ->
+
+				lifecycleScope.launch {
+					try {
+						onConfirm()
+
+						popBackStack()
+
+					} catch (e: Exception) {
+						Log.e("confirmation", "operation:failure", e)
+
+						showSnackbar(
+							"Erro ao deletar relatório",
+							Utils.SnackBarType.WARNING
+						)
+					}
+				}
+			}
+			.show()
+	}
+
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
 	}
 
 	companion object {
+
 		private const val ARG_REPORT_ID = "report_id"
 		private const val ARG_PATIENT_ID = "patient_id"
 
 		@JvmStatic
-		fun newInstance(id: String, patientId: String? = null) =
+		fun newInstance(
+			id: String,
+			patientId: String? = null
+		) =
 			VisualizarRelatorio().apply {
+
 				arguments = Bundle().apply {
 					putString(ARG_REPORT_ID, id)
 					putString(ARG_PATIENT_ID, patientId)
