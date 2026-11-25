@@ -22,6 +22,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.unnebulous.consultapronta.database.AuthManager
+import com.unnebulous.consultapronta.database.DatabaseManager
+import com.unnebulous.consultapronta.database.MedicalPermission
+import com.unnebulous.consultapronta.database.User
 
 class GerarRelatorio : Fragment() {
 	private var _binding: FragmentGerarRelatorioBinding? = null
@@ -95,6 +100,9 @@ class GerarRelatorio : Fragment() {
 				dialogBinding.body.apply {
 					// TODO: Get from database when uhh thing done if ykyk
 					val professionals = HashMap<String, String>()
+					binding.professionalsSelect.setOnClickListener {
+						loadProfessionals()
+					}
 
 					for (professional in professionals) {
 						val option = SelectOptionItemView(
@@ -157,34 +165,94 @@ class GerarRelatorio : Fragment() {
 		}
 
 		binding.generateReportButton.setOnClickListener {
-			if (binding.reportTitleInput.text.isBlank()) {
-				showSnackbar(getString(R.string.error_without_title), Utils.SnackBarType.WARNING)
-				return@setOnClickListener
-			}else if (binding.selectDateStart.text == getString(R.string.select___)) {
-				showSnackbar(getString(R.string.error_report_without_date), Utils.SnackBarType.WARNING)
-				return@setOnClickListener
-			}
+			binding.generateReportButton.setOnClickListener {
 
-			val reportData = Report.Companion.FormData(
-				binding.reportTitleInput.text.toString(),
-				professionalList,
-				removedSymptomsList,
-				periodStartDate,
-				periodEndDate,
-			).toMap()
-
-			lifecycleScope.launch {
-				try {
-					Report.collection.add(reportData).await()
-
-					Log.i("report", "createReport:success")
-					popBackStack()
-				} catch (e: Exception) {
-					Log.e("report", "createReport:failure", e)
+				if (binding.reportTitleInput.text.isBlank()) {
+					showSnackbar(
+						getString(R.string.error_without_title),
+						Utils.SnackBarType.WARNING
+					)
+					return@setOnClickListener
 				}
 
+				if (binding.selectDateStart.text == getString(R.string.select___)) {
+					showSnackbar(
+						getString(R.string.error_report_without_date),
+						Utils.SnackBarType.WARNING
+					)
+					return@setOnClickListener
+				}
+
+				viewLifecycleOwner.lifecycleScope.launch {
+					try {
+						val patientId = AuthManager.uid
+							?: throw Exception("Paciente não autenticado.")
+
+						val permissionCollection = DatabaseManager.userCollection(
+							MedicalPermission.COLLECTION_NAME,
+							patientId
+						)
+
+						val activePermissions = permissionCollection
+							.get()
+							.await()
+							.documents
+							.filter {
+								it.getString("status")
+									?.equals("active", ignoreCase = true) == true
+							}
+							.mapNotNull {
+								it.getString("professional_id")
+							}
+							.toSet()
+
+						val validProfessionals = professionalList.filter {
+							it in activePermissions
+						}
+
+						if (validProfessionals.size != professionalList.size) {
+							showSnackbar(
+								"Algumas permissões foram revogadas. Selecione os profissionais novamente.",
+								Utils.SnackBarType.WARNING
+							)
+
+							professionalList = ArrayList(validProfessionals)
+							return@launch
+						}
+
+						val reportData = Report.FormData(
+							title = binding.reportTitleInput.text.toString().trim(),
+							professionals = validProfessionals,
+							removed_symptoms = removedSymptomsList,
+							period_start = periodStartDate,
+							period_end = periodEndDate
+						).toMap()
+
+						DatabaseManager.userCollection(
+							Report.COLLECTION_NAME,
+							patientId
+						).add(reportData).await()
+
+						Log.i("report", "createReport:success")
+
+						showSnackbar(
+							"Relatório criado com sucesso.",
+							Utils.SnackBarType.SUCCESS
+						)
+
+						popBackStack()
+
+					} catch (e: Exception) {
+						Log.e("report", "createReport:failure", e)
+
+						showSnackbar(
+							"Erro ao gerar relatório.",
+							Utils.SnackBarType.WARNING
+						)
+					}
+				}
 			}
-		}
+			}
 	}
 
 	private fun catchOptionsSelected(dialog: BottomSheetBinding): ArrayList<String> {
@@ -203,6 +271,122 @@ class GerarRelatorio : Fragment() {
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
+	}
+
+	private fun showProfessionalSelection(
+		professionals: List<User>
+	) {
+		val names = professionals.map {
+			if (it.email.isBlank()) {
+				it.name.ifBlank { "Profissional sem nome" }
+			} else {
+				"${it.name} (${it.email})"
+			}
+		}.toTypedArray()
+
+		val selected = BooleanArray(professionals.size) { index ->
+			professionals[index].id in professionalList
+		}
+
+		MaterialAlertDialogBuilder(requireContext())
+			.setTitle("Profissionais permitidos")
+			.setMultiChoiceItems(names, selected) { _, index, checked ->
+				selected[index] = checked
+			}
+			.setNegativeButton(getString(R.string.cancel), null)
+			.setPositiveButton(getString(R.string.save)) { _, _ ->
+
+				professionalList = ArrayList(
+					professionals
+						.filterIndexed { index, _ -> selected[index] }
+						.map { it.id }
+				)
+
+				showSnackbar(
+					if (professionalList.isEmpty()) {
+						"Nenhum profissional selecionado."
+					} else {
+						"${professionalList.size} profissional(is) selecionado(s)."
+					},
+					Utils.SnackBarType.SUCCESS
+				)
+			}
+			.show()
+	}
+
+	private fun loadProfessionals() {
+		viewLifecycleOwner.lifecycleScope.launch {
+			try {
+				val patientId = AuthManager.uid
+					?: throw Exception("Paciente não autenticado.")
+
+				val permissionCollection = DatabaseManager.userCollection(
+					MedicalPermission.COLLECTION_NAME,
+					patientId
+				)
+
+				val permissions = permissionCollection
+					.get()
+					.await()
+					.documents
+					.filter {
+						it.getString("status")
+							?.equals("active", ignoreCase = true) == true
+					}
+					.mapNotNull {
+						it.getString("professional_id")
+					}
+					.toSet()
+
+				if (permissions.isEmpty()) {
+					showSnackbar(
+						"Você ainda não possui profissionais autorizados.",
+						Utils.SnackBarType.INFO
+					)
+					return@launch
+				}
+
+				val professionals = DatabaseManager.db
+					.collection(User.COLLECTION_NAME)
+					.whereEqualTo("user_type", "profissional")
+					.get()
+					.await()
+					.documents
+					.mapNotNull { doc ->
+						if (doc.id !in permissions) return@mapNotNull null
+
+						User(
+							id = doc.id,
+							name = doc.getString("name").orEmpty(),
+							email = doc.getString("email").orEmpty(),
+							user_type = Utils.UserType.PROFISSIONAL
+						)
+					}
+					.sortedBy { it.name.lowercase() }
+
+				if (professionals.isEmpty()) {
+					showSnackbar(
+						"Nenhum profissional autorizado foi encontrado.",
+						Utils.SnackBarType.INFO
+					)
+					return@launch
+				}
+
+				showProfessionalSelection(professionals)
+
+			} catch (e: Exception) {
+				Log.e(
+					"MedicalPermission",
+					"loadProfessionals:failure",
+					e
+				)
+
+				showSnackbar(
+					"Erro ao carregar profissionais.",
+					Utils.SnackBarType.WARNING
+				)
+			}
+		}
 	}
 
 	private fun updateSummary() {

@@ -76,33 +76,84 @@ fun Fragment.configBottomSheet(configBlock: (BottomSheetBinding, BottomSheetDial
 	dialog.show()
 }
 
-fun Fragment.showSnackbar(message: String, type: Utils.SnackBarType = Utils.SnackBarType.INFO, duration: Int = Snackbar.LENGTH_LONG) {
+fun Fragment.showSnackbar(
+	message: String,
+	type: Utils.SnackBarType = Utils.SnackBarType.INFO,
+	duration: Int = Snackbar.LENGTH_LONG
+) {
+	if (!isAdded || view == null) return
+
 	val context = requireContext()
-	
+
 	val values = when (type) {
-		Utils.SnackBarType.INFO -> R.drawable.ic_info to R.color.neutral
-		Utils.SnackBarType.SUCCESS -> R.drawable.ic_check to R.color.success
-		Utils.SnackBarType.WARNING -> R.drawable.ic_warning to R.color.warning
-		Utils.SnackBarType.DANGER -> R.drawable.ic_danger to R.color.error
+		Utils.SnackBarType.INFO ->
+			R.drawable.ic_info to R.color.neutral
+
+		Utils.SnackBarType.SUCCESS ->
+			R.drawable.ic_check to R.color.success
+
+		Utils.SnackBarType.WARNING ->
+			R.drawable.ic_warning to R.color.warning
+
+		Utils.SnackBarType.DANGER ->
+			R.drawable.ic_danger to R.color.error
 	}
-	val drawable = ContextCompat.getDrawable(context, values.first)
-	val color = ContextCompat.getColorStateList(context, values.second)
 
+	val drawable = ContextCompat.getDrawable(
+		context,
+		values.first
+	)
 
-	val snackbar = Snackbar.make(requireView(), "", duration)
+	val color = ContextCompat.getColorStateList(
+		context,
+		values.second
+	)
+
+	val rootContainer = requireActivity()
+		.findViewById<View>(android.R.id.content)
+
+	val snackbar = Snackbar.make(
+		rootContainer,
+		"",
+		duration
+	)
+
 	val snackbarView = snackbar.view as ViewGroup
-	val textView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-	val snackbarBinding = SnackbarBinding.inflate(layoutInflater)
+
+	val textView = snackbarView.findViewById<TextView>(
+		com.google.android.material.R.id.snackbar_text
+	)
+
+	val snackbarBinding = SnackbarBinding.inflate(
+		layoutInflater
+	)
 
 	textView.visibility = View.INVISIBLE
+
 	snackbarBinding.snackbarText.text = message
+
 	snackbarBinding.snackbarIcon.setImageDrawable(drawable)
+
 	snackbarBinding.snackbarIcon.backgroundTintList = color
 
 	snackbarView.setPadding(0, 0, 0, 250)
-	snackbarView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+
+	snackbarView.setBackgroundColor(
+		ContextCompat.getColor(
+			context,
+			android.R.color.transparent
+		)
+	)
+
 	snackbarView.removeAllViews()
-	snackbarView.addView(snackbarBinding.root, 0)
+
+	snackbarView.addView(
+		snackbarBinding.root,
+		ViewGroup.LayoutParams(
+			ViewGroup.LayoutParams.MATCH_PARENT,
+			ViewGroup.LayoutParams.WRAP_CONTENT
+		)
+	)
 
 	snackbar.show()
 }
