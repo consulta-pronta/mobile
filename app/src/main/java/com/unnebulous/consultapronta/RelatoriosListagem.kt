@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.ListenerRegistration
 import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.database.Symptom
@@ -21,12 +22,13 @@ import com.unnebulous.consultapronta.recyclerview.adapter.ReportListAdapter
 import kotlinx.coroutines.launch
 import kotlin.sequences.forEach
 import kotlin.text.isBlank
+import kotlinx.coroutines.tasks.await
 
 class RelatoriosListagem : Fragment() {
 	private var _binding: FragmentRelatoriosListagemBinding? = null
 	private val binding get() = _binding!!
 
-	private lateinit var reportListener: ListenerRegistration
+	private var reportListener: ListenerRegistration? = null
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -113,12 +115,14 @@ class RelatoriosListagem : Fragment() {
 			}
 
 			deleteReport = { report ->
-				lifecycleScope.launch {
-					try {
-						Report.collection.document(report.id).delete()
-					} catch (e: Exception) {
-						Log.e("report", "deleteReport:failure", e)
-					}
+				showConfirmationDialog(
+					"Deseja deletar este relatório?",
+					"Ao confirmar, o relatório será apagado permanentemente."
+				) {
+					Report.collection
+						.document(report.id)
+						.delete()
+						.await()
 				}
 			}
 		}
@@ -146,9 +150,40 @@ class RelatoriosListagem : Fragment() {
 			}
 	}
 
+	private fun showConfirmationDialog(
+		title: String,
+		message: String,
+		onConfirm: suspend () -> Unit
+	) {
+		MaterialAlertDialogBuilder(requireContext())
+			.setTitle(title)
+			.setMessage(message)
+			.setNegativeButton(getString(R.string.cancel), null)
+			.setPositiveButton(getString(R.string.delete)) { _, _ ->
+
+				viewLifecycleOwner.lifecycleScope.launch {
+					try {
+						onConfirm()
+
+						popBackStack()
+
+					} catch (e: Exception) {
+						Log.e("confirmation", "operation:failure", e)
+
+						showSnackbar(
+							"Erro ao deletar relatório",
+							Utils.SnackBarType.WARNING
+						)
+					}
+				}
+			}
+			.show()
+	}
+
 	override fun onDestroyView() {
-		super.onDestroyView()
+		reportListener?.remove()
+		reportListener = null
 		_binding = null
-		reportListener.remove()
+		super.onDestroyView()
 	}
 }

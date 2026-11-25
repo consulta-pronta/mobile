@@ -383,8 +383,6 @@ class VisualizarRelatorio : Fragment() {
 			.zip(data.map { it.second })
 			.map { Entry(it.first, it.second.toFloat()) }
 
-		Log.i("BRUH", entries.toString())
-
 		populateChartHelper(entries, xAxisLabels)
 	}
 
