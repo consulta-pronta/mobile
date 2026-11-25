@@ -79,7 +79,7 @@ class VisualizarRelatorio : Fragment() {
 
 		if (reportId.isBlank() || ownerId.isBlank()) {
 			showSnackbar(
-				"Não foi possível identificar o relatório.",
+				getString(R.string.report_not_identified),
 				Utils.SnackBarType.WARNING
 			)
 			popBackStack()
@@ -95,9 +95,7 @@ class VisualizarRelatorio : Fragment() {
 		updateHeader {
 
 			changeHeaderType(Utils.HeaderType.TITLED, true)
-
 			setScreenTitle(getString(R.string.loading))
-
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
@@ -110,19 +108,9 @@ class VisualizarRelatorio : Fragment() {
 				)
 
 				setImageResource(R.drawable.ic_more_three_dots_vertical)
+				imageTintList = ContextCompat.getColorStateList(context, R.color.textLight)
 
-				imageTintList = ContextCompat.getColorStateList(
-					context,
-					R.color.textLight
-				)
-
-				setBackgroundColor(
-					ContextCompat.getColor(
-						context,
-						R.color.transparent
-					)
-				)
-
+				setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
 				setPadding(5, 5, 5, 5)
 			}
 
@@ -135,57 +123,42 @@ class VisualizarRelatorio : Fragment() {
 
 				PopupMenu(contextThemeWrapper, button).apply {
 
-					menuInflater.inflate(
-						R.menu.menu_reports,
-						menu
-					)
-
+					menuInflater.inflate(R.menu.menu_reports, menu)
 					setOnMenuItemClickListener { menuItem ->
 
 						when (menuItem.itemId) {
-
 							R.id.menu_allowed_professionals -> {
 								manageAllowedProfessionals()
 							}
-
 							R.id.menu_rename_report -> {
 								renameReport?.invoke()
 							}
-
 							R.id.menu_delete_report -> {
-
 								button.post {
-
 									if (!isAdded || _binding == null) {
 										return@post
 									}
-
 									showConfirmationDialog(
-										"Deseja deletar este relatório?",
-										"Ao confirmar, o relatório será apagado permanentemente."
+										getString(R.string.wish_to_delete_report),
+										getString(R.string.on_confirm_delete_report)
 									) {
 										reportRef.delete().await()
 									}
 								}
 							}
 						}
-
 						true
 					}
-
 					show()
 				}
 			}
-
 			addAside(button)
 		}
 
 		resetNavbarEntryActive()
 
 		configChart()
-
 		val adapter = ChronologyAdapter()
-
 		binding.recyclerview.adapter = adapter
 
 		viewLifecycleOwner.lifecycleScope.launch {
@@ -195,13 +168,11 @@ class VisualizarRelatorio : Fragment() {
 				val userData = AuthManager.getUserData()
 
 				if (userData?.user_type == null) {
-					throw Exception("Usuário sem tipo associado.")
+					throw Exception(getString(R.string.no_clear_user_type))
 				}
 
 				if (userData.user_type == Utils.UserType.PROFISSIONAL) {
-
 					binding.patientProfileLayout.visibility = View.VISIBLE
-
 					getPatientUserData()
 				}
 
@@ -209,12 +180,7 @@ class VisualizarRelatorio : Fragment() {
 				throw e
 
 			} catch (e: Exception) {
-
-				Log.e(
-					User.COLLECTION_NAME,
-					"getUserData:failure",
-					e
-				)
+				Log.e(User.COLLECTION_NAME, getString(R.string.getuserdata_failure), e)
 			}
 
 			try {
@@ -223,10 +189,9 @@ class VisualizarRelatorio : Fragment() {
 
 				if (!doc.exists()) {
 					showSnackbar(
-						"Relatório não encontrado.",
+						getString(R.string.report_not_found),
 						Utils.SnackBarType.WARNING
 					)
-
 					popBackStack()
 					return@launch
 				}
@@ -238,22 +203,18 @@ class VisualizarRelatorio : Fragment() {
 					report.period_start == null ||
 					report.period_end == null
 				) {
-
 					showSnackbar(
-						"Os dados deste relatório são inválidos.",
+						getString(R.string.invalid_data),
 						Utils.SnackBarType.WARNING
 					)
-
 					popBackStack()
 					return@launch
 				}
 
 				renameReport = {
-
 					configBottomSheet { dialogBinding, dialog ->
 
 						dialogBinding.icon.visibility = View.GONE
-
 						dialogBinding.title.text =
 							getString(R.string.rename_report)
 
@@ -265,65 +226,37 @@ class VisualizarRelatorio : Fragment() {
 							)
 
 							inputType = InputType.TYPE_CLASS_TEXT
+							background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_input)
 
-							background = ContextCompat.getDrawable(
-								requireContext(),
-								R.drawable.shape_input
-							)
-
-							setCompoundDrawablesRelativeWithIntrinsicBounds(
-								ContextCompat.getDrawable(
-									requireContext(),
-									R.drawable.ic_document
-								),
-								null,
-								null,
-								null
+							setCompoundDrawablesRelativeWithIntrinsicBounds(ContextCompat.getDrawable
+								(requireContext(), R.drawable.ic_document),
+								null, null, null
 							)
 
 							compoundDrawablePadding = 20
-
 							hint = getString(R.string.type_new_name)
 
 							setText(report.title)
-
 							setTextColor(
-								ContextCompat.getColor(
-									requireContext(),
-									R.color.textLight
-								)
+								ContextCompat.getColor(requireContext(), R.color.textLight)
 							)
 
 							setHintTextColor(
-								ContextCompat.getColor(
-									requireContext(),
-									R.color.textLight60
-								)
+								ContextCompat.getColor(requireContext(), R.color.textLight60)
 							)
 
-							compoundDrawableTintList =
-								ColorStateList.valueOf(
-									ContextCompat.getColor(
-										requireContext(),
-										R.color.textLight
-									)
-								)
+							compoundDrawableTintList = ColorStateList
+								.valueOf(ContextCompat.getColor(requireContext(), R.color.textLight))
 						}
 
 						dialogBinding.body.addView(input)
-
 						dialogBinding.positiveButton.apply {
-
 							text = getString(R.string.save)
 
 							setOnClickListener {
-
-								val newTitle = input.text
-									.toString()
-									.trim()
+								val newTitle = input.text.toString().trim()
 
 								if (newTitle.isBlank()) {
-
 									showSnackbar(
 										getString(R.string.type_valid_name),
 										Utils.SnackBarType.WARNING
@@ -335,39 +268,28 @@ class VisualizarRelatorio : Fragment() {
 								viewLifecycleOwner.lifecycleScope.launch {
 
 									try {
-
-										reportRef
-											.update("title", newTitle)
-											.await()
+										reportRef.update("title", newTitle).await()
 
 										if (_binding != null) {
-
 											updateHeader {
 												setScreenTitle(newTitle)
 											}
-
 											showSnackbar(
-												"Relatório renomeado com sucesso.",
+												context.getString(R.string.rename_success),
 												Utils.SnackBarType.SUCCESS
 											)
 										}
 
 										dialog.dismiss()
-
 									} catch (e: CancellationException) {
 										throw e
 
 									} catch (e: Exception) {
-
-										Log.e(
-											Report.COLLECTION_NAME,
-											"renameReport:failure",
-											e
-										)
+										Log.e(Report.COLLECTION_NAME, getString(R.string.renamereport_failure), e)
 
 										if (_binding != null) {
 											showSnackbar(
-												"Erro ao renomear o relatório.",
+												getString(R.string.failed_to_rename_report),
 												Utils.SnackBarType.WARNING
 											)
 										}
@@ -383,7 +305,6 @@ class VisualizarRelatorio : Fragment() {
 				}
 
 				binding.apply {
-
 					reportIdText.text = getString(
 						R.string.report_id,
 						report.id
@@ -391,8 +312,8 @@ class VisualizarRelatorio : Fragment() {
 
 					reportPeriodText.text = getString(
 						R.string.view_report_period,
-						report.period_start.toBrazilianLocale(),
-						report.period_end.toBrazilianLocale()
+						report.period_start.toBrazilianLocale(requireContext()),
+						report.period_end.toBrazilianLocale(requireContext())
 					)
 
 					reportDurationText.text = getString(
@@ -402,19 +323,16 @@ class VisualizarRelatorio : Fragment() {
 				}
 
 				val symptoms = report.getSymptomsList()
-
 				adapter.submitList(symptoms)
 
 				binding.apply {
 
 					val area = symptoms.getMostAffectArea()
-
 					val areas = area
 						?.let { symptoms.getAreaMap()[it] }
 						.orEmpty()
 
-					mostAffectedArea.text = area ?: "Nenhuma"
-
+					mostAffectedArea.text = area ?: getString(R.string.none)
 					mostAffectedAreaNumRegister.text = getString(
 						R.string.most_affected_area_num_register,
 						areas.size
@@ -423,39 +341,27 @@ class VisualizarRelatorio : Fragment() {
 					val intensity: Double = if (areas.isEmpty()) {
 						0.0
 					} else {
-						areas.getIntensityAverage().toDouble()
+						areas.getIntensityAverage()
 					}
 
 					mostAffectedAreaIntensity.text = getString(
 						R.string.most_affected_area_intensity,
 						intensity
 					)
-
 					mostAffectedAreaIntensity.chipBackgroundColor =
-						ColorStateList.valueOf(
-							Utils.intensityToColor(
-								requireContext(),
-								intensity
-							)
-						)
+						ColorStateList.valueOf(Utils.intensityToColor(requireContext(), intensity))
 				}
-
 				populateChart(symptoms)
 
 			} catch (e: CancellationException) {
 				throw e
 
 			} catch (e: Exception) {
-
-				Log.e(
-					"report",
-					"getReportAndSymptoms:failure",
-					e
-				)
+				Log.e("report", getString(R.string.getreportandsymptoms_failure), e)
 
 				if (_binding != null) {
 					showSnackbar(
-						"Erro ao carregar o relatório.",
+						getString(R.string.failed_to_load_report),
 						Utils.SnackBarType.WARNING
 					)
 				}
@@ -477,40 +383,31 @@ class VisualizarRelatorio : Fragment() {
 
 			binding.chart.clear()
 			binding.chart.invalidate()
-
 			return
 		}
 
 		val xAxisLabels = if (data.size == 1) {
 
-			listOf(data.first().first.toSimpleDate())
+			listOf(data.first().first.toSimpleDate(requireContext()))
 
 		} else {
 
 			listOf(
-				data.first().first.toSimpleDate(),
-				data.last().first.toSimpleDate()
+				data.first().first.toSimpleDate(requireContext()),
+				data.last().first.toSimpleDate(requireContext())
 			)
 		}
 
 		val entries = data.mapIndexed { index, item ->
-
 			val xPosition = if (data.size == 1) {
 				0f
 			} else {
 				index.toFloat() / (data.size - 1).toFloat()
 			}
 
-			Entry(
-				xPosition,
-				item.second.toFloat()
-			)
+			Entry(xPosition, item.second.toFloat())
 		}
-
-		populateChartHelper(
-			entries,
-			xAxisLabels
-		)
+		populateChartHelper(entries, xAxisLabels)
 	}
 
 	private fun populateChartHelper(
@@ -519,149 +416,85 @@ class VisualizarRelatorio : Fragment() {
 	) {
 
 		val context = requireContext()
-
-		val dataSet = LineDataSet(
-			entries,
-			""
-		).apply {
+		val dataSet = LineDataSet(entries, "")
+			.apply {
 
 			lineWidth = 3f
-
-			color = ContextCompat.getColor(
-				context,
-				R.color.primaryDark
-			)
-
+			color = ContextCompat.getColor(context, R.color.primaryDark)
 			circleRadius = 4f
-
 			mode = LineDataSet.Mode.LINEAR
 
 			setDrawCircles(true)
-
-			setCircleColor(
-				ContextCompat.getColor(
-					context,
-					R.color.primary
-				)
-			)
-
+			setCircleColor(ContextCompat.getColor(context, R.color.primary))
 			setDrawCircleHole(false)
-
 			setDrawValues(false)
 		}
 
 		binding.chart.apply {
 
-			xAxis.valueFormatter =
-				IndexAxisValueFormatter(xAxisLabels)
-
+			xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabels)
 			data = LineData(dataSet)
-
 			invalidate()
 		}
 	}
 
 	private fun configChart() {
-
 		val context = requireContext()
 
 		binding.chart.apply {
-
 			description.isEnabled = false
-
 			legend.isEnabled = false
 
 			setDrawGridBackground(false)
-
 			setTouchEnabled(false)
-
-			setBackgroundColor(
-				ContextCompat.getColor(
-					context,
-					R.color.surface
-				)
-			)
+			setBackgroundColor(ContextCompat.getColor(context, R.color.surface))
 
 			xAxis.apply {
 
 				position = XAxis.XAxisPosition.BOTTOM
-
-				axisLineColor = ContextCompat.getColor(
-					context,
-					R.color.primaryDark
-				)
-
+				axisLineColor = ContextCompat.getColor(context, R.color.primaryDark)
 				axisLineWidth = 2f
-
-				textColor = ContextCompat.getColor(
-					context,
-					R.color.primaryDark
-				)
-
+				textColor = ContextCompat.getColor(context, R.color.primaryDark)
 				textSize = 12f
-
 				granularity = 1f
-
 				setDrawGridLines(false)
-
 				setDrawAxisLine(true)
 			}
 
 			axisLeft.apply {
-
 				axisMinimum = 0f
-
 				axisMaximum = 10f
-
-				axisLineColor = ContextCompat.getColor(
-					context,
-					R.color.primaryDark
-				)
-
+				axisLineColor = ContextCompat.getColor(context, R.color.primaryDark)
 				axisLineWidth = 2f
-
-				textColor = ContextCompat.getColor(
-					context,
-					R.color.primaryDark
-				)
-
+				textColor = ContextCompat.getColor(context, R.color.primaryDark)
 				textSize = 12f
-
 				setDrawGridLines(false)
-
 				setDrawAxisLine(true)
 			}
-
 			axisRight.isEnabled = false
 		}
 	}
-
 	private fun getPatientUserData() {
 		// TODO: implementar a busca dos dados do paciente
 		// considerando as permissões médicas.
 	}
 
-
 	private fun manageAllowedProfessionals() {
-
 		val ownerId = patientId.ifBlank {
 			AuthManager.uid.orEmpty()
 		}
 
 		if (ownerId.isBlank()) {
-
 			showSnackbar(
-				"Não foi possível identificar o paciente.",
+				getString(R.string.failed_to_identify_patient),
 				Utils.SnackBarType.WARNING
 			)
-
 			return
 		}
 
 		viewLifecycleOwner.lifecycleScope.launch {
 
 			try {
-
 				val professionals = DatabaseManager.db
 					.collection(User.COLLECTION_NAME)
 					.whereEqualTo("user_type", "profissional")
@@ -670,47 +503,31 @@ class VisualizarRelatorio : Fragment() {
 					.documents
 					.map { doc ->
 
-						User(
-							id = doc.id,
+						User(id = doc.id,
 							name = doc.getString("name").orEmpty(),
 							email = doc.getString("email").orEmpty(),
 							user_type = Utils.UserType.PROFISSIONAL
 						)
 					}
-					.sortedBy {
-						it.name.lowercase()
-					}
+					.sortedBy { it.name.lowercase() }
 
 				if (professionals.isEmpty()) {
-
 					showSnackbar(
-						"Nenhum profissional cadastrado.",
+						getString(R.string.no_professional_registered),
 						Utils.SnackBarType.INFO
 					)
-
 					return@launch
 				}
 
-				val reportRef = DatabaseManager.userDocument(
-					Report.COLLECTION_NAME,
-					reportId,
-					ownerId
-				)
-
-				val permissionCollection = DatabaseManager.userCollection(
-					MedicalPermission.COLLECTION_NAME,
-					ownerId
-				)
+				val reportRef = DatabaseManager.userDocument(Report.COLLECTION_NAME, reportId, ownerId)
+				val permissionCollection = DatabaseManager.userCollection(MedicalPermission.COLLECTION_NAME, ownerId)
 
 				val reportSnapshot = reportRef.get().await()
-
 				if (!reportSnapshot.exists()) {
-
 					showSnackbar(
-						"Relatório não encontrado.",
+						getString(R.string.report_not_found),
 						Utils.SnackBarType.WARNING
 					)
-
 					return@launch
 				}
 
@@ -724,17 +541,10 @@ class VisualizarRelatorio : Fragment() {
 
 				val activePermissions = permissionSnapshots.documents
 					.filter { document ->
-
 						document.getString("status")
-							?.equals(
-								"active",
-								ignoreCase = true
-							) == true
+							?.equals("active", ignoreCase = true) == true
 					}
-					.mapNotNull {
-						it.getString("professional_id")
-					}
-					.toSet()
+					.mapNotNull { it.getString("professional_id") }.toSet()
 
 				showProfessionalsDialog(
 					professionals = professionals,
@@ -748,17 +558,12 @@ class VisualizarRelatorio : Fragment() {
 				throw e
 
 			} catch (e: Exception) {
-
-				Log.e(
-					"MedicalPermission",
-					"updatePermissions:failure",
-					e
-				)
+				Log.e("MedicalPermission", getString(R.string.updatepermissions_failure), e)
 
 				if (_binding != null) {
 
 					showSnackbar(
-						"Erro ao carregar as permissões.",
+						getString(R.string.failed_to_load_permissions),
 						Utils.SnackBarType.WARNING
 					)
 				}
@@ -775,15 +580,12 @@ class VisualizarRelatorio : Fragment() {
 	) {
 
 		val names = professionals.map {
-
 			if (it.email.isBlank()) {
-
 				it.name.ifBlank {
-					"Profissional sem nome"
+					getString(R.string.nameless_professional)
 				}
 
 			} else {
-
 				"${it.name} (${it.email})"
 			}
 
@@ -794,39 +596,24 @@ class VisualizarRelatorio : Fragment() {
 		}
 
 		val selected = professionals.map {
-
 			it.id in currentProfessionals &&
 				it.id in activePermissions
-
 		}.toBooleanArray()
 
 		MaterialAlertDialogBuilder(requireContext())
 
-			.setTitle("Profissionais permitidos")
-
-			.setMultiChoiceItems(
-				names,
-				selected
-			) { _, index, checked ->
-
-				selected[index] = checked
+			.setTitle(getString(R.string.allowed_professionals))
+			.setMultiChoiceItems(names, selected) { _, index, checked -> selected[index] = checked
 			}
 
-			.setNegativeButton(
-				getString(R.string.cancel),
-				null
-			)
-
-			.setPositiveButton(
-				getString(R.string.save)
-			) { _, _ ->
+			.setNegativeButton(getString(R.string.cancel), null)
+			.setPositiveButton(getString(R.string.save)) { _, _ ->
 
 				viewLifecycleOwner.lifecycleScope.launch {
 
 					try {
 
 						val batch = DatabaseManager.db.batch()
-
 						val selectedIds = professionals
 							.filterIndexed { index, _ ->
 								selected[index]
@@ -839,9 +626,7 @@ class VisualizarRelatorio : Fragment() {
 							currentProfessionals
 								.filter {
 									it !in professionalIds
-								}
-								.plus(selectedIds)
-								.distinct()
+								}.plus(selectedIds).distinct()
 
 						batch.update(
 							reportRef,
@@ -852,12 +637,9 @@ class VisualizarRelatorio : Fragment() {
 						professionals.forEachIndexed { index, professional ->
 
 							val professionalId = professional.id
-
-							val permissionRef = permissionCollection
-								.document(professionalId)
+							val permissionRef = permissionCollection.document(professionalId)
 
 							if (selected[index]) {
-
 								batch.set(
 									permissionRef,
 									mapOf(
@@ -868,31 +650,25 @@ class VisualizarRelatorio : Fragment() {
 									),
 									SetOptions.merge()
 								)
-
 							} else if (
 								professionalId in currentProfessionals ||
 								professionalId in activePermissions
 							) {
-
-								// Revoga uma permissão anteriormente concedida.
 								batch.set(
 									permissionRef,
 									mapOf(
 										"status" to "revoked",
 										"professional_id" to professionalId,
 										"revoked_at" to FieldValue.serverTimestamp()
-									),
-									SetOptions.merge()
+									), SetOptions.merge()
 								)
 							}
 						}
-
 						batch.commit().await()
 
 						if (_binding != null) {
-
 							showSnackbar(
-								"Permissões atualizadas.",
+								getString(R.string.permissions_updated),
 								Utils.SnackBarType.SUCCESS
 							)
 						}
@@ -901,112 +677,76 @@ class VisualizarRelatorio : Fragment() {
 						throw e
 
 					} catch (e: Exception) {
-
-						Log.e(
-							"MedicalPermission",
-							"updatePermissions:failure",
-							e
-						)
+						Log.e("MedicalPermission", getString(R.string.updatepermissions_failure), e)
 
 						if (_binding != null) {
-
 							showSnackbar(
-								"Erro ao atualizar as permissões.",
+								getString(R.string.failed_to_update),
 								Utils.SnackBarType.WARNING
 							)
 						}
 					}
 				}
 			}
-
 			.show()
 	}
 
-	private fun showConfirmationDialog(
-		title: String,
-		message: String,
-		onConfirm: suspend () -> Unit
-	) {
+	private fun showConfirmationDialog(title: String, message: String,
+		onConfirm: suspend () -> Unit) {
 
 		MaterialAlertDialogBuilder(requireContext())
 
 			.setTitle(title)
-
 			.setMessage(message)
-
-			.setNegativeButton(
-				getString(R.string.cancel),
-				null
-			)
-
-			.setPositiveButton(
-				getString(R.string.delete)
-			) { _, _ ->
+			.setNegativeButton(getString(R.string.cancel), null)
+			.setPositiveButton(getString(R.string.delete)) { _, _ ->
 
 				viewLifecycleOwner.lifecycleScope.launch {
 
 					try {
-
 						onConfirm()
-
-						if (_binding != null) {
-							popBackStack()
-						}
+						if (_binding != null) { popBackStack() }
 
 					} catch (e: CancellationException) {
 						throw e
 
 					} catch (e: Exception) {
-
 						Log.e(
 							"confirmation",
-							"operation:failure",
+							getString(R.string.operation_failure),
 							e
 						)
 
 						if (_binding != null) {
-
 							showSnackbar(
-								"Erro ao deletar relatório.",
+								getString(R.string.failed_to_delete_report),
 								Utils.SnackBarType.WARNING
 							)
 						}
 					}
 				}
 			}
-
 			.show()
 	}
 
 	override fun onDestroyView() {
-
 		binding.recyclerview.adapter = null
-
 		binding.chart.clear()
-
 		renameReport = null
-
 		_binding = null
 
 		super.onDestroyView()
 	}
 
 	companion object {
-
 		private const val ARG_REPORT_ID = "report_id"
 		private const val ARG_PATIENT_ID = "patient_id"
 
 		@JvmStatic
-		fun newInstance(
-			id: String,
-			patientId: String? = null
-		) =
+		fun newInstance(id: String, patientId: String? = null) =
 			VisualizarRelatorio().apply {
-
 				arguments = Bundle().apply {
-
 					putString(ARG_REPORT_ID, id)
-
 					putString(ARG_PATIENT_ID, patientId)
 				}
 			}

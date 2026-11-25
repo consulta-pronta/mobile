@@ -175,42 +175,42 @@ fun Context.clearCache() {
 		cacheDir.deleteRecursively()
 	} catch (e: Exception) {
 		e.printStackTrace()
-		Log.e("ErroPronto", "Erro ao apagar cache", e)
+		Log.e("ErroPronto", getString(R.string.failed_to_delete_cache), e)
 	}
 }
 
 fun Double.remap(istart: Double, istop: Double, ostart: Double, ostop: Double) =
 	ostart + (this - istart) * (ostop - ostart) / (istop - istart)
 
-fun LocalDateTime.toBrazillianFullDateAndTime(): String {
+fun LocalDateTime.toBrazillianFullDateAndTime(context: Context): String {
 	val month = when (this.month) {
-		Month.JANUARY -> "jan."
-		Month.FEBRUARY -> "fev."
-		Month.MARCH -> "mar."
-		Month.APRIL -> "abr."
-		Month.MAY -> "maio"
-		Month.JUNE -> "jun."
-		Month.JULY -> "jul."
-		Month.AUGUST -> "ago."
-		Month.SEPTEMBER -> "set."
-		Month.OCTOBER -> "out."
-		Month.NOVEMBER -> "nov."
-		Month.DECEMBER -> "dez."
+		Month.JANUARY -> context.getString(R.string.jan)
+		Month.FEBRUARY -> context.getString(R.string.fev)
+		Month.MARCH -> context.getString(R.string.mar)
+		Month.APRIL -> context.getString(R.string.abr)
+		Month.MAY -> context.getString(R.string.ma)
+		Month.JUNE -> context.getString(R.string.jun)
+		Month.JULY -> context.getString(R.string.jul)
+		Month.AUGUST -> context.getString(R.string.ago)
+		Month.SEPTEMBER -> context.getString(R.string.set)
+		Month.OCTOBER -> context.getString(R.string.out)
+		Month.NOVEMBER -> context.getString(R.string.nov)
+		Month.DECEMBER -> context.getString(R.string.dez)
 	}
 
 	val hour = if (hour >= 10) {
 		hour.toString()
 	} else {
-		"0$hour"
+		context.getString(R.string.hour_format, hour)
 	}
 
 	val minute = if (minute >= 10) {
 		minute.toString()
 	} else {
-		"0$minute"
+		context.getString(R.string.minute_format, minute)
 	}
 
-	return "$dayOfMonth de $month de $year, $hour:$minute"
+	return context.getString(R.string.date_format, dayOfMonth, month, year, hour, minute)
 }
 
 fun LocalDateTime.toFirestoreTimestamp() =
@@ -224,11 +224,11 @@ fun LocalDate.toEpochMilli(): Long =
 		.toInstant()
 		.toEpochMilli()
 
-fun Timestamp.toBrazilianLocale(): String {
+fun Timestamp.toBrazilianLocale(context: Context): String {
 	val date = toDate()
-	val locale = Locale.forLanguageTag("pt-BR")
+	val locale = Locale.forLanguageTag(context.getString(R.string.pt_br))
 
-	return SimpleDateFormat("d 'de' MMM 'de' yyyy", locale).format(date)
+	return SimpleDateFormat(context.getString(R.string.pattern1), locale).format(date)
 }
 
 fun Timestamp.toLocalDateTime(): LocalDateTime =
@@ -242,18 +242,18 @@ fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
 	if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString()
 }
 
-fun Timestamp.toSimpleDate(): String {
+fun Timestamp.toSimpleDate(context: Context): String {
 	val date = toDate()
-	val locale = Locale.forLanguageTag("pt-BR")
+	val locale = Locale.forLanguageTag(context.getString(R.string.pt_br))
 
-	return SimpleDateFormat("dd'/'MM", locale).format(date)
+	return SimpleDateFormat(context.getString(R.string.pattern2), locale).format(date)
 }
 
-fun Timestamp.toISODate(): String {
+fun Timestamp.toISODate(context: Context): String {
 	val date = toDate()
-	val locale = Locale.forLanguageTag("pt-BR")
+	val locale = Locale.forLanguageTag(context.getString(R.string.pt_br))
 
-	return SimpleDateFormat("yyyy-MM-dd", locale).format(date)
+	return SimpleDateFormat(context.getString(R.string.pattern3), locale).format(date)
 }
 
 fun Timestamp.diffSeconds(other: Timestamp) = abs(seconds - other.seconds)

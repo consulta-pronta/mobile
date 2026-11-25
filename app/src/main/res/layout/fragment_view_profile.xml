@@ -311,12 +311,12 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="20sp"
+				android:text="@string/health_information"
 
 				app:layout_constraintStart_toEndOf="@id/minimize_aditional_data_layout_button"
 				app:layout_constraintTop_toTopOf="@id/minimize_aditional_data_layout_button"
 				app:layout_constraintBottom_toBottomOf="@id/minimize_aditional_data_layout_button"
-
-				tools:text="@string/health_information"/>
+				/>
 
 			<LinearLayout
 				android:id="@+id/aditional_data_card"

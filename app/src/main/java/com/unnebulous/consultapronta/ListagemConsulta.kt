@@ -56,7 +56,7 @@ class ListagemConsulta : Fragment() {
 		val uid = AuthManager.uid
 
 		if (uid == null) {
-			Log.e("AUTH_DEBUG", "Usuário não autenticado ao abrir ListagemConsulta")
+			Log.e("AUTH_DEBUG", getString(R.string.non_authenticated_on_opening))
 			return
 		}
 
@@ -144,7 +144,7 @@ class ListagemConsulta : Fragment() {
 				}
 
 			} catch (e: Exception) {
-				Log.e("CONSULTATION_DEBUG", "Erro ao carregar consultas", e)
+				Log.e("CONSULTATION_DEBUG", getString(R.string.failed_to_load_consultations), e)
 			}
 		}
 	}
@@ -176,7 +176,7 @@ class ListagemConsulta : Fragment() {
 					consultationRef.set(consultationUpdated.toMap()).await()
 
 				} catch (e: Exception) {
-					Log.e("CONSULTATION_DEBUG", "Erro ao aceitar consulta", e)
+					Log.e("CONSULTATION_DEBUG", getString(R.string.failed_to_accept), e)
 				}
 			}
 		}
@@ -203,7 +203,7 @@ class ListagemConsulta : Fragment() {
 					consultationRef.set(consultationUpdated.toMap()).await()
 
 				} catch (e: Exception) {
-					Log.e("CONSULTATION_DEBUG", "Erro ao negar consulta", e)
+					Log.e("CONSULTATION_DEBUG", getString(R.string.failed_to_deny), e)
 				}
 			}
 		}

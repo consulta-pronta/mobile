@@ -207,7 +207,8 @@ class PermissoesMedicas : Fragment() {
 									dialog.dismiss()
 									showSnackbar(getString(R.string.success_updating_medical_permissions), Utils.SnackBarType.SUCCESS)
 								} catch (e: Exception) {
-									Log.e(MedicalPermission.COLLECTION_NAME, "submitMedicalPermission:failure", e)
+									Log.e(MedicalPermission.COLLECTION_NAME,
+										context.getString(R.string.submitmedicalpermission_failure), e)
 									showSnackbar(getString(R.string.error_not_updating_medical_permissions), Utils.SnackBarType.DANGER)
 								}
 
@@ -250,7 +251,8 @@ class PermissoesMedicas : Fragment() {
 			.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
-					Log.e(MedicalPermission.COLLECTION_NAME, "getMedicalPermissionsListener:failure", exception)
+					Log.e(MedicalPermission.COLLECTION_NAME,
+						getString(R.string.getmedicalpermissionslistener_failure), exception)
 					return@addSnapshotListener
 				}
 				if (snapshots == null) {

@@ -35,7 +35,7 @@ class SolicitarConsulta : Fragment() {
 		DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
 	}
 
-	private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+	private val timeFormatter = DateTimeFormatter.ofPattern(getString(R.string.time_format))
 
 	private var professionalSelected: String? = null
 
@@ -63,13 +63,7 @@ class SolicitarConsulta : Fragment() {
 			}
 		}
 
-		val motivations = arrayOf(
-			"Rotina",
-			"Sintomas",
-			"Prevenção",
-			"Entrega de exames",
-			"Complicações ou condições crônicas"
-		)
+		val motivations =  resources.getStringArray(R.array.motivations)
 
 		val adapter = ArrayAdapter(
 			requireContext(),
@@ -181,12 +175,12 @@ class SolicitarConsulta : Fragment() {
 				} catch (e: Exception) {
 					Log.e(
 						"CONSULTATION_DEBUG",
-						"Erro ao carregar profissionais",
+						getString(R.string.failed_to_load_professionals),
 						e
 					)
 
 					showSnackbar(
-						"Não foi possível carregar os profissionais.",
+						getString(R.string.load_professionals_wasnt_possible),
 						Utils.SnackBarType.WARNING
 					)
 
@@ -222,7 +216,7 @@ class SolicitarConsulta : Fragment() {
 
 			if (patientId == null) {
 				showSnackbar(
-					"Sua sessão não está autenticada. Entre novamente.",
+					getString(R.string.not_authenticated_reload),
 					Utils.SnackBarType.WARNING
 				)
 				return@setOnClickListener
@@ -253,7 +247,7 @@ class SolicitarConsulta : Fragment() {
 
 					Log.d(
 						Consultation.COLLECTION_NAME,
-						"requestConsultation:success"
+						getString(R.string.requestconsultation_success)
 					)
 
 					popBackStack()
@@ -261,12 +255,12 @@ class SolicitarConsulta : Fragment() {
 				} catch (e: Exception) {
 					Log.e(
 						Consultation.COLLECTION_NAME,
-						"requestConsultation:failure",
+						getString(R.string.requestconsultation_failure),
 						e
 					)
 
 					showSnackbar(
-						"Não foi possível solicitar a consulta.",
+						getString(R.string.failed_to_make_appointment),
 						Utils.SnackBarType.WARNING
 					)
 				}

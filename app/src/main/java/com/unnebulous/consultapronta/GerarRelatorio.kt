@@ -156,9 +156,9 @@ class GerarRelatorio : Fragment() {
 
 					showSnackbar(
 						if (professionalList.isEmpty()) {
-							"Nenhum profissional selecionado."
+							getString(R.string.no_selected_professional)
 						} else {
-							"${professionalList.size} profissional(is) selecionado(s)."
+							getString(R.string.selected_professionals, professionalList.size)
 						},
 						Utils.SnackBarType.SUCCESS
 					)
@@ -196,7 +196,7 @@ class GerarRelatorio : Fragment() {
 						title = symptom.title
 
 						setSubtitle(
-							symptom.created_at?.toBrazilianLocale() ?: ""
+							symptom.created_at?.toBrazilianLocale(requireContext()) ?: ""
 						)
 
 						setIcon(R.drawable.ic_document)
@@ -273,7 +273,7 @@ class GerarRelatorio : Fragment() {
 
 					Log.i(
 						"report",
-						"createReport:success"
+						getString(R.string.createreport_success)
 					)
 
 					popBackStack()
@@ -285,13 +285,13 @@ class GerarRelatorio : Fragment() {
 
 					Log.e(
 						"report",
-						"createReport:failure",
+						getString(R.string.createreport_failure),
 						e
 					)
 
 					if (_binding != null) {
 						showSnackbar(
-							"Não foi possível gerar o relatório.",
+							getString(R.string.not_possible_to_generate_report),
 							Utils.SnackBarType.WARNING
 						)
 					}
@@ -330,7 +330,7 @@ class GerarRelatorio : Fragment() {
 
 				val patientId = AuthManager.uid
 					?: throw IllegalStateException(
-						"Paciente não autenticado."
+						getString(R.string.non_authenticated_patient)
 					)
 
 				val permissionCollection = DatabaseManager.userCollection(
@@ -354,7 +354,7 @@ class GerarRelatorio : Fragment() {
 				if (permissions.isEmpty()) {
 
 					showSnackbar(
-						"Você ainda não possui profissionais autorizados.",
+						getString(R.string.dont_have_authorized_professionals),
 						Utils.SnackBarType.INFO
 					)
 
@@ -387,7 +387,7 @@ class GerarRelatorio : Fragment() {
 				if (professionals.isEmpty()) {
 
 					showSnackbar(
-						"Nenhum profissional autorizado foi encontrado.",
+						getString(R.string.no_professional_found),
 						Utils.SnackBarType.INFO
 					)
 
@@ -405,7 +405,7 @@ class GerarRelatorio : Fragment() {
 
 						title = if (professional.email.isBlank()) {
 							professional.name.ifBlank {
-								"Profissional sem nome"
+								context.getString(R.string.nameless_professional)
 							}
 						} else {
 							"${professional.name} (${professional.email})"
@@ -426,13 +426,13 @@ class GerarRelatorio : Fragment() {
 
 				Log.e(
 					"MedicalPermission",
-					"loadProfessionals:failure",
+					getString(R.string.loadprofessionals_failure),
 					e
 				)
 
 				if (_binding != null) {
 					showSnackbar(
-						"Erro ao carregar profissionais.",
+						getString(R.string.failed_to_load_professionals),
 						Utils.SnackBarType.WARNING
 					)
 				}
@@ -457,7 +457,6 @@ class GerarRelatorio : Fragment() {
 
 				val average = symptomList
 					.getIntensityAverage()
-					.toDouble()
 
 				binding.intensityIcon.imageTintList = ColorStateList.valueOf(
 					Utils.intensityToColor(
@@ -477,7 +476,7 @@ class GerarRelatorio : Fragment() {
 
 				binding.mostAffectedArea.text =
 					symptomList.getMostAffectArea()
-						?: "Nenhuma registrada"
+						?: getString(R.string.none_registered)
 
 			} catch (e: CancellationException) {
 				throw e
@@ -486,7 +485,7 @@ class GerarRelatorio : Fragment() {
 
 				Log.e(
 					"report",
-					"getSymptomsByDate:failure",
+					getString(R.string.getsymptomsbydate_failure),
 					e
 				)
 			}

@@ -67,7 +67,8 @@ class Notifications : Fragment() {
 
 		val adapter = NotificationsAdapter().apply {
 			deleteNotification = { notificationid ->
-				showConfirmationDialog("Deseja deletar esta notificação?", "Ao confirmar, a notificação será apagada."){
+				showConfirmationDialog(getString(R.string.wish_to_delete_notification),
+					getString(R.string.on_confirm_delete_notification)){
 					lifecycleScope.launch {
 						Notification.collection
 							.document(notificationid)
@@ -80,7 +81,8 @@ class Notifications : Fragment() {
 		firestoreListener = Notification.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
-					Log.e(Notification.COLLECTION_NAME, "getNotifications", exception)
+					Log.e(Notification.COLLECTION_NAME,
+						getString(R.string.getnotifications), exception)
 					return@addSnapshotListener
 				}
 
@@ -123,8 +125,8 @@ class Notifications : Fragment() {
 
 	private fun onDeleteAllClicked() {
 		showConfirmationDialog(
-			"Deseja mesmo deletar todas as notificações?",
-			"Ao clicar em confirmar, todas as notificações serão apagadas."
+			getString(R.string.wish_to_delete_all_notifications),
+			getString(R.string.on_confirm_delete_all_notifications)
 		) {
 			lifecycleScope.launch {
 				Notification.collection.get().await().documents.forEach { documentSnapshot ->

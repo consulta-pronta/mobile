@@ -61,17 +61,17 @@ class Login : Fragment() {
 
 	private fun handlePostSignIn(task: Task<AuthResult>) {
 		if (task.isSuccessful) {
-			Log.i("auth", "signInWithEmail:success")
+			Log.i("auth", getString(R.string.signin_with_email_success))
 
 			try {
 				val activity = requireActivity()
 				startActivity(Intent(activity, MainActivity::class.java))
 				activity.finish()
 			} catch (error: IllegalStateException) {
-				Log.wtf("auth", "signInWithEmail:failure", error)
+				Log.wtf("auth", getString(R.string.signin_with_email_failure), error)
 			}
 		} else {
-			Log.w("auth", "signInWithEmail:failure", task.exception)
+			Log.w("auth", getString(R.string.signin_with_email_failure), task.exception)
 			if (task.exception is FirebaseAuthInvalidCredentialsException) {
 				showSnackbar(getString(R.string.error_invalid_input_data), Utils.SnackBarType.WARNING)
 			}

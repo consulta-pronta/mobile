@@ -60,7 +60,7 @@ class RelatoriosListagem : Fragment() {
 		viewLifecycleOwner.lifecycleScope.launch {
 			try {
 				val user = AuthManager.getUserData()
-					?: throw Exception("Usuário não encontrado.")
+					?: throw Exception(getString(R.string.user_not_found))
 
 				isPatient = user.user_type == Utils.UserType.PACIENTE
 
@@ -86,8 +86,8 @@ class RelatoriosListagem : Fragment() {
 					deleteReport = { report ->
 						if (isPatient) {
 							showConfirmationDialog(
-								"Deseja deletar este relatório?",
-								"Ao confirmar, o relatório será apagado permanentemente."
+								getString(R.string.wish_to_delete_report),
+								getString(R.string.on_confirm_delete_report)
 							) {
 								DatabaseManager.userDocument(
 									Report.COLLECTION_NAME,
@@ -116,10 +116,10 @@ class RelatoriosListagem : Fragment() {
 				loadReports()
 
 			} catch (e: Exception) {
-				Log.e("report", "onViewCreated:failure", e)
+				Log.e("report", getString(R.string.onviewcreated_failure), e)
 
 				showSnackbar(
-					"Erro ao inicializar a listagem de relatórios.",
+					getString(R.string.error_to_load_reports),
 					Utils.SnackBarType.WARNING
 				)
 			}
@@ -131,10 +131,10 @@ class RelatoriosListagem : Fragment() {
 		viewLifecycleOwner.lifecycleScope.launch {
 			try {
 				val user = AuthManager.getUserData()
-					?: throw Exception("Usuário não encontrado.")
+					?: throw Exception(getString(R.string.user_not_found))
 
 				val uid = AuthManager.uid
-					?: throw Exception("Usuário não autenticado.")
+					?: throw Exception(getString(R.string.user_not_authenticated))
 
 				isPatient = user.user_type == Utils.UserType.PACIENTE
 
@@ -159,7 +159,7 @@ class RelatoriosListagem : Fragment() {
 					if (error != null) {
 						Log.e(
 							"report",
-							"getReportsListener:failure",
+							getString(R.string.getreportslistener_failure),
 							error
 						)
 						return@addSnapshotListener
@@ -180,11 +180,11 @@ class RelatoriosListagem : Fragment() {
 				}
 
 			} catch (e: Exception) {
-				Log.e("report", "loadReports:failure", e)
+				Log.e("report", getString(R.string.loadreports_failure), e)
 
 				if (isAdded) {
 					showSnackbar(
-						"Erro ao carregar relatórios.",
+						getString(R.string.error_to_load_reports),
 						Utils.SnackBarType.WARNING
 					)
 				}
@@ -224,26 +224,11 @@ class RelatoriosListagem : Fragment() {
 				hint = getString(R.string.type_new_name)
 				setText(report.title)
 
-				setTextColor(
-					ContextCompat.getColor(
-						context,
-						R.color.textLight
-					)
-				)
+				setTextColor(ContextCompat.getColor(context, R.color.textLight))
 
-				setHintTextColor(
-					ContextCompat.getColor(
-						context,
-						R.color.textLight60
-					)
-				)
+				setHintTextColor(ContextCompat.getColor(context, R.color.textLight60))
 
-				compoundDrawableTintList = ColorStateList.valueOf(
-					ContextCompat.getColor(
-						context,
-						R.color.textLight
-					)
-				)
+				compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textLight))
 			}
 
 			dialogBinding.body.addView(input)
@@ -275,12 +260,12 @@ class RelatoriosListagem : Fragment() {
 						} catch (e: Exception) {
 							Log.e(
 								"report",
-								"renameReport:failure",
+								context.getString(R.string.renamereport_failure),
 								e
 							)
 
 							showSnackbar(
-								"Erro ao renomear relatório.",
+								context.getString(R.string.failed_to_rename_report),
 								Utils.SnackBarType.WARNING
 							)
 						}
@@ -306,19 +291,19 @@ class RelatoriosListagem : Fragment() {
 						onConfirm()
 
 						showSnackbar(
-							"Relatório excluído.",
+							getString(R.string.report_deleted),
 							Utils.SnackBarType.SUCCESS
 						)
 
 					} catch (e: Exception) {
 						Log.e(
 							"report",
-							"deleteReport:failure",
+							getString(R.string.deletereport_failure),
 							e
 						)
 
 						showSnackbar(
-							"Erro ao deletar relatório.",
+							getString(R.string.failed_to_delete_report),
 							Utils.SnackBarType.WARNING
 						)
 					}
@@ -332,7 +317,7 @@ class RelatoriosListagem : Fragment() {
 			try {
 				if (report.professionals.isEmpty()) {
 					showSnackbar(
-						"Nenhum profissional possui acesso a este relatório.",
+						getString(R.string.no_professional_allowed),
 						Utils.SnackBarType.INFO
 					)
 					return@launch
@@ -349,21 +334,21 @@ class RelatoriosListagem : Fragment() {
 						null
 					} else {
 						document.getString("name")
-							?.ifBlank { "Profissional sem nome" }
-							?: "Profissional sem nome"
+							?.ifBlank { getString(R.string.nameless_professional) }
+							?: getString(R.string.nameless_professional)
 					}
 				}
 
 				if (professionals.isEmpty()) {
 					showSnackbar(
-						"Não foi possível encontrar os profissionais.",
+						getString(R.string.failed_to_find_professionals),
 						Utils.SnackBarType.INFO
 					)
 					return@launch
 				}
 
 				MaterialAlertDialogBuilder(requireContext())
-					.setTitle("Profissionais permitidos")
+					.setTitle(getString(R.string.allowed_professionals))
 					.setItems(professionals.toTypedArray(), null)
 					.setPositiveButton(getString(R.string.close), null)
 					.show()
@@ -371,12 +356,12 @@ class RelatoriosListagem : Fragment() {
 			} catch (e: Exception) {
 				Log.e(
 					"MedicalPermission",
-					"getAllowedProfessionals:failure",
+					getString(R.string.getallowedprofessionals_failure),
 					e
 				)
 
 				showSnackbar(
-					"Erro ao carregar profissionais permitidos.",
+					getString(R.string.failed_to_load_allowed_professionals),
 					Utils.SnackBarType.WARNING
 				)
 			}
