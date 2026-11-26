@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
@@ -39,7 +40,6 @@ class Mais : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-
 		updateHeader {
 			changeHeaderType(Utils.HeaderType.COMPACT)
 		}
@@ -49,27 +49,26 @@ class Mais : Fragment() {
 			changeFragmentWithBackStack(ViewProfile())
 		}
 
-		lifecycleScope.launch {
-			try {
-				val userData = AuthManager.getUserData()
+		try {
+			val userData = AuthManager.userInFirestore
 
-				when (userData?.user_type) {
-					Utils.UserType.PACIENTE -> setPatientOptions()
-					Utils.UserType.PROFISSIONAL -> setProfessionalOptions()
-					null -> {
-						throw Exception("User has no type associeted")
-					}
-				}
-
-				binding.apply {
-					userName.text = userData.name
-					userEmail.text = userData.email
-					userPhoneNumber.text = Utils.applyMask(Utils.PHONE_MASK, userData.phone)
+			when (userData.user_type) {
+				Utils.UserType.PACIENTE -> setPatientOptions()
+				Utils.UserType.PROFISSIONAL -> setProfessionalOptions()
+				null -> {
+					throw Exception(getString(R.string.user_has_no_type_associated))
 				}
 			}
-			catch (e: Exception) {
-				Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
+
+			binding.apply {
+				userName.text = userData.name
+				userEmail.text = userData.email
+				userPhoneNumber.text = Utils.applyMask(Utils.PHONE_MASK, userData.phone)
 			}
+		}
+		catch (e: Exception) {
+			Log.wtf(User.COLLECTION_NAME, getString(R.string.getuserdata_failure), e)
+			showSnackbar(getString(R.string.error_generic), Utils.SnackBarType.DANGER)
 		}
 
 		binding.apply {
@@ -83,12 +82,12 @@ class Mais : Fragment() {
 		}
 	}
 
-	// TODO: incompleto
 	private fun setPatientOptions() {
-		// AVISO: DEVE ESTAR NA ORDEM QUE APARECE NO FIGMA
 		val options = listOf(
-			// opção de informações de saúde
-			MenuOption(R.drawable.ic_shield_switch, R.string.medical_permissions_title){
+			MenuOption(R.drawable.ic_reports, R.string.health_information) {
+				HealthInformation()
+			},
+			MenuOption(R.drawable.ic_shield_switch, R.string.medical_permissions_title) {
 				PermissoesMedicas()
 			},
 			MenuOption(R.drawable.ic_reports, R.string.reports_text) {

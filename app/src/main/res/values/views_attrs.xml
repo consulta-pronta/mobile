@@ -1,7 +1,5 @@
 <resources>
-	<declare-styleable name="ProfilePictureView">
-		<attr name="isInput" format="boolean" />
-	</declare-styleable>
+	<!-- Adicionar atributos repetidos globais (ex.: icon) -->
 
 	<declare-styleable name="NavbarView">
 		<attr name="professional" format="boolean" />
@@ -48,6 +46,7 @@
 		<attr name="selectText" format="string" />
 		<attr name="selectSubtitleText" format="string" />
 		<attr name="showIconAsRaw" format="boolean" />
+		<attr name="isChecked" format="boolean" />
 	</declare-styleable>
 
 	<declare-styleable name="VerificationCodeView">
@@ -57,5 +56,14 @@
 	<declare-styleable name="DualToggleSelectorView">
 		<attr name="firstOptionText" format="string" />
 		<attr name="secondOptionText" format="string" />
+	</declare-styleable>
+	
+	<declare-styleable name="MapListView">
+		<attr name="title" format="string"/>
+		<attr name="type" format="enum">
+			<enum name="key_value" value="0" />
+			<enum name="only_value" value="1" />
+		</attr>
+		<attr name="darkMode" format="boolean" />
 	</declare-styleable>
 </resources>

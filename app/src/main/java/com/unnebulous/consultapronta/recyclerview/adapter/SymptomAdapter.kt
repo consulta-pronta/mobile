@@ -3,9 +3,13 @@ package com.unnebulous.consultapronta.recyclerview.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.database.Symptom
 import com.unnebulous.consultapronta.databinding.CardSymptomBinding
 import com.unnebulous.consultapronta.toBrazilianLocale
@@ -37,10 +41,19 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 
 	class SymptomViewHolder(private val binding: CardSymptomBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(symptom: Symptom, onClick: (Symptom) -> Unit) {
+			if (symptom.id.isBlank()) {
+				binding.root.forEach { view ->
+					view.clipToOutline = true
+					view.foreground = ContextCompat.getDrawable(binding.root.context, R.drawable.skeleton_gradient)
+					view.alpha = Utils.SKELETON_OPACITY
+				}
+				return
+			}
+
 			binding.apply {
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description
-				symptomDateText.text = symptom.date_time!!.toBrazilianLocale()
+				symptomDateText.text = symptom.date_time!!.toBrazilianLocale(root.context)
 				intensityView.setIntensity(symptom.intensity)
 				placeView.setLocation(symptom.place)
 

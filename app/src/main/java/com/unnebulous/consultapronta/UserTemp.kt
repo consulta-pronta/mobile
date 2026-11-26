@@ -1,11 +1,18 @@
 package com.unnebulous.consultapronta
 
+import com.google.firebase.Timestamp
+
 data class UserTemp(
-	var userType: Utils.UserType = Utils.UserType.PACIENTE,
-	var name: String = "",
-	var cpf: String = "",
-	var email: String = "",
-	var phoneNumber: String = "",
-	var password: String = "",
-	var contactForms: HashMap<String, String> = HashMap()
+	val email: String,
+	val name: String,
+	val password: String,
+	val phone: String,
+	val cpf: String,
+	val address: String,
+	val biological_sex: String,
+	val gender: String,
+	val user_type: Utils.UserType? = Utils.UserType.PACIENTE,
+	val birth_date: String,
+	val contact_forms: MutableMap<String, String> = mutableMapOf(),
+	val user_data: Map<String, Any>
 )

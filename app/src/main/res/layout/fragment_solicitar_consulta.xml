@@ -84,7 +84,10 @@
 				android:textColorHint="@color/textDark60"
 				android:inputType="textAutoComplete"
 				android:textColor="@color/textDark"
-				android:padding="@dimen/default_card_padding" />
+				android:padding="@dimen/default_card_padding"
+				android:drawableStart="@drawable/ic_medication"
+				android:drawableTint="@color/textDark"
+				android:drawablePadding="@dimen/default_drawable_icon_padding"/>
 
 		</com.google.android.material.textfield.TextInputLayout>
 
@@ -205,7 +208,10 @@
 			android:inputType="text"
 			android:autofillHints="name"
 			android:textColor="@color/textDark"
-			android:textColorHint="@color/textDark60" />
+			android:textColorHint="@color/textDark60"
+			android:drawableStart="@drawable/ic_location"
+			android:drawableTint="@color/textDark"
+			android:drawablePadding="@dimen/default_drawable_icon_padding" />
 
 		<Button
 			android:id="@+id/request_consultation_button"

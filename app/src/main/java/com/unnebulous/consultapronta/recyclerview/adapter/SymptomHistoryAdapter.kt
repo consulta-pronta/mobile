@@ -44,7 +44,7 @@ class SymptomHistoryAdapter: ListAdapter<
 	): RecyclerView.ViewHolder(binding.root) {
 		fun bind(symptom: Symptom) {
 			binding.apply {
-				dateText.text = symptom.date_time?.toBrazilianLocale() ?: "Data desconhecida"
+				dateText.text = symptom.date_time?.toBrazilianLocale(root.context) ?: "Data desconhecida"
 				intensity.setIntensity(symptom.intensity)
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description

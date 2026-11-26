@@ -192,7 +192,7 @@
 				android:layout_height="match_parent"
 				android:hint="@string/select_place"
 				android:textColorHint="@color/textDark"
-				android:inputType="none"
+				android:inputType="textAutoComplete"
 				android:textSize="14sp"
 				android:textColor="@color/textDark"
 				android:padding="@dimen/default_card_padding"

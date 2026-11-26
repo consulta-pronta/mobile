@@ -18,7 +18,7 @@
 		android:layout_height="wrap_content"
 		android:padding="@dimen/default_card_padding"
 		android:background="@drawable/shape_top_rounded_background"
-		android:backgroundTint="@color/success"
+		android:backgroundTint="@color/neutral"
 		android:layout_marginBottom="@dimen/list_items_spacing">
 		<TextView
 			android:id="@+id/status_permission"
@@ -87,7 +87,7 @@
 			tools:text="@tools:sample/lorem[2]" />
 
 		<TextView
-			android:id="@+id/professional_place_action"
+			android:id="@+id/professional_operation_area"
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

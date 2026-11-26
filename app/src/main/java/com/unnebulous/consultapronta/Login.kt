@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.credentials.GetPasswordOption
 import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -38,6 +39,10 @@ class Login : Fragment() {
 			changeFragmentWithBackStack(Cadastro())
 		}
 
+		binding.forgotPasswordButton.setOnClickListener {
+			changeFragmentWithBackStack(PasswordRecovery())
+		}
+
 		binding.enterButton.setOnClickListener {
 			val email = binding.emailInput.text.toString()
 			val password = binding.passwordInput.text.toString()
@@ -56,17 +61,17 @@ class Login : Fragment() {
 
 	private fun handlePostSignIn(task: Task<AuthResult>) {
 		if (task.isSuccessful) {
-			Log.i("auth", "signInWithEmail:success")
+			Log.i("auth", getString(R.string.signin_with_email_success))
 
 			try {
 				val activity = requireActivity()
 				startActivity(Intent(activity, MainActivity::class.java))
 				activity.finish()
 			} catch (error: IllegalStateException) {
-				Log.wtf("auth", "signInWithEmail:failure", error)
+				Log.wtf("auth", getString(R.string.signin_with_email_failure), error)
 			}
 		} else {
-			Log.w("auth", "signInWithEmail:failure", task.exception)
+			Log.w("auth", getString(R.string.signin_with_email_failure), task.exception)
 			if (task.exception is FirebaseAuthInvalidCredentialsException) {
 				showSnackbar(getString(R.string.error_invalid_input_data), Utils.SnackBarType.WARNING)
 			}

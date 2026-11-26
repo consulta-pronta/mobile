@@ -12,23 +12,34 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.unnebulous.consultapronta.databinding.FragmentViewProfileBinding
 import android.graphics.Typeface
+import android.text.InputType
 import android.util.Log
 import android.view.Gravity
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
+import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
-import com.bumptech.glide.util.Util
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.database.DatabaseManager
 import com.unnebulous.consultapronta.database.User
+import com.unnebulous.consultapronta.views.MapListView
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
 
 class ViewProfile : Fragment() {
 
@@ -37,6 +48,7 @@ class ViewProfile : Fragment() {
 
 	private var isPersonalDataMinimized = false
 	private var isAditionalDataMinimized = false
+	private var allergiesKeyValue: Int = 0
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -85,24 +97,77 @@ class ViewProfile : Fragment() {
 			minimizeSection(binding.aditionalDataCard, it, isAditionalDataMinimized)
 		}
 
+		val userData = AuthManager.userInFirestore
+
+		binding.apply {
+			val birthDate = LocalDate.parse(userData.birth_date)
+
+			userName.text = userData.name
+			userEmail.setText(userData.email)
+			userCpf.text = Utils.applyMask(Utils.CPF_MASK, userData.cpf)
+			userPhoneNumber.setText(Utils.applyMask(Utils.PHONE_MASK, userData.phone))
+			userGender.text = userData.gender
+			userBirthDate.text = birthDate.format(DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)))
+			userAge.text = getString(R.string.user_age_label, Period.between(birthDate, LocalDate.now()).years)
+			userLocation.text = userData.address
+			setAditionalDataLayoutTitle(userData.user_type!!)
+		}
+
 		lifecycleScope.launch {
-			try {
-				val userData = AuthManager.getUserData()
+			val user = DatabaseManager.userDocument.get().await()
 
-				if (userData?.user_type == null) {
-					throw Exception("User has no type associated")
-				}
+			if (userData.user_type == Utils.UserType.PACIENTE) {
+				val patientData = user["patient_data"] as Map<String, String>
 
-				binding.apply {
-					userName.text = userData.name
-					userEmail.setText(userData.email)
-					userCpf.text = userData.cpf
-					userPhoneNumber.setText(Utils.applyMask(Utils.PHONE_MASK, userData.phone))
-					setAditionalDataLayoutTitle(userData.user_type)
+				addAditionalData(getString(R.string.bloodtype), patientData["blood_type"]!!)
+				addAditionalData(getString(R.string.height), "${patientData["height"].toString()} cm")
+				addAditionalData(getString(R.string.weight), "${patientData["weight"].toString()} kg")
+
+				addAditionalData {
+					val allergiesView = MapListView(requireContext(), type = MapListView.ViewType.ONLY_VALUE).apply {
+						val view = this
+						title = getString(R.string.label_allergies)
+						hasOptionToUpdate = false
+						darkMode = true
+						lifecycleScope.launch {
+							val user = DatabaseManager
+								.userDocument
+								.get()
+								.await()
+
+							val allergiesData = user.get("patient_data.allergies")
+
+							if (allergiesData != null) {
+								val allergies = allergiesData as List<String>
+
+								allergies.forEach { allergy ->
+									view.addItem((allergiesKeyValue++).toString() to allergy)
+								}
+							}
+						}
+					}
+
+					val familyHistoryView = MapListView(requireContext(), type = MapListView.ViewType.KEY_VALUE).apply {
+						val view = this
+						title = getString(R.string.label_family_history)
+						hasOptionToUpdate = false
+						darkMode = true
+						lifecycleScope.launch {
+							val user = DatabaseManager
+								.userDocument
+								.get()
+								.await()
+
+							val familyHistoryData = user.get("patient_data.family_history")
+
+							if (familyHistoryData != null) {
+								view.setFullMap(familyHistoryData as Map<String, String>)
+							}
+						}
+					}
+
+					listOf<View>(allergiesView, familyHistoryView)
 				}
-			}
-			catch (e: Exception) {
-				Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
 			}
 		}
 	}
@@ -143,7 +208,7 @@ class ViewProfile : Fragment() {
 		binding.aditionalDataCard.addView(row)
 	}
 
-	private fun addAditionalData(custom: () -> MutableList<View>) {
+	private fun addAditionalData(custom: () -> List<View>) {
 		val views = custom()
 
 		for (view: View in views) {

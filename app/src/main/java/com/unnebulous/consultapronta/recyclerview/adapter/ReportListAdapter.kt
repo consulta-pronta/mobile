@@ -1,3 +1,4 @@
+
 package com.unnebulous.consultapronta.recyclerview.adapter
 
 import android.content.res.ColorStateList
@@ -20,16 +21,20 @@ import com.unnebulous.consultapronta.database.Report
 import com.unnebulous.consultapronta.databinding.CardReportBinding
 import com.unnebulous.consultapronta.databinding.CardReportProfessionalBinding
 import com.unnebulous.consultapronta.diffDays
-import com.unnebulous.consultapronta.showSnackbar
 import com.unnebulous.consultapronta.toBrazilianLocale
 
-class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComparator()) {
+class ReportListAdapter : ListAdapter<Report, RecyclerView.ViewHolder>(ReportComparator()) {
 
-	private enum class ViewType { PATIENT, PROFESSIONAL }
+	private enum class ViewType {
+		PATIENT,
+		PROFESSIONAL
+	}
 
 	lateinit var onClick: (Report) -> Unit
 	lateinit var renameReport: (Report) -> Unit
 	lateinit var deleteReport: (Report) -> Unit
+	lateinit var allowedProfessionals: (Report) -> Unit
+
 	var userIsProfessional = false
 
 	override fun getItemViewType(position: Int): Int {
@@ -40,61 +45,109 @@ class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComp
 		}
 	}
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+	override fun onCreateViewHolder(
+		parent: ViewGroup,
+		viewType: Int
+	): RecyclerView.ViewHolder {
 		return when (viewType) {
 			ViewType.PATIENT.ordinal -> {
-				val binding = CardReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+				val binding = CardReportBinding.inflate(
+					LayoutInflater.from(parent.context),
+					parent,
+					false
+				)
 				ReportPatientViewHolder(binding)
 			}
 
 			ViewType.PROFESSIONAL.ordinal -> {
-				val binding = CardReportProfessionalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+				val binding = CardReportProfessionalBinding.inflate(
+					LayoutInflater.from(parent.context),
+					parent,
+					false
+				)
 				ReportProfessionalViewHolder(binding)
 			}
 
 			else -> {
-				val binding = CardReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+				val binding = CardReportBinding.inflate(
+					LayoutInflater.from(parent.context),
+					parent,
+					false
+				)
 				ReportPatientViewHolder(binding)
 			}
 		}
 	}
 
-	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+	override fun onBindViewHolder(
+		holder: RecyclerView.ViewHolder,
+		position: Int
+	) {
 		when (holder) {
-			is ReportPatientViewHolder -> holder.bind(getItem(position), onClick, renameReport, deleteReport)
-			is ReportProfessionalViewHolder -> holder.bind(getItem(position), onClick)
+			is ReportPatientViewHolder -> holder.bind(
+				getItem(position),
+				onClick,
+				renameReport,
+				deleteReport,
+				allowedProfessionals
+			)
+
+			is ReportProfessionalViewHolder -> holder.bind(
+				getItem(position),
+				onClick
+			)
 		}
 	}
 
 	class ReportComparator : DiffUtil.ItemCallback<Report>() {
-		override fun areItemsTheSame(old: Report, new: Report) = old.id == new.id
+		override fun areItemsTheSame(old: Report, new: Report) =
+			old.id == new.id
 
-		override fun areContentsTheSame(old: Report, new: Report) =  old == new
+		override fun areContentsTheSame(old: Report, new: Report) =
+			old == new
 	}
 
-	class ReportPatientViewHolder(private val binding: CardReportBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(report: Report, onClick: (Report) -> Unit, renameReport: (Report) -> Unit, deleteReport: (Report) -> Unit) {
+	class ReportPatientViewHolder(
+		private val binding: CardReportBinding
+	) : RecyclerView.ViewHolder(binding.root) {
+
+		fun bind(
+			report: Report,
+			onClick: (Report) -> Unit,
+			renameReport: (Report) -> Unit,
+			deleteReport: (Report) -> Unit,
+			allowedProfessionals: (Report) -> Unit
+		) {
 			binding.apply {
 				val period = report.period_start!!.diffDays(report.period_end!!)
 
 				reportCardTitle.text = report.title
+
 				reportCardPeriod.text = itemView.context.getString(
 					R.string.report_card_period_placeholder,
 					period
 				)
-				reportCardDate.text = report.created_at!!.toBrazilianLocale()
 
-				root.setOnClickListener { onClick(report) }
+				reportCardDate.text = report.created_at!!.toBrazilianLocale(root.context)
+
+				root.setOnClickListener {
+					onClick(report)
+				}
 
 				optionsButton.setOnClickListener {
-					val contextThemeWrapper = ContextThemeWrapper(binding.root.context, R.style.PopupMenuTheme)
+					val contextThemeWrapper = ContextThemeWrapper(
+						root.context,
+						R.style.PopupMenuTheme
+					)
 
 					PopupMenu(contextThemeWrapper, optionsButton).apply {
-						menuInflater.inflate(R.menu.menu_reports, this.menu)
+						menuInflater.inflate(R.menu.menu_reports, menu)
 
 						setOnMenuItemClickListener { menuItem ->
 							when (menuItem.itemId) {
-								R.id.menu_allowed_professionals -> {}
+								R.id.menu_allowed_professionals -> {
+									allowedProfessionals(report)
+								}
 
 								R.id.menu_rename_report -> {
 									renameReport(report)
@@ -115,20 +168,33 @@ class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComp
 		}
 	}
 
-	class ReportProfessionalViewHolder(private val binding: CardReportProfessionalBinding): RecyclerView.ViewHolder(binding.root) {
-		fun bind(report: Report, onClick: (Report) -> Unit) {
+	class ReportProfessionalViewHolder(
+		private val binding: CardReportProfessionalBinding
+	) : RecyclerView.ViewHolder(binding.root) {
+
+		fun bind(
+			report: Report,
+			onClick: (Report) -> Unit
+		) {
 
 			/*
 			binding.reports.addView(
-				addNewReport("TITULO", "PERIODO FORMATADO (R.string.report_card_period_placeholder_professional)") {
+				addNewReport(
+					"TITULO",
+					"PERIODO FORMATADO (R.string.report_card_period_placeholder_professional)"
+				) {
 					// on click
 				}
 			)
-			 */
+			*/
 
 		}
 
-		private fun addNewReport(title: String, period: String, onClick: () -> Unit): View {
+		private fun addNewReport(
+			title: String,
+			period: String,
+			onClick: () -> Unit
+		): View {
 			val context = binding.root.context
 
 			val icon = AppCompatImageView(context).apply {
@@ -140,9 +206,20 @@ class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComp
 				}
 
 				setImageResource(R.drawable.ic_reports)
-				imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primaryDark))
-				background = ContextCompat.getDrawable(context, R.drawable.shape_circle_accent)
-				backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.surface))
+
+				imageTintList = ColorStateList.valueOf(
+					ContextCompat.getColor(context, R.color.primaryDark)
+				)
+
+				background = ContextCompat.getDrawable(
+					context,
+					R.drawable.shape_circle_accent
+				)
+
+				backgroundTintList = ColorStateList.valueOf(
+					ContextCompat.getColor(context, R.color.surface)
+				)
+
 				setPadding(6, 6, 6, 6)
 			}
 
@@ -158,16 +235,18 @@ class ReportListAdapter: ListAdapter<Report, RecyclerView.ViewHolder>(ReportComp
 
 			val infoLayout = LinearLayout(context).apply {
 				orientation = LinearLayout.VERTICAL
-
 				addView(titleView)
 				addView(periodView)
 			}
 
 			return LinearLayout(context).apply {
 				orientation = LinearLayout.HORIZONTAL
-
 				addView(icon)
 				addView(infoLayout)
+
+				setOnClickListener {
+					onClick()
+				}
 			}
 		}
 	}

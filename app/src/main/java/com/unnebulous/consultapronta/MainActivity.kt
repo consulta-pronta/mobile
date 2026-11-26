@@ -1,20 +1,44 @@
 package com.unnebulous.consultapronta
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.TouchDelegate
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.unnebulous.consultapronta.database.AuthManager
 import com.unnebulous.consultapronta.databinding.ActivityMainBinding
-import com.unnebulous.consultapronta.views.NavbarView
 import kotlinx.coroutines.launch
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityMainBinding
+
+	private val notificationPermissionLauncher =
+		registerForActivityResult(
+			ActivityResultContracts.RequestPermission()
+		) { isGranted ->
+
+			if (isGranted) {
+				// todo: quando for permitido
+			} else {
+				// todo: quando for negado
+			}
+		}
+
+	private fun checkNotificationPermission() {
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			val permission = Manifest.permission.POST_NOTIFICATIONS
+
+			if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+				notificationPermissionLauncher.launch(permission)
+			}
+		}
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -22,21 +46,27 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
+		checkNotificationPermission()
+
 		binding.navbar.apply {
 			val fragmentId = R.id.main_fragment_container
 
 			setOnClickListener(Utils.NavbarButton.FIRST) {
 				changeFragment(Home(), fragmentId)
 			}
+
 			setOnClickListener(Utils.NavbarButton.SECOND) {
 				changeFragment(HistoricoSintoma(), fragmentId)
 			}
+
 			setOnClickListener(Utils.NavbarButton.MAIN) {
 				changeFragmentWithBackStack(SymptomRegister(), fragmentId)
 			}
+
 			setOnClickListener(Utils.NavbarButton.FOURTH) {
 				changeFragment(Hospital(), fragmentId)
 			}
+
 			setOnClickListener(Utils.NavbarButton.FIFTH) {
 				changeFragment(Mais(), fragmentId)
 			}

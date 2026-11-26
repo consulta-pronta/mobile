@@ -19,9 +19,10 @@
 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/report_id"
 			android:textStyle="italic"
-			android:layout_marginBottom="@dimen/default_inner_elements_spacing"/>
+			android:layout_marginBottom="@dimen/default_inner_elements_spacing"
+
+			tools:text="@string/report_id"/>
 
 		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
@@ -31,20 +32,22 @@
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/view_report_period"
 
 				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintStart_toStartOf="parent" />
+				app:layout_constraintStart_toStartOf="parent"
+
+				tools:text="@string/view_report_period"/>
 
 			<TextView
 				android:id="@+id/report_duration_text"
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/view_report_duration"
 
 				app:layout_constraintTop_toBottomOf="@id/report_period_text"
-				app:layout_constraintStart_toStartOf="parent"/>
+				app:layout_constraintStart_toStartOf="parent"
+
+				tools:text="@string/view_report_duration"/>
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -57,26 +60,15 @@
 			android:visibility="gone"
 
 			tools:visibility="visible" >
-			<com.unnebulous.consultapronta.views.ProfilePictureView
-				android:id="@+id/patient_profile_picture"
-
-				android:layout_width="60dp"
-				android:layout_height="60dp"
-
-				app:isInput="false"
-				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintStart_toStartOf="parent" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:layout_marginStart="@dimen/default_inner_elements_spacing"
 
 				app:layout_constraintTop_toTopOf="parent"
 				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintStart_toEndOf="@id/patient_profile_picture">
+				app:layout_constraintStart_toStartOf="parent">
 				<TextView
 					android:id="@+id/patient_name"
 
@@ -160,15 +152,16 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textSize="12sp"
-					android:text="@string/most_affected_area_intensity"
 					android:textColor="@color/textLight"
+					android:text="@string/not_available"
 
 					app:chipCornerRadius="50dp"
 					app:chipStrokeColor="@color/transparent"
 					app:chipIcon="@drawable/ic_graphic"
 					app:chipIconTint="@color/textLight"
+					app:chipBackgroundColor="@color/neutral"
 
-					tools:chipBackgroundColor="@color/error" />
+					tools:text="@string/most_affected_area_intensity" />
 			</LinearLayout>
 
 			<LinearLayout
@@ -185,7 +178,7 @@
 					android:id="@+id/chart"
 
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"/>
+					android:layout_height="match_parent" />
 
 			</LinearLayout>
 		</GridLayout>
@@ -205,6 +198,9 @@
 			android:layout_height="wrap_content"
 			android:nestedScrollingEnabled="false"
 
-			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+			tools:listitem="@layout/card_chronology"
+			tools:itemCount="2" />
 	</LinearLayout>
 </androidx.core.widget.NestedScrollView>

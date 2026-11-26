@@ -23,6 +23,8 @@ import kotlin.enums.enumEntries
 object Utils {
 	const val CPF_MASK = "###.###.###-##"
 	const val PHONE_MASK = "(##) #####-####"
+	const val SKELETON_OPACITY = 0.6f
+	const val ERROR = "ERROR"
 
 	enum class UserType { PACIENTE, PROFISSIONAL }
 
@@ -35,6 +37,9 @@ object Utils {
 	}
 
 	enum class HeaderType { COMPACT, TITLED }
+
+	enum class NotificationType { ACESSO, AVISO, ALTERACAO, SOLICITACAO }
+	enum class NotificationScope { CONSULTA, MEDICAMENTO, RELATORIO }
 
 	enum class SelectOptionItemType { RADIO, CHECKBOX, COMPLETE }
 
