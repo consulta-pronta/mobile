@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -202,6 +203,8 @@ class Cadastro : Fragment() {
 
 	private fun verifyInputs(): Boolean {
 		var isValid = true
+		var validEmail = true
+		var validCPF = true
 		var oneOrMoreInputBlank = false
 
 		val verifyInputsList: (List<String>) -> Unit = { inputs ->
@@ -223,7 +226,9 @@ class Cadastro : Fragment() {
 
 					verifyInputsList(listOf(email, phoneNumber))
 
-					isValid = !oneOrMoreInputBlank && isPasswordCorrect
+					validEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+					isValid = !oneOrMoreInputBlank && isPasswordCorrect && validEmail
 				}
 
 				2 -> {
@@ -233,7 +238,9 @@ class Cadastro : Fragment() {
 
 					verifyInputsList(listOf(name, cpf, address))
 
-					isValid = !oneOrMoreInputBlank && birthDate != null
+					validCPF = cpf.isCpf()
+
+					isValid = !oneOrMoreInputBlank && birthDate != null && validCPF
 				}
 
 				3 -> {
@@ -267,14 +274,16 @@ class Cadastro : Fragment() {
 		}
 
 		if (!isValid) {
-			val error = if (oneOrMoreInputBlank || weight == null || height == null || birthDate == null) {
-				getString(R.string.error_blank_input)
-			} else if (!cpf.isCpf()) {
+			val error = if (!validEmail) {
+				getString(R.string.error_invalid_email)
+			} else if (!validCPF) {
 				getString(R.string.error_invalid_cpf)
-			} else if (!isPasswordValid) {
+			}  else if (!isPasswordValid) {
 				getString(R.string.error_password_not_valid)
-			} else {
+			} else if (!isPasswordCorrect) {
 				getString(R.string.error_password_not_the_same)
+			} else {
+				getString(R.string.error_blank_input)
 			}
 
 			showSnackbar(error, Utils.SnackBarType.WARNING)

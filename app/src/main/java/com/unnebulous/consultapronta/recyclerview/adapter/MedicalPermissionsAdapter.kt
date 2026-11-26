@@ -56,7 +56,7 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 				val crm = "${professional.crm}/${professional.uf}"
 				professionalCrm.text = crm
 				professionalEmail.text = professional.email
-				professionalPhoneNumber.text = professional.phoneNumber
+				professionalPhoneNumber.text = Utils.applyMask(Utils.PHONE_MASK, professional.phoneNumber.toString())
 				professionalOperationArea.text = professional.operationArea
 
 				root.setOnClickListener {
