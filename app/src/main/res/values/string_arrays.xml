@@ -27,4 +27,21 @@
 		<item>@string/deliver_exam</item>
 		<item>@string/complications</item>
 	</string-array>
+
+	<string-array name="biologicalSexes">
+		<item>@string/male</item>
+		<item>@string/female</item>
+		<item>@string/intersex</item>
+		<item>@string/rather_not_inform</item>
+	</string-array>
+
+	<string-array name="genderIdentityArray">
+		<item>@string/cis_male</item>
+		<item>@string/cis_female</item>
+		<item>@string/trans_male</item>
+		<item>@string/trans_female</item>
+		<item>@string/non_binary</item>
+		<item>@string/rather_not_inform</item>
+	</string-array>
+
 </resources>

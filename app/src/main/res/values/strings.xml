@@ -428,4 +428,19 @@
 	<string name="invalid_data">Os dados deste relatório são inválidos.</string>
 	<string name="no_clear_user_type">Usuário sem tipo associado.</string>
 	<string name="report_not_identified">Não foi possível identificar o relatório.</string>
+	<string name="goal_organize">Organize seus sintomas.</string>
+	<string name="goal_agilize">Agilize sua consulta.</string>
+	<string name="own_account">Já possuo conta</string>
+	<string name="start">Iniciar</string>
+	<string name="male">Masculino</string>
+	<string name="female">Feminino</string>
+	<string name="intersex">Intersexo</string>
+	<string name="rather_not_inform">Prefiro não informar</string>
+	<string name="cis_male">Homem cisgênero</string>
+	<string name="cis_female">Mulher cisgênero</string>
+	<string name="trans_male">Homem transexual</string>
+	<string name="trans_female">Mulher transexual</string>
+	<string name="non_binary">Pessoa não binária</string>
+	<string name="addmedication_success">addMedication:success</string>
+	<string name="addmedication_failure">addMedication:failure</string>
 </resources>

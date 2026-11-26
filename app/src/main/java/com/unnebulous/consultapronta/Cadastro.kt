@@ -391,22 +391,11 @@ class Cadastro : Fragment() {
 		val bloodTypes = Utils.BLOODTYPE.entries.map { it.display }.toTypedArray()
 		setupSelect(binding.bloodtypeInput, bloodTypes)
 
-		val biologicalSexes = arrayOf(
-			"Masculino",
-			"Feminino",
-			"Intersexo",
-			"Prefiro não informar"
-		)
+		val biologicalSexes = resources.getStringArray(R.array.biologicalSexes)
+
 		setupSelect(binding.biologicalSexInput, biologicalSexes)
 
-		val genderIdentityArray = arrayOf(
-			"Homem cisgênero",
-			"Mulher cisgênero",
-			"Homem transexual",
-			"Mulher transexual",
-			"Pessoa não binária",
-			"Prefiro não informar"
-		)
+		val genderIdentityArray = resources.getStringArray(R.array.genderIdentityArray)
 		setupSelect(binding.genderIdentityInput, genderIdentityArray)
 	}
 
