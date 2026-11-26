@@ -300,12 +300,12 @@ class PermissoesMedicas : Fragment() {
 			professionals.add(
 				Professional(
 					doc.id,
-					professional.getString("name"),
-					professional.getString("professional_data.crm"),
-					professional.getString("professional_data.uf"),
-					professional.getString("email"),
-					professional.getString("phone"),
-					professional.getString("professional_data.operation_area"),
+					name = professional.getString("name"),
+					crm = professional.getString("professional_data.crm"),
+					uf = professional.getString("professional_data.uf"),
+					email = professional.getString("email"),
+					phoneNumber = professional.getString("phone"),
+					operationArea = professional.getString("professional_data.operation_area"),
 				)
 			)
 		}

@@ -128,7 +128,7 @@ class ReportListAdapter : ListAdapter<Report, RecyclerView.ViewHolder>(ReportCom
 					period
 				)
 
-				reportCardDate.text = report.created_at!!.toBrazilianLocale()
+				reportCardDate.text = report.created_at!!.toBrazilianLocale(root.context)
 
 				root.setOnClickListener {
 					onClick(report)

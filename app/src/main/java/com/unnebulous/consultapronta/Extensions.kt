@@ -226,7 +226,7 @@ fun LocalDate.toEpochMilli(): Long =
 
 fun Timestamp.toBrazilianLocale(context: Context): String {
 	val date = toDate()
-	val locale = Locale.forLanguageTag(context.getString(R.string.pt_br))
+	val locale = Locale.forLanguageTag(context.getString(R.string.language_tag))
 
 	return SimpleDateFormat(context.getString(R.string.pattern1), locale).format(date)
 }
@@ -244,14 +244,14 @@ fun String.capitalizeFix(): String = lowercase().replaceFirstChar {
 
 fun Timestamp.toSimpleDate(context: Context): String {
 	val date = toDate()
-	val locale = Locale.forLanguageTag(context.getString(R.string.pt_br))
+	val locale = Locale.forLanguageTag(context.getString(R.string.language_tag))
 
 	return SimpleDateFormat(context.getString(R.string.pattern2), locale).format(date)
 }
 
 fun Timestamp.toISODate(context: Context): String {
 	val date = toDate()
-	val locale = Locale.forLanguageTag(context.getString(R.string.pt_br))
+	val locale = Locale.forLanguageTag(context.getString(R.string.language_tag))
 
 	return SimpleDateFormat(context.getString(R.string.pattern3), locale).format(date)
 }

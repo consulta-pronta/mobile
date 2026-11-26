@@ -35,7 +35,9 @@ class SolicitarConsulta : Fragment() {
 		DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT))
 	}
 
-	private val timeFormatter = DateTimeFormatter.ofPattern(getString(R.string.time_format))
+	private val timeFormatter by lazy {
+		DateTimeFormatter.ofPattern(getString(R.string.time_format))
+	}
 
 	private var professionalSelected: String? = null
 

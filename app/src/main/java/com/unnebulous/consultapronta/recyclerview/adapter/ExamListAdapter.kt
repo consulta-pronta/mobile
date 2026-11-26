@@ -73,7 +73,7 @@ class ExamListAdapter: ListAdapter<ExamModel, ExamListAdapter.ExamViewHolder>(Ex
 					)
 				)
 				examCategory.text = exam.category.toString().capitalizeFix()
-				examDate.text = exam.date!!.toBrazilianLocale()
+				examDate.text = exam.date!!.toBrazilianLocale(root.context)
 				examHospital.text = exam.place
 			}
 

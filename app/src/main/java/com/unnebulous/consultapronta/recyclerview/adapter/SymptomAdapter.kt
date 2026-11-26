@@ -53,7 +53,7 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 			binding.apply {
 				titleText.text = symptom.title
 				descriptionText.text = symptom.description
-				symptomDateText.text = symptom.date_time!!.toBrazilianLocale()
+				symptomDateText.text = symptom.date_time!!.toBrazilianLocale(root.context)
 				intensityView.setIntensity(symptom.intensity)
 				placeView.setLocation(symptom.place)
 

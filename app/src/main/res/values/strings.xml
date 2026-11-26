@@ -348,7 +348,7 @@
 	<string name="out">out.</string>
 	<string name="nov">nov.</string>
 	<string name="dez">dez.</string>
-	<string name="pt_br">pt-BR</string>
+	<string name="language_tag">pt-BR</string>
 	<string name="pattern1">d \'de\' MMM \'de\' yyyy</string>
 	<string name="pattern2">dd\'/\'MM</string>
 	<string name="pattern3">yyyy-MM-dd</string>
