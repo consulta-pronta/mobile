@@ -15,6 +15,7 @@ mpAndroidChart = "3.1.0"
 openMapView = "0.13.3"
 playServicesLocation = "21.4.0"
 osmApiOverpass = "3.0"
+cpfValidator = "2.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ chart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "
 map-view = { group = "de.afarber", name = "openmapview", version.ref = "openMapView" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 overpass = { group = "de.westnordost", name = "osmapi-overpass", version.ref = "osmApiOverpass" }
+cpf-validator = { group = "br.com.colman.simplecpfvalidator", name = "simple-cpf-validator", version.ref = "cpfValidator" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

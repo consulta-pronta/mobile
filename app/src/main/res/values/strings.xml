@@ -443,4 +443,6 @@
 	<string name="non_binary">Pessoa não binária</string>
 	<string name="addmedication_success">addMedication:success</string>
 	<string name="addmedication_failure">addMedication:failure</string>
+	<string name="error_invalid_cpf">CPF inválido</string>
+	<string name="error_invalid_email">Email inválido</string>
 </resources>

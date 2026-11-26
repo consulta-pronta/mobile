@@ -48,6 +48,12 @@ class SymptomAdapter: ListAdapter<Symptom, SymptomAdapter.SymptomViewHolder>(Sym
 					view.alpha = Utils.SKELETON_OPACITY
 				}
 				return
+			} else {
+				binding.root.forEach { view ->
+					view.clipToOutline = false
+					view.foreground = null
+					view.alpha = 1f
+				}
 			}
 
 			binding.apply {
