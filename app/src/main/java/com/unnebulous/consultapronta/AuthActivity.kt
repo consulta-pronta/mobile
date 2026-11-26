@@ -22,7 +22,7 @@ class AuthActivity : AppCompatActivity() {
 			startActivity(Intent(this, MainActivity::class.java))
 			finish()
 		} else {
-			changeFragment(Cadastro(), R.id.fragment_container)
+			changeFragment(Onboarding(), R.id.fragment_container)
 		}
 	}
 }

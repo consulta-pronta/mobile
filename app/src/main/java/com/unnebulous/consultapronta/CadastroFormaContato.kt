@@ -148,9 +148,7 @@ class CadastroFormaContato : Fragment() {
 					Log.i("auth", "updatePatientData:success")
 				}
 
-				val activity = requireActivity()
-				startActivity(Intent(activity, MainActivity::class.java))
-				activity.finish()
+				changeActivityWithBackStackCleared(MainActivity::class.java)
 			} catch (e: Exception) {
 				Log.w("auth", "setUserDocument:failure", e)
 			}

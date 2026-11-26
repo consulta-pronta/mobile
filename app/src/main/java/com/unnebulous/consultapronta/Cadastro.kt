@@ -100,6 +100,10 @@ class Cadastro : Fragment() {
 
 		configSelects()
 
+		binding.header.setGoBackButtonOnClickListener {
+			popBackStack()
+		}
+
 		binding.userTypeSwitch.setOnClickListener {
 			userType = binding.userTypeSwitch.switch()
 

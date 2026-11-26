@@ -1,6 +1,7 @@
 package com.unnebulous.consultapronta
 
 import android.content.Context
+import android.content.Intent
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
@@ -169,6 +170,14 @@ fun Fragment.resetNavbarEntryActive() {
 val Fragment.recyclerviewSpacing get() = SpacingItemDecoration(resources.getDimensionPixelSize(
 	R.dimen.default_inner_elements_spacing
 ))
+
+fun Fragment.changeActivityWithBackStackCleared(activityClass: Class<*>) {
+	val activity = requireActivity()
+	val intent = Intent(activity, activityClass)
+	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+	startActivity(intent)
+	activity.finish()
+}
 
 fun Context.clearCache() {
 	try {
