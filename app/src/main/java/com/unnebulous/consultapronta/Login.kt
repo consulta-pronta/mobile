@@ -64,9 +64,7 @@ class Login : Fragment() {
 			Log.i("auth", getString(R.string.signin_with_email_success))
 
 			try {
-				val activity = requireActivity()
-				startActivity(Intent(activity, MainActivity::class.java))
-				activity.finish()
+				changeActivityWithBackStackCleared(MainActivity::class.java)
 			} catch (error: IllegalStateException) {
 				Log.wtf("auth", getString(R.string.signin_with_email_failure), error)
 			}

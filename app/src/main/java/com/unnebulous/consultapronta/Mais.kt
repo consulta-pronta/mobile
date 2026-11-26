@@ -149,18 +149,16 @@ class Mais : Fragment() {
 	}
 
 	private fun onExitClicked() {
-		val parentActivitiy = requireActivity()
-
 		configBottomSheet { dialogBinding, _ ->
 			dialogBinding.apply {
 				icon.setImageResource(R.drawable.ic_logout)
 				icon.visibility = View.GONE
 				title.text = getString(R.string.exit_account)
 				body.apply {
-					val subtitle = TextView(parentActivitiy).apply {
+					val subtitle = TextView(context).apply {
 						text = getString(R.string.exit_account_subtitle)
 					}
-					val description = TextView(parentActivitiy).apply {
+					val description = TextView(context).apply {
 						text = getString(R.string.exit_account_description)
 						textSize = 14f
 					}
@@ -178,11 +176,7 @@ class Mais : Fragment() {
 				positiveButton.setOnClickListener {
 					AuthManager.auth.signOut()
 
-					parentActivitiy.startActivity(Intent(
-						parentActivitiy,
-						AuthActivity::class.java)
-					)
-					parentActivitiy.finish()
+					changeActivityWithBackStackCleared(AuthActivity::class.java)
 				}
 			}
 		}
