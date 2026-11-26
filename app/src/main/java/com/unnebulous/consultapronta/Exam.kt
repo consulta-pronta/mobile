@@ -51,10 +51,20 @@ class Exam : Fragment() {
 
 		val adapter = ExamListAdapter()
 		binding.examCards.adapter = adapter
+		binding.examCards.addItemDecoration(recyclerviewSpacing)
+
+		adapter.submitList(
+			listOf(
+				ExamModel(),
+				ExamModel(),
+				ExamModel()
+			)
+		)
+
 		firestoreListener = ExamModel.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
-					Log.e(ExamModel.COLLECTION_NAME, "getExams", exception)
+					Log.e(ExamModel.COLLECTION_NAME, getString(R.string.get_exams), exception)
 					return@addSnapshotListener
 				}
 
@@ -66,8 +76,6 @@ class Exam : Fragment() {
 
 				adapter.submitList(exams)
 			}
-
-		binding.examCards.addItemDecoration(SpacingItemDecoration(recyclerviewSpacing))
 	}
 
 	override fun onDestroyView() {

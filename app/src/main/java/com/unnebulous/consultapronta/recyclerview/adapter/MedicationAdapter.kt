@@ -3,6 +3,10 @@ package com.unnebulous.consultapronta.recyclerview.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.database.Medication
 import com.unnebulous.consultapronta.databinding.CardMedicationBinding
 import com.unnebulous.consultapronta.toISODate
@@ -40,6 +45,17 @@ class MedicationAdapter: ListAdapter<Medication, MedicationAdapter.MedicationVie
 		private val binding: CardMedicationBinding
 	): RecyclerView.ViewHolder(binding.root) {
 		fun bind(medication: Medication) {
+			if (medication.id.isBlank()) {
+				binding.root.forEach { view ->
+					if (view is ImageView || view is CheckBox) return@forEach
+
+					view.clipToOutline = true
+					view.foreground = ContextCompat.getDrawable(binding.root.context, R.drawable.skeleton_gradient)
+					view.alpha = Utils.SKELETON_OPACITY
+				}
+				return
+			}
+
 			binding.apply {
 				medication.apply {
 					if (route == null || frequency_unit == null || dose_unit == null) {
@@ -67,7 +83,7 @@ class MedicationAdapter: ListAdapter<Medication, MedicationAdapter.MedicationVie
 						route.display.lowercase(),
 					)
 
-					val today = Timestamp.now().toISODate()
+					val today = Timestamp.now().toISODate(root.context)
 					checkbox.isChecked = wasTakenOn(today)
 
 					checkbox.setOnCheckedChangeListener { _, bool ->

@@ -39,7 +39,7 @@ class EditSymptom : Fragment() {
 		super.onCreate(savedInstanceState)
 
 		arguments?.let {
-			symptomId = it.getString(ARG_SYMPTOM_ID, "ERROR")
+			symptomId = it.getString(ARG_SYMPTOM_ID, Utils.ERROR)
 		}
 
 		topLevelRef = Symptom.collection.document(symptomId)
@@ -70,25 +70,7 @@ class EditSymptom : Fragment() {
 		resetNavbarEntryActive()
 		binding.symptomIntensity.text = getString(R.string.symptom_intensity, 1)
 
-		val bodyParts = arrayOf(
-			"Cabeça",
-			"Rosto",
-			"Pescoço",
-			"Tórax",
-			"Abdômen",
-			"Costas",
-			"Ombro",
-			"Braço",
-			"Antebraço",
-			"Mão",
-			"Coxa",
-			"Perna",
-			"Tornozelo",
-			"Pé",
-			"Nádegas",
-			"Vagina",
-			"Pênis"
-		)
+		val bodyParts = resources.getStringArray(R.array.body_parts)
 
 		val adapter = ArrayAdapter(
 			requireContext(),
@@ -151,10 +133,10 @@ class EditSymptom : Fragment() {
 					createHistoric()
 					updateCurrent(topLevelRef)
 
-					Log.i(Symptom.COLLECTION_NAME, "editSymptom:success")
+					Log.i(Symptom.COLLECTION_NAME, getString(R.string.editsymptom_success))
 					popBackStack()
 				} catch (e: Exception) {
-					Log.e(Symptom.COLLECTION_NAME, "editSymptom:failure", e)
+					Log.e(Symptom.COLLECTION_NAME, getString(R.string.editsymptom_failure), e)
 				}
 			}
 		}

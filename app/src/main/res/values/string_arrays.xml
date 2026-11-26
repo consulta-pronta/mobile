@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="body_parts">
+		<item>@string/head</item>
+		<item>@string/face</item>
+		<item>@string/neck</item>
+		<item>@string/torax</item>
+		<item>@string/abdomen</item>
+		<item>@string/back</item>
+		<item>@string/shoulder</item>
+		<item>@string/arm</item>
+		<item>@string/forearm</item>
+		<item>@string/hand</item>
+		<item>@string/thigh</item>
+		<item>@string/leg</item>
+		<item>@string/ankle</item>
+		<item>@string/foot</item>
+		<item>@string/buttocks</item>
+		<item>@string/vagina</item>
+		<item>@string/penis</item>
+	</string-array>
+
+	<string-array name="motivations">
+		<item>@string/routine</item>
+		<item>@string/symptoms</item>
+		<item>@string/preventive</item>
+		<item>@string/deliver_exam</item>
+		<item>@string/complications</item>
+	</string-array>
+
+	<string-array name="biologicalSexes">
+		<item>@string/male</item>
+		<item>@string/female</item>
+		<item>@string/intersex</item>
+		<item>@string/rather_not_inform</item>
+	</string-array>
+
+	<string-array name="genderIdentityArray">
+		<item>@string/cis_male</item>
+		<item>@string/cis_female</item>
+		<item>@string/trans_male</item>
+		<item>@string/trans_female</item>
+		<item>@string/non_binary</item>
+		<item>@string/rather_not_inform</item>
+	</string-array>
+
+</resources>

@@ -99,10 +99,11 @@ class AdicionarMedicamento : Fragment() {
 							notes = notes,
 						).toMap()).await()
 
-						Log.i(Medication.COLLECTION_NAME, "addMedication:success")
+						Log.i(Medication.COLLECTION_NAME, getString(R.string.addmedication_success))
 						popBackStack()
 					} catch (e: Exception) {
-						Log.e(Medication.COLLECTION_NAME, "addMedication:failure", e)
+						Log.e(Medication.COLLECTION_NAME,
+							getString(R.string.addmedication_failure), e)
 					}
 				}
 			}

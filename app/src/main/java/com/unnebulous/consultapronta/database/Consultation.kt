@@ -11,7 +11,7 @@ data class Consultation(
 	val motivation: String = "",
 	val details: String? = "",
 	val date_time: Timestamp? = null,
-	val hospital: String,
+	val hospital: String = "",
 	val status: ConsultationStatus = ConsultationStatus.SOLICITADO_PACIENTE
 ): BaseDocument {
 

@@ -34,7 +34,7 @@ class ViewExternalProfile : Fragment() {
 		super.onCreate(savedInstanceState)
 
 		arguments?.let {
-			userId = it.getString(ARG_USER_ID, "ERROR")
+			userId = it.getString(ARG_USER_ID, Utils.ERROR)
 		}
 	}
 
@@ -79,7 +79,7 @@ class ViewExternalProfile : Fragment() {
 					binding.apply {
 						userName.text = user["name"].toString()
 						userEmail.setText(user["email"].toString())
-						userPhoneNumber.setText(user["phone"].toString())
+						userPhoneNumber.setText(Utils.applyMask(Utils.PHONE_MASK, user["phone"].toString()))
 
 						gotoUserSpecificScreenButton.setOnClickListener {
 							changeFragmentWithBackStack(ListagemConsulta())
@@ -93,7 +93,7 @@ class ViewExternalProfile : Fragment() {
 					popBackStack()
 				}
 			} catch (e: Exception) {
-				Log.wtf("ErroPronto", "getExternalUser:failure", e)
+				Log.wtf("ErroPronto", getString(R.string.getexternaluser_failure), e)
 				showSnackbar(getString(R.string.error_not_fetching_external_user), Utils.SnackBarType.DANGER)
 			}
 		}

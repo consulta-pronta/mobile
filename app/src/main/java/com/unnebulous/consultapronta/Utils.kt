@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
@@ -23,6 +24,8 @@ import kotlin.enums.enumEntries
 object Utils {
 	const val CPF_MASK = "###.###.###-##"
 	const val PHONE_MASK = "(##) #####-####"
+	const val SKELETON_OPACITY = 0.6f
+	const val ERROR = "ERROR"
 
 	enum class UserType { PACIENTE, PROFISSIONAL }
 
@@ -35,6 +38,9 @@ object Utils {
 	}
 
 	enum class HeaderType { COMPACT, TITLED }
+
+	enum class NotificationType { ACESSO, AVISO, ALTERACAO, SOLICITACAO }
+	enum class NotificationScope { CONSULTA, MEDICAMENTO, RELATORIO }
 
 	enum class SelectOptionItemType { RADIO, CHECKBOX, COMPLETE }
 
@@ -192,10 +198,13 @@ object Utils {
 		timePicker.show(fragment.parentFragmentManager, "time_picker")
 	}
 
-	fun buildCpfMask(): MaskWatcher = MaskWatcher(CPF_MASK)
+	fun buildCpfMask(): MaskWatcher = MaskWatcher(CPF_MASK, true)
 	fun buildPhoneMask(): MaskWatcher = MaskWatcher(PHONE_MASK)
 
-	class MaskWatcher(private val mask: String) : TextWatcher {
+	class MaskWatcher(
+		private val mask: String,
+		private val isCPF: Boolean = false
+	) : TextWatcher {
 		private var isUpdating: Boolean = false
 		private var old = ""
 
@@ -207,15 +216,29 @@ object Utils {
 			val str = unmask(s.toString())
 			var mascara = ""
 
+			if (isCPF) {
+				str.forEachIndexed { index, ch ->
+					if (!ch.isDigit()) {
+						val endIndex = index + 1
+						val lastLetterIndex = str.length - 1
+						(s as? Editable?)?.removeRange(index, (if (endIndex <= lastLetterIndex) endIndex else lastLetterIndex))
+					}
+				}
+			}
+
 			if (isUpdating) {
 				old = str
 				isUpdating = false
 				return
 			}
+			Log.i("InfoPronta", "s = \"$s\"\nold = \"$old\"")
 
+			Log.i("InfoPronta", "mascara antes")
 			var i = 0
 			for (m in mask.toCharArray()) {
-				if (m != '#' && str.length > old.length) {
+				if (i >= str.length) break
+
+				if (m != '#') {
 					mascara += m
 					continue
 				}
@@ -226,8 +249,10 @@ object Utils {
 				}
 				i++
 			}
+			Log.i("InfoPronta", "mascara depois")
 
 			isUpdating = true
+			Log.i("InfoPronta", "fim")
 			(s as? Editable)?.replace(0, s.length, mascara)
 		}
 

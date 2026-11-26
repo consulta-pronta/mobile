@@ -24,7 +24,7 @@ class HistoricoDoSintoma : Fragment() {
 		super.onCreate(savedInstanceState)
 
 		arguments?.let {
-			symptomId = it.getString(ARG_SYMPTOM_ID, "ERROR")
+			symptomId = it.getString(ARG_SYMPTOM_ID, Utils.ERROR)
 		}
 	}
 
@@ -67,9 +67,9 @@ class HistoricoDoSintoma : Fragment() {
 
 				adapter.submitList(list)
 
-				Log.i(Symptom.HISTORIC_COLLECTION_NAME, "getHistoric:success")
+				Log.i(Symptom.HISTORIC_COLLECTION_NAME, getString(R.string.gethistoric_success))
 			} catch (e: Exception) {
-				Log.e(Symptom.HISTORIC_COLLECTION_NAME, "getHistoric:failure", e)
+				Log.e(Symptom.HISTORIC_COLLECTION_NAME, getString(R.string.gethistoric_failure), e)
 			}
 		}
 	}

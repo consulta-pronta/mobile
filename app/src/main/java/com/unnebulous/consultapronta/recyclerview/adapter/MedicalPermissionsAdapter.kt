@@ -3,10 +3,12 @@ package com.unnebulous.consultapronta.recyclerview.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unnebulous.consultapronta.R
+import com.unnebulous.consultapronta.Utils
 import com.unnebulous.consultapronta.database.Professional
 import com.unnebulous.consultapronta.databinding.CardProfessionalMedicalPermissionsBinding
 import kotlin.jvm.Throws
@@ -40,12 +42,21 @@ class MedicalPermissionsAdapter : ListAdapter<Professional, MedicalPermissionsAd
 
 	inner class MedicalPermissionsViewHolder(private val binding: CardProfessionalMedicalPermissionsBinding): RecyclerView.ViewHolder(binding.root) {
 		fun bind(professional: Professional) {
+			if (professional.id.isBlank()) {
+				binding.root.forEach { view ->
+					view.clipToOutline = true
+					view.foreground = ContextCompat.getDrawable(binding.root.context, R.drawable.skeleton_gradient)
+					view.alpha = Utils.SKELETON_OPACITY
+				}
+				return
+			}
+
 			binding.apply {
 				professionalName.text = professional.name
 				val crm = "${professional.crm}/${professional.uf}"
 				professionalCrm.text = crm
 				professionalEmail.text = professional.email
-				professionalPhoneNumber.text = professional.phoneNumber
+				professionalPhoneNumber.text = Utils.applyMask(Utils.PHONE_MASK, professional.phoneNumber.toString())
 				professionalOperationArea.text = professional.operationArea
 
 				root.setOnClickListener {

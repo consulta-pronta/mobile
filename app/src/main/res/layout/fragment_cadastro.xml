@@ -219,12 +219,11 @@
 
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:autofillHints=""
 					android:background="@drawable/shape_input"
 					android:drawableStart="@drawable/ic_document"
 					android:drawablePadding="10dp"
 					android:hint="@string/input_cpf"
-					android:inputType="number"
+					android:inputType="text"
 					android:maxLength="14"
 					android:textColor="@color/textLight"
 					android:textColorHint="@color/textLight60" />
@@ -562,7 +561,7 @@
 					tools:visibility="visible"/>
 
 				<Button
-					android:id="@+id/create_account_button"
+					android:id="@+id/next_button"
 
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"

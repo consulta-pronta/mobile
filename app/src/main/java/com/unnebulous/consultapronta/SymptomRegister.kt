@@ -54,26 +54,7 @@ class SymptomRegister : Fragment() {
 		var localTime: LocalTime? = null
 		binding.symptomIntensity.text = getString(R.string.symptom_intensity, 1)
 
-		val bodyParts = arrayOf(
-			"Cabeça",
-			"Rosto",
-			"Pescoço",
-			"Tórax",
-			"Abdômen",
-			"Costas",
-			"Ombro",
-			"Braço",
-			"Antebraço",
-			"Mão",
-			"Coxa",
-			"Perna",
-			"Tornozelo",
-			"Pé",
-			"Nádegas",
-			"Vagina",
-			"Pênis"
-
-		)
+		val bodyParts = resources.getStringArray(R.array.body_parts)
 
 		val adapter = ArrayAdapter(
 			requireContext(),
@@ -157,12 +138,12 @@ class SymptomRegister : Fragment() {
 
 			lifecycleScope.launch {
 				try {
-					Symptom.collection.add(symptomDoc)
+					Symptom.collection.add(symptomDoc.toMap())
 
-					Log.i(Symptom.COLLECTION_NAME, "addSymptom:success")
+					Log.i(Symptom.COLLECTION_NAME, getString(R.string.addsymptom_success))
 					popBackStack()
 				} catch (e: Exception) {
-					Log.e(Symptom.COLLECTION_NAME, "addSymptom:failure", e)
+					Log.e(Symptom.COLLECTION_NAME, getString(R.string.addsymptom_failure), e)
 				}
 			}
 		}

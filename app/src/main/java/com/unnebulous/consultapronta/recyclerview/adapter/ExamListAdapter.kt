@@ -5,8 +5,11 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +29,17 @@ class ExamListAdapter: ListAdapter<ExamModel, ExamListAdapter.ExamViewHolder>(Ex
 		private var isExpanded = false
 
 		fun bind(exam: ExamModel) {
+			if (exam.id.isBlank()) {
+				binding.root.forEach { view ->
+					if (view is ImageButton) return@forEach
+
+					view.clipToOutline = true
+					view.foreground = ContextCompat.getDrawable(binding.root.context, R.drawable.skeleton_gradient)
+					view.alpha = Utils.SKELETON_OPACITY
+				}
+				return
+			}
+
 			binding.apply {
 				examInfo.text = exam.name
 				examIcon.setImageResource(when (exam.type) {
@@ -59,7 +73,7 @@ class ExamListAdapter: ListAdapter<ExamModel, ExamListAdapter.ExamViewHolder>(Ex
 					)
 				)
 				examCategory.text = exam.category.toString().capitalizeFix()
-				examDate.text = exam.date!!.toBrazilianLocale()
+				examDate.text = exam.date!!.toBrazilianLocale(root.context)
 				examHospital.text = exam.place
 			}
 
