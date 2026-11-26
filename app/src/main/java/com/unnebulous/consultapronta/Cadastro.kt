@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import br.com.colman.simplecpfvalidator.isCpf
 import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.firebase.Timestamp
@@ -268,6 +269,8 @@ class Cadastro : Fragment() {
 		if (!isValid) {
 			val error = if (oneOrMoreInputBlank || weight == null || height == null || birthDate == null) {
 				getString(R.string.error_blank_input)
+			} else if (!cpf.isCpf()) {
+				getString(R.string.error_invalid_cpf)
 			} else if (!isPasswordValid) {
 				getString(R.string.error_password_not_valid)
 			} else {
