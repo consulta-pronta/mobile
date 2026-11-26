@@ -60,7 +60,7 @@ class ChronologyAdapter: ListAdapter<BaseDocument, RecyclerView.ViewHolder>(WeAr
 
 			binding.apply {
 				title.text = item.title
-				date.text = item.date_time?.toBrazilianLocale() ?: "Data desconhecida"
+				date.text = item.date_time?.toBrazilianLocale(root.context) ?: "Data desconhecida"
 				description.text = ContextCompat
 					.getString(binding.root.context, R.string.template_chronology_symptom_description)
 					.format(item.intensity, item.description)

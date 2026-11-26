@@ -64,7 +64,7 @@ class Exam : Fragment() {
 		firestoreListener = ExamModel.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
-					Log.e(ExamModel.COLLECTION_NAME, "getExams", exception)
+					Log.e(ExamModel.COLLECTION_NAME, getString(R.string.get_exams), exception)
 					return@addSnapshotListener
 				}
 

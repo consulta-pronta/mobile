@@ -76,7 +76,7 @@ class ConsultationAdapter: ListAdapter<Pair<Consultation, Map<String, String>>, 
 
 				hospital.text = consultation.hospital
 
-				datetime.text = consultation.date_time?.toLocalDateTime()?.toBrazillianFullDateAndTime()
+				datetime.text = consultation.date_time?.toLocalDateTime()?.toBrazillianFullDateAndTime(root.context)
 
 				buttonsLayout.isVisible = viewType == ViewType.ACCEPT.ordinal
 

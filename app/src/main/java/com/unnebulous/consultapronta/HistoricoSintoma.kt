@@ -58,7 +58,8 @@ class HistoricoSintoma : Fragment() {
 			.collection
 			.addSnapshotListener { snapshots, exception ->
 				if (exception != null) {
-					Log.e("firestore:getSymptoms", "Error getting documents: ", exception)
+					Log.e("firestore:getSymptoms",
+						getString(R.string.error_getting_documents), exception)
 					return@addSnapshotListener
 				}
 
@@ -70,7 +71,7 @@ class HistoricoSintoma : Fragment() {
 
 						adapter.submitList(symptoms)
 					} catch (error: Exception) {
-						Log.wtf("symptom", "getSymptoms:failure", error)
+						Log.wtf("symptom", getString(R.string.getsymptoms_failure), error)
 					}
 				}
 			}

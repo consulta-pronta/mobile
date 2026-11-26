@@ -4,13 +4,15 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 
 object AuthManager {
+
 	val auth get() = FirebaseAuth.getInstance()
 
 	val user get() = auth.currentUser
 
 	lateinit var userInFirestore: User
 
-	val uid get() = user?.uid
+	val uid: String?
+		get() = user?.uid
 
 	suspend fun getUserData(): User? {
 		val doc = DatabaseManager.userDocument.get().await()

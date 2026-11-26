@@ -56,7 +56,7 @@ class Mais : Fragment() {
 				Utils.UserType.PACIENTE -> setPatientOptions()
 				Utils.UserType.PROFISSIONAL -> setProfessionalOptions()
 				null -> {
-					throw Exception("User has no type associated")
+					throw Exception(getString(R.string.user_has_no_type_associated))
 				}
 			}
 
@@ -67,7 +67,7 @@ class Mais : Fragment() {
 			}
 		}
 		catch (e: Exception) {
-			Log.wtf(User.COLLECTION_NAME, "getUserData:failure", e)
+			Log.wtf(User.COLLECTION_NAME, getString(R.string.getuserdata_failure), e)
 			showSnackbar(getString(R.string.error_generic), Utils.SnackBarType.DANGER)
 		}
 

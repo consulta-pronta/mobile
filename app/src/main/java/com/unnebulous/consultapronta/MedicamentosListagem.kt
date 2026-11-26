@@ -58,9 +58,9 @@ class MedicamentosListagem : Fragment() {
 				val docs = Medication.collection.get().await()
 
 				adapter.submitList(docs.map { Medication.fromDocument(it) })
-				Log.i(Medication.COLLECTION_NAME, "getMedications:success")
+				Log.i(Medication.COLLECTION_NAME, getString(R.string.getmedications_success))
 			} catch (e: Exception) {
-				Log.e(Medication.COLLECTION_NAME, "getMedications:failure", e)
+				Log.e(Medication.COLLECTION_NAME, getString(R.string.getmedications_failure), e)
 			}
 		}
 

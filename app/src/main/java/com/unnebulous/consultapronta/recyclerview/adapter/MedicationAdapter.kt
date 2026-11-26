@@ -83,7 +83,7 @@ class MedicationAdapter: ListAdapter<Medication, MedicationAdapter.MedicationVie
 						route.display.lowercase(),
 					)
 
-					val today = Timestamp.now().toISODate()
+					val today = Timestamp.now().toISODate(root.context)
 					checkbox.isChecked = wasTakenOn(today)
 
 					checkbox.setOnCheckedChangeListener { _, bool ->

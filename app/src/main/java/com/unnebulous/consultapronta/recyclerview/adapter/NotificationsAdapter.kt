@@ -55,7 +55,7 @@ class NotificationsAdapter: ListAdapter<Notification, NotificationsAdapter.Notif
 				}
 				notificationSubject.text = notification.title
 				notificationContent.text = notification.description
-				notificationDateText.text = notification.created_at?.toLocalDateTime()?.toBrazillianFullDateAndTime()
+				notificationDateText.text = notification.created_at?.toLocalDateTime()?.toBrazillianFullDateAndTime(root.context)
 
 				notificationDateText.apply {
 					setTextColor(ContextCompat.getColor(root.context, textColor))
