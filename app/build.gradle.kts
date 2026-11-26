@@ -64,6 +64,7 @@ dependencies {
 	implementation(libs.map.view)
 	implementation(libs.play.services.location)
 	implementation(libs.overpass)
+	implementation(libs.cpf.validator)
 	coreLibraryDesugaring(libs.desugar)
 
 	testImplementation(libs.junit)

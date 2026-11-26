@@ -428,4 +428,6 @@
 	<string name="invalid_data">Os dados deste relatório são inválidos.</string>
 	<string name="no_clear_user_type">Usuário sem tipo associado.</string>
 	<string name="report_not_identified">Não foi possível identificar o relatório.</string>
+	<string name="error_invalid_cpf">CPF inválido</string>
+	<string name="error_invalid_email">Email inválido</string>
 </resources>

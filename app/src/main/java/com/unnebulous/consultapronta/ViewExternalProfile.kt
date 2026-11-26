@@ -79,7 +79,7 @@ class ViewExternalProfile : Fragment() {
 					binding.apply {
 						userName.text = user["name"].toString()
 						userEmail.setText(user["email"].toString())
-						userPhoneNumber.setText(user["phone"].toString())
+						userPhoneNumber.setText(Utils.applyMask(Utils.PHONE_MASK, user["phone"].toString()))
 
 						gotoUserSpecificScreenButton.setOnClickListener {
 							changeFragmentWithBackStack(ListagemConsulta())
