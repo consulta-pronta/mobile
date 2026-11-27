@@ -213,7 +213,6 @@
 					android:textColor="@color/textLight"
 					android:textColorHint="@color/textLight60" />
 
-				<!-- Verificar autofillhint de CPF -->
 				<EditText
 					android:id="@+id/cpf_input"
 
@@ -341,7 +340,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:hint="@string/gender_identity_label"
-						android:inputType="none"
+						android:inputType="textAutoComplete"
 						android:padding="@dimen/default_card_padding"
 						android:textColor="@color/textLight"
 						android:textColorHint="@color/textLight60" />

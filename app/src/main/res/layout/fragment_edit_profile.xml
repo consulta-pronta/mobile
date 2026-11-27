@@ -9,10 +9,13 @@
 
 	tools:context=".EditProfile">
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingBottom="@dimen/default_padding_bottom" >
+		android:paddingBottom="@dimen/default_padding_bottom"
+		android:orientation="vertical"
+		android:showDividers="middle"
+		android:divider="@drawable/divider_default">
 
 		<TextView
 			android:id="@+id/user_name"
@@ -21,7 +24,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="24sp"
 			android:textStyle="bold"
-			android:padding="@dimen/default_padding_bottom"
+			android:layout_gravity="center_horizontal"
 
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
@@ -29,262 +32,195 @@
 
 			tools:text="@tools:sample/full_names" />
 
-		<androidx.constraintlayout.widget.ConstraintLayout
-			android:id="@+id/contact_form_area"
-
-			android:layout_width="match_parent"
+		<TextView
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:paddingBottom="@dimen/default_padding_bottom"
+			android:text="@string/contact"
+			android:textSize="24sp"/>
 
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/user_name">
-
-			<TextView
-				android:id="@+id/contact_form_area_title"
-
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/contact"
-				android:textSize="20sp"
-
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent" />
-
-			<com.unnebulous.consultapronta.views.SelectOptionItemView
-				android:id="@+id/email_option"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:paddingBottom="@dimen/default_padding_bottom"
-
-				app:selectOptionType="complete"
-				app:textColor="@color/textLight"
-				app:completeLayoutIcon="@drawable/ic_email"
-				app:selectText="@string/input_email"
-				app:layout_constraintTop_toBottomOf="@id/contact_form_area_title">
-
-				<androidx.appcompat.widget.SwitchCompat
-					android:id="@+id/switch_email"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-
-					app:switchMinWidth="60dp"
-					app:track="@drawable/shape_switch_background"
-					app:trackTint="@color/switch_color"
-					app:thumbTint="@color/textLight" />
-			</com.unnebulous.consultapronta.views.SelectOptionItemView>
-
-			<com.unnebulous.consultapronta.views.SelectOptionItemView
-				android:id="@+id/sms_option"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:paddingBottom="@dimen/default_padding_bottom"
-
-				app:selectOptionType="complete"
-				app:textColor="@color/textLight"
-				app:completeLayoutIcon="@drawable/ic_sms"
-				app:selectText="@string/sms_contact_form"
-				app:layout_constraintTop_toBottomOf="@id/email_option">
-
-				<androidx.appcompat.widget.SwitchCompat
-					android:id="@+id/switch_sms"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-
-					app:switchMinWidth="60dp"
-					app:track="@drawable/shape_switch_background"
-					app:trackTint="@color/switch_color"
-					app:thumbTint="@color/textLight" />
-			</com.unnebulous.consultapronta.views.SelectOptionItemView>
-
-			<com.unnebulous.consultapronta.views.SelectOptionItemView
-				android:id="@+id/whatsapp_option"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:paddingBottom="@dimen/default_padding_bottom"
-
-				app:selectOptionType="complete"
-				app:textColor="@color/textLight"
-				app:completeLayoutIcon="@drawable/ic_whatsapp_app"
-				app:selectText="@string/whatsapp_contact_form"
-				app:showIconAsRaw="true"
-				app:layout_constraintTop_toBottomOf="@id/sms_option">
-
-				<androidx.appcompat.widget.SwitchCompat
-					android:id="@+id/switch_whatsapp"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-
-					app:switchMinWidth="60dp"
-					app:track="@drawable/shape_switch_background"
-					app:trackTint="@color/switch_color"
-					app:thumbTint="@color/textLight" />
-			</com.unnebulous.consultapronta.views.SelectOptionItemView>
-
-			<com.unnebulous.consultapronta.views.SelectOptionItemView
-				android:id="@+id/telegram_option"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:paddingBottom="@dimen/default_padding_bottom"
-
-				app:selectOptionType="complete"
-				app:textColor="@color/textLight"
-				app:completeLayoutIcon="@drawable/ic_telegram_app"
-				app:selectText="@string/telegram_contact_form"
-				app:showIconAsRaw="true"
-				app:layout_constraintTop_toBottomOf="@id/whatsapp_option">
-
-				<androidx.appcompat.widget.SwitchCompat
-					android:id="@+id/switch_telegram"
-
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-
-					app:switchMinWidth="60dp"
-					app:track="@drawable/shape_switch_background"
-					app:trackTint="@color/switch_color"
-					app:thumbTint="@color/textLight" />
-			</com.unnebulous.consultapronta.views.SelectOptionItemView>
-
-		</androidx.constraintlayout.widget.ConstraintLayout>
-
-		<androidx.constraintlayout.widget.ConstraintLayout
-			android:id="@+id/personal_data_area"
+		<com.unnebulous.consultapronta.views.SelectOptionItemView
+			android:id="@+id/email_option"
 
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
+			app:selectOptionType="complete"
+			app:textColor="@color/textLight"
+			app:completeLayoutIcon="@drawable/ic_email"
+			app:selectText="@string/input_email">
+
+			<androidx.appcompat.widget.SwitchCompat
+				android:id="@+id/switch_email"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+
+				app:switchMinWidth="60dp"
+				app:track="@drawable/shape_switch_background"
+				app:trackTint="@color/switch_color"
+				app:thumbTint="@color/textLight" />
+		</com.unnebulous.consultapronta.views.SelectOptionItemView>
+
+		<com.unnebulous.consultapronta.views.SelectOptionItemView
+			android:id="@+id/sms_option"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			app:selectOptionType="complete"
+			app:textColor="@color/textLight"
+			app:completeLayoutIcon="@drawable/ic_sms"
+			app:selectText="@string/sms_contact_form">
+
+			<androidx.appcompat.widget.SwitchCompat
+				android:id="@+id/switch_sms"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+
+				app:switchMinWidth="60dp"
+				app:track="@drawable/shape_switch_background"
+				app:trackTint="@color/switch_color"
+				app:thumbTint="@color/textLight" />
+		</com.unnebulous.consultapronta.views.SelectOptionItemView>
+
+		<com.unnebulous.consultapronta.views.SelectOptionItemView
+			android:id="@+id/whatsapp_option"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			app:selectOptionType="complete"
+			app:textColor="@color/textLight"
+			app:completeLayoutIcon="@drawable/ic_whatsapp_app"
+			app:selectText="@string/whatsapp_contact_form"
+			app:showIconAsRaw="true">
+
+			<androidx.appcompat.widget.SwitchCompat
+				android:id="@+id/switch_whatsapp"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+
+				app:switchMinWidth="60dp"
+				app:track="@drawable/shape_switch_background"
+				app:trackTint="@color/switch_color"
+				app:thumbTint="@color/textLight" />
+		</com.unnebulous.consultapronta.views.SelectOptionItemView>
+
+		<com.unnebulous.consultapronta.views.SelectOptionItemView
+			android:id="@+id/telegram_option"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			app:selectOptionType="complete"
+			app:textColor="@color/textLight"
+			app:completeLayoutIcon="@drawable/ic_telegram_app"
+			app:selectText="@string/telegram_contact_form"
+			app:showIconAsRaw="true">
+
+			<androidx.appcompat.widget.SwitchCompat
+				android:id="@+id/switch_telegram"
+
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+
+				app:switchMinWidth="60dp"
+				app:track="@drawable/shape_switch_background"
+				app:trackTint="@color/switch_color"
+				app:thumbTint="@color/textLight" />
+		</com.unnebulous.consultapronta.views.SelectOptionItemView>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/personal_data"
+			android:textSize="24sp" />
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/birth_date" />
+
+		<Button
+			android:id="@+id/birth_date_input"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/textDark"
+			android:insetTop="0dp"
+			android:insetBottom="0dp"
+			android:textAlignment="viewStart"
+
+			app:backgroundTint="@color/surface"
+			app:cornerRadius="@dimen/big_button_corner_radius"
+			app:icon="@drawable/ic_calendar"
+			app:iconGravity="start"
+			app:iconTint="@color/textDark"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/contact_form_area">
+			app:layout_constraintTop_toBottomOf="@id/date" />
 
-			<TextView
-				android:id="@+id/personal_data_area_title"
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/gender" />
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/personal_data"
-				android:textSize="20sp"
+		<com.google.android.material.textfield.TextInputLayout
+			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent" />
+			android:id="@+id/gender_identity_inputlayout"
 
-			<TextView
-				android:id="@+id/birth_date_label"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColorHint="@color/textDark"
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/birth_date"
+			app:boxBackgroundColor="@color/surface"
+			app:boxCornerRadiusBottomEnd="12dp"
+			app:boxCornerRadiusBottomStart="12dp"
+			app:boxCornerRadiusTopEnd="12dp"
+			app:boxCornerRadiusTopStart="12dp"
+			app:counterOverflowTextColor="@color/textDark"
+			app:counterTextColor="@color/textDark"
+			app:endIconDrawable="@drawable/ic_arrow_down"
+			app:endIconMode="custom"
+			app:endIconTint="@color/textDark"
+			app:startIconDrawable="@drawable/ic_transgender"
+			app:startIconTint="@color/textDark"
+			app:hintEnabled="false">
 
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/personal_data_area_title"
-
-				/>
-
-			<Button
-				android:id="@+id/birth_date_select"
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
+				android:id="@+id/gender_identity_input"
 
 				android:layout_width="match_parent"
-				android:layout_height="45dp"
-				android:autofillHints="date"
-				android:background="@drawable/shape_search_background"
+				android:layout_height="match_parent"
+				android:hint="@string/gender_identity_label"
+				android:inputType="textAutoComplete"
+				android:padding="@dimen/default_card_padding"
 				android:textColor="@color/textDark"
-				android:textAlignment="viewStart"
-				android:text="@string/placeholder_date"
-				android:insetLeft="0dp"
+				android:textColorHint="@color/textDark60" />
 
-				app:icon="@drawable/ic_calendar"
-				app:iconTint="@color/primaryDark"
-				app:iconGravity="start"
-				app:iconPadding="12dp"
-				app:backgroundTint="@color/white"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/birth_date_label" />
+		</com.google.android.material.textfield.TextInputLayout>
 
-			<TextView
-				android:id="@+id/gender_label"
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/location" />
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/gender"
-				android:paddingTop="@dimen/default_padding_bottom"
+		<EditText
+			android:id="@+id/address_input"
 
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/birth_date_select" />
-
-			<com.google.android.material.textfield.TextInputLayout
-				style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-
-				android:id="@+id/gender_identity_inputlayout"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:textColorHint="@color/textDark"
-
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/gender_label"
-
-				app:boxBackgroundColor="@color/white"
-				app:boxCornerRadiusBottomEnd="12dp"
-				app:boxCornerRadiusBottomStart="12dp"
-				app:boxCornerRadiusTopEnd="12dp"
-				app:boxCornerRadiusTopStart="12dp"
-				app:counterOverflowTextColor="@color/textDark"
-				app:counterTextColor="@color/textDark"
-				app:endIconDrawable="@drawable/ic_arrow_down"
-				app:endIconMode="custom"
-				app:endIconTint="@color/primaryDark"
-				app:startIconDrawable="@drawable/ic_gender"
-				app:startIconTint="@color/textDark"
-				app:hintEnabled="false">
-
-				<com.google.android.material.textfield.MaterialAutoCompleteTextView
-					android:id="@+id/gender_identity_input"
-
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:inputType="textAutoComplete"
-					android:padding="@dimen/default_card_padding"
-					android:textColor="@color/textDark"
-					android:textColorHint="@color/textDark"
-
-					tools:hint="@string/placeholder"/>
-
-			</com.google.android.material.textfield.TextInputLayout>
-
-			<TextView
-				android:id="@+id/location_label"
-
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/location"
-				android:paddingTop="@dimen/default_padding_bottom"
-
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/gender_identity_inputlayout"
-
-				/>
-
-			<EditText
-				android:id="@+id/location_input"
-
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/shape_search_background"
-				android:drawableStart="@drawable/ic_location"
-				android:drawableTint="@color/primaryDark"
-				android:text="@string/placeholder"
-				android:drawablePadding="@dimen/default_drawable_icon_padding"
-
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/location_label"
-				/>
-		</androidx.constraintlayout.widget.ConstraintLayout>
-
-	</androidx.constraintlayout.widget.ConstraintLayout>
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:autofillHints="postalAddress"
+			android:background="@drawable/shape_input"
+			android:backgroundTint="@color/surface"
+			android:drawableStart="@drawable/ic_location"
+			android:drawablePadding="10dp"
+			android:drawableTint="@color/textDark"
+			android:hint="@string/location_input"
+			android:inputType="text"
+			android:textColor="@color/textDark"
+			android:textColorHint="@color/textDark60" />
+	</LinearLayout>
 </ScrollView>

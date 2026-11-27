@@ -41,8 +41,7 @@ class EditProfile : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		updateHeader {
-			changeHeaderType(Utils.HeaderType.TITLED, true)
-			setScreenTitle(getString(R.string.edit_profile))
+			changeHeaderType(Utils.HeaderType.TITLED)
 			setGoBackButtonOnClickListener {
 				popBackStack()
 			}
@@ -61,9 +60,9 @@ class EditProfile : Fragment() {
 					userName.text = name
 					getContactForms(contact_forms)
 
-					birthDateSelect.text = birthDate.format(DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)))
+					birthDateInput.text = birthDate.format(DateTimeFormatter.ofPattern(getString(R.string.DATE_FORMAT)))
 					genderIdentityInput.text = gender.toEditable()
-					locationInput.text = address.toEditable()
+					addressInput.text = address.toEditable()
 				}
 			}
 		} catch (e: Exception) {
