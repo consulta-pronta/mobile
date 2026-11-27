@@ -191,20 +191,6 @@ class Cadastro : Fragment() {
 		binding.phoneNumberInput.addTextChangedListener(Utils.buildPhoneMask())
 	}
 
-	private fun setupSelect(select: MaterialAutoCompleteTextView, array: Array<String>) {
-		select.apply {
-			setAdapter(createAdapter(array))
-			setOnClickListener {
-				showDropDown()
-			}
-		}
-	}
-
-	private fun createAdapter(array: Array<String>) =
-		ArrayAdapter(requireContext(), R.layout.item_spinner, array).apply {
-			setDropDownViewResource(R.layout.item_spinner)
-		}
-
 	private fun verifyInputs(): Boolean {
 		var isValid = true
 		var validEmail = true

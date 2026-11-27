@@ -49,6 +49,10 @@ class Mais : Fragment() {
 			changeFragmentWithBackStack(ViewProfile())
 		}
 
+		binding.editProfileButton.setOnClickListener {
+			changeFragmentWithBackStack(EditProfile())
+		}
+
 		try {
 			val userData = AuthManager.userInFirestore
 
